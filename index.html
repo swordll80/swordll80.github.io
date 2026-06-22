@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="swordll80 的个人主页">
+  <title>swordll80 · 个人主页</title>
+  <style>
+    :root {
+      --bg: #f4f7fb;
+      --panel: rgba(255, 255, 255, 0.88);
+      --text: #172033;
+      --muted: #667085;
+      --line: #dfe6ef;
+      --accent: #356ae6;
+      --accent-soft: #eaf0ff;
+      --shadow: 0 18px 50px rgba(40, 56, 85, 0.11);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 8% 12%, #dce8ff 0, transparent 28rem),
+        radial-gradient(circle at 95% 90%, #e4f6ef 0, transparent 30rem),
+        var(--bg);
+      font: 16px/1.7 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        "Microsoft YaHei", sans-serif;
+    }
+
+    .site-header {
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(22px, 5vw, 72px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+      background: rgba(255, 255, 255, 0.58);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 750;
+      letter-spacing: .02em;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      display: grid;
+      place-items: center;
+      color: white;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #356ae6, #6c4ce3);
+      box-shadow: 0 8px 22px rgba(53, 106, 230, .28);
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .layout {
+      width: min(1180px, calc(100% - 40px));
+      min-height: calc(100vh - 120px);
+      margin: 24px auto;
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, .9);
+      border-radius: 22px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(18px);
+    }
+
+    .sidebar {
+      padding: 28px 18px;
+      border-right: 1px solid var(--line);
+      background: rgba(248, 250, 253, .74);
+    }
+
+    .sidebar-title {
+      margin: 0 10px 18px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .tree, .tree ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tree ul {
+      position: relative;
+      margin-left: 18px;
+      padding-left: 15px;
+    }
+
+    .tree ul::before {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 0;
+      bottom: 12px;
+      width: 1px;
+      background: var(--line);
+    }
+
+    .tree-button {
+      width: 100%;
+      margin: 3px 0;
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 0;
+      border-radius: 10px;
+      color: #344054;
+      background: transparent;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+      transition: .18s ease;
+    }
+
+    .tree-button:hover {
+      color: var(--accent);
+      background: #f0f4fb;
+    }
+
+    .tree-button.active {
+      color: var(--accent);
+      font-weight: 650;
+      background: var(--accent-soft);
+    }
+
+    .tree-icon {
+      width: 20px;
+      text-align: center;
+      line-height: 1;
+    }
+
+    .content {
+      padding: clamp(36px, 6vw, 76px);
+    }
+
+    .page {
+      display: none;
+      max-width: 760px;
+      animation: appear .25s ease;
+    }
+
+    .page.active { display: block; }
+
+    @keyframes appear {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 750;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0 0 22px;
+      font-size: clamp(32px, 5vw, 52px);
+      line-height: 1.15;
+      letter-spacing: -.035em;
+    }
+
+    h2 { margin: 30px 0 10px; font-size: 20px; }
+    p { color: #475467; }
+
+    .lead {
+      max-width: 650px;
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, .72);
+    }
+
+    .card strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .card p { margin: 0; font-size: 14px; }
+
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 22px;
+    }
+
+    .tag {
+      padding: 5px 11px;
+      color: #344054;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: white;
+      font-size: 13px;
+    }
+
+    @media (max-width: 720px) {
+      .status { display: none; }
+      .layout {
+        width: min(100% - 22px, 600px);
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        padding: 16px;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+      .sidebar-title { margin-bottom: 8px; }
+      .tree { display: flex; flex-wrap: wrap; gap: 4px; }
+      .tree > li { flex: 1 1 130px; }
+      .tree ul {
+        margin: 0;
+        padding: 0;
+      }
+      .tree ul::before { display: none; }
+      .content { padding: 34px 24px 46px; }
+      .cards { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <span class="brand-mark">&lt;/&gt;</span>
+      <span>swordll80</span>
+    </div>
+    <span class="status">保持好奇，持续创造。</span>
+  </header>
+
+  <main class="layout">
+    <nav class="sidebar" aria-label="页面导航">
+      <p class="sidebar-title">Navigation</p>
+      <ul class="tree">
+        <li>
+          <button class="tree-button active" data-page="about" aria-current="page">
+            <span class="tree-icon">●</span>个人简介
+          </button>
+        </li>
+        <li>
+          <button class="tree-button" data-page="programming">
+            <span class="tree-icon">◆</span>编程
+          </button>
+        </li>
+        <li>
+          <button class="tree-button" data-page="outdoors">
+            <span class="tree-icon">▲</span>户外
+          </button>
+        </li>
+        <li>
+          <button class="tree-button" data-page="education">
+            <span class="tree-icon">■</span>教育
+          </button>
+        </li>
+        <li>
+          <button class="tree-button" data-page="classics">
+            <span class="tree-icon">文</span>古文
+          </button>
+        </li>
+        <li>
+          <button class="tree-button" data-page="jokes">
+            <span class="tree-icon">☺</span>笑话
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <section class="content" aria-live="polite">
+      <article class="page active" id="about">
+        <p class="eyebrow">Hello, World</p>
+        <h1>你好，我是 swordll80。</h1>
+        <p class="lead">
+          欢迎来到我的个人主页。我喜欢技术、编程和解决有意思的问题，也乐于把想法变成简洁、实用的作品。
+        </p>
+        <div class="cards">
+          <div class="card">
+            <strong>我在做什么</strong>
+            <p>学习新技术，开发个人项目，并记录实践中的思考。</p>
+          </div>
+          <div class="card">
+            <strong>我的兴趣</strong>
+            <p>软件开发、开源工具、自动化，以及一切能提升效率的东西。</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="page" id="programming">
+        <p class="eyebrow">Programming</p>
+        <h1>编程</h1>
+        <p class="lead">
+          编程对我而言，不只是编写代码，也是把复杂问题拆开、理清，再构建出可靠答案的过程。
+        </p>
+        <h2>代码观</h2>
+        <p>保持清晰，优先解决真实问题；让代码容易理解，也让未来的自己容易维护。</p>
+        <div class="tags">
+          <span class="tag">持续学习</span>
+          <span class="tag">清晰设计</span>
+          <span class="tag">动手实践</span>
+          <span class="tag">开源精神</span>
+        </div>
+      </article>
+
+      <article class="page" id="outdoors">
+        <p class="eyebrow">Outdoors</p>
+        <h1>户外</h1>
+        <p class="lead">走到户外，在山川湖海之间放松身心，也重新发现日常生活里的辽阔。</p>
+        <div class="cards">
+          <div class="card">
+            <strong>徒步</strong>
+            <p>用脚步丈量风景，记录沿途的路线、见闻与感受。</p>
+          </div>
+          <div class="card">
+            <strong>旅行</strong>
+            <p>去不同的地方，看自然，也看各地真实而具体的生活。</p>
+          </div>
+        </div>
+      </article>
+
+      <article class="page" id="education">
+        <p class="eyebrow">Education</p>
+        <h1>教育</h1>
+        <p class="lead">教育并非只发生在课堂。阅读、实践、交流和反思，都是认识世界的方式。</p>
+        <div class="tags">
+          <span class="tag">终身学习</span>
+          <span class="tag">独立思考</span>
+          <span class="tag">知行合一</span>
+          <span class="tag">分享交流</span>
+        </div>
+      </article>
+
+      <article class="page" id="classics">
+        <p class="eyebrow">Chinese Classics</p>
+        <h1>古文</h1>
+        <p class="lead">读古文，是隔着时间与古人相遇。一字一句之间，既有文章之美，也有人情世故。</p>
+        <div class="card">
+          <strong>山不在高，有仙则名；水不在深，有龙则灵。</strong>
+          <p>——刘禹锡《陋室铭》</p>
+        </div>
+      </article>
+
+      <article class="page" id="jokes">
+        <p class="eyebrow">Just for Fun</p>
+        <h1>笑话</h1>
+        <p class="lead">生活已经够严肃了，这里留一点空间给轻松和会心一笑。</p>
+        <div class="card">
+          <strong>程序员为什么分不清万圣节和圣诞节？</strong>
+          <p>因为 Oct 31 == Dec 25。</p>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const buttons = document.querySelectorAll(".tree-button[data-page]");
+    const pages = document.querySelectorAll(".page");
+
+    function showPage(pageId) {
+      pages.forEach(page => page.classList.toggle("active", page.id === pageId));
+      buttons.forEach(button => {
+        const selected = button.dataset.page === pageId;
+        button.classList.toggle("active", selected);
+        if (selected) button.setAttribute("aria-current", "page");
+        else button.removeAttribute("aria-current");
+      });
+      history.replaceState(null, "", "#" + pageId);
+    }
+
+    buttons.forEach(button => {
+      button.addEventListener("click", () => showPage(button.dataset.page));
+    });
+
+    const initialPage = location.hash.slice(1);
+    if (document.getElementById(initialPage)?.classList.contains("page")) {
+      showPage(initialPage);
+    }
+  </script>
+</body>
+</html>
