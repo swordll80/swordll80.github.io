@@ -273,9 +273,16 @@
           </button>
         </li>
         <li>
-          <button class="tree-button" data-page="programming" data-url="programming/">
+          <button class="tree-button" data-page="programming" data-url="/programming/">
             <span class="tree-icon">◆</span>编程
           </button>
+          <ul>
+            <li>
+              <button class="tree-button" data-page="tools" data-url="/programming/tools/">
+                <span class="tree-icon">└</span>工具
+              </button>
+            </li>
+          </ul>
         </li>
         <li>
           <button class="tree-button" data-page="outdoors" data-url="outdoors/">
@@ -409,7 +416,8 @@
 
     const initialPage = location.hash.slice(1);
     const sectionUrls = {
-      programming: "programming/",
+      programming: "/programming/",
+      tools: "/programming/tools/",
       outdoors: "outdoors/",
       education: "education/",
       classics: "/classics/",
