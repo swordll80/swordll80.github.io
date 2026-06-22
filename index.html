@@ -273,27 +273,27 @@
           </button>
         </li>
         <li>
-          <button class="tree-button" data-page="programming">
+          <button class="tree-button" data-page="programming" data-url="programming/">
             <span class="tree-icon">◆</span>编程
           </button>
         </li>
         <li>
-          <button class="tree-button" data-page="outdoors">
+          <button class="tree-button" data-page="outdoors" data-url="outdoors/">
             <span class="tree-icon">▲</span>户外
           </button>
         </li>
         <li>
-          <button class="tree-button" data-page="education">
+          <button class="tree-button" data-page="education" data-url="education/">
             <span class="tree-icon">■</span>教育
           </button>
         </li>
         <li>
-          <button class="tree-button" data-page="classics">
+          <button class="tree-button" data-page="classics" data-url="classics/">
             <span class="tree-icon">文</span>古文
           </button>
         </li>
         <li>
-          <button class="tree-button" data-page="jokes">
+          <button class="tree-button" data-page="jokes" data-url="joke/">
             <span class="tree-icon">☺</span>笑话
           </button>
         </li>
@@ -401,7 +401,10 @@
     }
 
     buttons.forEach(button => {
-      button.addEventListener("click", () => showPage(button.dataset.page));
+      button.addEventListener("click", () => {
+        if (button.dataset.url) location.href = button.dataset.url;
+        else showPage(button.dataset.page);
+      });
     });
 
     const initialPage = location.hash.slice(1);
