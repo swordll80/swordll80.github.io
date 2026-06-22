@@ -408,7 +408,17 @@
     });
 
     const initialPage = location.hash.slice(1);
-    if (document.getElementById(initialPage)?.classList.contains("page")) {
+    const sectionUrls = {
+      programming: "programming/",
+      outdoors: "outdoors/",
+      education: "education/",
+      classics: "classics/",
+      jokes: "joke/"
+    };
+
+    if (sectionUrls[initialPage]) {
+      location.replace(sectionUrls[initialPage]);
+    } else if (document.getElementById(initialPage)?.classList.contains("page")) {
       showPage(initialPage);
     }
   </script>
