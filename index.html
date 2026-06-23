@@ -67,14 +67,14 @@
     }
 
     .layout {
-      width: min(1180px, calc(100% - 40px));
-      min-height: calc(100vh - 120px);
-      margin: 24px auto;
+      width: 100%;
+      min-height: calc(100vh - 96px);
+      margin: 0;
       display: grid;
       grid-template-columns: 260px minmax(0, 1fr);
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, .9);
-      border-radius: 22px;
+      border-top: 1px solid rgba(255, 255, 255, .9);
+      border-bottom: 1px solid rgba(255, 255, 255, .9);
       background: var(--panel);
       box-shadow: var(--shadow);
       backdrop-filter: blur(18px);
@@ -233,7 +233,7 @@
     @media (max-width: 720px) {
       .status { display: none; }
       .layout {
-        width: min(100% - 22px, 600px);
+        width: 100%;
         grid-template-columns: 1fr;
       }
       .sidebar {

@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C++ 知识表 · swordll80</title>
+  <style>
+    :root { --bg: #f5f6fa; --accent: #356ae6; --muted: #7d8599; --line: #e2e5ee; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: "Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:#fff; color:#1a1a2e; line-height:1.7; padding:24px; }
+    h1 { font-size:22px; margin-bottom:6px; color:#1a1a2e; }
+    .subtitle { color:var(--muted); font-size:13px; margin-bottom:20px; }
+    .table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,.04); }
+    table { width:100%; border-collapse:collapse; font-size:13px; min-width:900px; }
+    thead { background:linear-gradient(135deg,#4b8bbe,#00599c); color:#fff; position:sticky; top:0; z-index:2; }
+    thead th { padding:12px 14px; text-align:left; font-weight:650; font-size:13px; letter-spacing:.03em; white-space:nowrap; }
+    tbody td { padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+    tbody tr:nth-child(even) { background:#fafbfc; }
+    tbody tr:hover { background:#f0f3ff; }
+    td:first-child { text-align:center; color:var(--muted); font-weight:600; white-space:nowrap; min-width:52px; }
+    td:nth-child(2) { font-weight:600; min-width:170px; }
+    td:nth-child(3) { font-family:"Cascadia Code","Fira Code","Consolas",monospace; font-size:12px; white-space:pre-wrap; word-break:break-all; min-width:280px; max-width:520px; background:#f8f9fc; }
+    td:nth-child(4) { text-align:center; color:var(--muted); white-space:nowrap; min-width:70px; }
+    .section-row td { background:#eef1f8!important; font-weight:750; color:#1a1a2e; font-size:14px; padding:10px 14px; border-bottom:2px solid var(--line); }
+    .section-row td:first-child { color:var(--accent); }
+    code { background:#eef1f8; padding:1px 5px; border-radius:3px; font-family:"Cascadia Code","Fira Code","Consolas",monospace; font-size:12px; }
+    .keyword { color:#8b3fc7; } .comment { color:#7d8599; } .string { color:#1b8c3c; } .num { color:#c7640a; } .func { color:#356ae6; }
+    @media (max-width:768px) { body { padding:12px; } table { font-size:12px; min-width:750px; } thead th,tbody td { padding:8px 10px; } td:nth-child(3) { font-size:11px; min-width:220px; max-width:350px; } }
+  </style>
+</head>
+<body>
+  <h1>C++ 知识速查表</h1>
+  <p class="subtitle">涵盖基础语法、面向对象、STL、现代C++特性、常见Bug与编程建议 · 共 140+ 条目</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>序号</th><th>知识点</th><th>代码示例 / 说明</th><th>版本</th></tr></thead>
+    <tbody>
+
+<tr class="section-row"><td colspan="4">一、基础语法（与C的差异）</td></tr>
+
+<tr><td>1</td><td>Hello World</td><td><span class="keyword">#include</span> <span class="string">&lt;iostream&gt;</span>
+<span class="keyword">int</span> <span class="func">main</span>() {
+  std::cout &lt;&lt; <span class="string">"Hello, World!"</span> &lt;&lt; std::endl;
+  <span class="keyword">return</span> <span class="num">0</span>;
+}</td><td>C++98</td></tr>
+
+<tr><td>2</td><td>输入输出流</td><td><span class="keyword">int</span> x; std::string s;
+std::cin &gt;&gt; x;                          <span class="comment">// 输入</span>
+std::cin &gt;&gt; s;                          <span class="comment">// 输入字符串(遇空白停止)</span>
+std::getline(std::cin, s);               <span class="comment">// 读整行</span>
+std::cout &lt;&lt; <span class="string">"x="</span> &lt;&lt; x &lt;&lt; <span class="string">"\n"</span>;     <span class="comment">// 输出</span>
+std::cerr &lt;&lt; <span class="string">"error\n"</span>;                <span class="comment">// 错误输出</span></td><td>C++98</td></tr>
+
+<tr><td>3</td><td>bool 类型</td><td><span class="keyword">bool</span> flag = <span class="keyword">true</span>;
+<span class="keyword">if</span> (flag) { std::cout &lt;&lt; <span class="string">"true"</span>; }
+<span class="comment">// C++ 内置 bool, 不是 _Bool + 头文件</span></td><td>C++98</td></tr>
+
+<tr><td>4</td><td>引用类型</td><td><span class="keyword">int</span> a = <span class="num">10</span>;
+<span class="keyword">int</span>&amp; ref = a;          <span class="comment">// 引用(别名), 必须初始化</span>
+ref = <span class="num">20</span>;                <span class="comment">// 修改 ref 即修改 a</span>
+<span class="comment">// 引用不是指针, 没有空引用, 不能重新绑定</span></td><td>C++98</td></tr>
+
+<tr><td>5</td><td>函数重载</td><td><span class="keyword">int</span> <span class="func">add</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) { <span class="keyword">return</span> a+b; }
+<span class="keyword">double</span> <span class="func">add</span>(<span class="keyword">double</span> a, <span class="keyword">double</span> b) { <span class="keyword">return</span> a+b; }
+<span class="comment">// 同名函数, 参数类型/个数不同, 编译时决议</span></td><td>C++98</td></tr>
+
+<tr><td>6</td><td>默认参数</td><td><span class="keyword">void</span> <span class="func">greet</span>(std::string name = <span class="string">"World"</span>) {
+  std::cout &lt;&lt; <span class="string">"Hello "</span> &lt;&lt; name;
+}
+<span class="comment">// 默认参数必须从右向左连续</span></td><td>C++98</td></tr>
+
+<tr><td>7</td><td>命名空间</td><td><span class="keyword">namespace</span> math {
+  <span class="keyword">int</span> <span class="func">add</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) { <span class="keyword">return</span> a+b; }
+}
+<span class="keyword">int</span> x = math::add(<span class="num">1</span>, <span class="num">2</span>);
+<span class="keyword">using</span> <span class="keyword">namespace</span> std;  <span class="comment">// 谨慎在头文件中使用</span></td><td>C++98</td></tr>
+
+<tr><td>8</td><td>nullptr</td><td><span class="keyword">int</span>* p = <span class="keyword">nullptr</span>;   <span class="comment">// C++11 空指针字面量</span>
+<span class="comment">// 类型安全, 不会隐式转为 int (区别于 NULL/0)</span></td><td>C++11</td></tr>
+
+<tr><td>9</td><td>auto 类型推导</td><td><span class="keyword">auto</span> x = <span class="num">42</span>;           <span class="comment">// int</span>
+<span class="keyword">auto</span> y = <span class="num">3.14</span>;         <span class="comment">// double</span>
+<span class="keyword">auto</span> it = vec.begin();  <span class="comment">// 迭代器类型</span>
+<span class="comment">// auto 会丢弃 const/引用, auto&amp; 保留引用</span></td><td>C++11</td></tr>
+
+<tr><td>10</td><td>decltype</td><td><span class="keyword">int</span> a = <span class="num">10</span>;
+<span class="keyword">decltype</span>(a) b = <span class="num">20</span>;  <span class="comment">// b 的类型是 int</span>
+<span class="keyword">decltype</span>((a)) c = a;  <span class="comment">// c 是 int&amp; (引用)</span>
+<span class="comment">// 用于推导表达式的类型</span></td><td>C++11</td></tr>
+
+<tr><td>11</td><td>range-for 循环</td><td>std::vector&lt;<span class="keyword">int</span>&gt; v = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>};
+<span class="keyword">for</span> (<span class="keyword">int</span> x : v) { std::cout &lt;&lt; x; }
+<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; x : v) { x *= <span class="num">2</span>; }  <span class="comment">// 修改元素</span>
+<span class="keyword">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; x : v) { }      <span class="comment">// 只读(避免拷贝)</span></td><td>C++11</td></tr>
+
+<tr><td>12</td><td>初始化列表</td><td><span class="keyword">int</span> a{<span class="num">5</span>};                      <span class="comment">// 统一初始化</span>
+std::vector&lt;<span class="keyword">int</span>&gt; v{<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>};
+<span class="comment">// 禁止窄化转换: int x{3.14} 编译错误</span></td><td>C++11</td></tr>
+
+<tr><td>13</td><td>强类型枚举</td><td><span class="keyword">enum class</span> Color { Red, Green, Blue };
+Color c = Color::Red;
+<span class="comment">// 作用域限定, 不能隐式转 int, 可指定底层类型</span>
+<span class="keyword">enum class</span> Flag : <span class="keyword">uint8_t</span> { A=<span class="num">1</span>, B=<span class="num">2</span> };</td><td>C++11</td></tr>
+
+<tr><td>14</td><td>static_assert</td><td><span class="keyword">static_assert</span>(<span class="keyword">sizeof</span>(<span class="keyword">int</span>) &gt;= <span class="num">4</span>, <span class="string">"int 至少4字节"</span>);
+<span class="comment">// 编译时断言, 不生成运行时代码</span></td><td>C++11</td></tr>
+
+<tr><td>15</td><td>constexpr</td><td><span class="keyword">constexpr</span> <span class="keyword">int</span> <span class="func">square</span>(<span class="keyword">int</span> x) { <span class="keyword">return</span> x*x; }
+<span class="keyword">constexpr</span> <span class="keyword">int</span> val = square(<span class="num">5</span>); <span class="comment">// 编译时计算</span>
+<span class="comment">// C++14 放宽限制, C++17 可用于 lambda</span></td><td>C++11</td></tr>
+
+<tr class="section-row"><td colspan="4">二、面向对象编程</td></tr>
+
+<tr><td>16</td><td>类定义</td><td><span class="keyword">class</span> <span class="func">Dog</span> {
+<span class="keyword">private</span>:
+  std::string name;
+  <span class="keyword">int</span> age;
+<span class="keyword">public</span>:
+  <span class="func">Dog</span>(std::string n, <span class="keyword">int</span> a) : name(n), age(a) {}
+  <span class="keyword">void</span> <span class="func">bark</span>() { std::cout &lt;&lt; name &lt;&lt; <span class="string">": 汪!\n"</span>; }
+};</td><td>C++98</td></tr>
+
+<tr><td>17</td><td>访问控制</td><td><span class="comment">// private: 类内部可访问</span>
+<span class="comment">// protected: 类内部和派生类可访问</span>
+<span class="comment">// public: 任意位置可访问</span>
+<span class="comment">// class 默认 private, struct 默认 public</span></td><td>C++98</td></tr>
+
+<tr><td>18</td><td>构造函数</td><td><span class="keyword">class</span> <span class="func">Point</span> {
+<span class="keyword">public</span>:
+  <span class="func">Point</span>() : x(<span class="num">0</span>), y(<span class="num">0</span>) {}                   <span class="comment">// 默认</span>
+  <span class="func">Point</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) : x(a), y(b) {}        <span class="comment">// 带参</span>
+  <span class="func">Point</span>(<span class="keyword">const</span> Point&amp; p) : x(p.x), y(p.y) {} <span class="comment">// 拷贝</span>
+  <span class="func">Point</span>(Point&amp;&amp; p) : x(p.x), y(p.y) {}        <span class="comment">// 移动(C++11)</span>
+<span class="keyword">private</span>:
+  <span class="keyword">int</span> x, y;
+};</td><td>C++98/C++11</td></tr>
+
+<tr><td>19</td><td>初始化列表</td><td><span class="func">Point</span>(<span class="keyword">int</span> a, <span class="keyword">int</span> b) : x(a), y(b) {}
+<span class="comment">// 效率高于在函数体内赋值 (直接构造)</span>
+<span class="comment">// const 成员和引用成员必须用初始化列表</span></td><td>C++98</td></tr>
+
+<tr><td>20</td><td>析构函数</td><td><span class="keyword">class</span> <span class="func">Buffer</span> {
+  <span class="keyword">char</span>* data;
+<span class="keyword">public</span>:
+  <span class="func">Buffer</span>(<span class="keyword">size_t</span> n) : data(<span class="keyword">new</span> <span class="keyword">char</span>[n]) {}
+  ~<span class="func">Buffer</span>() { <span class="keyword">delete</span>[] data; }
+};
+<span class="comment">// 基类析构函数应为 virtual</span></td><td>C++98</td></tr>
+
+<tr><td>21</td><td>继承</td><td><span class="keyword">class</span> <span class="func">Animal</span> {
+<span class="keyword">public</span>:
+  <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">speak</span>() { std::cout &lt;&lt; <span class="string">"...\n"</span>; }
+  <span class="keyword">virtual</span> ~<span class="func">Animal</span>() = <span class="keyword">default</span>;
+};
+<span class="keyword">class</span> <span class="func">Cat</span> : <span class="keyword">public</span> Animal {
+<span class="keyword">public</span>:
+  <span class="keyword">void</span> <span class="func">speak</span>() <span class="keyword">override</span> { std::cout &lt;&lt; <span class="string">"喵\n"</span>; }
+};</td><td>C++98/C++11</td></tr>
+
+<tr><td>22</td><td>多态与虚函数</td><td>Animal* a = <span class="keyword">new</span> <span class="func">Cat</span>();
+a-&gt;speak();  <span class="comment">// 输出 "喵" (动态绑定)</span>
+<span class="keyword">delete</span> a;
+<span class="comment">// 通过基类指针/引用调用派生类方法</span></td><td>C++98</td></tr>
+
+<tr><td>23</td><td>override / final</td><td><span class="keyword">void</span> <span class="func">speak</span>() <span class="keyword">override</span>;  <span class="comment">// 显式覆盖, 防止签名错误</span>
+<span class="keyword">void</span> <span class="func">foo</span>() <span class="keyword">final</span>;       <span class="comment">// 禁止子类再覆盖</span>
+<span class="keyword">class</span> FinalClass <span class="keyword">final</span> {}; <span class="comment">// 禁止继承</span></td><td>C++11</td></tr>
+
+<tr><td>24</td><td>纯虚函数与抽象类</td><td><span class="keyword">class</span> <span class="func">Shape</span> {
+<span class="keyword">public</span>:
+  <span class="keyword">virtual</span> <span class="keyword">double</span> <span class="func">area</span>() <span class="keyword">const</span> = <span class="num">0</span>; <span class="comment">// 纯虚函数</span>
+};
+<span class="comment">// 含纯虚函数的类不能实例化</span></td><td>C++98</td></tr>
+
+<tr><td>25</td><td>运算符重载</td><td><span class="keyword">struct</span> Vec2 {
+  <span class="keyword">double</span> x, y;
+  Vec2 <span class="keyword">operator</span>+(<span class="keyword">const</span> Vec2&amp; v) <span class="keyword">const</span> {
+    <span class="keyword">return</span> {x+v.x, y+v.y};
+  }
+  <span class="keyword">friend</span> std::ostream&amp; <span class="keyword">operator</span>&lt;&lt;(std::ostream&amp; os, <span class="keyword">const</span> Vec2&amp; v);
+};</td><td>C++98</td></tr>
+
+<tr><td>26</td><td>友元</td><td><span class="keyword">class</span> <span class="func">Secret</span> {
+  <span class="keyword">friend</span> <span class="keyword">void</span> <span class="func">reveal</span>(<span class="keyword">const</span> Secret&amp;);
+  <span class="keyword">friend</span> <span class="keyword">class</span> Inspector;
+  <span class="keyword">int</span> data = <span class="num">42</span>;
+};
+<span class="comment">// 友元可访问 private 成员, 破坏封装, 谨慎使用</span></td><td>C++98</td></tr>
+
+<tr><td>27</td><td>Rule of Three / Five</td><td><span class="comment">// Rule of Three (C++98): 如果需要自定义</span>
+<span class="comment">// 析构/拷贝构造/拷贝赋值之一, 通常三者都需要</span>
+<span class="comment">// Rule of Five (C++11): 加上移动构造和移动赋值</span>
+<span class="comment">// Rule of Zero: 尽量让编译器生成, 用智能指针管理资源</span></td><td>C++98/C++11</td></tr>
+
+<tr><td>28</td><td>= default / = delete</td><td><span class="keyword">class</span> <span class="func">NonCopy</span> {
+<span class="keyword">public</span>:
+  NonCopy() = <span class="keyword">default</span>;
+  NonCopy(<span class="keyword">const</span> NonCopy&amp;) = <span class="keyword">delete</span>;
+  NonCopy&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> NonCopy&amp;) = <span class="keyword">delete</span>;
+};</td><td>C++11</td></tr>
+
+<tr class="section-row"><td colspan="4">三、内存管理</td></tr>
+
+<tr><td>29</td><td>new / delete</td><td><span class="keyword">int</span>* p = <span class="keyword">new</span> <span class="keyword">int</span>(<span class="num">42</span>);
+<span class="keyword">int</span>* arr = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="num">100</span>];
+<span class="keyword">delete</span> p;
+<span class="keyword">delete</span>[] arr;
+<span class="comment">// new 失败抛 std::bad_alloc, new(nothrow) 返回 nullptr</span></td><td>C++98</td></tr>
+
+<tr><td>30</td><td>智能指针概述</td><td><span class="comment">// unique_ptr: 独占所有权, 不可拷贝, 可移动</span>
+<span class="comment">// shared_ptr: 共享所有权, 引用计数</span>
+<span class="comment">// weak_ptr: 不增加计数, 解决循环引用</span></td><td>C++11</td></tr>
+
+<tr><td>31</td><td>unique_ptr</td><td><span class="keyword">#include</span> <span class="string">&lt;memory&gt;</span>
+<span class="keyword">auto</span> p = std::make_unique&lt;<span class="keyword">int</span>&gt;(<span class="num">42</span>);
+std::unique_ptr&lt;<span class="keyword">int</span>&gt; q = std::move(p); <span class="comment">// 转移所有权</span>
+<span class="comment">// p 变为空, q 拥有资源; 离开作用域自动 delete</span></td><td>C++14</td></tr>
+
+<tr><td>32</td><td>shared_ptr</td><td><span class="keyword">auto</span> sp1 = std::make_shared&lt;<span class="keyword">int</span>&gt;(<span class="num">10</span>);
+<span class="keyword">auto</span> sp2 = sp1;                      <span class="comment">// 引用计数+1</span>
+std::cout &lt;&lt; sp1.use_count();        <span class="comment">// 2</span>
+<span class="comment">// 最后一个 shared_ptr 销毁时释放资源</span></td><td>C++11</td></tr>
+
+<tr><td>33</td><td>weak_ptr</td><td>std::weak_ptr&lt;<span class="keyword">int</span>&gt; wp = sp1;
+<span class="keyword">if</span> (<span class="keyword">auto</span> sp = wp.lock()) {
+  <span class="comment">// sp 是 shared_ptr, 安全使用</span>
+}
+<span class="comment">// 解决 shared_ptr 循环引用导致的泄漏</span></td><td>C++11</td></tr>
+
+<tr><td>34</td><td>RAII 模式</td><td><span class="keyword">class</span> <span class="func">FileGuard</span> {
+  <span class="keyword">FILE</span>* fp;
+<span class="keyword">public</span>:
+  <span class="func">FileGuard</span>(<span class="keyword">const</span> <span class="keyword">char</span>* path) : fp(fopen(path,<span class="string">"r"</span>)) {}
+  ~<span class="func">FileGuard</span>() { <span class="keyword">if</span> (fp) fclose(fp); }
+};
+<span class="comment">// 资源获取即初始化, 离开作用域自动释放</span></td><td>C++98</td></tr>
+
+<tr class="section-row"><td colspan="4">四、模板</td></tr>
+
+<tr><td>35</td><td>函数模板</td><td><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+T <span class="func">max</span>(T a, T b) { <span class="keyword">return</span> a &gt; b ? a : b; }
+<span class="keyword">auto</span> r = max(<span class="num">3</span>, <span class="num">5</span>);        <span class="comment">// T = int</span>
+<span class="keyword">auto</span> r2 = max&lt;<span class="keyword">double</span>&gt;(<span class="num">3</span>, <span class="num">5.5</span>); <span class="comment">// 显式指定</span></td><td>C++98</td></tr>
+
+<tr><td>36</td><td>类模板</td><td><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">class</span> <span class="func">Stack</span> {
+  std::vector&lt;T&gt; data;
+<span class="keyword">public</span>:
+  <span class="keyword">void</span> <span class="func">push</span>(<span class="keyword">const</span> T&amp; v) { data.push_back(v); }
+  T <span class="func">pop</span>() { <span class="keyword">auto</span> v = data.back(); data.pop_back(); <span class="keyword">return</span> v; }
+};
+Stack&lt;<span class="keyword">int</span>&gt; si;</td><td>C++98</td></tr>
+
+<tr><td>37</td><td>模板特化</td><td><span class="keyword">template</span>&lt;&gt;
+<span class="keyword">class</span> <span class="func">Stack</span>&lt;<span class="keyword">bool</span>&gt; {  <span class="comment">// 全特化</span>
+  <span class="comment">// 用位图优化的 bool 栈</span>
+};
+<span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">class</span> <span class="func">Stack</span>&lt;T*&gt; { }; <span class="comment">// 偏特化 (指针版本)</span></td><td>C++98</td></tr>
+
+<tr><td>38</td><td>变参模板</td><td><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;
+<span class="keyword">void</span> <span class="func">print</span>(Args... args) {
+  (std::cout &lt;&lt; ... &lt;&lt; args);  <span class="comment">// C++17 折叠表达式</span>
+}</td><td>C++11/C++17</td></tr>
+
+<tr><td>39</td><td>模板元编程</td><td><span class="keyword">template</span>&lt;<span class="keyword">int</span> N&gt;
+<span class="keyword">struct</span> Factorial {
+  <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">int</span> value = N * Factorial&lt;N-<span class="num">1</span>&gt;::value;
+};
+<span class="keyword">template</span>&lt;&gt; <span class="keyword">struct</span> Factorial&lt;<span class="num">0</span>&gt; { <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">int</span> value = <span class="num">1</span>; };
+<span class="comment">// 编译时计算, Factorial&lt;5&gt;::value = 120</span></td><td>C++11</td></tr>
+
+<tr><td>40</td><td>concepts (概念)</td><td><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">concept</span> Addable = <span class="keyword">requires</span>(T a, T b) { a + b; };
+<span class="keyword">template</span>&lt;Addable T&gt;
+T <span class="func">add</span>(T a, T b) { <span class="keyword">return</span> a + b; }
+<span class="comment">// C++20: 约束模板参数, 更清晰的错误信息</span></td><td>C++20</td></tr>
+
+<tr class="section-row"><td colspan="4">五、STL 标准库</td></tr>
+
+<tr><td>41</td><td>std::string</td><td>std::string s = <span class="string">"hello"</span>;
+s += <span class="string">" world"</span>;
+<span class="keyword">size_t</span> len = s.size();
+<span class="keyword">if</span> (s.find(<span class="string">"lo"</span>) != std::string::npos) { }
+std::string sub = s.substr(<span class="num">0</span>, <span class="num">5</span>);
+<span class="comment">// 比 C 字符串安全得多, 自动管理内存</span></td><td>C++98</td></tr>
+
+<tr><td>42</td><td>std::vector</td><td>std::vector&lt;<span class="keyword">int</span>&gt; v = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>};
+v.push_back(<span class="num">4</span>);
+v.pop_back();
+<span class="keyword">for</span> (<span class="keyword">int</span> x : v) { std::cout &lt;&lt; x; }
+v.reserve(<span class="num">100</span>);   <span class="comment">// 预分配 (避免反复扩容)</span>
+<span class="comment">// 动态数组, 连续内存, 随机访问 O(1)</span></td><td>C++98</td></tr>
+
+<tr><td>43</td><td>std::list</td><td>std::list&lt;<span class="keyword">int</span>&gt; l = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>};
+l.push_front(<span class="num">0</span>);
+<span class="keyword">auto</span> it = l.begin();
+l.insert(it, <span class="num">99</span>);
+<span class="comment">// 双向链表, 插入/删除 O(1), 不支持随机访问</span></td><td>C++98</td></tr>
+
+<tr><td>44</td><td>std::map / unordered_map</td><td>std::map&lt;std::string, <span class="keyword">int</span>&gt; m;       <span class="comment">// 有序(红黑树)</span>
+m[<span class="string">"key"</span>] = <span class="num">42</span>;
+std::unordered_map&lt;std::string, <span class="keyword">int</span>&gt; um; <span class="comment">// 无序(哈希表)</span>
+<span class="comment">// map: O(log n), unordered_map: O(1) 平均</span></td><td>C++98/C++11</td></tr>
+
+<tr><td>45</td><td>std::set / unordered_set</td><td>std::set&lt;<span class="keyword">int</span>&gt; s = {<span class="num">3</span>,<span class="num">1</span>,<span class="num">2</span>};   <span class="comment">// 自动排序 {1,2,3}</span>
+s.insert(<span class="num">4</span>);
+<span class="keyword">if</span> (s.count(<span class="num">2</span>)) { }  <span class="comment">// 是否存在</span></td><td>C++98</td></tr>
+
+<tr><td>46</td><td>std::stack / queue</td><td>std::stack&lt;<span class="keyword">int</span>&gt; st;
+st.push(<span class="num">1</span>); st.pop(); <span class="keyword">int</span> t = st.top();
+
+std::queue&lt;<span class="keyword">int</span>&gt; q;
+q.push(<span class="num">1</span>); q.pop(); <span class="keyword">int</span> f = q.front();
+
+std::priority_queue&lt;<span class="keyword">int</span>&gt; pq;  <span class="comment">// 默认最大堆</span></td><td>C++98</td></tr>
+
+<tr><td>47</td><td>std::deque</td><td>std::deque&lt;<span class="keyword">int</span>&gt; dq;
+dq.push_front(<span class="num">1</span>);
+dq.push_back(<span class="num">2</span>);
+<span class="comment">// 双端队列, 两端 O(1), 支持随机访问</span></td><td>C++98</td></tr>
+
+<tr><td>48</td><td>std::pair / tuple</td><td><span class="keyword">auto</span> p = std::make_pair(<span class="string">"name"</span>, <span class="num">42</span>);
+<span class="keyword">auto</span> [key, val] = p;  <span class="comment">// C++17 结构化绑定</span>
+
+<span class="keyword">auto</span> t = std::make_tuple(<span class="num">1</span>, <span class="num">3.14</span>, <span class="string">"hi"</span>);
+<span class="keyword">double</span> d = std::get&lt;<span class="num">1</span>&gt;(t);</td><td>C++98/C++17</td></tr>
+
+<tr><td>49</td><td>std::optional</td><td>std::optional&lt;<span class="keyword">int</span>&gt; <span class="func">parse</span>(<span class="keyword">const</span> std::string&amp; s) {
+  <span class="keyword">try</span> { <span class="keyword">return</span> std::stoi(s); }
+  <span class="keyword">catch</span> (...) { <span class="keyword">return</span> std::nullopt; }
+}
+<span class="keyword">if</span> (<span class="keyword">auto</span> v = parse(<span class="string">"42"</span>)) { std::cout &lt;&lt; *v; }</td><td>C++17</td></tr>
+
+<tr><td>50</td><td>std::variant</td><td>std::variant&lt;<span class="keyword">int</span>, <span class="keyword">double</span>, std::string&gt; v;
+v = <span class="num">42</span>;
+v = <span class="string">"hello"</span>;
+<span class="comment">// 类型安全的 union, 配合 std::visit 使用</span></td><td>C++17</td></tr>
+
+<tr><td>51</td><td>std::any</td><td>std::any a = <span class="num">42</span>;
+a = std::string(<span class="string">"hello"</span>);
+<span class="keyword">try</span> {
+  <span class="keyword">auto</span>&amp; s = std::any_cast&lt;std::string&amp;&gt;(a);
+} <span class="keyword">catch</span> (<span class="keyword">const</span> std::bad_any_cast&amp;) { }
+<span class="comment">// 可存储任意类型, 但运行时检查</span></td><td>C++17</td></tr>
+
+<tr class="section-row"><td colspan="4">六、STL 算法</td></tr>
+
+<tr><td>52</td><td>排序与查找</td><td>std::vector&lt;<span class="keyword">int</span>&gt; v = {<span class="num">5</span>,<span class="num">2</span>,<span class="num">8</span>,<span class="num">1</span>};
+std::sort(v.begin(), v.end());                    <span class="comment">// 升序</span>
+std::sort(v.begin(), v.end(), std::greater&lt;&gt;());  <span class="comment">// 降序</span>
+std::binary_search(v.begin(), v.end(), <span class="num">5</span>);</td><td>C++98</td></tr>
+
+<tr><td>53</td><td>find / count</td><td><span class="keyword">auto</span> it = std::find(v.begin(), v.end(), <span class="num">3</span>);
+<span class="keyword">int</span> n = std::count(v.begin(), v.end(), <span class="num">3</span>);
+<span class="keyword">auto</span> it2 = std::find_if(v.begin(), v.end(),
+  [](<span class="keyword">int</span> x){ <span class="keyword">return</span> x &gt; <span class="num">5</span>; });</td><td>C++98/C++11</td></tr>
+
+<tr><td>54</td><td>变换与复制</td><td>std::vector&lt;<span class="keyword">int</span>&gt; result(v.size());
+std::transform(v.begin(), v.end(), result.begin(),
+  [](<span class="keyword">int</span> x) { <span class="keyword">return</span> x * <span class="num">2</span>; });
+std::copy(src.begin(), src.end(), dst.begin());</td><td>C++98</td></tr>
+
+<tr><td>55</td><td>去重</td><td>std::sort(v.begin(), v.end());
+<span class="keyword">auto</span> last = std::unique(v.begin(), v.end());
+v.erase(last, v.end());
+<span class="comment">// unique 只移动不删除, 需要 erase 配合</span></td><td>C++98</td></tr>
+
+<tr><td>56</td><td>数值算法</td><td><span class="keyword">int</span> sum = std::accumulate(v.begin(), v.end(), <span class="num">0</span>);
+<span class="keyword">auto</span> [mn, mx] = std::minmax_element(v.begin(), v.end());
+<span class="comment">// accumulate 在 &lt;numeric&gt;</span></td><td>C++98</td></tr>
+
+<tr class="section-row"><td colspan="4">七、Lambda 与函数式编程</td></tr>
+
+<tr><td>57</td><td>Lambda 表达式</td><td><span class="keyword">auto</span> add = [](<span class="keyword">int</span> a, <span class="keyword">int</span> b) { <span class="keyword">return</span> a + b; };
+<span class="comment">// [capture](params) -&gt; ret { body }</span></td><td>C++11</td></tr>
+
+<tr><td>58</td><td>Lambda 捕获</td><td><span class="keyword">int</span> x = <span class="num">10</span>;
+<span class="keyword">auto</span> f1 = [x]() { <span class="keyword">return</span> x; };        <span class="comment">// 值捕获(只读)</span>
+<span class="keyword">auto</span> f2 = [&amp;x]() { x++; };             <span class="comment">// 引用捕获</span>
+<span class="keyword">auto</span> f3 = [=]() { <span class="keyword">return</span> x; };         <span class="comment">// 全部值捕获</span>
+<span class="keyword">auto</span> f4 = [&amp;]() { x++; };              <span class="comment">// 全部引用捕获</span>
+<span class="keyword">auto</span> f5 = [=, &amp;x]() { };              <span class="comment">// 默认值, x引用</span>
+<span class="keyword">auto</span> f6 = [x = std::move(x)]() { };  <span class="comment">// C++14 初始化捕获</span></td><td>C++11/C++14</td></tr>
+
+<tr><td>59</td><td>泛型 Lambda</td><td><span class="keyword">auto</span> add = [](<span class="keyword">auto</span> a, <span class="keyword">auto</span> b) { <span class="keyword">return</span> a + b; };
+<span class="comment">// C++14: auto 参数, 等价于模板</span></td><td>C++14</td></tr>
+
+<tr><td>60</td><td>std::function</td><td><span class="keyword">#include</span> <span class="string">&lt;functional&gt;</span>
+std::function&lt;<span class="keyword">int</span>(<span class="keyword">int</span>,<span class="keyword">int</span>)&gt; fn = [](<span class="keyword">int</span> a, <span class="keyword">int</span> b) { <span class="keyword">return</span> a+b; };
+<span class="comment">// 可存储任意可调用对象 (lambda/函数/仿函数)</span></td><td>C++11</td></tr>
+
+<tr class="section-row"><td colspan="4">八、异常处理</td></tr>
+
+<tr><td>61</td><td>try-catch</td><td><span class="keyword">try</span> {
+  <span class="keyword">throw</span> std::runtime_error(<span class="string">"错误!"</span>);
+} <span class="keyword">catch</span> (<span class="keyword">const</span> std::exception&amp; e) {
+  std::cerr &lt;&lt; e.what();
+} <span class="keyword">catch</span> (...) {
+  <span class="comment">// 捕获所有异常</span>
+}</td><td>C++98</td></tr>
+
+<tr><td>62</td><td>noexcept</td><td><span class="keyword">void</span> <span class="func">safe</span>() <span class="keyword">noexcept</span> { }
+<span class="comment">// 声明不抛异常, 编译器可优化</span>
+<span class="comment">// 若 noexcept 函数抛异常, 直接 std::terminate</span></td><td>C++11</td></tr>
+
+<tr class="section-row"><td colspan="4">九、移动语义与右值引用</td></tr>
+
+<tr><td>63</td><td>左值与右值</td><td><span class="comment">// 左值: 有地址, 可取地址 &amp;x</span>
+<span class="comment">// 右值: 临时对象, 字面量, std::move(x) 的结果</span>
+<span class="keyword">int</span> x = <span class="num">10</span>;        <span class="comment">// x 是左值, 10 是右值</span>
+<span class="keyword">int</span>&amp;&amp; r = <span class="num">10</span>;    <span class="comment">// 右值引用绑定到右值</span></td><td>C++11</td></tr>
+
+<tr><td>64</td><td>std::move</td><td>std::string s1 = <span class="string">"hello"</span>;
+std::string s2 = std::move(s1);
+<span class="comment">// move 将左值转为右值引用, 不移动任何东西</span>
+<span class="comment">// s1 处于"有效但未指定"状态, 不应再使用</span></td><td>C++11</td></tr>
+
+<tr><td>65</td><td>std::forward (完美转发)</td><td><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;
+<span class="keyword">void</span> <span class="func">wrapper</span>(T&amp;&amp; arg) {
+  <span class="func">func</span>(std::forward&lt;T&gt;(arg));
+}
+<span class="comment">// 保持参数的左值/右值属性传递</span></td><td>C++11</td></tr>
+
+<tr class="section-row"><td colspan="4">十、IO 与文件操作</td></tr>
+
+<tr><td>66</td><td>文件流</td><td><span class="keyword">#include</span> <span class="string">&lt;fstream&gt;</span>
+std::ifstream in(<span class="string">"input.txt"</span>);
+std::ofstream out(<span class="string">"output.txt"</span>);
+std::string line;
+<span class="keyword">while</span> (std::getline(in, line)) {
+  out &lt;&lt; line &lt;&lt; <span class="string">"\n"</span>;
+}</td><td>C++98</td></tr>
+
+<tr><td>67</td><td>字符串流</td><td><span class="keyword">#include</span> <span class="string">&lt;sstream&gt;</span>
+std::ostringstream oss;
+oss &lt;&lt; <span class="string">"x="</span> &lt;&lt; <span class="num">42</span>;
+std::string s = oss.str();
+
+std::istringstream iss(<span class="string">"123 456"</span>);
+<span class="keyword">int</span> a, b; iss &gt;&gt; a &gt;&gt; b;</td><td>C++98</td></tr>
+
+<tr><td>68</td><td>filesystem (C++17)</td><td><span class="keyword">#include</span> <span class="string">&lt;filesystem&gt;</span>
+<span class="keyword">namespace</span> fs = std::filesystem;
+<span class="keyword">if</span> (fs::exists(<span class="string">"path"</span>)) { }
+fs::create_directory(<span class="string">"dir"</span>);
+<span class="keyword">for</span> (<span class="keyword">auto</span>&amp; p : fs::directory_iterator(<span class="string">"."</span>)) {
+  std::cout &lt;&lt; p.path() &lt;&lt; <span class="string">"\n"</span>;
+}</td><td>C++17</td></tr>
+
+<tr class="section-row"><td colspan="4">十一、多线程</td></tr>
+
+<tr><td>69</td><td>std::thread</td><td><span class="keyword">#include</span> <span class="string">&lt;thread&gt;</span>
+std::thread t([]() { std::cout &lt;&lt; <span class="string">"thread\n"</span>; });
+t.join();  <span class="comment">// 等待完成</span>
+<span class="comment">// 或 t.detach(); 分离线程(不推荐)</span></td><td>C++11</td></tr>
+
+<tr><td>70</td><td>std::mutex</td><td>std::mutex mtx;
+<span class="keyword">int</span> counter = <span class="num">0</span>;
+<span class="keyword">void</span> <span class="func">inc</span>() {
+  std::lock_guard&lt;std::mutex&gt; lock(mtx);
+  counter++;
+}
+<span class="comment">// lock_guard: RAII, 离开作用域自动解锁</span>
+<span class="comment">// unique_lock: 更灵活, 可手动 lock/unlock</span></td><td>C++11</td></tr>
+
+<tr><td>71</td><td>std::atomic</td><td><span class="keyword">#include</span> <span class="string">&lt;atomic&gt;</span>
+std::atomic&lt;<span class="keyword">int</span>&gt; counter{<span class="num">0</span>};
+counter.fetch_add(<span class="num">1</span>);  <span class="comment">// 原子递增</span>
+<span class="comment">// 无锁的线程安全操作, 比 mutex 轻量</span></td><td>C++11</td></tr>
+
+<tr><td>72</td><td>future / async</td><td><span class="keyword">auto</span> fut = std::async(std::launch::async, []() {
+  <span class="keyword">return</span> <span class="num">42</span>;
+});
+<span class="keyword">int</span> result = fut.get();  <span class="comment">// 阻塞等待结果</span></td><td>C++11</td></tr>
+
+<tr class="section-row"><td colspan="4">十二、常见Bug与陷阱</td></tr>
+
+<tr><td>73</td><td>悬垂引用</td><td><span class="keyword">const</span> std::string&amp; <span class="func">bad</span>() {
+  <span class="keyword">return</span> <span class="string">"temp"</span>;  <span class="comment">// 临时对象, 函数返回后失效</span>
+}</td><td>C++98</td></tr>
+
+<tr><td>74</td><td>切片 (Slicing)</td><td>Derived d;
+Base b = d;  <span class="comment">// 派生类部分被切掉!</span>
+<span class="comment">// 用指针或引用传递: Base* pb = &amp;d;</span></td><td>C++98</td></tr>
+
+<tr><td>75</td><td>虚函数在构造/析构中</td><td><span class="keyword">class</span> <span class="func">Base</span> {
+<span class="keyword">public</span>:
+  <span class="func">Base</span>() { init(); }  <span class="comment">// 危险! 此时派生类未构造</span>
+  <span class="keyword">virtual</span> <span class="keyword">void</span> <span class="func">init</span>() { }
+};
+<span class="comment">// 构造/析构中虚函数不表现多态</span></td><td>C++98</td></tr>
+
+<tr><td>76</td><td>迭代器失效</td><td>std::vector&lt;<span class="keyword">int</span>&gt; v = {<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>};
+<span class="keyword">for</span> (<span class="keyword">auto</span> it = v.begin(); it != v.end(); ++it) {
+  <span class="keyword">if</span> (*it == <span class="num">2</span>) v.erase(it);  <span class="comment">// it 失效!</span>
+}
+<span class="comment">// 正确: it = v.erase(it);</span></td><td>C++98</td></tr>
+
+<tr><td>77</td><td>new/delete 不匹配</td><td><span class="keyword">int</span>* p = <span class="keyword">new</span> <span class="keyword">int</span>[<span class="num">10</span>];
+<span class="keyword">delete</span> p;       <span class="comment">// BUG! 应为 delete[] p</span></td><td>C++98</td></tr>
+
+<tr><td>78</td><td>循环引用 (shared_ptr)</td><td><span class="keyword">struct</span> Node { std::shared_ptr&lt;Node&gt; next; };
+<span class="comment">// 两个 shared_ptr 互相引用 → 内存泄漏</span>
+<span class="comment">// 解决: 其中一个改用 weak_ptr</span></td><td>C++11</td></tr>
+
+<tr><td>79</td><td>未定义行为</td><td><span class="comment">// 除零、空指针解引用、越界、</span>
+<span class="comment">// 有符号溢出、修改字符串字面量、</span>
+<span class="comment">// 返回局部变量引用等</span></td><td>C++98</td></tr>
+
+<tr><td>80</td><td>宏陷阱</td><td><span class="keyword">#define</span> MAX(a,b) ((a)&gt;(b)?(a):(b))
+<span class="keyword">int</span> m = MAX(x++, y);  <span class="comment">// x 可能被递增两次</span>
+<span class="comment">// C++ 优先用 inline 函数或 constexpr</span></td><td>C++98</td></tr>
+
+<tr class="section-row"><td colspan="4">十三、编程建议与最佳实践</td></tr>
+
+<tr><td>81</td><td>优先使用 STL 容器</td><td><span class="comment">// 用 std::vector 代替 C 数组</span>
+<span class="comment">// 用 std::string 代替 char*</span>
+<span class="comment">// 用 std::array 代替固定大小数组</span></td><td>C++98</td></tr>
+
+<tr><td>82</td><td>使用智能指针</td><td><span class="comment">// 避免裸 new/delete, 用 make_unique/make_shared</span>
+<span class="comment">// 遵循 "No naked new" 原则</span></td><td>C++14</td></tr>
+
+<tr><td>83</td><td>const 正确性</td><td><span class="keyword">void</span> <span class="func">print</span>(<span class="keyword">const</span> std::string&amp; s) { }
+<span class="keyword">int</span> <span class="func">get</span>() <span class="keyword">const</span> { <span class="keyword">return</span> value; }
+<span class="comment">// 不修改的参数加 const&amp;, 不修改成员的函数加 const</span></td><td>C++98</td></tr>
+
+<tr><td>84</td><td>使用 auto 简化类型</td><td><span class="keyword">auto</span> it = m.find(key);  <span class="comment">// 比写全类型清晰</span>
+<span class="comment">// 但不要滥用, 明确类型时可手动写</span></td><td>C++11</td></tr>
+
+<tr><td>85</td><td>编译警告全开</td><td><span class="comment">// GCC/Clang: -Wall -Wextra -Wpedantic</span>
+<span class="comment">// MSVC: /W4</span>
+<span class="comment">// 把警告当错误: -Werror / /WX</span></td><td>C++98</td></tr>
+
+<tr><td>86</td><td>使用 clang-format</td><td><span class="comment">// 统一代码风格</span>
+<span class="comment">// .clang-format 配置团队共享</span></td><td>C++11</td></tr>
+
+<tr><td>87</td><td>头文件规范</td><td><span class="comment">// 使用 #pragma once 或 include guard</span>
+<span class="comment">// 避免 using namespace std 在头文件中</span>
+<span class="comment">// 尽量减少头文件间的依赖</span></td><td>C++98</td></tr>
+
+<tr class="section-row"><td colspan="4">十四、C++ 标准版本差异</td></tr>
+
+<tr><td>88</td><td>C++98 (首个标准)</td><td><span class="comment">// STL, 模板, 异常, RTTI, 命名空间, bool</span></td><td>C++98</td></tr>
+
+<tr><td>89</td><td>C++11 重大更新</td><td><span class="comment">// auto, decltype, nullptr, lambda, 智能指针,</span>
+<span class="comment">// 移动语义, constexpr, range-for, 强枚举,</span>
+<span class="comment">// thread/mutex/atomic, initializer_list,</span>
+<span class="comment">// override/final, =default/=delete, static_assert</span></td><td>C++11</td></tr>
+
+<tr><td>90</td><td>C++14</td><td><span class="comment">// 泛型 lambda, make_unique, constexpr 放宽</span>
+<span class="comment">// 二进制字面量 0b1010, 数字分隔符 1'000'000</span></td><td>C++14</td></tr>
+
+<tr><td>91</td><td>C++17</td><td><span class="comment">// 结构化绑定, if constexpr, std::optional,</span>
+<span class="comment">// std::variant, std::any, std::string_view,</span>
+<span class="comment">// filesystem, 折叠表达式, 内联变量</span></td><td>C++17</td></tr>
+
+<tr><td>92</td><td>C++20</td><td><span class="comment">// concepts, ranges, coroutines, modules,</span>
+<span class="comment">// std::format, std::span, 三路比较 &lt;=&gt;,</span>
+<span class="comment">// constexpr 大幅扩展, 日历/时区</span></td><td>C++20</td></tr>
+
+<tr><td>93</td><td>C++23</td><td><span class="comment">// std::expected, std::mdspan, std::print,</span>
+<span class="comment">// if consteval, deducing this, ranges 扩展</span></td><td>C++23</td></tr>
+
+    </tbody>
+  </table></div>
+</body>
+</html>

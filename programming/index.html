@@ -49,14 +49,14 @@
     }
 
     .layout {
-      width: min(1180px, calc(100% - 40px));
+      width: 100%;
       min-height: calc(100vh - 96px);
-      margin: 12px auto;
+      margin: 0;
       display: grid;
       grid-template-columns: 280px minmax(0, 1fr);
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, .9);
-      border-radius: 22px;
+      border-top: 1px solid rgba(255, 255, 255, .9);
+      border-bottom: 1px solid rgba(255, 255, 255, .9);
       background: var(--panel);
       box-shadow: var(--shadow);
       backdrop-filter: blur(18px);
@@ -215,7 +215,7 @@
 
     @media (max-width: 768px) {
       .layout {
-        width: min(100% - 22px, 600px);
+        width: 100%;
         grid-template-columns: 1fr;
         grid-template-rows: auto minmax(0, 1fr);
         min-height: calc(100vh - 96px);
@@ -251,10 +251,15 @@
           </li>
           <li>
             <button class="tree-button" data-toggle="cat-notes">
-              <span class="arrow">▶</span><span class="name">笔记</span><span class="count">1</span>
+              <span class="arrow">▶</span><span class="name">笔记</span><span class="count">6</span>
             </button>
             <ul id="cat-notes" hidden>
               <li><button class="tree-button" data-tool data-url="c.html" data-title="C语言知识速查表">📘 C语言</button></li>
+              <li><button class="tree-button" data-tool data-url="cpp.html" data-title="C++ 知识速查表">📙 C++</button></li>
+              <li><button class="tree-button" data-tool data-url="python.html" data-title="Python 知识速查表">🐍 Python</button></li>
+              <li><button class="tree-button" data-tool data-url="js.html" data-title="JavaScript 知识速查表">🟨 JavaScript</button></li>
+              <li><button class="tree-button" data-tool data-url="xml.html" data-title="XML 知识速查表">📋 XML</button></li>
+              <li><button class="tree-button" data-tool data-url="json.html" data-title="JSON 知识速查表">📦 JSON</button></li>
             </ul>
           </li>
           <li>
