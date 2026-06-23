@@ -273,33 +273,30 @@
           </button>
         </li>
         <li>
-          <button class="tree-button" data-page="programming" data-url="/programming/">
+          <button class="tree-button" data-page="programming" data-url="programming/index.html">
             <span class="tree-icon">◆</span>编程
           </button>
-          <ul>
-            <li>
-              <button class="tree-button" data-page="tools" data-url="/programming/tools/">
-                <span class="tree-icon">└</span>工具
-              </button>
-            </li>
-          </ul>
         </li>
         <li>
-          <button class="tree-button" data-page="outdoors" data-url="outdoors/">
+          <button class="tree-button" data-page="tools" data-url="tools/index.html">
+            <span class="tree-icon">◆</span>工具
+          </button>
+        </li>
+        <li>
+          <button class="tree-button" data-page="outdoors" data-url="outdoors/index.html">
             <span class="tree-icon">▲</span>户外
           </button>
         </li>
         <li>
-          <button class="tree-button" data-page="education" data-url="education/">
+          <button class="tree-button" data-page="education" data-url="education/index.html">
             <span class="tree-icon">■</span>教育
           </button>
         </li>
         <li>
-          <button class="tree-button" data-page="classics" data-url="/classics/">
+          <button class="tree-button" data-page="classics" data-url="classics/index.html">
             <span class="tree-icon">文</span>古文
           </button>
         </li>
-        <!-- 笑话栏目已移除 -->
       </ul>
     </nav>
 
@@ -376,7 +373,6 @@
         </div>
       </article>
 
-      <!-- 笑话页面已移除 -->
     </section>
   </main>
 
@@ -404,12 +400,11 @@
 
     const initialPage = location.hash.slice(1);
     const sectionUrls = {
-      programming: "/programming/",
-      tools: "/programming/tools/",
-      outdoors: "outdoors/",
-      education: "education/",
-      classics: "/classics/",
-      // 笑话栏目已删除
+      programming: "programming/index.html",
+      tools: "tools/index.html",
+      outdoors: "outdoors/index.html",
+      education: "education/index.html",
+      classics: "classics/index.html",
     };
 
     if (sectionUrls[initialPage]) {
