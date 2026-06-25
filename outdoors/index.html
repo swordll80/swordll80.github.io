@@ -205,12 +205,17 @@
           </li>
           <li>
             <button class="tree-button" data-toggle="cat-routes">
-              <span class="arrow">▶</span><span class="name">路线</span><span class="count">1</span>
+              <span class="arrow">▶</span><span class="name">路线</span><span class="count">2</span>
             </button>
             <ul id="cat-routes" hidden>
               <li>
+                <a class="tree-button" href="YFxGeoStudio/YFxGeoStudioHelp.html" data-tool data-url="YFxGeoStudio/YFxGeoStudioHelp.html" data-title="YFxGeoStudio 帮助文档">
+                  <span class="name">YFxGeoStudio帮助</span>
+                </a>
+              </li>
+              <li>
                 <a class="tree-button" href="YFxGeoStudio/YFxGeoStudio.html" target="_blank" rel="noopener noreferrer">
-                  <span class="name">在新窗口打开</span>
+                  <span class="name">YFxGeoStudio工具</span>
                 </a>
               </li>
             </ul>
@@ -258,6 +263,7 @@
       const toggleBtn = e.target.closest('[data-toggle]');
       const toolBtn = e.target.closest('[data-tool]');
       if (toolBtn) {
+        e.preventDefault();
         setTool(toolBtn.dataset.url, toolBtn.dataset.title, toolBtn);
         return;
       }
