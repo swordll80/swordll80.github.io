@@ -1,0 +1,2280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+	<Document id="TbuluKmlVersion2">
+		<name><![CDATA[吉安武功山]]></name>
+		<description><![CDATA[19：20到吉安西站，5分钟到客运西站，19：55-22：00到武功山游客中心，景交车半小时到登山口，大概2H到山顶，住宿第二天早上看日出，看风景，上午下山！]]></description>
+		<Style id="TrackStyle_n">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=BYohR0x5OLAr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LineStyle>
+				<color>ee0000ff</color>
+				<width>5.000000</width>
+			</LineStyle>
+		</Style>
+		<Style id="TrackStyle_h">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=BYohR0x5OLAr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LineStyle>
+				<color>ff0000ff</color>
+				<width>7.000000</width>
+			</LineStyle>
+		</Style>
+		<StyleMap id="TrackStyle">
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#TrackStyle_n</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#TrackStyle_h</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id="LineStringStyle">
+			<LineStyle>
+				<color>dd5cba55</color>
+				<width>6.000000</width>
+			</LineStyle>
+		</Style>
+		<Style id="startPointStyle">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=n%2BVE0NaFmzwndk%2BZ75NU9A%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+		</Style>
+		<Style id="endPointStyle">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=0Q3GJ5o%2FHpsr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+		</Style>
+		<Style id="MarkerStylePicture">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=vMzvc3dTBl0r0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<color>ff00ffff</color>
+			</LabelStyle>
+		</Style>
+		<Style id="MarkerStyleSound">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=poL0RfxWHTIr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<color>ff00ffff</color>
+			</LabelStyle>
+		</Style>
+		<Style id="MarkerStyleVideo">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=vMzvc3dTBl0r0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<color>ff00ffff</color>
+			</LabelStyle>
+		</Style>
+		<Style id="MarkerStyleText">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=s2An6%2B3%2BIWUr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<color>ff00ffff</color>
+			</LabelStyle>
+		</Style>
+		<ExtendedData>
+			<Data name="TrackId">
+				<value>83960892</value>
+			</Data>
+			<Data name="OriginTrackId">
+				<value>83960892</value>
+			</Data>
+			<Data name="SportTypeId">
+				<value>-1</value>
+			</Data>
+			<Data name="SportTypeName">
+				<value><![CDATA[其它]]></value>
+			</Data>
+			<Data name="OperationType">
+				<value>7</value>
+			</Data>
+			<Data name="Privacy">
+				<value>0</value>
+			</Data>
+			<Data name="TrackTypeId">
+				<value>7</value>
+			</Data>
+			<Data name="PosStartName">
+				<value><![CDATA[吉安武功山-古官道]]></value>
+			</Data>
+			<Data name="PosEndName">
+				<value><![CDATA[江西武功山国家级风景名胜区-圣旨墙]]></value>
+			</Data>
+			<Data name="Distance">
+				<value>10994.41176454311</value>
+			</Data>
+			<Data name="ElevationGain">
+				<value>862.0199999999998</value>
+			</Data>
+			<Data name="ElevationLoss">
+				<value>950.7299999999998</value>
+			</Data>
+			<Data name="SportAvgSpeed">
+				<value>0.6075713443824088</value>
+			</Data>
+			<Data name="ProductVersion">
+				<value>9.1.3</value>
+			</Data>
+			<Data name="ContextInfo">
+				<value>region:CN;lan:zh;model:android;system:android36;app:2bulu-V8.0.6</value>
+			</Data>
+			<Data name="CreaterId">
+				<value>56290342</value>
+			</Data>
+			<Data name="CreaterName">
+				<value><![CDATA[追风9]]></value>
+			</Data>
+			<Data name="CreaterIcon">
+				<value>1361647882</value>
+			</Data>
+			<Data name="OriginCreaterId">
+				<value>56290342</value>
+			</Data>
+			<Data name="OriginCreaterName">
+				<value>zs0_2696181</value>
+			</Data>
+			<Data name="OriginCreaterNickname">
+				<value><![CDATA[山归客]]></value>
+			</Data>
+			<Data name="OriginCreaterIcon">
+				<value>1361647882</value>
+			</Data>
+			<Data name="ThumbnailId">
+				<value>1608131602</value>
+			</Data>
+			<Data name="Step">
+				<value>0</value>
+			</Data>
+			<Data name="Calorie">
+				<value>0.000000</value>
+			</Data>
+			<Data name="Mileage">
+				<value>10994.411765</value>
+			</Data>
+			<Data name="Source">
+				<value>0</value>
+			</Data>
+			<Data name="FragmentId">
+				<value>0</value>
+			</Data>
+		</ExtendedData>
+		<Folder id="TbuluHisPointFolder">
+			<name><![CDATA[标注点]]></name>
+			<Placemark id="startPoint">
+				<name><![CDATA[起点]]></name>
+				<description><![CDATA[<div>经度：114.192184</div><div>纬度：27.451220</div><div>海拔：1109.070000</div><div>时间：2026-05-09 23:00:33</div>]]></description>
+				<styleUrl>#startPointStyle</styleUrl>
+				<Point>
+					<coordinates>114.192184,27.451220,1109.070000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="endPoint">
+				<name><![CDATA[终点]]></name>
+				<description><![CDATA[<div>经度：114.196370</div><div>纬度：27.455219</div><div>海拔：1023.530000</div><div>时间：2026-05-10 09:59:09</div>]]></description>
+				<styleUrl>#endPointStyle</styleUrl>
+				<Point>
+					<coordinates>114.196370,27.455219,1023.530000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=FG0FJnnYDVbotV2lp6rwBg==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=3018BFA9AC" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=FG0FJnnYDVbotV2lp6rwBg%3D%3D"/></a></div></br><div>经度：114.189569</div><div>纬度：27.452758</div><div>海拔：1272.030000</div><div>时间：2026-05-09 23:19:39</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.189569</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.452758</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1272.030000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.550000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778339979104</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131631</value>
+					</Data>
+					<Data name="FileSize">
+						<value>946233</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"946233","fileId":"1608131631","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.189569,27.452758,1272.030000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBVlTGoMBaB3DA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=9682016602" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBVlTGoMBaB3DA%3D%3D"/></a></div></br><div>经度：114.184333</div><div>纬度：27.453915</div><div>海拔：1430.410000</div><div>时间：2026-05-09 23:49:33</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.184333</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.453915</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1430.410000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.850000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778341773103</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131523</value>
+					</Data>
+					<Data name="FileSize">
+						<value>899287</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"899287","fileId":"1608131523","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.184333,27.453915,1430.410000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBWuNiSQoqnriw==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=7CE8AC88A7" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBWuNiSQoqnriw%3D%3D"/></a></div></br><div>经度：114.182345</div><div>纬度：27.456454</div><div>海拔：1598.660000</div><div>时间：2026-05-10 00:22:53</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.182345</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.456454</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1598.660000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.680000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778343773101</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131516</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1335684</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1335684","fileId":"1608131516","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.182345,27.456454,1598.660000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBUpZHlUNUv0fA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=3DFAA7AF24" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBUpZHlUNUv0fA%3D%3D"/></a></div></br><div>经度：114.180672</div><div>纬度：27.457312</div><div>海拔：1677.800000</div><div>时间：2026-05-10 00:32:37</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.180672</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.457312</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1677.800000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.650000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778344357111</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131511</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1180594</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1180594","fileId":"1608131511","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.180672,27.457312,1677.800000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBXv/ExTLO6ZCA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=44396669DA" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBXv/ExTLO6ZCA%3D%3D"/></a></div></br><div>经度：114.178130</div><div>纬度：27.457193</div><div>海拔：1767.030000</div><div>时间：2026-05-10 00:47:57</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.178130</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.457193</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1767.030000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.660000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778345277105</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131510</value>
+					</Data>
+					<Data name="FileSize">
+						<value>754409</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"754409","fileId":"1608131510","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.178130,27.457193,1767.030000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBVNDLgrwnWH5g==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=7659287A5A" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBVNDLgrwnWH5g%3D%3D"/></a></div></br><div>经度：114.178086</div><div>纬度：27.456810</div><div>海拔：1776.260000</div><div>时间：2026-05-10 00:49:29</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.178086</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.456810</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1776.260000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.700000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778345369111</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131508</value>
+					</Data>
+					<Data name="FileSize">
+						<value>492862</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"492862","fileId":"1608131508","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.178086,27.456810,1776.260000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBVGc2+K14teJQ==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=311F74035E" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBVGc2%2BK14teJQ%3D%3D"/></a></div></br><div>经度：114.176908</div><div>纬度：27.455936</div><div>海拔：1799.310000</div><div>时间：2026-05-10 00:54:47</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.176908</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.455936</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1799.310000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778345687115</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131506</value>
+					</Data>
+					<Data name="FileSize">
+						<value>703730</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"703730","fileId":"1608131506","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.176908,27.455936,1799.310000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBXgJt4UREOs0Q==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=D938F727F3" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBXgJt4UREOs0Q%3D%3D"/></a></div></br><div>经度：114.175640</div><div>纬度：27.455526</div><div>海拔：1847.980000</div><div>时间：2026-05-10 05:14:29</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.175640</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.455526</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1847.980000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.470000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778361269097</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131505</value>
+					</Data>
+					<Data name="FileSize">
+						<value>571609</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"571609","fileId":"1608131505","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.175640,27.455526,1847.980000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBWpESSiw6vqAA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=9096FE3C12" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=Z8O4Et/cvBWpESSiw6vqAA%3D%3D"/></a></div></br><div>经度：114.173665</div><div>纬度：27.461523</div><div>海拔：1663.770000</div><div>时间：2026-05-10 07:29:10</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.173665</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.461523</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1663.770000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.970000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778369350096</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131503</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2093502</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2093502","fileId":"1608131503","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.173665,27.461523,1663.770000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYIPecr5qSti/A==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=D74E37A8E1" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYIPecr5qSti/A%3D%3D"/></a></div></br><div>经度：114.174301</div><div>纬度：27.461933</div><div>海拔：1658.970000</div><div>时间：2026-05-10 07:30:14</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.174301</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.461933</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1658.970000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778369414109</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131498</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1733537</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1733537","fileId":"1608131498","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.174301,27.461933,1658.970000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYKl56UiGU/Uyw==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=5096D85D0A" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYKl56UiGU/Uyw%3D%3D"/></a></div></br><div>经度：114.175392</div><div>纬度：27.466327</div><div>海拔：1580.820000</div><div>时间：2026-05-10 07:44:14</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.175392</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.466327</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1580.820000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778370254091</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131497</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2088032</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2088032","fileId":"1608131497","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.175392,27.466327,1580.820000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYKApR9saum3yw==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=E476E1218D" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYKApR9saum3yw%3D%3D"/></a></div></br><div>经度：114.175757</div><div>纬度：27.467156</div><div>海拔：1590.410000</div><div>时间：2026-05-10 07:54:24</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.175757</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.467156</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1590.410000</value>
+					</Data>
+					<Data name="Speed">
+						<value>1.190000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778370864092</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131496</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1498836</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1498836","fileId":"1608131496","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.175757,27.467156,1590.410000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYJ9fWuKxRVEJA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=C928C12478" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYJ9fWuKxRVEJA%3D%3D"/></a></div></br><div>经度：114.175678</div><div>纬度：27.467240</div><div>海拔：1590.950000</div><div>时间：2026-05-10 07:54:34</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.175678</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.467240</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1590.950000</value>
+					</Data>
+					<Data name="Speed">
+						<value>1.210000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778370874109</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131494</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1692371</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1692371","fileId":"1608131494","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.175678,27.467240,1590.950000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYJeB9xQFBluTw==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=295B64A087" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYJeB9xQFBluTw%3D%3D"/></a></div></br><div>经度：114.174913</div><div>纬度：27.467328</div><div>海拔：1595.300000</div><div>时间：2026-05-10 07:55:34</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.174913</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.467328</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1595.300000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778370934093</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131489</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1746891</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1746891","fileId":"1608131489","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.174913,27.467328,1595.300000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLNs0w385Vqdw==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=B7B3B2A6F2" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLNs0w385Vqdw%3D%3D"/></a></div></br><div>经度：114.173317</div><div>纬度：27.468210</div><div>海拔：1600.820000</div><div>时间：2026-05-10 08:02:50</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.173317</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.468210</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1600.820000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778371370104</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131486</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1653349</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1653349","fileId":"1608131486","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.173317,27.468210,1600.820000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYJ/SDM1gBIO4g==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=A0BBAA07ED" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYJ/SDM1gBIO4g%3D%3D"/></a></div></br><div>经度：114.173308</div><div>纬度：27.468331</div><div>海拔：1600.140000</div><div>时间：2026-05-10 08:03:14</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.173308</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.468331</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1600.140000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778371394101</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131481</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1519736</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1519736","fileId":"1608131481","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.173308,27.468331,1600.140000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYJvL2A2rR0vMA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=D7A29F89BE" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYJvL2A2rR0vMA%3D%3D"/></a></div></br><div>经度：114.173158</div><div>纬度：27.468519</div><div>海拔：1602.870000</div><div>时间：2026-05-10 08:04:10</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.173158</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.468519</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1602.870000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778371450111</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131478</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1997000</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1997000","fileId":"1608131478","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.173158,27.468519,1602.870000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLl2y12gteP/g==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=78B35239B8" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLl2y12gteP/g%3D%3D"/></a></div></br><div>经度：114.172100</div><div>纬度：27.470860</div><div>海拔：1597.190000</div><div>时间：2026-05-10 08:11:28</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.172100</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.470860</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1597.190000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778371888103</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131475</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1939568</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1939568","fileId":"1608131475","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.172100,27.470860,1597.190000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYIx59FmwiO+bg==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=4F286A2D1F" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYIx59FmwiO%2Bbg%3D%3D"/></a></div></br><div>经度：114.171149</div><div>纬度：27.471906</div><div>海拔：1592.280000</div><div>时间：2026-05-10 08:20:00</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.171149</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.471906</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1592.280000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778372400122</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131470</value>
+					</Data>
+					<Data name="FileSize">
+						<value>3018908</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"3018908","fileId":"1608131470","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.171149,27.471906,1592.280000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLU176K9S9gPQ==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=E14E75033F" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLU176K9S9gPQ%3D%3D"/></a></div></br><div>经度：114.171262</div><div>纬度：27.471727</div><div>海拔：1589.740000</div><div>时间：2026-05-10 08:20:28</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.171262</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.471727</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1589.740000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778372428108</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131461</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1805158</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1805158","fileId":"1608131461","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.171262,27.471727,1589.740000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYIVQZuYW21pRA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=07A3EEFC88" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYIVQZuYW21pRA%3D%3D"/></a></div></br><div>经度：114.172719</div><div>纬度：27.468908</div><div>海拔：1600.200000</div><div>时间：2026-05-10 08:25:34</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.172719</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.468908</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1600.200000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.970000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778372734085</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131458</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2012081</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2012081","fileId":"1608131458","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.172719,27.468908,1600.200000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLQAl9V+ZUtEA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=1096CD75B5" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLQAl9V%2BZUtEA%3D%3D"/></a></div></br><div>经度：114.173444</div><div>纬度：27.467971</div><div>海拔：1601.750000</div><div>时间：2026-05-10 08:27:36</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.173444</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.467971</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1601.750000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778372856107</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131454</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2487362</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2487362","fileId":"1608131454","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.173444,27.467971,1601.750000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLBkpCUIVxqdg==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=B0DF271BFA" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLBkpCUIVxqdg%3D%3D"/></a></div></br><div>经度：114.177614</div><div>纬度：27.465676</div><div>海拔：1561.170000</div><div>时间：2026-05-10 08:37:48</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.177614</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.465676</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1561.170000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.510000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778373468088</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131447</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1936172</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1936172","fileId":"1608131447","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.177614,27.465676,1561.170000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLmDQnWTRTIsA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=A113E62262" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLmDQnWTRTIsA%3D%3D"/></a></div></br><div>经度：114.179862</div><div>纬度：27.464691</div><div>海拔：1528.600000</div><div>时间：2026-05-10 08:45:08</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.179862</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.464691</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1528.600000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778373908092</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131442</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2628758</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2628758","fileId":"1608131442","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.179862,27.464691,1528.600000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLbA6RFZen5+w==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=732D945936" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=lIhx4LkUIYLbA6RFZen5%2Bw%3D%3D"/></a></div></br><div>经度：114.181179</div><div>纬度：27.464153</div><div>海拔：1513.400000</div><div>时间：2026-05-10 08:48:10</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.181179</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.464153</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1513.400000</value>
+					</Data>
+					<Data name="Speed">
+						<value>1.180000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778374090110</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131433</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1661427</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1661427","fileId":"1608131433","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.181179,27.464153,1513.400000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC76rJ0/qIOc3Qw==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=C8CD4DC6F5" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC76rJ0/qIOc3Qw%3D%3D"/></a></div></br><div>经度：114.182201</div><div>纬度：27.463459</div><div>海拔：1493.690000</div><div>时间：2026-05-10 08:50:16</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.182201</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.463459</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1493.690000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.330000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778374216086</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131373</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2155134</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2155134","fileId":"1608131373","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.182201,27.463459,1493.690000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC75PzfGBy4/+Dw==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=1A53C3DEFA" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC75PzfGBy4/%2BDw%3D%3D"/></a></div></br><div>经度：114.184840</div><div>纬度：27.464494</div><div>海拔：1502.960000</div><div>时间：2026-05-10 08:58:00</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.184840</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.464494</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1502.960000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778374680183</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131370</value>
+					</Data>
+					<Data name="FileSize">
+						<value>3337374</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"3337374","fileId":"1608131370","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.184840,27.464494,1502.960000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC75aEdfVmHLzSQ==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=1DC1F5E308" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC75aEdfVmHLzSQ%3D%3D"/></a></div></br><div>经度：114.188393</div><div>纬度：27.464085</div><div>海拔：1425.990000</div><div>时间：2026-05-10 09:10:08</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.188393</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.464085</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1425.990000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.910000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778375408084</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131365</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1728691</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1728691","fileId":"1608131365","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.188393,27.464085,1425.990000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC75f3ZVo1vurrA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=93E37FCD9B" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC75f3ZVo1vurrA%3D%3D"/></a></div></br><div>经度：114.188839</div><div>纬度：27.464254</div><div>海拔：1406.750000</div><div>时间：2026-05-10 09:11:16</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.188839</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.464254</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1406.750000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778375476078</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131361</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2237466</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2237466","fileId":"1608131361","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.188839,27.464254,1406.750000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC76sV+Q9xeOymg==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=44E3260DD3" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC76sV%2BQ9xeOymg%3D%3D"/></a></div></br><div>经度：114.190849</div><div>纬度：27.462224</div><div>海拔：1216.730000</div><div>时间：2026-05-10 09:22:48</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.190849</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.462224</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1216.730000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.490000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778376168091</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131353</value>
+					</Data>
+					<Data name="FileSize">
+						<value>3161824</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"3161824","fileId":"1608131353","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.190849,27.462224,1216.730000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC75r4SuAdGWeKA==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=63D9AB15FD" target="_blank"><embed width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC74Q8J6XPM4dVA%3D%3D"/></a></div></br><div>经度：114.190849</div><div>纬度：27.462224</div><div>海拔：1216.730000</div><div>时间：2026-05-10 09:22:48</div>]]></description>
+				<styleUrl>MarkerStyleVideo</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.190849</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.462224</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1216.730000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.490000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778376168091</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131349</value>
+					</Data>
+					<Data name="FileSize">
+						<value>6028758</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"6028758","fileId":"1608131349","fileType":"2"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>2</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.190849,27.462224,1216.730000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC74RtJiOGP/p6A==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=635B21A631" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC74RtJiOGP/p6A%3D%3D"/></a></div></br><div>经度：114.191811</div><div>纬度：27.461004</div><div>海拔：1193.390000</div><div>时间：2026-05-10 09:29:12</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.191811</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.461004</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1193.390000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778376552086</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131335</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2717629</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2717629","fileId":"1608131335","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.191811,27.461004,1193.390000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC758cu4JWFcaJg==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=BCF37EA1F5" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=bKjw7b5xC758cu4JWFcaJg%3D%3D"/></a></div></br><div>经度：114.193095</div><div>纬度：27.459981</div><div>海拔：1105.820000</div><div>时间：2026-05-10 09:34:32</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.193095</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.459981</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1105.820000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778376872237</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131328</value>
+					</Data>
+					<Data name="FileSize">
+						<value>3754952</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"3754952","fileId":"1608131328","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.193095,27.459981,1105.820000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7QwjgtqST5nK+wm1Q==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=0662D1C6AC" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7QwjgtqST5nK%2Bwm1Q%3D%3D"/></a></div></br><div>经度：114.193095</div><div>纬度：27.459981</div><div>海拔：1105.820000</div><div>时间：2026-05-10 09:34:32</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.193095</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.459981</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1105.820000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778376872237</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131222</value>
+					</Data>
+					<Data name="FileSize">
+						<value>3245318</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"3245318","fileId":"1608131222","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.193095,27.459981,1105.820000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7Qwjgtnm/dB1aT9SQ==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=1698289CE8" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7Qwjgtnm/dB1aT9SQ%3D%3D"/></a></div></br><div>经度：114.193095</div><div>纬度：27.459981</div><div>海拔：1105.820000</div><div>时间：2026-05-10 09:34:32</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.193095</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.459981</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1105.820000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778376872237</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131214</value>
+					</Data>
+					<Data name="FileSize">
+						<value>3299140</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"3299140","fileId":"1608131214","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.193095,27.459981,1105.820000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7QwjgtAMg1W6qckLg==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=F6ADBC8267" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7QwjgtAMg1W6qckLg%3D%3D"/></a></div></br><div>经度：114.197177</div><div>纬度：27.455809</div><div>海拔：1016.980000</div><div>时间：2026-05-10 09:49:50</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.197177</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.455809</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1016.980000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.850000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778377790083</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131209</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1785728</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1785728","fileId":"1608131209","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.197177,27.455809,1016.980000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7Qwjgt9GwlFHjsFDg==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=E063082BAA" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7Qwjgt9GwlFHjsFDg%3D%3D"/></a></div></br><div>经度：114.197177</div><div>纬度：27.455809</div><div>海拔：1016.980000</div><div>时间：2026-05-10 09:49:50</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.197177</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.455809</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1016.980000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.850000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778377790083</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131206</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2719705</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2719705","fileId":"1608131206","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.197177,27.455809,1016.980000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7QwjgtyzYrTamxrhg==&sdkLevel=26.5&p_userId=10093122&deviceName=iPhone 12 Pro Max&p_appVersion=9.1.3&p_productType=0&p_terminalType=3&nonce=C60FF78CE2" target="_blank"><img width="320" style="height:360" src="https://down-files.2bulu.com/f/dn1?downParams=JuuOm7QwjgtyzYrTamxrhg%3D%3D"/></a></div></br><div>经度：114.196471</div><div>纬度：27.455333</div><div>海拔：1024.800000</div><div>时间：2026-05-10 09:58:12</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.196471</value>
+					</Data>
+					<Data name="Latitude">
+						<value>27.455333</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1024.800000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1778378292095</value>
+					</Data>
+					<Data name="FileId">
+						<value>1608131200</value>
+					</Data>
+					<Data name="FileSize">
+						<value>3199629</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"3199629","fileId":"1608131200","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.196471,27.455333,1024.800000</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder id="TbuluLineStringFolder">
+			<name><![CDATA[导航线]]></name>
+			<Placemark>
+				<name><![CDATA[轨迹片段1]]></name>
+				<styleUrl>#LineStringStyle</styleUrl>
+				<LineString>
+					<coordinates>114.192184,27.451220,1109.070000 114.192113,27.451175,1109.070000 114.192008,27.451162,1112.140000 114.191913,27.451194,1114.630000 114.191844,27.451266,1118.410000 114.191746,27.451319,1122.850000 114.191646,27.451352,1126.000000 114.191537,27.451375,1129.510000 114.191473,27.451445,1135.010000 114.191449,27.451538,1137.690000 114.191519,27.451605,1143.110000 114.191496,27.451670,1146.920000 114.191409,27.451701,1149.950000 114.191303,27.451718,1156.350000 114.191245,27.451790,1161.510000 114.191158,27.451831,1164.080000 114.191056,27.451854,1168.220000 114.190946,27.451884,1172.980000 114.190850,27.451924,1178.670000 114.190781,27.451997,1180.940000 114.190901,27.452014,1182.970000 114.191011,27.452040,1190.240000 114.191062,27.452118,1194.500000 114.191120,27.452195,1195.920000 114.191052,27.452223,1197.050000 114.190952,27.452258,1197.480000 114.190867,27.452319,1198.160000 114.190773,27.452397,1200.180000 114.190680,27.452452,1205.800000 114.190579,27.452482,1210.600000 114.190523,27.452557,1215.150000 114.190464,27.452639,1218.410000 114.190415,27.452723,1222.190000 114.190337,27.452782,1224.270000 114.190259,27.452842,1226.830000 114.190159,27.452881,1228.210000 114.190059,27.452918,1229.470000 114.189958,27.452904,1230.880000 114.189858,27.452874,1235.190000 114.189754,27.452863,1240.390000 114.189656,27.452813,1246.100000 114.189569,27.452758,1254.460000 114.189514,27.452831,1262.010000 114.189458,27.452747,1266.670000 114.189356,27.452698,1275.690000 114.189334,27.452688,1281.370000 114.189272,27.452640,1285.880000 114.189178,27.452618,1289.740000 114.189072,27.452607,1291.730000 114.188966,27.452583,1295.210000 114.188866,27.452543,1298.560000 114.188769,27.452568,1302.040000 114.188694,27.452638,1304.570000 114.188657,27.452730,1305.700000 114.188599,27.452821,1305.850000 114.188510,27.452889,1304.670000 114.188397,27.452911,1305.120000 114.188292,27.452931,1305.260000 114.188177,27.452932,1306.750000 114.188141,27.452854,1310.150000 114.188180,27.452760,1313.100000 114.188161,27.452671,1316.960000 114.188077,27.452627,1317.470000 114.187991,27.452563,1318.090000 114.187907,27.452493,1319.190000 114.187840,27.452413,1321.750000 114.187747,27.452369,1324.060000 114.187720,27.452435,1326.160000 114.187645,27.452484,1328.520000 114.187546,27.452481,1331.340000 114.187553,27.452542,1336.510000 114.187471,27.452538,1339.510000 114.187369,27.452558,1343.860000 114.187270,27.452616,1349.340000 114.187175,27.452681,1353.110000 114.187101,27.452754,1354.460000 114.187053,27.452842,1357.510000 114.186967,27.452889,1361.040000 114.186861,27.452897,1364.580000 114.186755,27.452876,1366.370000 114.186667,27.452910,1368.230000 114.186623,27.452989,1371.690000 114.186558,27.453062,1373.800000 114.186470,27.453115,1373.560000 114.186403,27.453191,1375.130000 114.186331,27.453265,1376.990000 114.186256,27.453332,1379.270000 114.186193,27.453409,1380.420000 114.186153,27.453496,1382.620000 114.186144,27.453528,1383.390000 114.186120,27.453597,1384.140000 114.186061,27.453667,1387.400000 114.185980,27.453647,1390.420000 114.185908,27.453575,1391.890000 114.185839,27.453494,1395.720000 114.185741,27.453472,1401.010000 114.185632,27.453476,1404.460000 114.185524,27.453469,1406.810000 114.185420,27.453496,1411.110000 114.185319,27.453494,1415.170000 114.185229,27.453534,1419.710000 114.185268,27.453614,1422.170000 114.185320,27.453699,1424.190000 114.185317,27.453789,1424.180000 114.185227,27.453821,1423.600000 114.185113,27.453823,1423.700000 114.184996,27.453811,1423.350000 114.184873,27.453791,1424.130000 114.184750,27.453789,1424.280000 114.184637,27.453802,1424.280000 114.184528,27.453821,1424.970000 114.184433,27.453871,1425.710000 114.184333,27.453915,1427.000000 114.184232,27.453956,1428.470000 114.184154,27.454027,1428.410000 114.184167,27.454123,1429.260000 114.184201,27.454224,1431.120000 114.184179,27.454311,1432.590000 114.184089,27.454341,1433.940000 114.183975,27.454346,1436.540000 114.183888,27.454255,1439.380000 114.183828,27.454181,1440.700000 114.183735,27.454141,1441.300000 114.183631,27.454117,1443.600000 114.183532,27.454141,1446.790000 114.183439,27.454195,1449.670000 114.183350,27.454252,1453.040000 114.183285,27.454334,1456.070000 114.183187,27.454379,1461.160000 114.183114,27.454447,1464.860000 114.183069,27.454535,1468.050000 114.182988,27.454581,1470.540000 114.182912,27.454642,1471.910000 114.182829,27.454703,1472.850000 114.182755,27.454768,1477.410000 114.182681,27.454844,1482.850000 114.182626,27.454931,1487.060000 114.182576,27.455019,1489.980000 114.182500,27.455093,1493.180000 114.182452,27.455188,1495.380000 114.182383,27.455262,1498.840000 114.182297,27.455316,1502.360000 114.182210,27.455368,1504.650000 114.182138,27.455437,1508.320000 114.182189,27.455490,1514.980000 114.182136,27.455521,1520.260000 114.182015,27.455501,1524.710000 114.181910,27.455525,1528.520000 114.181812,27.455556,1534.180000 114.181783,27.455639,1539.700000 114.181827,27.455722,1544.160000 114.181861,27.455814,1548.080000 114.181823,27.455903,1552.340000 114.181764,27.455985,1556.570000 114.181759,27.456078,1561.060000 114.181843,27.456117,1565.550000 114.181948,27.456143,1569.180000 114.182049,27.456186,1572.360000 114.182127,27.456249,1575.880000 114.182205,27.456315,1580.080000 114.182271,27.456386,1584.150000 114.182345,27.456454,1588.810000 114.182378,27.456540,1593.050000 114.182277,27.456600,1597.190000 114.182172,27.456627,1601.910000 114.182063,27.456643,1606.410000 114.181966,27.456684,1610.830000 114.181877,27.456734,1615.300000 114.181792,27.456788,1619.790000 114.181695,27.456837,1623.680000 114.181595,27.456878,1627.860000 114.181499,27.456920,1632.880000 114.181412,27.456979,1637.100000 114.181327,27.457029,1640.370000 114.181233,27.457072,1643.800000 114.181138,27.457109,1647.940000 114.181043,27.457145,1652.490000 114.180947,27.457182,1656.570000 114.180850,27.457215,1660.630000 114.180761,27.457260,1664.970000 114.180672,27.457312,1669.190000 114.180606,27.457387,1672.900000 114.180567,27.457476,1676.910000 114.180591,27.457577,1680.090000 114.180631,27.457666,1681.560000 114.180559,27.457679,1682.220000 114.180491,27.457664,1683.660000 114.180539,27.457603,1684.990000 114.180571,27.457504,1685.630000 114.180502,27.457447,1686.280000 114.180396,27.457432,1687.620000 114.180275,27.457426,1689.050000 114.180153,27.457414,1690.960000 114.180035,27.457415,1692.750000 114.179925,27.457411,1694.930000 114.179817,27.457426,1697.080000 114.179707,27.457428,1699.370000 114.179597,27.457422,1701.820000 114.179492,27.457451,1703.970000 114.179386,27.457463,1706.190000 114.179280,27.457459,1708.470000 114.179169,27.457457,1710.250000 114.179057,27.457466,1712.320000 114.178956,27.457491,1713.990000 114.178855,27.457528,1716.940000 114.178745,27.457546,1721.220000 114.178639,27.457566,1725.160000 114.178533,27.457561,1729.100000 114.178426,27.457555,1733.280000 114.178327,27.457520,1737.980000 114.178234,27.457467,1743.220000 114.178187,27.457377,1748.680000 114.178153,27.457289,1752.860000 114.178130,27.457193,1756.830000 114.178111,27.457100,1761.220000 114.178108,27.457007,1764.290000 114.178105,27.456905,1767.200000 114.178086,27.456810,1770.020000 114.178032,27.456711,1772.700000 114.177963,27.456634,1774.440000 114.177896,27.456557,1775.590000 114.177809,27.456507,1777.440000 114.177721,27.456461,1779.490000 114.177628,27.456418,1782.420000 114.177539,27.456370,1784.870000 114.177461,27.456309,1787.260000 114.177393,27.456239,1790.490000 114.177318,27.456163,1792.670000 114.177240,27.456087,1794.760000 114.177150,27.456019,1796.180000 114.177077,27.455985,1796.900000 114.176977,27.455947,1797.330000 114.176908,27.455936,1797.680000 114.176818,27.455943,1798.380000 114.176730,27.455905,1798.570000 114.176644,27.455851,1800.640000 114.176549,27.455805,1804.140000 114.176470,27.455743,1806.910000 114.176371,27.455708,1811.160000 114.176271,27.455689,1816.100000 114.176167,27.455693,1819.580000 114.176089,27.455747,1824.450000 114.176032,27.455828,1827.670000 114.175965,27.455914,1829.490000 114.175889,27.455888,1830.940000 114.175794,27.455898,1833.430000 114.175674,27.455868,1834.950000 114.175572,27.455833,1835.680000 114.175468,27.455820,1835.680000 114.175367,27.455801,1834.360000 114.175259,27.455793,1833.840000 114.175210,27.455708,1833.650000 114.175107,27.455717,1836.000000 114.175070,27.455793,1837.450000 114.174988,27.455837,1835.780000 114.174988,27.455837,1835.780000 114.175661,27.455807,1839.960000 </coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name><![CDATA[轨迹片段2]]></name>
+				<styleUrl>#LineStringStyle</styleUrl>
+				<LineString>
+					<coordinates>114.175736,27.455879,1836.350000 114.175848,27.455870,1836.350000 114.175855,27.455787,1836.550000 114.175796,27.455700,1837.830000 114.175716,27.455610,1840.160000 114.175640,27.455526,1841.860000 114.175569,27.455448,1844.490000 114.175519,27.455365,1847.070000 114.175444,27.455291,1849.200000 114.175369,27.455210,1852.730000 114.175300,27.455136,1855.740000 114.175243,27.455057,1859.430000 114.175201,27.454973,1863.270000 114.175242,27.454887,1865.110000 114.175309,27.454806,1867.560000 114.175273,27.454734,1868.740000 114.175214,27.454647,1869.090000 114.175167,27.454579,1869.190000 114.175117,27.454503,1869.690000 114.175061,27.454426,1870.880000 114.174997,27.454341,1872.080000 114.174922,27.454372,1872.800000 114.174836,27.454432,1875.070000 114.174733,27.454464,1878.150000 114.174621,27.454492,1880.930000 114.174507,27.454527,1883.140000 114.174405,27.454563,1885.330000 114.174292,27.454576,1887.280000 114.174185,27.454604,1888.500000 114.174083,27.454640,1889.470000 114.173984,27.454683,1890.030000 114.173894,27.454644,1892.200000 114.173789,27.454632,1893.910000 114.173703,27.454674,1896.250000 114.173626,27.454742,1897.110000 114.173551,27.454821,1897.650000 114.173488,27.454901,1898.290000 114.173458,27.454990,1898.920000 114.173479,27.455084,1899.760000 114.173521,27.455175,1900.700000 114.173573,27.455261,1902.090000 114.173627,27.455352,1903.570000 114.173613,27.455441,1904.070000 114.173605,27.455460,1904.310000 114.173532,27.455500,1904.660000 114.173447,27.455555,1905.010000 114.173477,27.455522,1904.610000 114.173415,27.455551,1904.600000 114.173314,27.455589,1904.640000 114.173211,27.455610,1904.020000 114.173211,27.455610,1904.020000 114.173614,27.461432,1665.100000 </coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name><![CDATA[轨迹片段3]]></name>
+				<styleUrl>#LineStringStyle</styleUrl>
+				<LineString>
+					<coordinates>114.173733,27.461610,1662.770000 114.173841,27.461656,1662.770000 114.173987,27.461683,1662.310000 114.174093,27.461728,1661.980000 114.174169,27.461798,1661.530000 114.174240,27.461882,1661.350000 114.174301,27.461933,1661.100000 114.174370,27.462008,1660.180000 114.174441,27.462097,1659.860000 114.174509,27.462180,1660.080000 114.174572,27.462263,1661.520000 114.174577,27.462345,1662.480000 114.174559,27.462432,1662.520000 114.174544,27.462525,1662.080000 114.174504,27.462611,1662.100000 114.174521,27.462701,1661.940000 114.174606,27.462754,1663.050000 114.174695,27.462809,1664.340000 114.174778,27.462871,1666.250000 114.174819,27.462963,1667.370000 114.174842,27.463058,1667.890000 114.174903,27.463137,1668.310000 114.174973,27.463215,1668.730000 114.175036,27.463292,1669.120000 114.175055,27.463392,1669.280000 114.175049,27.463504,1669.510000 114.175018,27.463608,1669.050000 114.175007,27.463661,1668.300000 114.174955,27.463737,1667.930000 114.174912,27.463835,1667.090000 114.174888,27.463939,1665.750000 114.174910,27.464033,1663.760000 114.174915,27.464059,1662.220000 114.174913,27.464134,1660.790000 114.174894,27.464226,1660.270000 114.174880,27.464281,1659.860000 114.174894,27.464358,1658.820000 114.174927,27.464450,1659.480000 114.174981,27.464545,1659.310000 114.175031,27.464634,1658.580000 114.175066,27.464722,1656.740000 114.175006,27.464785,1654.890000 114.174920,27.464841,1652.330000 114.174997,27.464887,1649.470000 114.175068,27.464959,1648.760000 114.175084,27.465052,1647.010000 114.175083,27.465156,1643.760000 114.175110,27.465258,1640.060000 114.175144,27.465356,1635.520000 114.175156,27.465412,1630.680000 114.175182,27.465485,1627.290000 114.175224,27.465575,1622.740000 114.175268,27.465669,1617.830000 114.175303,27.465763,1612.310000 114.175369,27.465841,1607.340000 114.175451,27.465908,1602.270000 114.175528,27.465982,1597.200000 114.175604,27.466073,1592.740000 114.175671,27.466157,1588.540000 114.175732,27.466250,1584.880000 114.175765,27.466342,1581.630000 114.175845,27.466385,1579.590000 114.175799,27.466428,1578.820000 114.175745,27.466454,1578.850000 114.175628,27.466457,1578.750000 114.175526,27.466410,1578.060000 114.175438,27.466343,1578.580000 114.175392,27.466327,1579.170000 114.175513,27.466346,1579.880000 114.175596,27.466414,1575.770000 114.175691,27.466453,1574.980000 114.175796,27.466444,1574.830000 114.175891,27.466400,1575.160000 114.175993,27.466346,1575.080000 114.176093,27.466295,1575.490000 114.176158,27.466269,1575.710000 114.176093,27.466278,1575.850000 114.175999,27.466331,1575.820000 114.175973,27.466426,1575.380000 114.175975,27.466534,1574.760000 114.175980,27.466641,1575.090000 114.175993,27.466740,1576.390000 114.175978,27.466833,1578.110000 114.175977,27.466932,1580.790000 114.175919,27.467017,1582.930000 114.175823,27.467072,1585.540000 114.175757,27.467156,1587.340000 114.175678,27.467240,1588.660000 114.175567,27.467275,1589.650000 114.175452,27.467282,1590.630000 114.175344,27.467308,1590.640000 114.175231,27.467320,1591.140000 114.175122,27.467316,1591.910000 114.175005,27.467319,1592.430000 114.174913,27.467328,1593.120000 114.174818,27.467360,1594.060000 114.174714,27.467399,1594.680000 114.174606,27.467426,1595.360000 114.174496,27.467447,1595.940000 114.174392,27.467464,1596.570000 114.174276,27.467495,1597.110000 114.174183,27.467541,1597.390000 114.174092,27.467592,1597.600000 114.173999,27.467648,1597.520000 114.173891,27.467677,1597.780000 114.173783,27.467669,1598.320000 114.173714,27.467651,1598.880000 114.173637,27.467591,1599.010000 114.173563,27.467540,1598.670000 114.173619,27.467585,1598.580000 114.173717,27.467578,1598.390000 114.173770,27.467534,1598.250000 114.173812,27.467585,1598.380000 114.173830,27.467685,1598.360000 114.173772,27.467770,1598.410000 114.173670,27.467832,1599.210000 114.173580,27.467898,1599.780000 114.173484,27.467964,1600.390000 114.173398,27.468046,1599.920000 114.173335,27.468134,1600.240000 114.173317,27.468210,1600.210000 114.173314,27.468304,1600.480000 114.173308,27.468331,1600.170000 114.173358,27.468388,1600.150000 114.173332,27.468460,1599.700000 114.173249,27.468508,1600.010000 114.173158,27.468519,1600.830000 114.173065,27.468583,1601.700000 114.173020,27.468640,1601.840000 114.172957,27.468710,1602.100000 114.172869,27.468760,1602.640000 114.172774,27.468829,1602.360000 114.172698,27.468904,1601.690000 114.172662,27.468968,1601.730000 114.172641,27.469059,1601.480000 114.172599,27.469144,1601.870000 114.172557,27.469232,1602.460000 114.172535,27.469284,1602.910000 114.172501,27.469357,1603.260000 114.172466,27.469455,1602.790000 114.172436,27.469559,1602.070000 114.172427,27.469679,1601.270000 114.172365,27.469751,1601.040000 114.172270,27.469809,1602.080000 114.172216,27.469900,1602.040000 114.172185,27.470003,1601.690000 114.172196,27.470112,1600.200000 114.172244,27.470215,1600.290000 114.172342,27.470283,1600.200000 114.172451,27.470332,1597.630000 114.172566,27.470326,1597.800000 114.172639,27.470376,1599.220000 114.172619,27.470429,1600.870000 114.172684,27.470462,1600.690000 114.172747,27.470534,1600.290000 114.172680,27.470592,1599.150000 114.172573,27.470647,1597.890000 114.172511,27.470660,1598.330000 114.172433,27.470706,1597.780000 114.172335,27.470709,1598.280000 114.172299,27.470686,1599.070000 114.172219,27.470684,1598.650000 114.172163,27.470717,1598.150000 114.172124,27.470796,1598.090000 114.172100,27.470860,1597.750000 114.172117,27.470951,1597.510000 114.172130,27.471019,1596.890000 114.172211,27.471062,1596.510000 114.172269,27.471137,1595.310000 114.172220,27.471212,1595.190000 114.172156,27.471310,1594.550000 114.172033,27.471352,1594.080000 114.171902,27.471390,1594.180000 114.171862,27.471401,1594.790000 114.171803,27.471462,1594.910000 114.171777,27.471480,1594.700000 114.171736,27.471552,1594.650000 114.171642,27.471603,1593.300000 114.171551,27.471667,1591.980000 114.171452,27.471730,1591.410000 114.171330,27.471759,1590.350000 114.171214,27.471781,1589.520000 114.171147,27.471851,1588.460000 114.171076,27.471935,1587.350000 114.170978,27.472000,1587.740000 114.170876,27.472038,1588.100000 114.170785,27.472084,1588.100000 114.170677,27.472132,1587.920000 114.170588,27.472186,1587.220000 114.170533,27.472268,1587.170000 114.170510,27.472376,1586.660000 114.170531,27.472488,1586.850000 114.170574,27.472593,1587.470000 114.170616,27.472706,1588.160000 114.170642,27.472764,1588.840000 114.170745,27.472792,1589.370000 114.170787,27.472873,1588.610000 114.170782,27.472969,1588.100000 114.170799,27.473039,1588.350000 114.170749,27.472993,1588.650000 114.170748,27.472882,1589.950000 114.170699,27.472772,1591.030000 114.170628,27.472688,1591.670000 114.170593,27.472586,1591.110000 114.170578,27.472559,1590.780000 114.170550,27.472482,1590.440000 114.170525,27.472377,1590.170000 114.170534,27.472268,1590.450000 114.170563,27.472163,1591.120000 114.170637,27.472094,1590.440000 114.170755,27.472043,1590.000000 114.170878,27.472023,1589.590000 114.171001,27.471985,1589.680000 114.171113,27.471942,1589.450000 114.171149,27.471906,1589.910000 114.171195,27.471836,1590.930000 114.171249,27.471755,1590.490000 114.171262,27.471727,1589.980000 114.171340,27.471729,1589.880000 114.171419,27.471689,1589.980000 114.171521,27.471661,1589.870000 114.171612,27.471605,1589.220000 114.171720,27.471575,1589.630000 114.171818,27.471504,1588.690000 114.171898,27.471423,1588.540000 114.171988,27.471365,1589.220000 114.172089,27.471334,1589.550000 114.172183,27.471264,1589.250000 114.172257,27.471191,1588.900000 114.172336,27.471115,1588.720000 114.172327,27.471031,1588.110000 114.172234,27.470998,1588.870000 114.172178,27.470914,1590.600000 114.172180,27.470812,1592.270000 114.172246,27.470724,1592.900000 114.172355,27.470706,1593.890000 114.172476,27.470685,1594.600000 114.172576,27.470636,1595.470000 114.172696,27.470578,1596.480000 114.172763,27.470484,1599.090000 114.172681,27.470430,1599.120000 114.172667,27.470336,1598.430000 114.172668,27.470241,1598.030000 114.172581,27.470219,1596.960000 114.172457,27.470220,1595.970000 114.172321,27.470212,1595.950000 114.172235,27.470135,1595.950000 114.172202,27.470041,1596.380000 114.172214,27.469923,1596.960000 114.172258,27.469822,1597.350000 114.172353,27.469748,1597.510000 114.172425,27.469653,1597.770000 114.172458,27.469555,1597.760000 114.172493,27.469459,1597.980000 114.172522,27.469362,1598.360000 114.172552,27.469267,1598.570000 114.172591,27.469174,1598.800000 114.172635,27.469084,1599.200000 114.172680,27.469000,1599.670000 114.172719,27.468908,1599.890000 114.172785,27.468829,1600.030000 114.172859,27.468746,1600.150000 114.172950,27.468695,1600.600000 114.173036,27.468638,1600.500000 114.173093,27.468563,1599.890000 114.173168,27.468498,1599.760000 114.173264,27.468462,1599.880000 114.173361,27.468423,1599.920000 114.173432,27.468357,1599.050000 114.173404,27.468275,1597.550000 114.173386,27.468171,1598.620000 114.173383,27.468074,1599.750000 114.173433,27.467998,1600.790000 114.173444,27.467971,1601.300000 114.173516,27.467933,1601.490000 114.173609,27.467874,1601.390000 114.173707,27.467805,1600.780000 114.173803,27.467754,1600.130000 114.173892,27.467693,1599.270000 114.173997,27.467639,1598.450000 114.174104,27.467585,1597.590000 114.174196,27.467527,1596.640000 114.174293,27.467474,1596.270000 114.174401,27.467448,1596.700000 114.174534,27.467433,1596.380000 114.174648,27.467417,1595.780000 114.174748,27.467392,1595.220000 114.174840,27.467355,1594.800000 114.174936,27.467325,1594.410000 114.175051,27.467298,1594.360000 114.175083,27.467289,1594.440000 114.175181,27.467300,1594.480000 114.175305,27.467305,1594.110000 114.175414,27.467279,1593.450000 114.175523,27.467269,1592.940000 114.175633,27.467261,1592.480000 114.175734,27.467204,1591.840000 114.175799,27.467110,1591.290000 114.175878,27.467038,1590.820000 114.175964,27.466985,1590.280000 114.176009,27.466897,1589.880000 114.176015,27.466802,1588.400000 114.176006,27.466708,1586.460000 114.175996,27.466609,1584.480000 114.175991,27.466504,1582.230000 114.175978,27.466403,1580.150000 114.176012,27.466303,1578.390000 114.176069,27.466220,1577.630000 114.176077,27.466129,1577.470000 114.176074,27.466037,1576.720000 114.176098,27.465987,1575.690000 114.176153,27.466033,1573.830000 114.176128,27.466134,1572.900000 114.176148,27.466209,1567.530000 114.176239,27.466220,1564.020000 114.176309,27.466289,1567.680000 114.176414,27.466332,1568.950000 114.176536,27.466327,1569.950000 114.176657,27.466307,1570.890000 114.176670,27.466276,1571.530000 114.176574,27.466291,1572.310000 114.176441,27.466303,1572.090000 114.176315,27.466284,1572.460000 114.176328,27.466224,1573.410000 114.176434,27.466180,1573.320000 114.176548,27.466119,1572.640000 114.176635,27.466036,1572.190000 114.176739,27.465991,1572.020000 114.176857,27.465979,1571.870000 114.176977,27.465947,1571.220000 114.177036,27.465918,1570.560000 114.177123,27.465870,1570.130000 114.177220,27.465822,1569.810000 114.177301,27.465773,1568.640000 114.177398,27.465748,1567.660000 114.177513,27.465716,1566.380000 114.177614,27.465676,1564.670000 114.177695,27.465615,1563.160000 114.177753,27.465550,1561.280000 114.177810,27.465475,1559.920000 114.177865,27.465378,1558.990000 114.177934,27.465287,1558.690000 114.178033,27.465252,1557.960000 114.178140,27.465274,1556.120000 114.178253,27.465289,1553.970000 114.178353,27.465266,1552.420000 114.178445,27.465279,1551.800000 114.178550,27.465287,1550.550000 114.178654,27.465276,1549.600000 114.178761,27.465248,1548.540000 114.178860,27.465212,1547.200000 114.178966,27.465173,1546.300000 114.179055,27.465141,1545.510000 114.179147,27.465095,1545.730000 114.179208,27.465077,1544.590000 114.179292,27.465039,1543.190000 114.179380,27.464993,1541.440000 114.179421,27.464970,1539.880000 114.179481,27.464912,1538.620000 114.179575,27.464859,1537.180000 114.179678,27.464803,1535.680000 114.179774,27.464737,1533.240000 114.179862,27.464691,1531.160000 114.179953,27.464640,1530.060000 114.180060,27.464589,1528.680000 114.180172,27.464535,1526.460000 114.180288,27.464499,1524.710000 114.180405,27.464477,1522.920000 114.180519,27.464469,1521.880000 114.180630,27.464454,1521.500000 114.180740,27.464442,1521.720000 114.180837,27.464395,1521.950000 114.180926,27.464336,1522.770000 114.180883,27.464374,1522.030000 114.180915,27.464350,1519.470000 114.180992,27.464289,1518.200000 114.181090,27.464218,1517.350000 114.181179,27.464153,1515.900000 114.181275,27.464092,1514.820000 114.181356,27.464019,1513.060000 114.181444,27.463953,1510.990000 114.181517,27.463876,1508.280000 114.181584,27.463811,1505.200000 114.181672,27.463755,1502.660000 114.181764,27.463685,1500.300000 114.181842,27.463612,1497.720000 114.181920,27.463544,1495.330000 114.182008,27.463489,1493.410000 114.182101,27.463449,1492.110000 114.182201,27.463459,1491.650000 114.182304,27.463446,1492.520000 114.182411,27.463432,1493.350000 114.182526,27.463421,1494.370000 114.182642,27.463396,1495.980000 114.182750,27.463359,1497.710000 114.182860,27.463339,1499.760000 114.182969,27.463334,1500.780000 114.183071,27.463357,1501.690000 114.183174,27.463378,1502.440000 114.183268,27.463356,1504.120000 114.183378,27.463328,1505.550000 114.183500,27.463331,1507.200000 114.183610,27.463306,1508.550000 114.183715,27.463279,1509.680000 114.183821,27.463246,1510.500000 114.183887,27.463171,1510.550000 114.183983,27.463146,1510.490000 114.184019,27.463181,1510.560000 114.184101,27.463156,1509.200000 114.184191,27.463119,1507.660000 114.184280,27.463145,1507.620000 114.184303,27.463232,1507.080000 114.184321,27.463347,1505.650000 114.184301,27.463456,1504.960000 114.184249,27.463553,1504.750000 114.184235,27.463655,1503.990000 114.184250,27.463708,1503.120000 114.184264,27.463798,1502.820000 114.184280,27.463900,1502.050000 114.184338,27.464000,1501.260000 114.184385,27.464081,1500.630000 114.184348,27.464157,1502.040000 114.184355,27.464247,1503.490000 114.184395,27.464342,1503.770000 114.184491,27.464395,1504.040000 114.184616,27.464420,1504.000000 114.184736,27.464430,1504.160000 114.184827,27.464479,1503.840000 114.184840,27.464494,1503.740000 114.184764,27.464569,1503.400000 114.184782,27.464660,1502.560000 114.184847,27.464736,1501.110000 114.184949,27.464765,1497.770000 114.185062,27.464781,1494.330000 114.185094,27.464792,1490.910000 114.185183,27.464795,1488.920000 114.185283,27.464782,1486.080000 114.185382,27.464739,1482.490000 114.185495,27.464716,1478.220000 114.185603,27.464705,1473.720000 114.185711,27.464696,1469.510000 114.185819,27.464690,1465.410000 114.185968,27.464684,1461.840000 114.186093,27.464688,1458.670000 114.186213,27.464699,1456.550000 114.186321,27.464690,1454.630000 114.186431,27.464686,1452.300000 114.186534,27.464682,1450.280000 114.186561,27.464677,1449.000000 114.186465,27.464675,1448.330000 114.186504,27.464679,1448.450000 114.186598,27.464679,1447.770000 114.186717,27.464676,1446.280000 114.186833,27.464650,1444.520000 114.186915,27.464582,1443.050000 114.186987,27.464601,1440.500000 114.187047,27.464551,1438.210000 114.187145,27.464504,1435.510000 114.187248,27.464479,1433.440000 114.187369,27.464471,1431.670000 114.187476,27.464424,1428.640000 114.187513,27.464339,1426.690000 114.187598,27.464285,1425.710000 114.187711,27.464245,1424.290000 114.187743,27.464222,1423.250000 114.187808,27.464166,1421.580000 114.187869,27.464143,1421.400000 114.187945,27.464194,1423.930000 114.188047,27.464194,1424.640000 114.188166,27.464166,1424.090000 114.188284,27.464120,1424.340000 114.188393,27.464085,1425.060000 114.188479,27.464128,1425.460000 114.188566,27.464184,1421.510000 114.188662,27.464233,1417.110000 114.188771,27.464263,1413.040000 114.188839,27.464254,1410.230000 114.188936,27.464256,1408.730000 114.189052,27.464259,1406.770000 114.189127,27.464196,1406.150000 114.189222,27.464152,1402.870000 114.189314,27.464197,1397.740000 114.189374,27.464281,1393.810000 114.189456,27.464354,1388.790000 114.189561,27.464358,1384.680000 114.189671,27.464323,1383.200000 114.189754,27.464251,1380.010000 114.189715,27.464169,1377.610000 114.189663,27.464078,1373.980000 114.189642,27.463980,1369.030000 114.189702,27.463915,1364.230000 114.189806,27.463890,1358.700000 114.189920,27.463885,1352.270000 114.190036,27.463879,1347.590000 114.190033,27.463817,1343.710000 114.189994,27.463727,1337.990000 114.190059,27.463710,1333.120000 114.190167,27.463703,1327.860000 114.190151,27.463647,1323.900000 114.190108,27.463562,1320.210000 114.190095,27.463466,1316.820000 114.190098,27.463362,1313.330000 114.190115,27.463258,1310.010000 114.190211,27.463236,1307.090000 114.190305,27.463195,1302.040000 114.190398,27.463237,1294.940000 114.190495,27.463304,1290.000000 114.190591,27.463292,1286.670000 114.190638,27.463208,1283.730000 114.190690,27.463114,1280.770000 114.190715,27.463013,1276.680000 114.190746,27.462915,1272.620000 114.190812,27.462832,1268.560000 114.190850,27.462741,1263.800000 114.190891,27.462646,1258.640000 114.190831,27.462588,1252.930000 114.190869,27.462502,1246.990000 114.190933,27.462418,1242.930000 114.190953,27.462324,1237.070000 114.190939,27.462229,1229.220000 114.190849,27.462224,1223.880000 114.190932,27.462253,1220.800000 114.190950,27.462248,1217.220000 114.191066,27.462232,1214.530000 114.191160,27.462279,1213.440000 114.191272,27.462276,1212.470000 114.191340,27.462205,1211.590000 114.191430,27.462166,1210.960000 114.191468,27.462075,1209.540000 114.191403,27.461993,1208.230000 114.191373,27.461980,1206.230000 114.191384,27.462053,1203.560000 114.191435,27.462096,1202.040000 114.191489,27.462038,1201.760000 114.191535,27.461937,1201.150000 114.191594,27.461832,1200.070000 114.191667,27.461743,1199.890000 114.191718,27.461655,1198.680000 114.191762,27.461564,1197.170000 114.191778,27.461471,1196.040000 114.191850,27.461424,1194.870000 114.191884,27.461338,1192.550000 114.191881,27.461236,1189.950000 114.191863,27.461132,1189.600000 114.191831,27.461027,1190.690000 114.191811,27.461004,1192.840000 114.191872,27.461039,1193.080000 114.191954,27.460998,1184.110000 114.192003,27.460924,1177.070000 114.192047,27.460828,1172.530000 114.192121,27.460752,1167.650000 114.192064,27.460725,1163.090000 114.192112,27.460730,1159.920000 114.192178,27.460686,1155.380000 114.192237,27.460613,1151.660000 114.192291,27.460527,1149.570000 114.192374,27.460452,1146.170000 114.192481,27.460405,1142.780000 114.192572,27.460347,1138.850000 114.192660,27.460289,1133.110000 114.192762,27.460250,1130.060000 114.192869,27.460208,1127.280000 114.192968,27.460159,1121.810000 114.193063,27.460108,1120.120000 114.193101,27.460012,1115.210000 114.193095,27.459981,1111.200000 114.193048,27.459900,1108.890000 114.193155,27.459851,1104.620000 114.193247,27.459785,1101.350000 114.193317,27.459712,1098.940000 114.193401,27.459652,1096.100000 114.193494,27.459590,1094.410000 114.193577,27.459523,1092.400000 114.193654,27.459442,1089.800000 114.193674,27.459337,1086.990000 114.193722,27.459248,1085.060000 114.193794,27.459183,1082.750000 114.193901,27.459160,1080.760000 114.194018,27.459124,1078.630000 114.194113,27.459066,1076.950000 114.194218,27.459011,1076.910000 114.194332,27.458970,1074.740000 114.194426,27.458914,1072.210000 114.194520,27.458851,1069.570000 114.194603,27.458788,1066.810000 114.194696,27.458749,1063.860000 114.194785,27.458698,1061.730000 114.194869,27.458693,1059.890000 114.194935,27.458625,1059.700000 114.195020,27.458562,1058.280000 114.195116,27.458525,1055.440000 114.195221,27.458476,1053.860000 114.195271,27.458389,1052.920000 114.195251,27.458294,1050.490000 114.195165,27.458222,1046.910000 114.195147,27.458139,1045.540000 114.195206,27.458064,1042.530000 114.195278,27.457981,1039.850000 114.195343,27.457953,1039.490000 114.195419,27.457892,1038.490000 114.195477,27.457804,1039.550000 114.195534,27.457719,1038.410000 114.195576,27.457624,1036.340000 114.195601,27.457518,1034.650000 114.195625,27.457414,1032.700000 114.195672,27.457327,1031.740000 114.195756,27.457257,1032.650000 114.195869,27.457241,1030.530000 114.195954,27.457242,1030.370000 114.196051,27.457234,1030.070000 114.196161,27.457196,1030.620000 114.196237,27.457125,1027.670000 114.196319,27.457056,1025.560000 114.196388,27.456985,1023.180000 114.196462,27.456914,1021.130000 114.196560,27.456930,1018.710000 114.196588,27.456954,1017.800000 114.196666,27.456989,1016.750000 114.196764,27.456968,1018.040000 114.196847,27.456899,1018.420000 114.196934,27.456835,1017.870000 114.196944,27.456890,1018.500000 114.196995,27.456961,1016.920000 114.196957,27.456930,1013.850000 114.196902,27.456839,1011.640000 114.196853,27.456724,1009.520000 114.196797,27.456628,1009.910000 114.196751,27.456526,1009.970000 114.196714,27.456434,1009.580000 114.196700,27.456328,1009.260000 114.196706,27.456229,1007.650000 114.196757,27.456128,1007.970000 114.196812,27.456025,1007.950000 114.196852,27.455925,1008.170000 114.196921,27.455855,1009.160000 114.196999,27.455878,1010.720000 114.197088,27.455855,1012.580000 114.197177,27.455809,1014.050000 114.197115,27.455733,1015.310000 114.197004,27.455758,1015.970000 114.196950,27.455834,1015.590000 114.196863,27.455818,1014.170000 114.196779,27.455747,1013.130000 114.196713,27.455647,1013.230000 114.196631,27.455563,1013.890000 114.196550,27.455482,1014.240000 114.196482,27.455407,1015.280000 114.196413,27.455332,1016.400000 114.196337,27.455307,1017.640000 114.196341,27.455231,1018.750000 114.196348,27.455140,1020.040000 114.196277,27.455095,1021.400000 114.196341,27.455078,1022.000000 114.196443,27.455096,1021.730000 114.196471,27.455180,1021.050000 114.196393,27.455205,1021.580000 114.196336,27.455275,1021.770000 114.196383,27.455262,1021.280000 114.196334,27.455220,1021.400000 114.196243,27.455169,1021.050000 114.196186,27.455111,1021.690000 114.196227,27.455139,1022.110000 114.196308,27.455207,1021.850000 114.196416,27.455273,1022.760000 114.196471,27.455333,1023.570000 114.196453,27.455285,1024.100000 114.196370,27.455219,1023.530000 114.196370,27.455219,1023.530000 </coordinates>
+				</LineString>
+			</Placemark>
+		</Folder>
+	</Document>
+</kml>
