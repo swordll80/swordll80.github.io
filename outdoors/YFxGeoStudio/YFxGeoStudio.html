@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YFxGeoStudio v28</title>
+  <title>YFxGeoStudio v30</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -43,10 +43,12 @@
     #side:active { cursor: grabbing; }
     #side.dragging * { pointer-events: none; }
     #side h1 { margin: 0 0 8px; font-size: 13px; font-weight: 650; letter-spacing: 0; cursor: grab; line-height: 1.35; white-space: pre-line; }
+    #side .side-file-name { margin-left: 6px; color: #d8e0e8; font-size: 12px; font-weight: 600; max-width: 210px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: -2px; }
     #side .list-head { margin: 0 0 8px; font-size: 12px; font-weight: 600; color: #b7c1ca; letter-spacing: .2px; }
     #stats { margin-top: 6px; padding-top: 9px; border-top: 1px solid rgba(255,255,255,.12); color: #c9d3dc; font-size: 11px; }
     #stats table { width: 100%; border-collapse: collapse; table-layout: auto; }
     #stats th { text-align: left; color: #8899aa; font-weight: 500; padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,.08); white-space: nowrap; }
+    #stats th.ico-th { text-align: center; font-size: 13px; line-height: 1.15; padding: 2px 5px; min-width: 28px; }
     #stats td { padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,.05); white-space: nowrap; color: #c9d3dc; }
     #stats tr:hover td { background: rgba(255,255,255,.04); }
     #stats tr.active td { background: rgba(22,119,210,.42); color:#fff; box-shadow: inset 3px 0 0 #4aa3ff; }
@@ -171,6 +173,10 @@
     }
     #logPanel.has-error { border-color: rgba(255,90,90,.65); box-shadow: 0 10px 34px rgba(120,0,0,.38); }
 
+    @media (max-width: 760px) {
+      #side .side-file-name { max-width: 48vw; font-size: 11px; }
+    }
+
   </style>
 </head>
 <body>
@@ -181,7 +187,7 @@
 	<button id="btnDonate" onclick="showDonate()" data-tip="donate" style="color:#ff7676">❤️</button><button onclick="undo()" id="btnUndo" data-tip="undo">↩️</button>
 	<button onclick="redo()" id="btnRedo" data-tip="redo">↪️</button><button id="btnLang" class="lang-btn" onclick="toggleLang()" title="切换语言">中</button>
   </div>
-  <div id="side" class="panel"><button id="sideToggle" type="button" onclick="toggleSidePanel(event)" title="显示/隐藏轨迹列表">◀</button><h1><span data-i18n="trackListLabel">🛤️...🛤️</span></h1><div id="stats"></div></div>
+  <div id="side" class="panel"><button id="sideToggle" type="button" onclick="toggleSidePanel(event)" title="显示/隐藏轨迹列表">◀</button><h1><span id="trackListTitleIcon" data-i18n="trackListLabel">🛤️...🛤️</span><span id="sideFileName" class="side-file-name"></span></h1><div id="stats"></div></div>
   <div id="layerBox" class="panel"><button id="layerToggle" type="button" onclick="toggleLayerPanel(event)" title="显示/隐藏地图切换">▶</button><div class="layer-inner"><div class="title" data-i18n="mapLayer">🗺️</div><button id="layerGaode" class="layer-choice active" onclick="switchLayer('gaode')">高德地形</button><button id="layerGoogle" class="layer-choice" onclick="switchLayer('google')">Google 地形</button></div></div>
   <div id="status" class="panel"><span id="modeText">模式：浏览</span><span id="coordText">坐标：-</span><span id="zoomText">缩放：12</span><span id="fileText">文件：-</span></div><input id="fileInput" type="file" accept=".kml,.KML,application/vnd.google-earth.kml+xml,application/xml,text/xml,text/plain,application/octet-stream" multiple style="display:none" onclick="this.value=null" onchange="handleFiles(this.files)"><div id="toast"></div>
   <div id="dialogMask"><div id="dialog"><h2 id="dlgTitle">编辑</h2><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="name" style="min-width:96px;color:#b9c4cf;font-size:12px">名称</label><input id="dlgName" style="min-width:0;flex:1;border:1px solid rgba(255,255,255,.16);border-radius:6px;background:rgba(255,255,255,.08);padding:6px 8px"></div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="comment" style="min-width:96px;color:#b9c4cf;font-size:12px">备注</label><input id="dlgComment" style="min-width:0;flex:1;border:1px solid rgba(255,255,255,.16);border-radius:6px;background:rgba(255,255,255,.08);padding:6px 8px"></div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="iconStyle" style="min-width:96px;color:#b9c4cf;font-size:12px">图标</label><div id="dlgIcons" style="display:flex;gap:6px;flex-wrap:wrap"></div></div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label style="min-width:96px;color:#b9c4cf;font-size:12px">Lat</label><span id="dlgLat" style="min-width:0;flex:1;color:#8899aa;font-size:13px;padding:6px 8px">-</span></div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label style="min-width:96px;color:#b9c4cf;font-size:12px">Lng</label><span id="dlgLng" style="min-width:0;flex:1;color:#8899aa;font-size:13px;padding:6px 8px">-</span></div><div class="row" id="dlgAltRow" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="altitude" style="min-width:96px;color:#b9c4cf;font-size:12px">海拔</label><input id="dlgAlt" type="number" step="0.1" placeholder="m" style="min-width:0;flex:1;border:1px solid rgba(255,255,255,.16);border-radius:6px;background:rgba(255,255,255,.08);padding:6px 8px;color:#e0e6ed"></div><div class="row" id="dlgTimeRow" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="time" style="min-width:96px;color:#b9c4cf;font-size:12px">时间</label><input id="dlgTime" type="datetime-local" style="min-width:0;flex:1;border:1px solid rgba(255,255,255,.16);border-radius:6px;background:rgba(255,255,255,.08);padding:6px 8px;color:#e0e6ed"></div><div class="actions"><button class="danger" onclick="deleteDialogTarget()" data-i18n="delete">删除</button><button onclick="closeDialog()" data-i18n="cancel">取消</button><button class="active" onclick="saveDialog()" data-i18n="save">保存</button></div></div></div>
@@ -470,6 +476,17 @@
     }
 
     function tr(k){return(I18N[lang]&&I18N[lang][k])||I18N.zh[k]||k;}
+    function getSideFileNameText(){
+      if(importedFilePaths&&importedFilePaths.length){return importedFilePaths.join(', ');}
+      return '';
+    }
+    function updateSideFileTitle(){
+      var el=document.getElementById('sideFileName');
+      if(!el)return;
+      var text=getSideFileNameText();
+      el.textContent=text?text:'';
+      el.title=text||'';
+    }
     var _lastTapTarget=null,_lastTapTime=0;
     function isMobileLike(){return ('ontouchstart' in window)||(navigator.maxTouchPoints&&navigator.maxTouchPoints>0);}
     function isDoubleTapTarget(key){
@@ -499,6 +516,7 @@
       }
       updateHistoryButtons();
       updateLangButton();
+      updateSideFileTitle();
       refreshExportBtnLabel();
       var logLabels = lang==='en' ? ['Log Output','Copy','Save','Clear','Hide'] : ['日志输出','复制','保存','清空','隐藏'];
       var ids = ['logTitle','btnCopyLog','btnSaveLog','btnClearLog','btnHideLog'];
@@ -1790,7 +1808,7 @@
       input.click();
     }
     function isKmlFile(f){return !!(f&&f.name&&/\.kml$/i.test(f.name));}
-    function handleFiles(files){if(!files||!files.length)return;var arr=[];for(var fi=0;fi<files.length;fi++){if(isKmlFile(files[fi]))arr.push(files[fi]);else logWarn('非 KML 文件已跳过：'+(files[fi]&&files[fi].name?files[fi].name:'unknown'));}if(!arr.length){toast('请选择 .kml 文件');return;}logInfo('开始导入 KML 文件，数量：'+arr.length);pushHistory();var totalAdded=0,skipped=0,i=0,names=[];function next(){if(i>=arr.length){var old=document.getElementById('fileInput');if(old)old.value='';document.getElementById('fileText').textContent=tr('file')+'：'+(names.length?names.join(', '):tr('none'));var msg=tr('imported')+'：'+totalAdded;if(skipped>0)msg+='，'+tr('skipped')+' '+tr('duplicate')+'：'+skipped;toast(msg);fitData();return;}var f=arr[i++];if(importedFilePaths.indexOf(f.name)>=0){skipped++;logWarn(tr('alreadyImported')+'：'+f.name);console.log(tr('alreadyImported')+'：'+f.name);next();return;}var r=new FileReader();r.onload=function(e){try{var added=importKmlText(e.target.result,f.name);logInfo('导入完成：'+f.name+'，新增对象/轨迹数量：'+added);totalAdded+=added;names.push(f.name);importedFilePaths.push(f.name);}catch(err){console.error('KML 导入失败：'+f.name, err);toast(tr('importFailed')+'：'+f.name);}next();};r.onerror=function(){logError('读取文件失败：'+f.name);toast('读取文件失败：'+f.name);next();};r.readAsText(f,'utf-8');}next();}
+    function handleFiles(files){if(!files||!files.length)return;var arr=[];for(var fi=0;fi<files.length;fi++){if(isKmlFile(files[fi]))arr.push(files[fi]);else logWarn('非 KML 文件已跳过：'+(files[fi]&&files[fi].name?files[fi].name:'unknown'));}if(!arr.length){toast('请选择 .kml 文件');return;}logInfo('开始导入 KML 文件，数量：'+arr.length);pushHistory();var totalAdded=0,skipped=0,i=0,names=[];function next(){if(i>=arr.length){var old=document.getElementById('fileInput');if(old)old.value='';document.getElementById('fileText').textContent=tr('file')+'：'+(names.length?names.join(', '):tr('none'));updateSideFileTitle();var msg=tr('imported')+'：'+totalAdded;if(skipped>0)msg+='，'+tr('skipped')+' '+tr('duplicate')+'：'+skipped;toast(msg);fitData();return;}var f=arr[i++];if(importedFilePaths.indexOf(f.name)>=0){skipped++;logWarn(tr('alreadyImported')+'：'+f.name);console.log(tr('alreadyImported')+'：'+f.name);next();return;}var r=new FileReader();r.onload=function(e){try{var added=importKmlText(e.target.result,f.name);logInfo('导入完成：'+f.name+'，新增对象/轨迹数量：'+added);totalAdded+=added;names.push(f.name);importedFilePaths.push(f.name);}catch(err){console.error('KML 导入失败：'+f.name, err);toast(tr('importFailed')+'：'+f.name);}next();};r.onerror=function(){logError('读取文件失败：'+f.name);toast('读取文件失败：'+f.name);next();};r.readAsText(f,'utf-8');}next();}
     /*
      * KML 兼容导入/导出层
      * ------------------------------------------------------------
@@ -2532,7 +2550,7 @@
     // -- clear --
     function clearAll(){finishAndExitTrackMode(true);if(!confirm(tr('confirmClear')))return;pushHistory();closeLineInfoDialog();closeMarkerInfoDialog();clearRuntime();document.getElementById('fileText').textContent=tr('file')+'：'+tr('none');updateStats();}
     function fitData(){if(!objects.length&&!lines.length)return;try{var g=L.featureGroup();itemLayer.eachLayer(function(l){g.addLayer(l);});lineLayer.eachLayer(function(l){g.addLayer(l);});map.fitBounds(g.getBounds(),{padding:[36,36],maxZoom:16});}catch(e){}}
-    function updateStats(){if(!lines.length){document.getElementById('stats').innerHTML='<div class="no-data">'+tr('noData')+'</div>';selectedLines.clear();refreshExportBtnLabel();return;}var h='<table><thead><tr><th>'+tr('line')+'</th><th class="num">'+tr('markPoints')+'</th><th class="num">'+tr('distance')+'</th><th class="num">'+tr('ascent')+'</th><th class="num">'+tr('descent')+'</th><th class="num">'+tr('duration')+'</th></tr></thead><tbody>';var totalKm=0,totalUp=0,totalDown=0,totalElapsed=0,totalMark=0;for(var i=0;i<lines.length;i++){var st=lineStats(lines[i]),mk=countMarkPoints(lines[i]);totalKm+=st.distance;totalUp+=st.ascent;totalDown+=st.descent;totalElapsed+=st.elapsed;totalMark+=mk;h+='<tr data-lid="'+lines[i].id+'" oncontextmenu="showLineRowMenu(event,\''+lines[i].id+'\')"><td class="line-name" title="'+escapeHtml(lines[i].name)+'">'+escapeHtml(lines[i].name)+'</td><td class="num">'+mk+'</td><td class="num">'+(st.distance/1000).toFixed(2)+' km</td><td class="num">'+st.ascent.toFixed(0)+' m</td><td class="num">'+st.descent.toFixed(0)+' m</td><td class="num">'+(st.elapsed>0?fmtDuration(st.elapsed):'-')+'</td></tr>';}h+='</tbody><tfoot><tr style="border-top:1px solid rgba(255,255,255,.15);font-weight:600;color:#fff"><td>'+tr('total')+'</td><td class="num">'+totalMark+'</td><td class="num">'+(totalKm/1000).toFixed(2)+' km</td><td class="num">'+totalUp.toFixed(0)+' m</td><td class="num">'+totalDown.toFixed(0)+' m</td><td class="num">'+(totalElapsed>0?fmtDuration(totalElapsed):'-')+'</td></tr></tfoot></table>';document.getElementById('stats').innerHTML=h;bindStatsRows();if(selectedLines.size>0)highlightSelectedRows();refreshExportBtnLabel();}
+    function updateStats(){updateSideFileTitle();if(!lines.length){document.getElementById('stats').innerHTML='<div class="no-data">'+tr('noData')+'</div>';selectedLines.clear();refreshExportBtnLabel();return;}var h='<table><thead><tr><th class="ico-th" title="'+escapeHtml(tr('line'))+'">🛤️</th><th class="num ico-th" title="'+escapeHtml(tr('markPoints'))+'">📍</th><th class="num ico-th" title="'+escapeHtml(tr('distance'))+'">↔</th><th class="num ico-th" title="'+escapeHtml(tr('ascent'))+'">↑</th><th class="num ico-th" title="'+escapeHtml(tr('descent'))+'">↓</th><th class="num ico-th" title="'+escapeHtml(tr('duration'))+'">🕒</th></tr></thead><tbody>';var totalKm=0,totalUp=0,totalDown=0,totalElapsed=0,totalMark=0;for(var i=0;i<lines.length;i++){var st=lineStats(lines[i]),mk=countMarkPoints(lines[i]);totalKm+=st.distance;totalUp+=st.ascent;totalDown+=st.descent;totalElapsed+=st.elapsed;totalMark+=mk;h+='<tr data-lid="'+lines[i].id+'" oncontextmenu="showLineRowMenu(event,\''+lines[i].id+'\')"><td class="line-name" title="'+escapeHtml(lines[i].name)+'">'+escapeHtml(lines[i].name)+'</td><td class="num">'+mk+'</td><td class="num">'+(st.distance/1000).toFixed(2)+' km</td><td class="num">'+st.ascent.toFixed(0)+' m</td><td class="num">'+st.descent.toFixed(0)+' m</td><td class="num">'+(st.elapsed>0?fmtDuration(st.elapsed):'-')+'</td></tr>';}h+='</tbody><tfoot><tr style="border-top:1px solid rgba(255,255,255,.15);font-weight:600;color:#fff"><td>'+tr('total')+'</td><td class="num">'+totalMark+'</td><td class="num">'+(totalKm/1000).toFixed(2)+' km</td><td class="num">'+totalUp.toFixed(0)+' m</td><td class="num">'+totalDown.toFixed(0)+' m</td><td class="num">'+(totalElapsed>0?fmtDuration(totalElapsed):'-')+'</td></tr></tfoot></table>';document.getElementById('stats').innerHTML=h;bindStatsRows();if(selectedLines.size>0)highlightSelectedRows();refreshExportBtnLabel();}
 
     function bindStatsRows(){
       var rows=document.querySelectorAll('#stats tr[data-lid]');
