@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YFxGeoStudio v30</title>
+  <title>YFxGeoStudio v32</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -312,7 +312,7 @@
     var lang=localStorage.getItem('yfx_lang')||'zh',mode='view',objects=[],lines=[],undoStack=[],redoStack=[],dialogTarget=null,suppressHistory=false,drawingLine=[],trackPolyline=null,selectedLines=new Set(),dlgSelectedIcon='redPin',clickTimer=null,dlgLineTarget=null,dlgLineColor='#ffd23f',dlgLineStartIcon='',dlgLineEndIcon='';
     var lineInfoDialogLastPos=null; // 记录单轨迹信息窗口上一次显示/拖拽后的位置，切换轨迹时复用。
     var lineInfoDialogUserMoved=false; // 用户拖动过轨迹信息框后，后续切换轨迹继续沿用该位置。
-    var runnerMarker=null,runnerAnimFrame=0,runnerActiveLine=null,runnerStartTime=0,runnerDurationMs=6000,runnerFollowMap=false,runnerLastPanTime=0;
+    var runnerMarker=null,runnerAnimFrame=0,runnerActiveLine=null,runnerStartTime=0,runnerDurationMs=6000,runnerFollowMap=false,runnerLastPanTime=0,runnerSpeedMps=1000;
     var markerInfoDialogLastPos=null; // 记录标记点信息窗口上一次显示/拖拽后的位置，切换标记点时复用。
     var helpDialogLastPos=null; // 记录帮助窗口拖拽后的位置。
     var spiderfyActive=null,spiderfyTimeout=null,spiderfySaved=[],spiderfyLines=[];
@@ -350,12 +350,15 @@
       var name=o.name||'';
       return name?name:'Point';
     }
+    function isLineEndPointMarker(o){
+      return !!(o&&(o.ptype==='ptStart'||o.ptype==='ptEnd'));
+    }
     function markerPriority(o){
       // 数值越小优先级越高。端点、手绘点、非 realPoint 普通标记优先保留显示；
       // 大量 KML realPoint 采样点在互相压盖时自动抽稀。
       if(!o)return 9;
       if(o.marker&&o.marker.isPopupOpen&&o.marker.isPopupOpen())return 0;
-      if(o.ptype==='ptStart'||o.ptype==='ptEnd')return 1;
+      if(isLineEndPointMarker(o))return 1;
       if(o.draggable||o.sourceType==='manual')return 2;
       if(o.sourceType&&o.sourceType!=='realPoint'&&o.sourceType!=='point')return 3;
       if(!o.lineId)return 4;
@@ -444,15 +447,22 @@
       var iconVisible={};
       var showAllIcons=isAtMaxMarkerZoom();
       for(var i=0;i<arr.length;i++){
+        var cur=arr[i];
         var ok=true;
-        if(!showAllIcons){
-          var box=estimateMarkerBox(arr[i]);
+        var forceShow=isLineEndPointMarker(cur);
+        if(!showAllIcons&&!forceShow){
+          var box=estimateMarkerBox(cur);
           for(var j=0;j<markerBoxes.length;j++){
             if(boxesOverlap(box,markerBoxes[j])){ok=false;break;}
           }
           if(ok)markerBoxes.push(box);
+        }else if(forceShow){
+          // 轨迹首尾点用于定位线路边界，禁止被抽稀隐藏；
+          // 同时把它们加入碰撞盒，避免普通采样点覆盖首尾点。
+          var endBox=estimateMarkerBox(cur);
+          if(endBox)markerBoxes.push(endBox);
         }
-        if(ok)iconVisible[arr[i].id]=true;
+        if(ok||forceShow)iconVisible[cur.id]=true;
       }
       for(var m=0;m<objects.length;m++)setMarkerIconVisible(objects[m],!!iconVisible[objects[m].id]);
 
@@ -1449,7 +1459,7 @@
       h+='<canvas id="elevationCanvas" width="720" height="150" style="width:100%;height:150px;display:block;background:#101820;border-radius:4px"></canvas>';
       h+='<div id="elevationHint" style="font-size:0;color:#8899aa;margin-top:0;height:0;overflow:hidden"></div>';
       h+='</div>';
-      h+='<div class="actions" style="margin-top:7px"><button class="run-btn" onclick="toggleRunnerForActiveLine()" title="'+(lang==='en'?'Play runner':'播放跑步小人')+'">🏃</button><button onclick="closeLineInfoDialog()" title="'+tr('close')+'">×</button></div>';
+      h+='<div class="actions" style="margin-top:7px"><button class="run-btn" onclick="toggleRunnerForActiveLine(1000,&quot;🏃&quot;)" title="'+(lang==='en'?'Runner 1 km/s':'小人 1 km/s')+'">🏃</button><button class="run-btn" onclick="toggleRunnerForActiveLine(2000,&quot;🏃🏃&quot;)" title="'+(lang==='en'?'Runners 2 km/s':'两人 2 km/s')+'">🏃🏃</button><button onclick="closeLineInfoDialog()" title="'+tr('close')+'">×</button></div>';
       dlg.innerHTML=h;
       applyLineInfoLayout();
       mask.style.display='block';
@@ -1501,14 +1511,17 @@
       runnerStartTime=0;
       runnerFollowMap=false;
       runnerLastPanTime=0;
+      runnerSpeedMps=1000;
     }
 
-    function runnerIcon(){
+    function runnerIcon(label){
+      var text=label||'🏃';
+      var size=text.length>2?[38,28]:[28,28];
       return L.divIcon({
         className:'',
-        iconSize:[28,28],
-        iconAnchor:[14,24],
-        html:'<div class="runner-icon">🏃</div>'
+        iconSize:size,
+        iconAnchor:[Math.round(size[0]/2),24],
+        html:'<div class="runner-icon">'+text+'</div>'
       });
     }
 
@@ -1547,46 +1560,24 @@
       return L.latLng(pts[pts.length-1].lat,pts[pts.length-1].lng);
     }
 
-    function toggleRunnerForActiveLine(){
+    function toggleRunnerForActiveLine(speedMps,label){
       if(!dlgLineTarget)return;
-      if(runnerActiveLine===dlgLineTarget&&runnerMarker){
+      speedMps=Number(speedMps)||1000;
+      if(runnerActiveLine===dlgLineTarget&&runnerMarker&&Math.round(runnerSpeedMps)===Math.round(speedMps)){
         stopRunner();
         return;
       }
-      playRunnerOnLine(dlgLineTarget);
+      playRunnerOnLine(dlgLineTarget,speedMps,label||'🏃');
     }
 
-    function calcRunnerDurationMs(totalMeters){
+    function calcRunnerDurationMs(totalMeters,speedMps){
       var total=Number(totalMeters)||0;
+      var speed=Number(speedMps)||1000;
       if(total<=0)return 1000;
-
-      // 播放时长规则：
-      // 1. 当前已加载轨迹中，最长轨迹约 6 秒跑完；
-      // 2. 最短/很短轨迹至少 1 秒，避免一闪而过；
-      // 3. 不让短线路显得很慢：播放速度最慢不超过 1 秒 / 1 km；
-      // 4. 不让长线路显得过快：播放速度最快不超过 2 km / 秒。
-      var maxMeters=total;
-      for(var i=0;i<lines.length;i++){
-        var ln=lines[i];
-        if(!ln||!ln.points||ln.points.length<2)continue;
-        var d=0;
-        for(var j=1;j<ln.points.length;j++){
-          var a=ln.points[j-1],b=ln.points[j];
-          if(!a||!b||!isFinite(Number(a.lat))||!isFinite(Number(a.lng))||!isFinite(Number(b.lat))||!isFinite(Number(b.lng)))continue;
-          d+=distanceMeters(Number(a.lat),Number(a.lng),Number(b.lat),Number(b.lng));
-        }
-        if(d>maxMeters)maxMeters=d;
-      }
-
-      var ratio=maxMeters>0?total/maxMeters:1;
-      if(ratio<0)ratio=0;
-      if(ratio>1)ratio=1;
-      var byLongest=1000+ratio*5000;      // 最短约 1 秒，最长约 6 秒。
-      var bySlowLimit=Math.max(1000,total/1000*1000); // 最慢 1 秒 / km，且至少 1 秒。
-      var byFastLimit=total/2;             // 最快 2 km / 秒，即每 2000 m 至少 1 秒。
-      var ms=Math.min(6000,byLongest,bySlowLimit);
+      if(speed<=0)speed=1000;
+      // 固定速度播放：单人 1 km/s，双人 2 km/s；任何线路至少播放 1 秒。
+      var ms=total/speed*1000;
       if(ms<1000)ms=1000;
-      if(ms<byFastLimit)ms=byFastLimit;
       return Math.round(ms);
     }
 
@@ -1622,7 +1613,7 @@
       }
     }
 
-    function playRunnerOnLine(line){
+    function playRunnerOnLine(line,speedMps,label){
       stopRunner();
       var pts=buildLineDistanceTable(line);
       if(pts.length<2){
@@ -1634,11 +1625,12 @@
         toast(lang==='en'?'Track distance is too short':'轨迹距离太短，无法播放');
         return;
       }
-      runnerDurationMs=calcRunnerDurationMs(total);
+      runnerSpeedMps=Number(speedMps)||1000;
+      runnerDurationMs=calcRunnerDurationMs(total,runnerSpeedMps);
       runnerActiveLine=line;
       runnerFollowMap=shouldRunnerFollowLine(pts);
       runnerLastPanTime=0;
-      runnerMarker=L.marker([pts[0].lat,pts[0].lng],{icon:runnerIcon(),interactive:false,zIndexOffset:1200}).addTo(map);
+      runnerMarker=L.marker([pts[0].lat,pts[0].lng],{icon:runnerIcon(label||'🏃'),interactive:false,zIndexOffset:1200}).addTo(map);
       runnerStartTime=performance&&performance.now?performance.now():Date.now();
       if(runnerFollowMap)followRunnerPosition(L.latLng(pts[0].lat,pts[0].lng),true);
       function step(now){
