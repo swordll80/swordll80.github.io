@@ -125,7 +125,53 @@
     activate(id);
   }
 
+
+
+  async function hardRefreshCurrentPage() {
+    try {
+      try { localStorage.clear(); } catch (e) {}
+      try { sessionStorage.clear(); } catch (e) {}
+
+      if ('caches' in window) {
+        try {
+          var cacheNames = await caches.keys();
+          await Promise.all(cacheNames.map(function (name) {
+            return caches.delete(name);
+          }));
+        } catch (e) {}
+      }
+
+      if ('serviceWorker' in navigator) {
+        try {
+          var regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(function (reg) {
+            return reg.unregister();
+          }));
+        } catch (e) {}
+      }
+
+      var url = new URL(window.location.href);
+      url.searchParams.set('_reload', String(Date.now()));
+      window.location.replace(url.toString());
+    } catch (e) {
+      var fallback = window.location.pathname + '?_reload=' + Date.now();
+      if (window.location.hash) {
+        fallback += window.location.hash;
+      }
+      window.location.replace(fallback);
+    }
+  }
+
+  function initHardRefreshButton() {
+    var btn = document.getElementById('hardRefreshBtn');
+    if (!btn) return;
+    btn.addEventListener('click', function () {
+      hardRefreshCurrentPage();
+    });
+  }
+
   renderNav();
+  initHardRefreshButton();
   initSidebarState();
   handleHash();
 

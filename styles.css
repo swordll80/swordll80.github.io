@@ -42,6 +42,27 @@ a { color: inherit; }
 .header-left, .header-right { display: flex; align-items: center; gap: 14px; }
 .header-right { color: var(--muted); font-size: 13px; }
 .status-dot { width: 8px; height: 8px; border-radius: 999px; background: #12b76a; box-shadow: 0 0 0 4px rgba(18,183,106,.12); }
+.hard-refresh-btn {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  color: #344054;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 650;
+  cursor: pointer;
+  box-shadow: 0 6px 18px rgba(31,41,55,.05);
+}
+.hard-refresh-btn:hover { color: var(--accent); border-color: rgba(47,111,237,.28); background: var(--panel-soft); }
+.refresh-icon { font-size: 16px; line-height: 1; }
+.desktop-status { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+
 .sidebar-toggle {
   width: 42px; height: 42px; border: 1px solid var(--line); border-radius: 12px;
   background: #fff; display: inline-flex; flex-direction: column; justify-content: center; gap: 5px; padding: 0 10px;
@@ -170,6 +191,21 @@ h1, h2, h3, p, a, strong, span { overflow-wrap: break-word; }
     padding: 0 14px;
     gap: 10px;
   }
+  .header-right {
+    display: flex;
+    flex: 0 0 auto;
+    gap: 8px;
+  }
+  .desktop-status { display: none; }
+  .hard-refresh-btn {
+    width: 44px;
+    height: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-radius: 14px;
+  }
+  .hard-refresh-btn .refresh-text { display: none; }
+
   .header-left { min-width: 0; gap: 10px; }
   .sidebar-toggle {
     width: 44px;
@@ -186,7 +222,7 @@ h1, h2, h3, p, a, strong, span { overflow-wrap: break-word; }
   }
   .brand strong {
     font-size: 17px;
-    max-width: calc(100vw - 132px);
+    max-width: calc(100vw - 184px);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -316,5 +352,5 @@ h1, h2, h3, p, a, strong, span { overflow-wrap: break-word; }
 
 @media (max-width: 390px) {
   .content { padding-left: 14px; padding-right: 14px; }
-  .brand strong { font-size: 16px; max-width: calc(100vw - 126px); }
+  .brand strong { font-size: 16px; max-width: calc(100vw - 178px); }
 }
