@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YFxGeoStudio v19</title>
+  <title>YFxGeoStudio v20</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -1238,34 +1238,52 @@
       var header=document.getElementById('lineInfoTitle');
       if(!dlg||!header)return;
       header.style.cursor='move';
+      header.style.touchAction='none';
+      header.style.userSelect='none';
+      header.style.webkitUserSelect='none';
       var dragging=false,startX=0,startY=0,startLeft=0,startTop=0;
-      header.onmousedown=function(e){
-        if(e.button!==0)return;
-        e.preventDefault();
+      function pointFromEvent(e){
+        if(e&&e.touches&&e.touches.length)return {x:e.touches[0].clientX,y:e.touches[0].clientY};
+        if(e&&e.changedTouches&&e.changedTouches.length)return {x:e.changedTouches[0].clientX,y:e.changedTouches[0].clientY};
+        return {x:e.clientX,y:e.clientY};
+      }
+      function beginDrag(e){
+        if(e&&e.type==='mousedown'&&e.button!==0)return;
+        if(e&&e.preventDefault)e.preventDefault();
         dragging=true;
-        startX=e.clientX;startY=e.clientY;
+        var p=pointFromEvent(e);
+        startX=p.x;startY=p.y;
         var r=dlg.getBoundingClientRect();
         startLeft=r.left;startTop=r.top;
         document.addEventListener('mousemove',onMove);
         document.addEventListener('mouseup',onUp,{once:true});
-      };
+        document.addEventListener('touchmove',onMove,{passive:false});
+        document.addEventListener('touchend',onUp,{once:true});
+        document.addEventListener('touchcancel',onUp,{once:true});
+      }
       function onMove(e){
         if(!dragging)return;
+        if(e&&e.preventDefault)e.preventDefault();
+        var p=pointFromEvent(e);
         var r=dlg.getBoundingClientRect();
-        var left=startLeft+(e.clientX-startX);
-        var top=startTop+(e.clientY-startY);
+        var left=startLeft+(p.x-startX);
+        var top=startTop+(p.y-startY);
         left=Math.max(0,Math.min(left,window.innerWidth-r.width));
         top=Math.max(0,Math.min(top,window.innerHeight-r.height));
         dlg.style.left=Math.round(left)+'px';
         dlg.style.top=Math.round(top)+'px';
       }
-      function onUp(){
+      function onUp(e){
+        if(!dragging)return;
         dragging=false;
         var r=dlg.getBoundingClientRect();
         lineInfoDialogLastPos={left:Math.round(r.left),top:Math.round(r.top)};
         lineInfoDialogUserMoved=true;
         document.removeEventListener('mousemove',onMove);
+        document.removeEventListener('touchmove',onMove);
       }
+      header.onmousedown=beginDrag;
+      header.ontouchstart=beginDrag;
     }
 
     function lineSummaryHtml(line){
