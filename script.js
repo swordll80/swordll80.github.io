@@ -28,8 +28,14 @@
   var navTree = document.getElementById('navTree');
   var sidebarToggle = document.getElementById('sidebarToggle');
   var edgeHotspot = document.getElementById('edgeHotspot');
+  var drawerBackdrop = document.getElementById('drawerBackdrop');
+  var sidebar = document.getElementById('sidebar');
   var content = document.getElementById('content');
   var peekTimer = 0;
+
+  function isMobile() {
+    return MOBILE_QUERY.matches;
+  }
 
   function el(tag, className, text) {
     var node = document.createElement(tag);
@@ -39,6 +45,7 @@
   }
 
   function renderNav() {
+    navTree.innerHTML = '';
     navData.forEach(function (group) {
       var groupNode = el('div', 'nav-group open');
       var titleBtn = el('button', 'nav-title');
@@ -65,13 +72,22 @@
     document.body.classList.toggle('sidebar-collapsed', collapsed);
     document.body.classList.remove('sidebar-peek');
     sidebarToggle.setAttribute('aria-expanded', String(!collapsed));
-    if (save) localStorage.setItem(STORAGE_KEY, collapsed ? 'true' : 'false');
+
+    /* 手机端目录是抽屉，不保存状态，避免下次打开页面被侧栏遮住。 */
+    if (save && !isMobile()) {
+      localStorage.setItem(STORAGE_KEY, collapsed ? 'true' : 'false');
+    }
   }
 
   function initSidebarState() {
+    if (isMobile()) {
+      setCollapsed(true, false);
+      return;
+    }
+
     var saved = localStorage.getItem(STORAGE_KEY);
     if (saved === null) {
-      setCollapsed(MOBILE_QUERY.matches, false);
+      setCollapsed(false, false);
     } else {
       setCollapsed(saved === 'true', false);
     }
@@ -79,19 +95,33 @@
 
   function activate(targetId) {
     var target = document.getElementById(targetId) || document.getElementById('intro-home');
-    document.querySelectorAll('.content-section').forEach(function (section) {
+
+    Array.prototype.forEach.call(document.querySelectorAll('.content-section'), function (section) {
       section.classList.toggle('active', section === target);
     });
-    document.querySelectorAll('.nav-link').forEach(function (link) {
+
+    Array.prototype.forEach.call(document.querySelectorAll('.nav-link'), function (link) {
       link.classList.toggle('active', link.getAttribute('data-target') === target.id);
     });
+
     document.title = (target.dataset.title || '首页') + ' · swordll80.github.io';
-    content.focus({ preventScroll: true });
-    if (MOBILE_QUERY.matches) setCollapsed(true, true);
+
+    if (content && content.focus) {
+      try {
+        content.focus({ preventScroll: true });
+      } catch (e) {
+        content.focus();
+      }
+    }
+
+    if (isMobile()) {
+      setCollapsed(true, false);
+      window.scrollTo(0, 0);
+    }
   }
 
   function handleHash() {
-    var id = location.hash ? location.hash.slice(1) : 'intro-home';
+    var id = location.hash ? decodeURIComponent(location.hash.slice(1)) : 'intro-home';
     activate(id);
   }
 
@@ -103,8 +133,14 @@
     setCollapsed(!document.body.classList.contains('sidebar-collapsed'), true);
   });
 
+  if (drawerBackdrop) {
+    drawerBackdrop.addEventListener('click', function () {
+      setCollapsed(true, false);
+    });
+  }
+
   document.addEventListener('click', function (event) {
-    var link = event.target.closest('[data-nav-link]');
+    var link = event.target.closest ? event.target.closest('[data-nav-link]') : null;
     if (!link) return;
     var hash = link.getAttribute('href');
     if (!hash || hash.charAt(0) !== '#') return;
@@ -115,29 +151,33 @@
 
   window.addEventListener('hashchange', handleHash);
 
-  edgeHotspot.addEventListener('mouseenter', function () {
-    if (!MOBILE_QUERY.matches && document.body.classList.contains('sidebar-collapsed')) {
-      document.body.classList.add('sidebar-peek');
-    }
-  });
+  if (edgeHotspot) {
+    edgeHotspot.addEventListener('mouseenter', function () {
+      if (!isMobile() && document.body.classList.contains('sidebar-collapsed')) {
+        document.body.classList.add('sidebar-peek');
+      }
+    });
 
-  edgeHotspot.addEventListener('click', function () {
-    if (document.body.classList.contains('sidebar-collapsed')) {
-      document.body.classList.add('sidebar-peek');
-    }
-  });
+    edgeHotspot.addEventListener('click', function () {
+      if (!isMobile() && document.body.classList.contains('sidebar-collapsed')) {
+        document.body.classList.add('sidebar-peek');
+      }
+    });
+  }
 
-  document.getElementById('sidebar').addEventListener('mouseleave', function () {
-    if (!MOBILE_QUERY.matches && document.body.classList.contains('sidebar-collapsed')) {
-      clearTimeout(peekTimer);
-      peekTimer = setTimeout(function () {
-        document.body.classList.remove('sidebar-peek');
-      }, 160);
-    }
-  });
+  if (sidebar) {
+    sidebar.addEventListener('mouseleave', function () {
+      if (!isMobile() && document.body.classList.contains('sidebar-collapsed')) {
+        clearTimeout(peekTimer);
+        peekTimer = setTimeout(function () {
+          document.body.classList.remove('sidebar-peek');
+        }, 160);
+      }
+    });
+  }
 
   function handleMobileQueryChange() {
-    if (localStorage.getItem(STORAGE_KEY) === null) setCollapsed(MOBILE_QUERY.matches, false);
+    initSidebarState();
   }
 
   if (MOBILE_QUERY.addEventListener) {
