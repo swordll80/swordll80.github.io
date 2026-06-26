@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YFxGeoStudio v14</title>
+  <title>YFxGeoStudio v19</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -14,10 +14,10 @@
     body { font-family: "Microsoft YaHei", "Segoe UI", Arial, sans-serif; background: #101418; color: #eef3f7; overflow: hidden; }
     #map { position: absolute; inset: 0; }
     .panel { position: absolute; z-index: 1000; background: rgba(18,24,30,.88); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 10px 34px rgba(0,0,0,.28); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-    #toolbar { top: 12px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 7px; padding: 8px 10px; border-radius: 8px; white-space: nowrap; cursor: grab; user-select: none; }
+    #toolbar { top: 10px; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 4px; padding: 6px 7px; border-radius: 8px; white-space: nowrap; cursor: grab; user-select: none; }
     #toolbar:active { cursor: grabbing; }
     #toolbar.dragging * { pointer-events: none; }
-    #toolbar button { padding: 6px 8px; font-size: 16px; min-width: 32px; text-align: center; }
+    #toolbar button { padding: 5px 6px; font-size: 15px; min-width: 30px; height: 30px; text-align: center; display:inline-flex; align-items:center; justify-content:center; line-height:1; }
     button, select, input { font: inherit; color: inherit; }
     button { border: 1px solid rgba(255,255,255,.15); border-radius: 6px; background: rgba(255,255,255,.08); padding: 6px 10px; cursor: pointer; transition: background .15s, border-color .15s; position: relative; }
     button:hover { background: rgba(80,160,230,.22); border-color: rgba(90,170,240,.55); }
@@ -28,16 +28,16 @@
     button[data-tip]:hover:after { opacity: 1; }
     .ico-btn { padding: 6px 8px; font-size: 16px; min-width: 32px; text-align: center; }
     .lang-btn { min-width: 34px !important; width: 34px; height: 34px; padding: 0 !important; display: inline-flex; align-items: center; justify-content: center; font-size: 13px !important; font-weight: 700; line-height: 1; }
-    .sep { width: 1px; height: 22px; background: rgba(255,255,255,.16); margin: 0 2px; }
+    .sep { display: none !important; }
     .primary-action { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px !important; min-width: 0 !important; font-size: 14px !important; font-weight: 600; color: #ffd966; border: 1px solid rgba(255,217,102,.55) !important; background: linear-gradient(135deg, rgba(255,170,40,.18), rgba(255,217,102,.12)) !important; box-shadow: 0 1px 4px rgba(255,200,80,.18); transition: background .15s, box-shadow .15s, transform .12s; }
     .primary-action:hover { background: linear-gradient(135deg, rgba(255,170,40,.32), rgba(255,217,102,.22)) !important; border-color: rgba(255,217,102,.85) !important; box-shadow: 0 2px 8px rgba(255,200,80,.32); transform: translateY(-1px); }
     .primary-action:active { transform: translateY(0); }
     .primary-action .ico { font-size: 16px; line-height: 1; }
     .primary-action .lbl { white-space: nowrap; }
     #side { top: auto; bottom: 42px; left: 12px; width: auto; min-width: 320px; max-width: min(520px, calc(100vw - 24px)); max-height: 46vh; overflow: auto; border-radius: 8px; padding: 12px; cursor: grab; user-select: none; transition: transform .22s ease, opacity .18s ease; }
-    #side.side-collapsed { transform: translateX(calc(-100% + 44px)); opacity: .96; }
+    #side.side-collapsed { transform: translateX(calc(-100% + 44px)); opacity: .96; overflow: visible; }
     #side.side-open { transform: translateX(0); opacity: 1; }
-    #sideToggle { position: absolute; top: 8px; right: 8px; width: 30px; min-width: 30px; height: 30px; padding: 0; line-height: 28px; font-size: 15px; border-radius: 6px; z-index: 2; background: rgba(22,119,210,.72); }
+    #sideToggle { position: absolute; top: 8px; right: 8px; width: 30px; min-width: 30px; height: 30px; padding: 0; line-height: 28px; font-size: 15px; border-radius: 6px; z-index: 5; background: rgba(22,119,210,.72); display:flex; align-items:center; justify-content:center; }
     #side.side-collapsed #sideToggle { right: 7px; background: rgba(22,119,210,.96); border-color: rgba(255,255,255,.32); box-shadow: 0 2px 10px rgba(0,0,0,.32); }
     #side.side-collapsed h1, #side.side-collapsed #stats { pointer-events: none; }
     #side:active { cursor: grabbing; }
@@ -120,7 +120,7 @@
     .run-btn { min-width: 36px; font-size: 16px; padding: 5px 10px; }
     .marker-label { background: rgba(18,24,30,.82); border: 1px solid rgba(255,255,255,.22); color: #fff; border-radius: 4px; padding: 2px 5px; font-size: 11px; line-height: 1.25; box-shadow: 0 2px 8px rgba(0,0,0,.28); white-space: nowrap; }
     .marker-label:before { display: none; }
-    @media (max-width: 760px) { #toolbar { left: 8px; right: 8px; transform: none; justify-content: flex-start; overflow-x: auto; gap: 5px; padding: 6px 7px; } #toolbar button { width: 34px; min-width: 34px; height: 34px; padding: 0 !important; display: inline-flex; align-items: center; justify-content: center; line-height: 1; font-size: 16px; border-radius: 7px; flex: 0 0 34px; } #toolbar button svg { display: block; margin: auto; } #toolbar .sep { height: 22px; margin: 0 1px; flex: 0 0 1px; } #toolbar select { height: 34px; padding: 0 6px; font-size: 12px; flex: 0 0 auto; } #side { top: auto; bottom: 36px; left: 8px; width: calc(100vw - 52px); min-width: 0; max-width: calc(100vw - 52px); max-height: 42vh; } #layerBox { bottom: 36px; right: 8px; width: 84px; } #status { font-size: 11px; gap: 8px; padding: 0 8px; } }
+    @media (max-width: 760px) { #toolbar { left: 6px; right: 6px; transform: none; justify-content: flex-start; overflow-x: auto; gap: 3px; padding: 5px 6px; } #toolbar button { width: 32px; min-width: 32px; height: 32px; padding: 0 !important; display: inline-flex; align-items: center; justify-content: center; line-height: 1; font-size: 15px; border-radius: 7px; flex: 0 0 32px; } #toolbar button svg { display: block; margin: auto; } #toolbar .sep { display:none !important; } #toolbar select { height: 32px; padding: 0 5px; font-size: 12px; flex: 0 0 auto; } #side { top: auto; bottom: 36px; left: 8px; width: calc(100vw - 52px); min-width: 0; max-width: calc(100vw - 52px); max-height: 42vh; } #layerBox { bottom: 36px; right: 8px; width: 84px; } #status { font-size: 11px; gap: 8px; padding: 0 8px; } }
     @media (max-width: 760px) and (orientation: portrait) { #side.side-collapsed { transform: translateX(calc(-100% + 42px)) !important; } #side.side-open { transform: translateX(0) !important; } #layerBox.layer-collapsed { transform: translateX(calc(100% - 30px)) !important; } #layerBox.layer-open { transform: translateX(0) !important; } }
     @media (max-width: 760px) and (orientation: landscape) { #layerBox { width: 82px; } #layerBox button.layer-choice { height: 24px; line-height: 24px; padding: 0 3px; font-size: 10px; } }
   
@@ -176,15 +176,10 @@
 <body>
   <div id="map"></div>
   <div id="toolbar" class="panel">
-    <button id="btnImport" onclick="openImport()" data-tip="importKml" >📂</button><span class="sep"></span>
-	<button id="btnExport" onclick="exportKml()" data-tip="exportMergedKml">💾</button><span class="sep"></span>
-	<button id="btnTrack" onclick="toggleTrackMode()" data-tip="drawTrack">✏️</button><button class="danger" onclick="clearAll()" data-role="clear" data-tip="clear">🗑️</button><span class="sep"></span>
-	<button id="btnLocate" onclick="locateMe()" data-tip="locate"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></button>
+    <button id="btnImport" onclick="openImport()" data-tip="importKml" >📂</button><button id="btnExport" onclick="exportKml()" data-tip="exportMergedKml">💾</button><button id="btnTrack" onclick="toggleTrackMode()" data-tip="drawTrack">✏️</button><button class="danger" onclick="clearAll()" data-role="clear" data-tip="clear">🗑️</button><button id="btnLocate" onclick="locateMe()" data-tip="locate"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></button>
 	<button id="btnHelp" onclick="showHelp()" data-tip="help">❓</button>
-	<button id="btnDonate" onclick="showDonate()" data-tip="donate" style="color:#ff7676">❤️</button><span class="sep"></span>
-	<button onclick="undo()" id="btnUndo" data-tip="undo">↩️</button>
-	<button onclick="redo()" id="btnRedo" data-tip="redo">↪️</button><span class="sep"></span>
-	<button id="btnLang" class="lang-btn" onclick="toggleLang()" title="切换语言">中</button>
+	<button id="btnDonate" onclick="showDonate()" data-tip="donate" style="color:#ff7676">❤️</button><button onclick="undo()" id="btnUndo" data-tip="undo">↩️</button>
+	<button onclick="redo()" id="btnRedo" data-tip="redo">↪️</button><button id="btnLang" class="lang-btn" onclick="toggleLang()" title="切换语言">中</button>
   </div>
   <div id="side" class="panel"><button id="sideToggle" type="button" onclick="toggleSidePanel(event)" title="显示/隐藏轨迹列表">◀</button><h1><span data-i18n="trackListLabel">轨迹列表</span></h1><div id="stats"></div></div>
   <div id="layerBox" class="panel"><button id="layerToggle" type="button" onclick="toggleLayerPanel(event)" title="显示/隐藏地图切换">▶</button><div class="layer-inner"><div class="title" data-i18n="mapLayer">地图</div><button id="layerGaode" class="layer-choice active" onclick="switchLayer('gaode')">高德地形</button><button id="layerGoogle" class="layer-choice" onclick="switchLayer('google')">Google 地形</button></div></div>
@@ -311,7 +306,7 @@
     var lang=localStorage.getItem('yfx_lang')||'zh',mode='view',objects=[],lines=[],undoStack=[],redoStack=[],dialogTarget=null,suppressHistory=false,drawingLine=[],trackPolyline=null,selectedLines=new Set(),dlgSelectedIcon='redPin',clickTimer=null,dlgLineTarget=null,dlgLineColor='#ffd23f',dlgLineStartIcon='',dlgLineEndIcon='';
     var lineInfoDialogLastPos=null; // 记录单轨迹信息窗口上一次显示/拖拽后的位置，切换轨迹时复用。
     var lineInfoDialogUserMoved=false; // 用户拖动过轨迹信息框后，后续切换轨迹继续沿用该位置。
-    var runnerMarker=null,runnerAnimFrame=0,runnerActiveLine=null,runnerStartTime=0,runnerDurationMs=6000;
+    var runnerMarker=null,runnerAnimFrame=0,runnerActiveLine=null,runnerStartTime=0,runnerDurationMs=6000,runnerFollowMap=false,runnerLastPanTime=0;
     var markerInfoDialogLastPos=null; // 记录标记点信息窗口上一次显示/拖拽后的位置，切换标记点时复用。
     var helpDialogLastPos=null; // 记录帮助窗口拖拽后的位置。
     var spiderfyActive=null,spiderfyTimeout=null,spiderfySaved=[],spiderfyLines=[];
@@ -342,15 +337,30 @@
     }
     function pinIcon(c){return L.divIcon({className:'',iconSize:[28,28],iconAnchor:[14,28],popupAnchor:[0,-26],html:'<div class="pin '+c+'"></div>'});}
     var LABEL_MIN_ZOOM=16;
+    var LABEL_COLLIDE_PAD=4;
     function markerLabelText(o){
       if(!o)return '';
       var name=o.name||'';
       return name?name:'Point';
     }
-    function updateMarkerLabel(o){
+    function estimateLabelBox(o){
+      if(!o||!o.marker||!map)return null;
+      var p=o.marker.getLatLng();
+      if(!p)return null;
+      var q=map.latLngToContainerPoint(p);
+      var text=markerLabelText(o);
+      // 估算 tooltip 尺寸：中文约 12px/字，英文约 7px/字，避免必须先渲染 DOM。
+      var w=18;
+      for(var i=0;i<text.length;i++)w+=(text.charCodeAt(i)>255?12:7);
+      w=Math.max(34,Math.min(w,180));
+      var h=22;
+      var left=q.x+12,top=q.y-25;
+      return{left:left-LABEL_COLLIDE_PAD,top:top-LABEL_COLLIDE_PAD,right:left+w+LABEL_COLLIDE_PAD,bottom:top+h+LABEL_COLLIDE_PAD};
+    }
+    function boxesOverlap(a,b){return a&&b&&a.left<b.right&&a.right>b.left&&a.top<b.bottom&&a.bottom>b.top;}
+    function setMarkerLabelVisible(o,visible){
       if(!o||!o.marker)return;
-      var show=map&&map.getZoom&&map.getZoom()>=LABEL_MIN_ZOOM;
-      if(show){
+      if(visible){
         var text=markerLabelText(o);
         if(o.marker.getTooltip())o.marker.setTooltipContent(escapeHtml(text));
         else o.marker.bindTooltip(escapeHtml(text),{permanent:true,direction:'right',offset:[12,-14],className:'marker-label',opacity:.95});
@@ -359,7 +369,32 @@
         if(o.marker.getTooltip())o.marker.unbindTooltip();
       }
     }
-    function updateAllMarkerLabels(){for(var i=0;i<objects.length;i++)updateMarkerLabel(objects[i]);}
+    function updateMarkerLabel(o){
+      // 单点变更后重新执行全局避让，避免新名称与已有名称互相压盖。
+      updateAllMarkerLabels();
+    }
+    function updateAllMarkerLabels(){
+      if(!map||map.getZoom()<LABEL_MIN_ZOOM){for(var i=0;i<objects.length;i++)setMarkerLabelVisible(objects[i],false);return;}
+      var placed=[];
+      // 优先显示标记点，其次显示轨迹点；同类对象按屏幕从上到下、从左到右稳定选择。
+      var arr=objects.slice().filter(function(o){return o&&o.marker&&map.getBounds().pad(0.08).contains(o.marker.getLatLng());});
+      arr.sort(function(a,b){
+        var ka=(a.kind==='mark'||a.sourceType==='mark')?0:1;
+        var kb=(b.kind==='mark'||b.sourceType==='mark')?0:1;
+        if(ka!==kb)return ka-kb;
+        var pa=map.latLngToContainerPoint(a.marker.getLatLng());
+        var pb=map.latLngToContainerPoint(b.marker.getLatLng());
+        return (pa.y-pb.y)||(pa.x-pb.x);
+      });
+      var visible={};
+      for(var j=0;j<arr.length;j++){
+        var box=estimateLabelBox(arr[j]);
+        var ok=true;
+        for(var k=0;k<placed.length;k++){if(boxesOverlap(box,placed[k])){ok=false;break;}}
+        if(ok){placed.push(box);visible[arr[j].id]=true;}
+      }
+      for(var n=0;n<objects.length;n++)setMarkerLabelVisible(objects[n],!!visible[objects[n].id]);
+    }
     function tr(k){return(I18N[lang]&&I18N[lang][k])||I18N.zh[k]||k;}
     var _lastTapTarget=null,_lastTapTime=0;
     function isMobileLike(){return ('ontouchstart' in window)||(navigator.maxTouchPoints&&navigator.maxTouchPoints>0);}
@@ -479,14 +514,21 @@
     function updateSidePanelForScreen(){
       var sd=document.getElementById('side');
       if(!sd)return;
+      // 竖屏手机默认收起；用户手动展开/隐藏后，横竖屏切换时保留用户选择，避免隐藏按钮丢失。
       if(isMobilePortrait()){
         if(!sideUserToggled&&!sd.classList.contains('side-open'))setSideCollapsed(true);
+        else syncSideToggleText();
       }else{
-        sd.classList.remove('side-collapsed');
-        sd.classList.remove('side-open');
-        sd.style.transform='';
-        sideUserToggled=false;
-        syncSideToggleText();
+        if(sideUserToggled){
+          if(sd.classList.contains('side-collapsed'))sd.style.transform='translateX(calc(-100% + 44px))';
+          if(sd.classList.contains('side-open'))sd.style.transform='translateX(0)';
+          syncSideToggleText();
+        }else{
+          sd.classList.remove('side-collapsed');
+          sd.classList.remove('side-open');
+          sd.style.transform='';
+          syncSideToggleText();
+        }
       }
     }
     function toggleSidePanel(e){
@@ -543,7 +585,7 @@
       setLayerCollapsed(!collapsed);
     }
     window.addEventListener('resize',function(){updateSidePanelForScreen();updateLayerPanelForScreen();if(dlgLineTarget)resizeActiveLineInfoDialog();});
-    window.addEventListener('orientationchange',function(){sideUserToggled=false;layerUserToggled=false;setTimeout(function(){updateSidePanelForScreen();updateLayerPanelForScreen();if(dlgLineTarget)resizeActiveLineInfoDialog();},250);});
+    window.addEventListener('orientationchange',function(){layerUserToggled=false;setTimeout(function(){updateSidePanelForScreen();updateLayerPanelForScreen();if(dlgLineTarget)resizeActiveLineInfoDialog();},250);});
     setTimeout(function(){updateSidePanelForScreen();updateLayerPanelForScreen();},0);
 
     // -- history --
@@ -702,6 +744,7 @@
     // -- map events --
     map.on('mousemove',function(e){document.getElementById('coordText').textContent=tr('coord')+'：'+e.latlng.lat.toFixed(6)+', '+e.latlng.lng.toFixed(6);checkSpiderfyCollapse(e);});
     map.on('zoomend',function(){document.getElementById('zoomText').textContent=tr('zoom')+'：'+map.getZoom();updateAllMarkerLabels();});
+    map.on('moveend resize',function(){updateAllMarkerLabels();});
     map.on('click',function(e){
       // 点击轨迹线时，Leaflet 有时仍会触发 map.click。这里识别轨迹线点击标记，避免清掉高亮。
       if(e&&e.originalEvent&&e.originalEvent._yfxLineClicked)return;
@@ -742,7 +785,7 @@
       var linesHtml=[];
 
       if(ld){
-        if(o.name)linesHtml.push('名称：'+escapeHtml(o.name));
+        if(o.name)linesHtml.push('标记点：'+escapeHtml(o.name));
         linesHtml.push(tr('line')+'：'+escapeHtml(ld.name));
         var delta=distToPointOnLine(o,ld);
         linesHtml.push(tr('distFromStart')+'：'+(delta.ptDist/1000).toFixed(2)+' km / '+tr('lineTotalDist')+'：'+(delta.lineDist/1000).toFixed(2)+' km');
@@ -1321,6 +1364,8 @@
       }
       runnerActiveLine=null;
       runnerStartTime=0;
+      runnerFollowMap=false;
+      runnerLastPanTime=0;
     }
 
     function runnerIcon(){
@@ -1381,9 +1426,10 @@
       if(total<=0)return 1000;
 
       // 播放时长规则：
-      // 1. 当前已加载轨迹中，最长轨迹最多 6 秒跑完；
+      // 1. 当前已加载轨迹中，最长轨迹约 6 秒跑完；
       // 2. 最短/很短轨迹至少 1 秒，避免一闪而过；
-      // 3. 不让短线路显得很慢：播放速度最慢不超过 1 秒 / 1 km。
+      // 3. 不让短线路显得很慢：播放速度最慢不超过 1 秒 / 1 km；
+      // 4. 不让长线路显得过快：播放速度最快不超过 2 km / 秒。
       var maxMeters=total;
       for(var i=0;i<lines.length;i++){
         var ln=lines[i];
@@ -1401,10 +1447,44 @@
       if(ratio<0)ratio=0;
       if(ratio>1)ratio=1;
       var byLongest=1000+ratio*5000;      // 最短约 1 秒，最长约 6 秒。
-      var bySpeedLimit=Math.max(1000,total/1000*1000); // 最慢 1 秒 / km，且至少 1 秒。
-      var ms=Math.min(6000,byLongest,bySpeedLimit);
+      var bySlowLimit=Math.max(1000,total/1000*1000); // 最慢 1 秒 / km，且至少 1 秒。
+      var byFastLimit=total/2;             // 最快 2 km / 秒，即每 2000 m 至少 1 秒。
+      var ms=Math.min(6000,byLongest,bySlowLimit);
       if(ms<1000)ms=1000;
+      if(ms<byFastLimit)ms=byFastLimit;
       return Math.round(ms);
+    }
+
+    function getDistanceTableBounds(pts){
+      if(!pts||!pts.length)return null;
+      var arr=[];
+      for(var i=0;i<pts.length;i++)arr.push([pts[i].lat,pts[i].lng]);
+      try{return L.latLngBounds(arr);}catch(e){return null;}
+    }
+
+    function shouldRunnerFollowLine(pts){
+      if(!map||!pts||pts.length<2)return false;
+      var b=getDistanceTableBounds(pts);
+      if(!b||!b.isValid||!b.isValid())return false;
+      try{
+        // 只判断当前地图实际可视经纬度范围，不改变缩放比例。
+        // 轨迹已经完整显示时，小人只移动；轨迹没有完整显示时，地图跟随小人平移。
+        return !map.getBounds().contains(b);
+      }catch(e){
+        return false;
+      }
+    }
+
+    function followRunnerPosition(pos,force){
+      if(!runnerFollowMap||!pos||!map)return;
+      var now=Date.now();
+      if(!force&&runnerLastPanTime&&now-runnerLastPanTime<90)return;
+      runnerLastPanTime=now;
+      try{
+        map.panTo(pos,{animate:false,noMoveStart:true});
+      }catch(e){
+        try{map.setView(pos,map.getZoom(),{animate:false});}catch(_e){}
+      }
     }
 
     function playRunnerOnLine(line){
@@ -1421,8 +1501,11 @@
       }
       runnerDurationMs=calcRunnerDurationMs(total);
       runnerActiveLine=line;
+      runnerFollowMap=shouldRunnerFollowLine(pts);
+      runnerLastPanTime=0;
       runnerMarker=L.marker([pts[0].lat,pts[0].lng],{icon:runnerIcon(),interactive:false,zIndexOffset:1200}).addTo(map);
       runnerStartTime=performance&&performance.now?performance.now():Date.now();
+      if(runnerFollowMap)followRunnerPosition(L.latLng(pts[0].lat,pts[0].lng),true);
       function step(now){
         if(runnerActiveLine!==line||!runnerMarker)return;
         now=now||(performance&&performance.now?performance.now():Date.now());
@@ -1430,7 +1513,10 @@
         if(ratio<0)ratio=0;
         if(ratio>1)ratio=1;
         var pos=pointOnDistanceTable(pts,total*ratio);
-        if(pos)runnerMarker.setLatLng(pos);
+        if(pos){
+          runnerMarker.setLatLng(pos);
+          followRunnerPosition(pos,ratio>=1);
+        }
         if(ratio<1){
           runnerAnimFrame=requestAnimationFrame(step);
         }else{
