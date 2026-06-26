@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YFxGeoStudio v20</title>
+  <title>YFxGeoStudio v22</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -120,7 +120,7 @@
     .run-btn { min-width: 36px; font-size: 16px; padding: 5px 10px; }
     .marker-label { background: rgba(18,24,30,.82); border: 1px solid rgba(255,255,255,.22); color: #fff; border-radius: 4px; padding: 2px 5px; font-size: 11px; line-height: 1.25; box-shadow: 0 2px 8px rgba(0,0,0,.28); white-space: nowrap; }
     .marker-label:before { display: none; }
-    @media (max-width: 760px) { #toolbar { left: 6px; right: 6px; transform: none; justify-content: flex-start; overflow-x: auto; gap: 3px; padding: 5px 6px; } #toolbar button { width: 32px; min-width: 32px; height: 32px; padding: 0 !important; display: inline-flex; align-items: center; justify-content: center; line-height: 1; font-size: 15px; border-radius: 7px; flex: 0 0 32px; } #toolbar button svg { display: block; margin: auto; } #toolbar .sep { display:none !important; } #toolbar select { height: 32px; padding: 0 5px; font-size: 12px; flex: 0 0 auto; } #side { top: auto; bottom: 36px; left: 8px; width: calc(100vw - 52px); min-width: 0; max-width: calc(100vw - 52px); max-height: 42vh; } #layerBox { bottom: 36px; right: 8px; width: 84px; } #status { font-size: 11px; gap: 8px; padding: 0 8px; } }
+    @media (max-width: 760px) { #toolbar { left: 50%; right: auto; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 12px); justify-content: center; overflow-x: auto; overflow-y: hidden; gap: 3px; padding: 5px 6px; } #toolbar button { width: 32px; min-width: 32px; height: 32px; padding: 0 !important; display: inline-flex; align-items: center; justify-content: center; line-height: 1; font-size: 15px; border-radius: 7px; flex: 0 0 32px; } #toolbar button svg { display: block; margin: auto; } #toolbar .sep { display:none !important; } #toolbar select { height: 32px; padding: 0 5px; font-size: 12px; flex: 0 0 auto; } #side { top: auto; bottom: 36px; left: 8px; width: calc(100vw - 52px); min-width: 0; max-width: calc(100vw - 52px); max-height: 42vh; } #layerBox { bottom: 36px; right: 8px; width: 84px; } #status { font-size: 11px; gap: 8px; padding: 0 8px; } }
     @media (max-width: 760px) and (orientation: portrait) { #side.side-collapsed { transform: translateX(calc(-100% + 42px)) !important; } #side.side-open { transform: translateX(0) !important; } #layerBox.layer-collapsed { transform: translateX(calc(100% - 30px)) !important; } #layerBox.layer-open { transform: translateX(0) !important; } }
     @media (max-width: 760px) and (orientation: landscape) { #layerBox { width: 82px; } #layerBox button.layer-choice { height: 24px; line-height: 24px; padding: 0 3px; font-size: 10px; } }
   
@@ -1134,30 +1134,30 @@
       var vh=window.innerHeight||document.documentElement.clientHeight||600;
       var portrait=vh>=vw;
       var mobile=vw<=760 || ('ontouchstart' in window && vw<=900);
-      var layout={width:620,maxWidth:'calc(100vw - 24px)',maxHeight:Math.max(220,Math.round(vh*0.56)),chartHeight:220,mode:'desktop'};
+      var layout={width:520,maxWidth:'calc(100vw - 24px)',maxHeight:Math.max(210,Math.round(vh*0.50)),chartHeight:170,mode:'desktop'};
       if(mobile&&portrait){
-        // 手机竖屏：放在右侧中部，宽度控制在屏幕 68% 左右，避免覆盖左下轨迹列表。
-        layout.width=Math.max(230,Math.min(320,Math.round(vw*0.68)));
+        // 手机竖屏：右侧紧凑显示，减少遮挡地图和左下轨迹列表。
+        layout.width=Math.max(220,Math.min(300,Math.round(vw*0.64)));
         layout.maxWidth='calc(100vw - 64px)';
-        layout.maxHeight=Math.max(190,Math.round(vh*0.42));
-        layout.chartHeight=Math.max(90,Math.min(130,Math.round(vh*0.14)));
+        layout.maxHeight=Math.max(175,Math.round(vh*0.36));
+        layout.chartHeight=Math.max(76,Math.min(108,Math.round(vh*0.12)));
         layout.mode='mobile-portrait';
       }else if(mobile){
-        // 手机横屏：右中显示，保留左侧轨迹列表空间。
-        layout.width=Math.max(320,Math.min(430,Math.round(vw*0.42)));
+        // 手机横屏：右中紧凑显示，保留更多地图区域。
+        layout.width=Math.max(300,Math.min(390,Math.round(vw*0.38)));
         layout.maxWidth='calc(100vw - 24px)';
-        layout.maxHeight=Math.max(190,Math.round(vh*0.62));
-        layout.chartHeight=Math.max(90,Math.min(150,Math.round(vh*0.22)));
+        layout.maxHeight=Math.max(175,Math.round(vh*0.56));
+        layout.chartHeight=Math.max(76,Math.min(120,Math.round(vh*0.18)));
         layout.mode='mobile-landscape';
       }else if(vw<1100){
-        layout.width=Math.max(440,Math.min(560,Math.round(vw*0.44)));
-        layout.maxHeight=Math.max(240,Math.round(vh*0.56));
-        layout.chartHeight=190;
+        layout.width=Math.max(390,Math.min(500,Math.round(vw*0.40)));
+        layout.maxHeight=Math.max(220,Math.round(vh*0.50));
+        layout.chartHeight=150;
         layout.mode='narrow-desktop';
       }else{
-        layout.width=Math.min(620,Math.round(vw*0.36));
-        layout.maxHeight=Math.max(280,Math.round(vh*0.58));
-        layout.chartHeight=220;
+        layout.width=Math.min(520,Math.round(vw*0.32));
+        layout.maxHeight=Math.max(250,Math.round(vh*0.52));
+        layout.chartHeight=170;
       }
       return layout;
     }
@@ -1288,10 +1288,16 @@
 
     function lineSummaryHtml(line){
       var st=lineStats(line),mk=countMarkPoints(line);
-      var h='<div style="font-size:13px;line-height:1.9;color:#d7e1ea">';
-      h+='<div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:4px">'+escapeHtml(line.name)+'</div>';
-      h+='<div>'+tr('distance')+'：'+(st.distance/1000).toFixed(2)+' km&nbsp;&nbsp; '+tr('gpsPoints')+'：'+st.gpsPoints+'&nbsp;&nbsp; '+tr('markPoints')+'：'+mk+'</div>';
-      h+='<div>'+tr('ascent')+'：'+st.ascent.toFixed(0)+' m&nbsp;&nbsp; '+tr('descent')+'：'+st.descent.toFixed(0)+' m&nbsp;&nbsp; '+tr('duration')+'：'+(st.elapsed>0?fmtDuration(st.elapsed):'-')+'</div>';
+      var dist=(st.distance/1000).toFixed(2)+' km';
+      var dur=st.elapsed>0?fmtDuration(st.elapsed):'-';
+      var h='<div style="font-size:12px;line-height:1.55;color:#d7e1ea;margin-top:4px">';
+      h+='<div style="display:flex;flex-wrap:wrap;gap:5px 8px;align-items:center">';
+      h+='<span title="'+tr('distance')+'">↔ '+dist+'</span>';
+      h+='<span title="'+tr('ascent')+'">↑ '+st.ascent.toFixed(0)+' m</span>';
+      h+='<span title="'+tr('descent')+'">↓ '+st.descent.toFixed(0)+' m</span>';
+      h+='<span title="'+tr('duration')+'">🕒 '+dur+'</span>';
+      if(mk>0)h+='<span title="'+tr('markPoints')+'">📍 '+mk+'</span>';
+      h+='</div>';
       h+='</div>';
       return h;
     }
@@ -1326,13 +1332,14 @@
       mask._oldBackground=mask.style.background;
       dlg.style.position='absolute';
       var lineInfoLayout=applyLineInfoLayout();
-      var h='<h2 id="lineInfoTitle" title="拖动此处移动窗口">'+(lang==='en'?'Track Info':'轨迹信息')+'</h2>';
+      var infoTitle=(lang==='en'?'Track Info':'轨迹信息')+'：'+escapeHtml(line.name||'');
+      var h='<h2 id="lineInfoTitle" title="拖动此处移动窗口" style="font-size:14px;line-height:1.25;margin:0 0 6px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+infoTitle+'</h2>';
       h+=lineSummaryHtml(line);
-      h+='<div style="margin-top:10px;border:1px solid rgba(255,255,255,.14);border-radius:6px;background:rgba(0,0,0,.18);padding:8px">';
-      h+='<canvas id="elevationCanvas" width="720" height="180" style="width:100%;height:180px;display:block;background:#101820;border-radius:4px"></canvas>';
-      h+='<div id="elevationHint" style="font-size:12px;color:#8899aa;margin-top:6px"></div>';
+      h+='<div style="margin-top:7px;border:1px solid rgba(255,255,255,.12);border-radius:5px;background:rgba(0,0,0,.18);padding:5px">';
+      h+='<canvas id="elevationCanvas" width="720" height="150" style="width:100%;height:150px;display:block;background:#101820;border-radius:4px"></canvas>';
+      h+='<div id="elevationHint" style="font-size:11px;color:#8899aa;margin-top:4px"></div>';
       h+='</div>';
-      h+='<div class="actions"><button class="run-btn" onclick="toggleRunnerForActiveLine()" title="'+(lang==='en'?'Play runner':'播放跑步小人')+'">🏃</button><button onclick="closeLineInfoDialog()">'+tr('close')+'</button></div>';
+      h+='<div class="actions" style="margin-top:7px"><button class="run-btn" onclick="toggleRunnerForActiveLine()" title="'+(lang==='en'?'Play runner':'播放跑步小人')+'">🏃</button><button onclick="closeLineInfoDialog()">'+tr('close')+'</button></div>';
       dlg.innerHTML=h;
       applyLineInfoLayout();
       mask.style.display='block';
