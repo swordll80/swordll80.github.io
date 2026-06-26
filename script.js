@@ -16,7 +16,9 @@
       { title: 'Web 小工具', target: 'tools-web' }
     ]},
     { title: '学习', children: [
-      { title: 'C/C++', target: 'learn-cpp' }
+      { title: '学习总览', target: 'learn-overview' },
+      { title: '编程笔记', target: 'learn-programming' },
+      { title: 'C/C++ 工程实践', target: 'learn-engineering' }
     ]},
     { title: '户外', children: [
       { title: '地图与轨迹', target: 'outdoor-map' }
@@ -134,7 +136,13 @@
     }
   });
 
-  MOBILE_QUERY.addEventListener('change', function () {
+  function handleMobileQueryChange() {
     if (localStorage.getItem(STORAGE_KEY) === null) setCollapsed(MOBILE_QUERY.matches, false);
-  });
+  }
+
+  if (MOBILE_QUERY.addEventListener) {
+    MOBILE_QUERY.addEventListener('change', handleMobileQueryChange);
+  } else if (MOBILE_QUERY.addListener) {
+    MOBILE_QUERY.addListener(handleMobileQueryChange);
+  }
 })();

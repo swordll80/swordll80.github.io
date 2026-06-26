@@ -12,7 +12,7 @@
   <div class="page-shell" id="pageShell">
     <header class="site-header">
       <div class="header-left">
-        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="显示或隐藏目录" aria-controls="sidebar">
+        <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="显示或隐藏目录" aria-controls="sidebar" aria-expanded="true">
           <span></span><span></span><span></span>
         </button>
         <a class="brand" href="#intro-home" data-nav-link>
@@ -33,6 +33,7 @@
       <aside class="sidebar" id="sidebar" aria-label="站点目录">
         <div class="sidebar-head">
           <strong>目录</strong>
+          <small>Navigation</small>
         </div>
         <nav class="nav-tree" id="navTree"></nav>
       </aside>
@@ -43,13 +44,29 @@
           <h1>简单、淡雅、一致的个人网站入口</h1>
           <p class="hero-text">这里集中放置个人简介、在线工具、技术学习笔记和户外地图内容。页面优先采用原生 HTML、CSS、JavaScript，保持轻量、快速、易维护。</p>
           <div class="hero-actions">
-            <a class="button primary" href="#tools-overview" data-nav-link>查看工具</a>
-            <a class="button" href="#outdoor-map" data-nav-link>户外地图</a>
+            <a class="button primary" href="tools/">打开工具导航</a>
+            <a class="button" href="programming/">查看编程笔记</a>
+            <a class="button" href="outdoors/">户外地图与轨迹</a>
           </div>
           <div class="feature-grid">
-            <article class="feature-card"><span class="svg-icon tool"></span><h3>工具集合</h3><p>收纳 GIS、KML、XML、AIDL 等在线工具入口。</p></article>
-            <article class="feature-card"><span class="svg-icon note"></span><h3>学习笔记</h3><p>整理 C/C++、Linux、Qt、Web 等长期可复用内容。</p></article>
-            <article class="feature-card"><span class="svg-icon map"></span><h3>户外地图</h3><p>保留徒步、骑行、轨迹与地图相关内容入口。</p></article>
+            <article class="feature-card">
+              <span class="svg-icon tool"></span>
+              <h3>工具集合</h3>
+              <p>收纳 GIS、KML、XML、JSON、编码转换等在线工具入口。</p>
+              <a class="text-link" href="tools/">进入工具导航 →</a>
+            </article>
+            <article class="feature-card">
+              <span class="svg-icon note"></span>
+              <h3>学习笔记</h3>
+              <p>整理 C/C++、Python、JavaScript、XML、JSON 等长期可复用内容。</p>
+              <a class="text-link" href="programming/">进入编程笔记 →</a>
+            </article>
+            <article class="feature-card">
+              <span class="svg-icon map"></span>
+              <h3>户外地图</h3>
+              <p>保留徒步、骑行、轨迹与地图相关内容入口。</p>
+              <a class="text-link" href="outdoors/">进入户外目录 →</a>
+            </article>
           </div>
         </section>
 
@@ -57,7 +74,10 @@
           <p class="eyebrow">About</p>
           <h2>关于本站</h2>
           <p>本站以“个人知识库 + 在线工具集合”为核心。设计重点不是复杂视觉，而是清晰入口、稳定访问和长期维护。</p>
-          <div class="plain-card"><h3>设计约束</h3><p>左侧目录保持一致；手机端可隐藏目录；目录状态自动保存；页面内容尽量轻量，避免不必要依赖。</p></div>
+          <div class="plain-card">
+            <h3>设计约束</h3>
+            <p>左侧目录保持一致；手机端可隐藏目录；目录状态自动保存；页面内容尽量轻量，避免不必要依赖。</p>
+          </div>
         </section>
 
         <section class="content-section" id="intro-projects" data-title="简介 / 项目方向">
@@ -66,7 +86,7 @@
           <div class="list-card">
             <a href="#tools-gis" data-nav-link><strong>GIS / 地图工具</strong><span>地图显示、轨迹处理、KML 合并编辑。</span></a>
             <a href="#tools-data" data-nav-link><strong>数据描述工具</strong><span>XML、ASN.1、Proto、AIDL 等结构转换与浏览。</span></a>
-            <a href="#learn-cpp" data-nav-link><strong>C/C++ 工程实践</strong><span>日志、异常、性能分析、编码规范。</span></a>
+            <a href="#learn-programming" data-nav-link><strong>C/C++ 工程实践</strong><span>日志、异常、性能分析、编码规范。</span></a>
           </div>
         </section>
 
@@ -78,6 +98,11 @@
             <a class="tool-card" href="#tools-data" data-nav-link><span class="svg-icon data"></span><strong>数据结构工具</strong><p>XML / ASN.1 / Proto / AIDL 转换与浏览。</p></a>
             <a class="tool-card" href="#tools-web" data-nav-link><span class="svg-icon web"></span><strong>Web 小工具</strong><p>面向浏览器的单文件轻量工具。</p></a>
           </div>
+          <div class="plain-card mt-24">
+            <h3>完整在线工具导航</h3>
+            <p>外部格式化、编码转换、图片处理、进制换算等工具统一放在工具导航页面中。</p>
+            <a class="button primary" href="tools/">打开工具导航</a>
+          </div>
         </section>
 
         <section class="content-section" id="tools-gis" data-title="工具 / GIS 与 KML">
@@ -86,7 +111,11 @@
           <div class="plain-card">
             <h3>KML 轨迹文件合并编辑工具</h3>
             <p>用于在线合并、查看和编辑 KML 轨迹文件。适合户外轨迹整理、路线规划与地图数据预处理。</p>
-            <a class="button primary" href="outdoors/YFxGeoStudio/YFxGeoStudio.html">打开工具</a>
+            <div class="card-actions">
+              <a class="button primary" href="outdoors/YFxGeoStudio/YFxGeoStudio.html">打开工具</a>
+              <a class="button" href="outdoors/YFxGeoStudio/YFxGeoStudioHelp.html">查看帮助</a>
+              <a class="button" href="outdoors/">进入户外目录</a>
+            </div>
           </div>
           <div class="plain-card">
             <h3>输电线路地图可视化</h3>
@@ -105,15 +134,43 @@
           <p class="eyebrow">Web Tools</p>
           <h2>Web 小工具</h2>
           <p>适合放置无需后端、可直接在浏览器本地运行的单文件工具。</p>
+          <div class="plain-card">
+            <h3>在线工具导航</h3>
+            <p>JSON、HTML、JavaScript、CSS、XML、URL、Base64、进制换算、图片处理等常用工具入口。</p>
+            <a class="button primary" href="tools/">打开工具导航</a>
+          </div>
         </section>
 
-        <section class="content-section" id="learn-cpp" data-title="学习 / C/C++">
+        <section class="content-section" id="learn-overview" data-title="学习 / 学习总览">
           <p class="eyebrow">Learning</p>
+          <h2>学习总览</h2>
+          <div class="tool-grid">
+            <a class="tool-card" href="programming/"><span class="svg-icon web"></span><strong>编程笔记</strong><p>C、C++、Python、JavaScript、XML、JSON 等知识速查。</p></a>
+            <a class="tool-card" href="education/"><span class="svg-icon note"></span><strong>教育与读书</strong><p>读书笔记、学习心得、教学思考等内容入口。</p></a>
+            <a class="tool-card" href="#learn-programming" data-nav-link><span class="svg-icon data"></span><strong>工程实践</strong><p>日志、异常、乱码调查、性能分析等模块化经验。</p></a>
+          </div>
+        </section>
+
+        <section class="content-section" id="learn-programming" data-title="学习 / 编程笔记">
+          <p class="eyebrow">Programming</p>
+          <h2>编程笔记</h2>
+          <div class="list-card">
+            <a href="programming/c.html"><strong>C 语言</strong><span>基础语法、指针、结构体、工程实践。</span></a>
+            <a href="programming/cpp.html"><strong>C++</strong><span>类、模板、STL、资源管理、现代 C++ 实践。</span></a>
+            <a href="programming/python.html"><strong>Python</strong><span>脚本、文件处理、自动化与数据处理。</span></a>
+            <a href="programming/js.html"><strong>JavaScript</strong><span>浏览器脚本、DOM、事件与单文件 Web 工具。</span></a>
+            <a href="programming/xml.html"><strong>XML</strong><span>结构化配置、解析、格式化与转换。</span></a>
+            <a href="programming/json.html"><strong>JSON</strong><span>数据交换、格式化、校验与常见用法。</span></a>
+          </div>
+        </section>
+
+        <section class="content-section" id="learn-engineering" data-title="学习 / C/C++ 工程实践">
+          <p class="eyebrow">Engineering</p>
           <h2>C/C++ 工程实践</h2>
           <div class="list-card">
-            <a href="#"><strong>日志模块</strong><span>统一格式、级别、线程安全、可追溯。</span></a>
-            <a href="#"><strong>异常输出模块</strong><span>崩溃栈、上下文、日志联动。</span></a>
-            <a href="#"><strong>性能分析模块</strong><span>高精度计时、阶段统计、Nsight Systems 辅助分析。</span></a>
+            <a href="programming/"><strong>日志模块</strong><span>统一格式、级别、线程安全、可追溯。</span></a>
+            <a href="programming/"><strong>异常输出模块</strong><span>崩溃栈、上下文、日志联动。</span></a>
+            <a href="programming/"><strong>性能分析模块</strong><span>高精度计时、阶段统计、Nsight Systems 辅助分析。</span></a>
           </div>
         </section>
 
@@ -121,9 +178,15 @@
           <p class="eyebrow">Outdoor</p>
           <h2>户外地图与轨迹</h2>
           <p>用于整理徒步、骑行、轨迹文件、离线地图缓存和路线规划相关内容。</p>
-          <div class="plain-card"><h3>轨迹工具入口</h3><p>后续可将户外相关工具统一挂到此处。</p><a class="button primary" href="outdoors/">进入户外目录</a></div>
+          <div class="plain-card">
+            <h3>轨迹工具入口</h3>
+            <p>户外相关工具统一挂到此处，目前包含 YFxGeoStudio 工具和帮助文档。</p>
+            <div class="card-actions">
+              <a class="button primary" href="outdoors/">进入户外目录</a>
+              <a class="button" href="outdoors/YFxGeoStudio/YFxGeoStudio.html">打开 YFxGeoStudio</a>
+            </div>
+          </div>
         </section>
-
       </main>
     </div>
 
