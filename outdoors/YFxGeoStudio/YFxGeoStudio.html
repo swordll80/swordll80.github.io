@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YFxGeoStudio</title>
+  <title>YFxGeoStudio v1</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -33,7 +33,12 @@
     .primary-action:active { transform: translateY(0); }
     .primary-action .ico { font-size: 16px; line-height: 1; }
     .primary-action .lbl { white-space: nowrap; }
-    #side { top: 12px; left: 46px; width: auto; min-width: 320px; max-width: calc(100vw - 24px); border-radius: 8px; padding: 12px; cursor: grab; user-select: none; }
+    #side { top: auto; bottom: 42px; left: 12px; width: auto; min-width: 320px; max-width: min(520px, calc(100vw - 24px)); max-height: 46vh; overflow: auto; border-radius: 8px; padding: 12px; cursor: grab; user-select: none; transition: transform .22s ease, opacity .18s ease; }
+    #side.side-collapsed { transform: translateX(calc(-100% + 44px)); opacity: .96; }
+    #side.side-open { transform: translateX(0); opacity: 1; }
+    #sideToggle { position: absolute; top: 8px; right: 8px; width: 30px; min-width: 30px; height: 30px; padding: 0; line-height: 28px; font-size: 15px; border-radius: 6px; z-index: 2; background: rgba(22,119,210,.72); }
+    #side.side-collapsed #sideToggle { right: 7px; background: rgba(22,119,210,.96); border-color: rgba(255,255,255,.32); box-shadow: 0 2px 10px rgba(0,0,0,.32); }
+    #side.side-collapsed h1, #side.side-collapsed #stats { pointer-events: none; }
     #side:active { cursor: grabbing; }
     #side.dragging * { pointer-events: none; }
     #side h1 { margin: 0 0 8px; font-size: 15px; font-weight: 650; letter-spacing: 0; cursor: grab; line-height: 1.35; white-space: pre-line; }
@@ -43,7 +48,7 @@
     #stats th { text-align: left; color: #8899aa; font-weight: 500; padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,.08); white-space: nowrap; }
     #stats td { padding: 3px 6px; border-bottom: 1px solid rgba(255,255,255,.05); white-space: nowrap; color: #c9d3dc; }
     #stats tr:hover td { background: rgba(255,255,255,.04); }
-    #stats tr.active td { background: rgba(74,163,255,.15); }
+    #stats tr.active td { background: rgba(22,119,210,.42); color:#fff; box-shadow: inset 3px 0 0 #4aa3ff; }
     #stats .line-name { max-width: 80px; overflow: hidden; text-overflow: ellipsis; cursor: pointer; color: #ffd23f; }
     #stats .line-name:hover { text-decoration: underline; }
     #stats .num { text-align: right; }
@@ -87,9 +92,19 @@
     .row-menu-item.danger { color: #ff8a8a; }
     .row-menu-item.danger:hover { background: rgba(229,57,53,.22); }
 
+    .line-popup-summary { color:#1f2933; font-size:13px; line-height:1.75; }
+    .line-popup-summary .title { color:#111827; font-size:15px; font-weight:700; margin-bottom:4px; }
+    #officialUrlDialog { position: fixed; inset: 0; z-index: 2200; display: none; align-items: center; justify-content: center; background: rgba(0,0,0,.46); padding: 16px; }
+    #officialUrlDialog .official-box { width: min(420px, calc(100vw - 32px)); border-radius: 10px; background: #17202a; color: #e7edf3; border: 1px solid rgba(255,255,255,.18); box-shadow: 0 18px 50px rgba(0,0,0,.42); padding: 16px; }
+    #officialUrlDialog .official-title { font-size: 16px; font-weight: 700; margin-bottom: 10px; }
+    #officialUrlDialog .official-msg { font-size: 13px; line-height: 1.75; color: #cfd8e3; word-break: break-all; }
+    #officialUrlDialog .official-link { color: #7cc4ff; text-decoration: underline; }
+    #officialUrlDialog .official-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:14px; }
+
     .marker-label { background: rgba(18,24,30,.82); border: 1px solid rgba(255,255,255,.22); color: #fff; border-radius: 4px; padding: 2px 5px; font-size: 11px; line-height: 1.25; box-shadow: 0 2px 8px rgba(0,0,0,.28); white-space: nowrap; }
     .marker-label:before { display: none; }
-    @media (max-width: 760px) { #toolbar { left: 8px; right: 8px; transform: none; justify-content: flex-start; } #side { top: 58px; width: calc(100vw - 24px); } #layerBox { bottom: 36px; } }
+    @media (max-width: 760px) { #toolbar { left: 8px; right: 8px; transform: none; justify-content: flex-start; overflow-x: auto; } #side { top: auto; bottom: 36px; left: 8px; width: calc(100vw - 52px); min-width: 0; max-width: calc(100vw - 52px); max-height: 42vh; } #layerBox { bottom: 36px; } #status { font-size: 11px; gap: 8px; padding: 0 8px; } }
+    @media (max-width: 760px) and (orientation: portrait) { #side.side-collapsed { transform: translateX(calc(-100% + 42px)) !important; } #side.side-open { transform: translateX(0) !important; } }
   
 
     /* ===== 日志窗口：错误自动弹出，不自动关闭，便于用户复制报错 ===== */
@@ -153,10 +168,10 @@
 	<button onclick="redo()" id="btnRedo" data-tip="redo">↪️</button><span class="sep"></span>
 	<select id="langSelect" onchange="setLang(this.value)"><option value="zh">中文</option><option value="en">English</option></select>
   </div>
-  <div id="side" class="panel"><h1><span data-i18n="appTitle">KML轨迹文件合并编辑工具by御风@户外</span>
+  <div id="side" class="panel"><button id="sideToggle" type="button" onclick="toggleSidePanel(event)" title="显示/隐藏轨迹列表">◀</button><h1><span data-i18n="appTitle">KML轨迹文件合并编辑工具by御风@户外</span>
 <span data-i18n="trackListLabel">轨迹列表:</span></h1><div id="stats"></div></div>
   <div id="layerBox" class="panel"><div class="title" data-i18n="mapLayer">地图</div><button id="layerGaode" class="active" onclick="switchLayer('gaode')">高德地形</button><button id="layerGoogle" onclick="switchLayer('google')">Google 地形</button></div>
-  <div id="status" class="panel"><span id="modeText">模式：浏览</span><span id="coordText">坐标：-</span><span id="zoomText">缩放：12</span><span id="fileText">文件：-</span></div><input id="fileInput" type="file" accept=".kml,application/vnd.google-earth.kml+xml" multiple style="display:none" onchange="handleFiles(this.files)"><div id="toast"></div>
+  <div id="status" class="panel"><span id="modeText">模式：浏览</span><span id="coordText">坐标：-</span><span id="zoomText">缩放：12</span><span id="fileText">文件：-</span></div><input id="fileInput" type="file" accept=".kml,.KML,application/vnd.google-earth.kml+xml,application/xml,text/xml,text/plain,application/octet-stream" multiple style="display:none" onclick="this.value=null" onchange="handleFiles(this.files)"><div id="toast"></div>
   <div id="dialogMask"><div id="dialog"><h2 id="dlgTitle">编辑</h2><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="name" style="min-width:96px;color:#b9c4cf;font-size:12px">名称</label><input id="dlgName" style="min-width:0;flex:1;border:1px solid rgba(255,255,255,.16);border-radius:6px;background:rgba(255,255,255,.08);padding:6px 8px"></div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="comment" style="min-width:96px;color:#b9c4cf;font-size:12px">备注</label><input id="dlgComment" style="min-width:0;flex:1;border:1px solid rgba(255,255,255,.16);border-radius:6px;background:rgba(255,255,255,.08);padding:6px 8px"></div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="iconStyle" style="min-width:96px;color:#b9c4cf;font-size:12px">图标</label><div id="dlgIcons" style="display:flex;gap:6px;flex-wrap:wrap"></div></div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label style="min-width:96px;color:#b9c4cf;font-size:12px">Lat</label><span id="dlgLat" style="min-width:0;flex:1;color:#8899aa;font-size:13px;padding:6px 8px">-</span></div><div class="row" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label style="min-width:96px;color:#b9c4cf;font-size:12px">Lng</label><span id="dlgLng" style="min-width:0;flex:1;color:#8899aa;font-size:13px;padding:6px 8px">-</span></div><div class="row" id="dlgAltRow" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="altitude" style="min-width:96px;color:#b9c4cf;font-size:12px">海拔</label><input id="dlgAlt" type="number" step="0.1" placeholder="m" style="min-width:0;flex:1;border:1px solid rgba(255,255,255,.16);border-radius:6px;background:rgba(255,255,255,.08);padding:6px 8px;color:#e0e6ed"></div><div class="row" id="dlgTimeRow" style="display:flex;align-items:center;gap:8px;margin:8px 0"><label data-i18n="time" style="min-width:96px;color:#b9c4cf;font-size:12px">时间</label><input id="dlgTime" type="datetime-local" style="min-width:0;flex:1;border:1px solid rgba(255,255,255,.16);border-radius:6px;background:rgba(255,255,255,.08);padding:6px 8px;color:#e0e6ed"></div><div class="actions"><button class="danger" onclick="deleteDialogTarget()" data-i18n="delete">删除</button><button onclick="closeDialog()" data-i18n="cancel">取消</button><button class="active" onclick="saveDialog()" data-i18n="save">保存</button></div></div></div>
   <div id="rowMenu" style="position:absolute;z-index:1500;display:none;min-width:140px;background:#17202a;border:1px solid rgba(255,255,255,.18);border-radius:6px;padding:4px 0;box-shadow:0 8px 24px rgba(0,0,0,.4);font-size:13px"></div>
 
@@ -173,6 +188,7 @@
     </div>
     <textarea id="logText" readonly spellcheck="false"></textarea>
   </div>
+  <div id="officialUrlDialog"><div class="official-box"><div class="official-title">当前页面有错误</div><div class="official-msg">请在线访问本工具：<br><a class="official-link" href="https://swordll80.github.io/outdoors/YFxGeoStudio/YFxGeoStudio.html" target="_blank" rel="noopener">https://swordll80.github.io/outdoors/YFxGeoStudio/YFxGeoStudio.html</a></div><div class="official-actions"><button type="button" onclick="closeOfficialUrlDialog()">关闭</button><button type="button" class="active" onclick="openOfficialUrl()">打开在线网页</button></div></div></div>
   <script>
     if (!window.L) { document.body.innerHTML = '<div style="padding:24px;color:#fff;background:#111">Leaflet 加载失败，请确认 leaflet1.9.4.js 和 leaflet1.9.4.css 在当前目录。</div>'; throw new Error('Leaflet missing'); }
 
@@ -282,7 +298,7 @@
     var spiderfyActive=null,spiderfyTimeout=null,spiderfySaved=[],spiderfyLines=[];
     var importedFilePaths=[];
     var gaodeBase=L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',{subdomains:'1234',maxZoom:18,attribution:'&copy; Amap'}),gaodeTerrain=L.tileLayer('https://tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,opacity:.42,attribution:'&copy; OpenTopoMap'}),googleTerrain=L.tileLayer('https://mt{s}.google.com/vt/lyrs=p&hl=zh-CN&x={x}&y={y}&z={z}',{subdomains:['0','1','2','3'],maxZoom:20,attribution:'&copy; Google'});
-    var map=L.map('map',{center:[30.598,114.305],zoom:12,doubleClickZoom:false,layers:[gaodeBase,gaodeTerrain]}),itemLayer=L.featureGroup().addTo(map),lineLayer=L.featureGroup().addTo(map),drawLayer=L.featureGroup().addTo(map),layerSets={gaode:[gaodeBase,gaodeTerrain],google:[googleTerrain]};
+    var map=L.map('map',{center:[30.598,114.305],zoom:12,zoomControl:false,doubleClickZoom:false,layers:[gaodeBase,gaodeTerrain]}),itemLayer=L.featureGroup().addTo(map),lineLayer=L.featureGroup().addTo(map),drawLayer=L.featureGroup().addTo(map),layerSets={gaode:[gaodeBase,gaodeTerrain],google:[googleTerrain]};
 
     // V20：通用编辑对话框模板。
     // 轨迹信息、帮助、线路编辑都会临时替换 #dialog 的内容；
@@ -330,6 +346,15 @@
     }
     function updateAllMarkerLabels(){for(var i=0;i<objects.length;i++)updateMarkerLabel(objects[i]);}
     function tr(k){return(I18N[lang]&&I18N[lang][k])||I18N.zh[k]||k;}
+    var _lastTapTarget=null,_lastTapTime=0;
+    function isMobileLike(){return ('ontouchstart' in window)||(navigator.maxTouchPoints&&navigator.maxTouchPoints>0);}
+    function isDoubleTapTarget(key){
+      if(!isMobileLike())return false;
+      var now=Date.now();
+      var yes=(_lastTapTarget===key && (now-_lastTapTime)<420);
+      _lastTapTarget=key;_lastTapTime=now;
+      return yes;
+    }
     function setLang(v){finishAndExitTrackMode(true);lang=v==='en'?'en':'zh';localStorage.setItem('yfx_lang',lang);document.documentElement.lang=lang==='zh'?'zh-CN':'en';applyLang();updateStats();setMode(mode);}
     function applyLang(){
       var tips=document.querySelectorAll('[data-tip]');
@@ -385,7 +410,7 @@
       var sd=document.getElementById('side'),dragging=false,moved=false,dx=0,dy=0,startX=0,startY=0,initLeft=0,initTop=0;
       sd.style.position='absolute';
       function onDown(e){
-        if(e.target.closest('button,td,tr,input,select,svg,a'))return;
+        if(e.target.closest('button,td,tr,input,select,svg,a')||sd.classList.contains('side-collapsed'))return;
         e.preventDefault();dragging=true;moved=false;
         var r=sd.getBoundingClientRect();
         initLeft=r.left;initTop=r.top;
@@ -407,6 +432,56 @@
       document.addEventListener('mousemove',onMove);
       document.addEventListener('mouseup',onUp);
     })();
+
+    var sideUserToggled=false;
+    function isMobilePortrait(){return window.matchMedia&&window.matchMedia('(max-width: 760px) and (orientation: portrait)').matches;}
+    function syncSideToggleText(){
+      var sd=document.getElementById('side');
+      var bt=document.getElementById('sideToggle');
+      if(bt&&sd){
+        var collapsed=sd.classList.contains('side-collapsed')&&!sd.classList.contains('side-open');
+        bt.textContent=collapsed?'▶':'◀';
+        bt.title=collapsed?'展开轨迹列表':'隐藏轨迹列表';
+      }
+    }
+    function setSideCollapsed(collapsed){
+      var sd=document.getElementById('side');
+      if(!sd)return;
+      if(collapsed){
+        sd.classList.add('side-collapsed');
+        sd.classList.remove('side-open');
+        sd.style.transform='translateX(calc(-100% + 42px))';
+      }else{
+        sd.classList.remove('side-collapsed');
+        sd.classList.add('side-open');
+        sd.style.transform='translateX(0)';
+      }
+      syncSideToggleText();
+    }
+    function updateSidePanelForScreen(){
+      var sd=document.getElementById('side');
+      if(!sd)return;
+      if(isMobilePortrait()){
+        if(!sideUserToggled&&!sd.classList.contains('side-open'))setSideCollapsed(true);
+      }else{
+        sd.classList.remove('side-collapsed');
+        sd.classList.remove('side-open');
+        sd.style.transform='';
+        sideUserToggled=false;
+        syncSideToggleText();
+      }
+    }
+    function toggleSidePanel(e){
+      if(e){e.preventDefault();e.stopPropagation();}
+      var sd=document.getElementById('side');
+      if(!sd)return;
+      sideUserToggled=true;
+      var collapsed=sd.classList.contains('side-collapsed')&&!sd.classList.contains('side-open');
+      setSideCollapsed(!collapsed);
+    }
+    window.addEventListener('resize',function(){updateSidePanelForScreen();if(dlgLineTarget)resizeActiveLineInfoDialog();});
+    window.addEventListener('orientationchange',function(){sideUserToggled=false;lineInfoDialogLastPos=null;setTimeout(function(){updateSidePanelForScreen();if(dlgLineTarget)resizeActiveLineInfoDialog();},250);});
+    setTimeout(updateSidePanelForScreen,0);
 
     // -- history --
     function snapshot(){var os=[],ls=[];for(var i=0;i<objects.length;i++){var o=objects[i],p=o.marker.getLatLng();os.push({id:o.id,kind:o.kind,name:o.name,icon:o.icon,description:o.description,sources:o.sources||[],lat:p.lat,lng:p.lng,alt:o.alt,ptype:o.ptype,comment:o.comment,time:o.time,sourceType:o.sourceType,lineId:o.lineId,draggable:o.draggable,pointIndex:o.pointIndex});}for(var j=0;j<lines.length;j++)ls.push({id:lines[j].id,name:lines[j].name,color:lines[j].color,startIcon:lines[j].startIcon,endIcon:lines[j].endIcon,_importedFile:lines[j]._importedFile||'',points:copyPoints(lines[j].points)});return{objects:os,lines:ls,file:document.getElementById('fileText').textContent,importedFilePaths:importedFilePaths.slice()};}
@@ -579,7 +654,7 @@
     map.on('contextmenu',function(e){if(mode==='track'){L.DomEvent.preventDefault(e.originalEvent);if(clickTimer){clearTimeout(clickTimer);clickTimer=null;}if(drawingLine.length>0){drawingLine.push({lat:e.latlng.lat,lng:e.latlng.lng});finishDrawingLine();}finishAndExitTrackMode(false);}});
 
     // -- hand-draw track --
-    function redrawDrawingLine(){drawLayer.clearLayers();for(var i=0;i<drawingLine.length;i++){L.circleMarker([drawingLine[i].lat,drawingLine[i].lng],{radius:6,color:'#ffd23f',weight:2,fillColor:'#ffd23f',fillOpacity:.65}).addTo(drawLayer);}if(drawingLine.length>1)L.polyline(drawingLine,{color:'#ffd23f',weight:4,dashArray:'7 5'}).addTo(drawLayer);}
+    function redrawDrawingLine(){drawLayer.clearLayers();for(var i=0;i<drawingLine.length;i++){L.circleMarker([drawingLine[i].lat,drawingLine[i].lng],{radius:8,color:'#111',weight:2,fillColor:'#ff3b30',fillOpacity:.96}).addTo(drawLayer);L.circleMarker([drawingLine[i].lat,drawingLine[i].lng],{radius:4,color:'#fff',weight:1,fillColor:'#fff',fillOpacity:.9}).addTo(drawLayer);}if(drawingLine.length>1)L.polyline(drawingLine,{color:'#ff3b30',weight:6,opacity:1,dashArray:'8 6'}).addTo(drawLayer);}
     function resetDrawingLine(){if(clickTimer){clearTimeout(clickTimer);clickTimer=null;}drawingLine=[];drawLayer.clearLayers();}
     function finishDrawingLine(){if(drawingLine.length<2){resetDrawingLine();toast(tr('need2'));return;}var name=nextName('line');var pts=simplifyPoints(drawingLine,10);var newLine=addLine({name:name,color:'#ffd23f',points:pts},false);for(var i=0;i<pts.length;i++){addObject({kind:'track',name:name+'-'+(i+1),icon:'redPin',lat:pts[i].lat,lng:pts[i].lng,source:'manual',draggable:true,pointIndex:i,lineId:newLine.id},true);}normalizeLinePointTypes(newLine);updateStats();updateAllMarkerLabels();resetDrawingLine();toast(tr('lineSaved')+pts.length+tr('points'));}
 
@@ -592,7 +667,7 @@
     function lineNameExists(n){for(var i=0;i<lines.length;i++)if(lines[i].name===n)return true;return false;}
 
     // -- objects (track points) --
-    function addObject(d,silent){var iconKey=d.icon||'redPin',cssClass=ICON_PINS[iconKey]||'pin-red';var o={id:d.id||('o'+Date.now()+'_'+Math.floor(Math.random()*100000)),kind:'track',name:d.name||nextName('track'),icon:iconKey,description:d.description||'',sources:d.sources||(d.source?[d.source]:[]),marker:null,alt:d.alt!=null?+d.alt:null,ptype:d.ptype||'',comment:d.comment||'',time:d.time!=null?+d.time:null,sourceType:d.sourceType||'manual',lineId:d.lineId||null,draggable:!!d.draggable,pointIndex:d.pointIndex!=null?d.pointIndex:null};o.marker=L.marker([d.lat,d.lng],{icon:pinIcon(cssClass),draggable:!!d.draggable,bubblingMouseEvents:false});o.marker._yfx=o;o.marker.bindPopup('');o.marker.on('click',function(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);}updatePopup(o);o.marker.openPopup();});o.marker.on('contextmenu',function(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);openDialog(o);});o.marker.on('mouseover',function(){if(spiderfyActive)return;handleMarkerHover(o.marker);});o.marker.on('mouseout',function(){handleMarkerOut();});if(o.draggable){o.marker.on('dragstart',function(){pushHistory();});o.marker.on('drag',function(){onTrackMarkerDrag(o);});o.marker.on('dragend',function(){onTrackMarkerDragEnd(o);});}itemLayer.addLayer(o.marker);objects.push(o);updateMarkerLabel(o);if(!silent){updatePopup(o);updateStats();}return o;}
+    function addObject(d,silent){var iconKey=d.icon||'redPin',cssClass=ICON_PINS[iconKey]||'pin-red';var o={id:d.id||('o'+Date.now()+'_'+Math.floor(Math.random()*100000)),kind:'track',name:d.name||nextName('track'),icon:iconKey,description:d.description||'',sources:d.sources||(d.source?[d.source]:[]),marker:null,alt:d.alt!=null?+d.alt:null,ptype:d.ptype||'',comment:d.comment||'',time:d.time!=null?+d.time:null,sourceType:d.sourceType||'manual',lineId:d.lineId||null,draggable:!!d.draggable,pointIndex:d.pointIndex!=null?d.pointIndex:null};o.marker=L.marker([d.lat,d.lng],{icon:pinIcon(cssClass),draggable:!!d.draggable,bubblingMouseEvents:false});o.marker._yfx=o;o.marker.bindPopup('');o.marker.on('click',function(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);}if(isDoubleTapTarget('marker:'+o.id)){openDialog(o);return;}updatePopup(o);o.marker.openPopup();});o.marker.on('dblclick',function(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}openDialog(o);});o.marker.on('contextmenu',function(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);openDialog(o);});o.marker.on('mouseover',function(){if(spiderfyActive)return;handleMarkerHover(o.marker);});o.marker.on('mouseout',function(){handleMarkerOut();});if(o.draggable){o.marker.on('dragstart',function(){pushHistory();});o.marker.on('drag',function(){onTrackMarkerDrag(o);});o.marker.on('dragend',function(){onTrackMarkerDragEnd(o);});}itemLayer.addLayer(o.marker);objects.push(o);updateMarkerLabel(o);if(!silent){updatePopup(o);updateStats();}return o;}
     // 构造节点弹窗。
     // 设计原则：
     //   1. 轨迹采样点已经在 description/comment 中有经纬度/海拔/时间时，不再重复显示顶部坐标、海拔、时间；
@@ -777,7 +852,7 @@
     function onTrackMarkerDragEnd(o){if(o.lineId==null||o.pointIndex==null)return;updatePopup(o);updateStats();var selLine=null;selectedLines.forEach(function(sl){if(sl.id===o.lineId)selLine=sl;});if(selLine){bindLinePopup(selLine);}}
 
     // -- lines --
-    function addLine(d,silent){var line={id:d.id||('l'+Date.now()+'_'+Math.floor(Math.random()*100000)),name:d.name||nextName('line'),color:d.color||'#ffd23f',points:copyPoints(d.points||[]),polyline:null,hitPolyline:null,startIcon:d.startIcon||'',endIcon:d.endIcon||'',startMarker:null,endMarker:null};line.polyline=L.polyline(line.points,{color:line.color,weight:4,opacity:.9,className:'track-line'}).addTo(lineLayer);line.polyline._yfxLine=line;line.hitPolyline=L.polyline(line.points,{color:'#000',weight:18,opacity:0,className:'track-hit-line',interactive:true}).addTo(lineLayer);line.hitPolyline._yfxLine=line;function onLineClick(e){
+    function addLine(d,silent){var line={id:d.id||('l'+Date.now()+'_'+Math.floor(Math.random()*100000)),name:d.name||nextName('line'),color:d.color||'#ffd23f',points:copyPoints(d.points||[]),polyline:null,hitPolyline:null,startIcon:d.startIcon||'',endIcon:d.endIcon||'',startMarker:null,endMarker:null};line.polyline=L.polyline(line.points,{color:line.color,weight:4,opacity:.9,className:'track-line'}).addTo(lineLayer);line.polyline._yfxLine=line;line.hitPolyline=L.polyline(line.points,{color:'#000',weight:22,opacity:0,className:'track-hit-line',interactive:true}).addTo(lineLayer);line.hitPolyline._yfxLine=line;function onLineClick(e){
         if(mode==='track')return;
         // 防止同一次鼠标事件继续冒泡到 map.click，导致刚选中的轨迹又被 deselectLine 清掉。
         if(e&&e.originalEvent){
@@ -785,8 +860,9 @@
           L.DomEvent.stopPropagation(e.originalEvent);
           L.DomEvent.preventDefault(e.originalEvent);
         }
+        if(isDoubleTapTarget('line:'+line.id)){openLineDialog(line);return;}
         selectLine(line,e&&e.latlng?e.latlng:null,false,'map');
-      }function onLineContext(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);if(e&&e.originalEvent)L.DomEvent.stop(e.originalEvent);openLineDialog(line);}line.polyline.on('click',onLineClick);line.hitPolyline.on('click',onLineClick);line.polyline.on('contextmenu',onLineContext);line.hitPolyline.on('contextmenu',onLineContext);lines.push(line);updateLineStartEndMarkers(line);updateStats();return line;}
+      }function onLineContext(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);if(e&&e.originalEvent)L.DomEvent.stop(e.originalEvent);openLineDialog(line);}function onLineDblClick(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}openLineDialog(line);}line.polyline.on('click',onLineClick);line.hitPolyline.on('click',onLineClick);line.polyline.on('dblclick',onLineDblClick);line.hitPolyline.on('dblclick',onLineDblClick);line.polyline.on('contextmenu',onLineContext);line.hitPolyline.on('contextmenu',onLineContext);lines.push(line);updateLineStartEndMarkers(line);updateStats();return line;}
     function removeLine(line){selectedLines.delete(line);if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}if(line.polyline)lineLayer.removeLayer(line.polyline);if(line.hitPolyline)lineLayer.removeLayer(line.hitPolyline);for(var i=lines.length-1;i>=0;i--)if(lines[i]===line)lines.splice(i,1);var removedFileName=line._importedFile||null;for(var k=objects.length-1;k>=0;k--){var oo=objects[k];if(oo.lineId===line.id){if(oo.marker)itemLayer.removeLayer(oo.marker);if(!removedFileName&&oo.sources&&oo.sources.length)removedFileName=oo.sources[0];objects.splice(k,1);}}for(var fn=importedFilePaths.length-1;fn>=0;fn--){var fname=importedFilePaths[fn];var stillUsed=false;for(var oi=0;oi<objects.length;oi++){var sArr=objects[oi].sources||[];if(sArr.indexOf(fname)>=0){stillUsed=true;break;}}if(!stillUsed){for(var li=0;li<lines.length;li++){if(lines[li]._importedFile===fname){stillUsed=true;break;}}if(!stillUsed)importedFilePaths.splice(fn,1);}}var txt=document.getElementById('fileText');if(txt&&removedFileName){var cur=txt.textContent||'';var prefix=tr('file')+'：';if(cur.indexOf(removedFileName)>=0){var parts=cur.replace(prefix,'').split(',').map(function(s){return s.trim();}).filter(function(s){return s&&s!==removedFileName;});txt.textContent=parts.length?prefix+parts.join(', '):prefix+tr('none');}}updateStats();}
     function updateLineStartEndMarkers(line){if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}if(line.points.length>0&&line.startIcon){line.startMarker=L.marker(line.points[0],{icon:pinIcon(ICON_PINS[line.startIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}if(line.points.length>0&&line.endIcon){line.endMarker=L.marker(line.points[line.points.length-1],{icon:pinIcon(ICON_PINS[line.endIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}}
     function lineStats(line){var dist=0,up=0,down=0,elapsed=0,gpsPts=line.points.length;for(var i=1;i<line.points.length;i++){dist+=distanceMeters(line.points[i-1].lat,line.points[i-1].lng,line.points[i].lat,line.points[i].lng);var dh=(line.points[i].alt||0)-(line.points[i-1].alt||0);if(dh>0)up+=dh;else down-=dh;}var tm=lineTimeRange(line);if(tm.min!=null&&tm.max!=null&&tm.max>tm.min)elapsed=(tm.max-tm.min)/1000;return{distance:dist,ascent:up,descent:down,elapsed:elapsed,gpsPoints:gpsPts};}
@@ -941,13 +1017,69 @@
       }
     }
 
-    function placeLineInfoDialog(line){
+    function getLineInfoLayout(){
+      var vw=window.innerWidth||document.documentElement.clientWidth||800;
+      var vh=window.innerHeight||document.documentElement.clientHeight||600;
+      var portrait=vh>=vw;
+      var mobile=vw<=760 || ('ontouchstart' in window && vw<=900);
+      var layout={width:760,maxWidth:'calc(100vw - 16px)',maxHeight:Math.max(220,Math.round(vh*0.58)),chartHeight:240,mode:'desktop'};
+      if(mobile&&portrait){
+        layout.width=Math.max(280,vw-16);
+        layout.maxWidth='calc(100vw - 16px)';
+        layout.maxHeight=Math.max(210,Math.round(vh*0.36));
+        layout.chartHeight=Math.max(100,Math.min(150,Math.round(vh*0.16)));
+        layout.mode='mobile-portrait';
+      }else if(mobile){
+        layout.width=Math.max(340,Math.min(460,Math.round(vw*0.46)));
+        layout.maxWidth='calc(100vw - 16px)';
+        layout.maxHeight=Math.max(220,Math.round(vh*0.62));
+        layout.chartHeight=Math.max(110,Math.min(170,Math.round(vh*0.24)));
+        layout.mode='mobile-landscape';
+      }else if(vw<1100){
+        layout.width=Math.max(520,Math.min(680,Math.round(vw*0.52)));
+        layout.maxHeight=Math.max(260,Math.round(vh*0.58));
+        layout.chartHeight=210;
+        layout.mode='narrow-desktop';
+      }else{
+        layout.width=Math.min(760,Math.round(vw*0.46));
+        layout.maxHeight=Math.max(300,Math.round(vh*0.62));
+        layout.chartHeight=240;
+      }
+      return layout;
+    }
+
+    function applyLineInfoLayout(){
+      var dlg=document.getElementById('dialog');
+      if(!dlg)return getLineInfoLayout();
+      var layout=getLineInfoLayout();
+      dlg.style.width=layout.width+'px';
+      dlg.style.maxWidth=layout.maxWidth;
+      dlg.style.maxHeight=layout.maxHeight+'px';
+      dlg.style.overflow='auto';
+      var canvas=document.getElementById('elevationCanvas');
+      if(canvas){
+        canvas.style.height=layout.chartHeight+'px';
+        canvas.height=layout.chartHeight;
+        canvas.width=Math.max(300,Math.min(720,layout.width-40));
+      }
+      return layout;
+    }
+
+    function resizeActiveLineInfoDialog(){
+      if(!dlgLineTarget)return;
+      applyLineInfoLayout();
+      placeLineInfoDialog(dlgLineTarget,true);
+      drawElevationChart(dlgLineTarget);
+    }
+
+    function placeLineInfoDialog(line,keepLastPos){
       var dlg=document.getElementById('dialog');
       if(!dlg||!line||!line.polyline)return;
 
+      var layout=applyLineInfoLayout();
       var rect=dlg.getBoundingClientRect();
-      var dlgW=rect.width||760;
-      var dlgH=rect.height||420;
+      var dlgW=rect.width||layout.width||520;
+      var dlgH=rect.height||layout.maxHeight||300;
 
       // V12：如果用户拖拽过或上一次已经显示过轨迹信息框，切换轨迹时复用上一次位置。
       // 这样不会每次都回到“轨迹下方”的默认位置。
@@ -960,17 +1092,22 @@
         return;
       }
 
-      // V19：轨迹信息框默认放在地图右下区域，但避开右下角地图切换模块。
-      // 只有用户拖拽过或已经显示过一次后，才继续复用 lineInfoDialogLastPos。
-      var margin=12;
-      var rightPanel=document.getElementById('layerBox');
-      var bottomLimit=window.innerHeight-36; // 避开底部状态栏
-      if(rightPanel){
-        var lr=rightPanel.getBoundingClientRect();
-        if(lr&&isFinite(lr.top)&&lr.top>0)bottomLimit=Math.min(bottomLimit,lr.top-margin);
+      // V3：根据屏幕宽高和横竖屏自动选择信息框尺寸与默认位置，减少对地图的遮挡。
+      var margin=8;
+      var left,top;
+      if(layout.mode==='mobile-portrait'){
+        left=margin;
+        top=Math.max(margin,window.innerHeight-dlgH-36-margin);
+      }else{
+        var rightPanel=document.getElementById('layerBox');
+        var bottomLimit=window.innerHeight-36; // 避开底部状态栏
+        if(rightPanel){
+          var lr=rightPanel.getBoundingClientRect();
+          if(lr&&isFinite(lr.top)&&lr.top>0&&layout.mode!=='mobile-landscape')bottomLimit=Math.min(bottomLimit,lr.top-margin);
+        }
+        left=Math.round(window.innerWidth-dlgW-margin);
+        top=Math.round(bottomLimit-dlgH);
       }
-      var left=Math.round(window.innerWidth-dlgW-margin);
-      var top=Math.round(bottomLimit-dlgH);
       left=Math.max(8,Math.min(left,window.innerWidth-dlgW-8));
       top=Math.max(8,Math.min(top,window.innerHeight-dlgH-36));
       dlg.style.left=left+'px';
@@ -1021,10 +1158,19 @@
       h+='</div>';
       return h;
     }
+    function linePopupSummaryHtml(line){
+      var st=lineStats(line),mk=countMarkPoints(line);
+      var h='<div class="line-popup-summary">';
+      h+='<div class="title">'+escapeHtml(line.name)+'</div>';
+      h+='<div>'+tr('distance')+'：'+(st.distance/1000).toFixed(2)+' km&nbsp;&nbsp; '+tr('gpsPoints')+'：'+st.gpsPoints+'&nbsp;&nbsp; '+tr('markPoints')+'：'+mk+'</div>';
+      h+='<div>'+tr('ascent')+'：'+st.ascent.toFixed(0)+' m&nbsp;&nbsp; '+tr('descent')+'：'+st.descent.toFixed(0)+' m&nbsp;&nbsp; '+tr('duration')+'：'+(st.elapsed>0?fmtDuration(st.elapsed):'-')+'</div>';
+      h+='</div>';
+      return h;
+    }
 
     function bindLinePopup(line){
-      // 多选时仍保留小 popup；单选时 V9 使用带海拔曲线的对话框。
-      line.polyline.bindPopup(lineSummaryHtml(line));
+      // 多选时仍保留小 popup；单选主信息使用深色对话框，Leaflet 小 popup 使用浅底深字。
+      line.polyline.bindPopup(linePopupSummaryHtml(line));
     }
 
     function showLineInfoDialog(line){
@@ -1041,17 +1187,17 @@
       mask._oldAlignItems=mask.style.alignItems;
       mask._oldJustifyContent=mask.style.justifyContent;
       mask._oldBackground=mask.style.background;
-      dlg.style.width='760px';
-      dlg.style.maxWidth='calc(100vw - 16px)';
       dlg.style.position='absolute';
+      var lineInfoLayout=applyLineInfoLayout();
       var h='<h2 id="lineInfoTitle" title="拖动此处移动窗口">'+tr('line')+'</h2>';
       h+=lineSummaryHtml(line);
       h+='<div style="margin-top:10px;border:1px solid rgba(255,255,255,.14);border-radius:6px;background:rgba(0,0,0,.18);padding:8px">';
-      h+='<canvas id="elevationCanvas" width="720" height="260" style="width:100%;height:260px;display:block;background:#101820;border-radius:4px"></canvas>';
+      h+='<canvas id="elevationCanvas" width="720" height="180" style="width:100%;height:180px;display:block;background:#101820;border-radius:4px"></canvas>';
       h+='<div id="elevationHint" style="font-size:12px;color:#8899aa;margin-top:6px"></div>';
       h+='</div>';
       h+='<div class="actions"><button onclick="closeLineInfoDialog()">'+tr('close')+'</button></div>';
       dlg.innerHTML=h;
+      applyLineInfoLayout();
       mask.style.display='block';
       mask.style.alignItems='';
       mask.style.justifyContent='';
@@ -1074,6 +1220,8 @@
       dlg.style.left=dlg._oldLeft||'';
       dlg.style.top=dlg._oldTop||'';
       dlg.style.maxWidth=dlg._oldMaxWidth||'';
+      dlg.style.maxHeight='';
+      dlg.style.overflow='';
       dlg.style.pointerEvents='';
       if(mask){
         mask.style.alignItems=mask._oldAlignItems||'';
@@ -1215,8 +1363,20 @@
     function pickLineIconend(key){dlgLineEndIcon=key;renderLineIconPicker('dlgLineEndIcons',key,'end');}
 
     // -- import / export --
-    function openImport(){finishAndExitTrackMode(true);document.getElementById('fileInput').click();}
-    function handleFiles(files){if(!files||!files.length)return;logInfo('开始导入 KML 文件，数量：'+files.length);pushHistory();var totalAdded=0,skipped=0,i=0,names=[];function next(){if(i>=files.length){document.getElementById('fileInput').value='';document.getElementById('fileText').textContent=tr('file')+'：'+names.join(', ');var msg=tr('imported')+'：'+totalAdded;if(skipped>0)msg+='，'+tr('skipped')+' '+tr('duplicate')+'：'+skipped;toast(msg);fitData();return;}var f=files[i++];if(importedFilePaths.indexOf(f.name)>=0){skipped++;logWarn(tr('alreadyImported')+'：'+f.name);console.log(tr('alreadyImported')+'：'+f.name);next();return;}var r=new FileReader();r.onload=function(e){try{var added=importKmlText(e.target.result,f.name);logInfo('导入完成：'+f.name+'，新增对象/轨迹数量：'+added);totalAdded+=added;names.push(f.name);importedFilePaths.push(f.name);}catch(err){console.error('KML 导入失败：'+f.name, err);toast(tr('importFailed')+'：'+f.name);}next();};r.readAsText(f,'utf-8');}next();}
+    function openImport(){
+      finishAndExitTrackMode(true);
+      // iPhone/Android 兼容：动态创建 input，accept 同时允许多种 KML MIME；实际仍按文件名 .kml 忽略大小写过滤。
+      var input=document.createElement('input');
+      input.type='file';
+      input.multiple=true;
+      input.accept='.kml,.KML,application/vnd.google-earth.kml+xml,application/xml,text/xml,text/plain,application/octet-stream';
+      input.style.position='fixed';input.style.left='-9999px';input.style.top='-9999px';
+      input.onchange=function(){handleFiles(input.files);setTimeout(function(){if(input&&input.parentNode)input.parentNode.removeChild(input);},0);};
+      document.body.appendChild(input);
+      input.click();
+    }
+    function isKmlFile(f){return !!(f&&f.name&&/\.kml$/i.test(f.name));}
+    function handleFiles(files){if(!files||!files.length)return;var arr=[];for(var fi=0;fi<files.length;fi++){if(isKmlFile(files[fi]))arr.push(files[fi]);else logWarn('非 KML 文件已跳过：'+(files[fi]&&files[fi].name?files[fi].name:'unknown'));}if(!arr.length){toast('请选择 .kml 文件');return;}logInfo('开始导入 KML 文件，数量：'+arr.length);pushHistory();var totalAdded=0,skipped=0,i=0,names=[];function next(){if(i>=arr.length){var old=document.getElementById('fileInput');if(old)old.value='';document.getElementById('fileText').textContent=tr('file')+'：'+(names.length?names.join(', '):tr('none'));var msg=tr('imported')+'：'+totalAdded;if(skipped>0)msg+='，'+tr('skipped')+' '+tr('duplicate')+'：'+skipped;toast(msg);fitData();return;}var f=arr[i++];if(importedFilePaths.indexOf(f.name)>=0){skipped++;logWarn(tr('alreadyImported')+'：'+f.name);console.log(tr('alreadyImported')+'：'+f.name);next();return;}var r=new FileReader();r.onload=function(e){try{var added=importKmlText(e.target.result,f.name);logInfo('导入完成：'+f.name+'，新增对象/轨迹数量：'+added);totalAdded+=added;names.push(f.name);importedFilePaths.push(f.name);}catch(err){console.error('KML 导入失败：'+f.name, err);toast(tr('importFailed')+'：'+f.name);}next();};r.onerror=function(){logError('读取文件失败：'+f.name);toast('读取文件失败：'+f.name);next();};r.readAsText(f,'utf-8');}next();}
     /*
      * KML 兼容导入/导出层
      * ------------------------------------------------------------
@@ -1876,8 +2036,34 @@
       return n + '-' + i;
     }
 
+    var OFFICIAL_EXPORT_URL='https://swordll80.github.io/outdoors/YFxGeoStudio/YFxGeoStudio.html';
+    function isOfficialExportPage(){
+      var href=String(window.location.href||'').split('#')[0].split('?')[0];
+      return href===OFFICIAL_EXPORT_URL;
+    }
+    function openOfficialUrl(){
+      try{ window.open(OFFICIAL_EXPORT_URL,'_blank','noopener'); }
+      catch(e){ window.location.href=OFFICIAL_EXPORT_URL; }
+    }
+    function closeOfficialUrlDialog(){
+      var d=document.getElementById('officialUrlDialog');
+      if(d)d.style.display='none';
+    }
+    function showOfficialUrlDialog(){
+      var d=document.getElementById('officialUrlDialog');
+      if(d)d.style.display='flex';
+      else alert('当前页面有错误，请在线访问本工具 '+OFFICIAL_EXPORT_URL);
+    }
+    function assertOfficialExportPage(){
+      if(isOfficialExportPage())return true;
+      logWarn('导出 KML 被拒绝：当前页面地址不是在线正式地址。');
+      showOfficialUrlDialog();
+      return false;
+    }
+
     function exportKml(){
       finishAndExitTrackMode(true);
+      if(!assertOfficialExportPage())return false;
       logInfo('执行合并导出 KML：lines='+lines.length+', objects='+objects.length);
       if(!objects.length&&!lines.length){toast(tr('noData'));return false;}
       try{
@@ -1899,6 +2085,7 @@
     }
     function exportSelectedKml(){
       finishAndExitTrackMode(true);
+      if(!assertOfficialExportPage())return false;
       var arr=Array.from(selectedLines);
       if(!arr.length){toast(tr('noData'));return false;}
       try{
@@ -1931,12 +2118,22 @@
     // -- clear --
     function clearAll(){finishAndExitTrackMode(true);if(!confirm(tr('confirmClear')))return;pushHistory();closeLineInfoDialog();closeMarkerInfoDialog();clearRuntime();document.getElementById('fileText').textContent=tr('file')+'：'+tr('none');updateStats();}
     function fitData(){if(!objects.length&&!lines.length)return;try{var g=L.featureGroup();itemLayer.eachLayer(function(l){g.addLayer(l);});lineLayer.eachLayer(function(l){g.addLayer(l);});map.fitBounds(g.getBounds(),{padding:[36,36],maxZoom:16});}catch(e){}}
-    function updateStats(){if(!lines.length){document.getElementById('stats').innerHTML='<div class="no-data">'+tr('noData')+'</div>';selectedLines.clear();refreshExportBtnLabel();return;}var h='<table><thead><tr><th>'+tr('line')+'</th><th class="num">'+tr('markPoints')+'</th><th class="num">'+tr('distance')+'</th><th class="num">'+tr('ascent')+'</th><th class="num">'+tr('descent')+'</th><th class="num">'+tr('duration')+'</th></tr></thead><tbody>';var totalKm=0,totalUp=0,totalDown=0,totalElapsed=0,totalMark=0;for(var i=0;i<lines.length;i++){var st=lineStats(lines[i]),mk=countMarkPoints(lines[i]);totalKm+=st.distance;totalUp+=st.ascent;totalDown+=st.descent;totalElapsed+=st.elapsed;totalMark+=mk;h+='<tr data-lid="'+lines[i].id+'" onclick="selectLineById(\''+lines[i].id+'\',event.ctrlKey||event.metaKey)" oncontextmenu="showLineRowMenu(event,\''+lines[i].id+'\')"><td class="line-name" title="'+escapeHtml(lines[i].name)+'">'+escapeHtml(lines[i].name)+'</td><td class="num">'+mk+'</td><td class="num">'+(st.distance/1000).toFixed(2)+' km</td><td class="num">'+st.ascent.toFixed(0)+' m</td><td class="num">'+st.descent.toFixed(0)+' m</td><td class="num">'+(st.elapsed>0?fmtDuration(st.elapsed):'-')+'</td></tr>';}h+='</tbody><tfoot><tr style="border-top:1px solid rgba(255,255,255,.15);font-weight:600;color:#fff"><td>'+tr('total')+'</td><td class="num">'+totalMark+'</td><td class="num">'+(totalKm/1000).toFixed(2)+' km</td><td class="num">'+totalUp.toFixed(0)+' m</td><td class="num">'+totalDown.toFixed(0)+' m</td><td class="num">'+(totalElapsed>0?fmtDuration(totalElapsed):'-')+'</td></tr></tfoot></table>';document.getElementById('stats').innerHTML=h;if(selectedLines.size>0)highlightSelectedRows();refreshExportBtnLabel();}
+    function updateStats(){if(!lines.length){document.getElementById('stats').innerHTML='<div class="no-data">'+tr('noData')+'</div>';selectedLines.clear();refreshExportBtnLabel();return;}var h='<table><thead><tr><th>'+tr('line')+'</th><th class="num">'+tr('markPoints')+'</th><th class="num">'+tr('distance')+'</th><th class="num">'+tr('ascent')+'</th><th class="num">'+tr('descent')+'</th><th class="num">'+tr('duration')+'</th></tr></thead><tbody>';var totalKm=0,totalUp=0,totalDown=0,totalElapsed=0,totalMark=0;for(var i=0;i<lines.length;i++){var st=lineStats(lines[i]),mk=countMarkPoints(lines[i]);totalKm+=st.distance;totalUp+=st.ascent;totalDown+=st.descent;totalElapsed+=st.elapsed;totalMark+=mk;h+='<tr data-lid="'+lines[i].id+'" onclick="selectLineById(\''+lines[i].id+'\',event.ctrlKey||event.metaKey)" oncontextmenu="showLineRowMenu(event,\''+lines[i].id+'\')"><td class="line-name" title="'+escapeHtml(lines[i].name)+'">'+escapeHtml(lines[i].name)+'</td><td class="num">'+mk+'</td><td class="num">'+(st.distance/1000).toFixed(2)+' km</td><td class="num">'+st.ascent.toFixed(0)+' m</td><td class="num">'+st.descent.toFixed(0)+' m</td><td class="num">'+(st.elapsed>0?fmtDuration(st.elapsed):'-')+'</td></tr>';}h+='</tbody><tfoot><tr style="border-top:1px solid rgba(255,255,255,.15);font-weight:600;color:#fff"><td>'+tr('total')+'</td><td class="num">'+totalMark+'</td><td class="num">'+(totalKm/1000).toFixed(2)+' km</td><td class="num">'+totalUp.toFixed(0)+' m</td><td class="num">'+totalDown.toFixed(0)+' m</td><td class="num">'+(totalElapsed>0?fmtDuration(totalElapsed):'-')+'</td></tr></tfoot></table>';document.getElementById('stats').innerHTML=h;bindStatsRows();if(selectedLines.size>0)highlightSelectedRows();refreshExportBtnLabel();}
+
+    function bindStatsRows(){
+      var rows=document.querySelectorAll('#stats tr[data-lid]');
+      for(var i=0;i<rows.length;i++){
+        rows[i].onclick=function(ev){
+          var id=this.getAttribute('data-lid');
+          selectLineById(id,ev&& (ev.ctrlKey||ev.metaKey));
+        };
+      }
+    }
     function selectLineById(id,multi){for(var i=0;i<lines.length;i++){if(lines[i].id===id){selectLine(lines[i],null,!!multi,'list');return;}}}
     function showLineRowMenu(e,lineId){e.preventDefault();e.stopPropagation();var menu=document.getElementById('rowMenu');var line=null;for(var i=0;i<lines.length;i++){if(lines[i].id===lineId){line=lines[i];break;}}if(!line)return;if(!selectedLines.has(line)){selectLine(line,null,false,'list');}var selCount=selectedLines.size;var exportLabel=selCount>1?tr('exportMergedKml'):tr('exportKml');menu.innerHTML='<div class="row-menu-item" data-act="export">'+exportLabel+'</div><div class="row-menu-item danger" data-act="delete">'+tr('delete')+'</div>';var rect=menu.getBoundingClientRect();menu.style.left=Math.min(e.clientX,window.innerWidth-160)+'px';menu.style.top=Math.min(e.clientY,window.innerHeight-rect.height-8)+'px';menu.style.display='block';menu._lineId=lineId;var onClick=function(ev){var t=ev.target;if(!t||!t.classList.contains('row-menu-item'))return;var act=t.getAttribute('data-act');hideLineRowMenu();if(act==='export'){exportSelectedKml();}else if(act==='delete'){var toDel=Array.from(selectedLines);if(!toDel.length)toDel=[line];if(!confirm(tr('confirmDeleteLine')||'确定删除此线路？'))return;pushHistory();for(var di=toDel.length-1;di>=0;di--)removeLine(toDel[di]);}};menu.onclick=onClick;var onDoc=function(ev){if(menu.contains(ev.target))return;hideLineRowMenu();};setTimeout(function(){document.addEventListener('mousedown',onDoc,{once:true});},0);}
     function hideLineRowMenu(){var menu=document.getElementById('rowMenu');if(menu)menu.style.display='none';menu.onclick=null;menu._lineId=null;}
     function highlightSelectedRows(){var t=document.querySelectorAll('#stats tr');for(var i=0;i<t.length;i++){var lid=t[i].getAttribute('data-lid');var hit=false;selectedLines.forEach(function(sl){if(sl.id===lid)hit=true;});t[i].classList.toggle('active',hit);}}
-    function distToPointOnLine(o,line){var p=o.marker.getLatLng(),closestIdx=-1,closestDist=1e9,sum=0;for(var i=1;i<line.points.length;i++){sum+=distanceMeters(line.points[i-1].lat,line.points[i-1].lng,line.points[i].lat,line.points[i].lng);var d=Math.abs(p.lat-line.points[i].lat)+Math.abs(p.lng-line.points[i].lng);if(d<closestDist){closestDist=d;closestIdx=i;}}if(closestIdx<0)return{lineDist:0,ptDist:0};var ptDist=0;for(var j=1;j<=closestIdx;j++)ptDist+=distanceMeters(line.points[j-1].lat,line.points[j-1].lng,line.points[j].lat,line.points[j].lng);return{lineDist:sum,ptDist:ptDist};}
+    function distToPointOnLine(o,line){var p=o.marker.getLatLng(),closestIdx=-1,closestDist=1e99,sum=0;if(!line||!line.points||!line.points.length)return{lineDist:0,ptDist:0};for(var i=1;i<line.points.length;i++)sum+=distanceMeters(line.points[i-1].lat,line.points[i-1].lng,line.points[i].lat,line.points[i].lng);if(o.pointIndex!=null&&line.points[o.pointIndex]){closestIdx=o.pointIndex;}else{for(var k=0;k<line.points.length;k++){var d=Math.abs(p.lat-line.points[k].lat)+Math.abs(p.lng-line.points[k].lng);if(d<closestDist){closestDist=d;closestIdx=k;}}}if(closestIdx<=0)return{lineDist:sum,ptDist:0};var ptDist=0;for(var j=1;j<=closestIdx;j++)ptDist+=distanceMeters(line.points[j-1].lat,line.points[j-1].lng,line.points[j].lat,line.points[j].lng);return{lineDist:sum,ptDist:ptDist};}
     function distanceMeters(a,b,c,d){var r=6371008.8,p1=a*Math.PI/180,p2=c*Math.PI/180,dp=(c-a)*Math.PI/180,dl=(d-b)*Math.PI/180,x=Math.sin(dp/2)*Math.sin(dp/2)+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)*Math.sin(dl/2);return r*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
     function downloadText(text,name,type){var blob=new Blob([text],{type:type||'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);document.body.removeChild(a);},0);}
     function toast(msg,ms){
@@ -1955,6 +2152,8 @@
     // 兼容某些浏览器/打包环境：既保留 HTML onclick，也显式绑定按钮事件。
     window.exportKml=exportKml;
     window.exportSelectedKml=exportSelectedKml;
+    window.openOfficialUrl=openOfficialUrl;
+    window.closeOfficialUrlDialog=closeOfficialUrlDialog;
     // 注意：btnExport 已经在 HTML 中使用 onclick="exportKml()"，这里不要再 addEventListener，避免一次点击导出两次。
 
 
