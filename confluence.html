@@ -557,16 +557,17 @@
       async function selectNode(id) {
         if (selectedId && selectedId !== id) {
           var saved = await saveCurrentPage({ silent: true, requireWritable: true });
-          if (!saved) return;
+          if (!saved) return false;
         }
         selectedId = id;
         localStorage.setItem(SELECTED_KEY, selectedId);
         var hit = current();
-        if (!hit) return;
+        if (!hit) return false;
         pageTitle.value = hit.node.title || '';
         pageFile.value = hit.node.file || '';
         renderTree();
-        loadPageFile(hit.node);
+        await loadPageFile(hit.node);
+        return true;
       }
 
       function setEditorHtml(html) {
@@ -784,11 +785,10 @@
         } else {
           tree.push(node);
         }
-        selectedId = node.id;
         await writeTreeFile();
         renderTree();
-        selectNode(node.id);
-        setDirty(true);
+        var selected = await selectNode(node.id);
+        if (selected) setDirty(true);
       }
 
       async function renameNode() {
