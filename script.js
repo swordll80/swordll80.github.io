@@ -5,7 +5,8 @@
   var MOBILE_QUERY = window.matchMedia('(max-width: 768px)');
   var navData = [
     { title: '工具', target: 'tools-overview' },
-    { title: 'Confluence', href: 'confluence.html' }
+    { title: 'Confluence', href: 'confluence.html' },
+    { title: 'Confluence 内测', href: 'confluence_beta.html' }
   ];
 
   var navTree = document.getElementById('navTree');
