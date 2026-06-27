@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+  <name>Classic_Route_139</name>
+  <Placemark>
+    <name>Classic_Route_139</name>
+    <LineString>
+      <tessellate>1</tessellate>
+      <coordinates>
+        0,0,0 1,1,0 2,2,0
+      </coordinates>
+    </LineString>
+  </Placemark>
+</Document>
+</kml>
