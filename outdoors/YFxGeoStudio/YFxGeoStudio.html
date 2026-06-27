@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KML合并工具byYF v0.67</title>
+  <title>KML合并工具byYF v0.71</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -159,12 +159,17 @@
 
 
     .runner-icon {
-      width: 28px; height: 28px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 24px; line-height: 1;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      line-height: 1;
       filter: drop-shadow(0 2px 4px rgba(0,0,0,.65));
       transform: translateY(-2px);
-      user-select: none; pointer-events: none;
+      user-select: none;
+      pointer-events: none;
     }
     .run-btn { min-width: 36px; font-size: 16px; padding: 5px 10px; }
     .marker-label { background: rgba(18,24,30,.82); border: 1px solid rgba(255,255,255,.22); color: #fff; border-radius: 4px; padding: 2px 5px; font-size: 11px; line-height: 1.25; box-shadow: 0 2px 8px rgba(0,0,0,.28); white-space: nowrap; }
@@ -225,12 +230,25 @@
       #classicKmlBtn { height: 23px; padding: 0 6px; font-size: 11px; }
     }
 
+
+    .user-arrow-icon {
+      width: 42px;
+      height: 42px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform-origin: 50% 50%;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,.62));
+      user-select: none;
+      pointer-events: none;
+    }
+
   </style>
 </head>
 <body>
   <div id="map"></div>
   <div id="toolbar" class="panel">
-    <button id="btnImport" onclick="openImport()" data-tip="importKml" >📂</button><button id="btnExport" onclick="exportKml()" data-tip="exportMergedKml">💾</button><button id="btnTrack" onclick="toggleTrackMode()" data-tip="drawTrack">✏️</button><button class="danger" onclick="clearAll()" data-role="clear" data-tip="clear">🗑️</button><button id="btnLocate" onclick="locateMe()" data-tip="locate"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="currentColor" stroke="none"/></svg></button>
+    <button id="btnClassicToolbar" onclick="showClassicKmlMenu(event)" data-tip="classicKml">🛤️</button><button id="btnImport" onclick="openImport()" data-tip="importKml" >📂</button><button id="btnExport" onclick="exportKml()" data-tip="exportMergedKml">💾</button><button id="btnTrack" onclick="toggleTrackMode()" data-tip="drawTrack">✏️</button><button class="danger" onclick="clearAll()" data-role="clear" data-tip="clear">🗑️</button><button id="btnLocate" onclick="locateMe()" data-tip="locate"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" style="vertical-align:middle"><path d="M12 3 L19 21 L12 17 L5 21 Z" fill="currentColor" stroke="currentColor"/></svg></button>
 	<button id="btnMapLock" onclick="toggleMapTouchLock()" data-tip="mapTouchLock">🔒</button><button id="btnHelp" onclick="showHelp()" data-tip="help">❓</button>
 	<button id="btnDonate" class="donate-toolbar-btn" onclick="showDonate()" data-tip="donate">❤️</button><button onclick="undo()" id="btnUndo" data-tip="undo">↩️</button>
 	<button onclick="redo()" id="btnRedo" data-tip="redo">↪️</button><button id="btnLang" class="lang-btn" onclick="toggleLang()" title="切换语言">中</button>
@@ -241,7 +259,8 @@
   <div id="dialogMask"><div id="dialog"><h2 id="dlgTitle">✏️ 📍</h2><div class="row dlg-row"><label class="dlg-label" title="名称">🏷️</label><input id="dlgName" class="dlg-control"></div><div class="row dlg-row"><label class="dlg-label" title="备注 / Comment">📝</label><input id="dlgComment" class="dlg-control"></div><div class="row dlg-row"><label class="dlg-label" title="颜色 / Color">🎨</label><div id="dlgIcons" class="dlg-inline"></div></div><div class="row dlg-row"><label class="dlg-label">📍</label><span id="dlgLat" class="dlg-readonly">-</span><span id="dlgLng" class="dlg-readonly">-</span></div><div class="row dlg-row" id="dlgAltRow"><label class="dlg-label" title="海拔 / Elevation">⛰</label><input id="dlgAlt" class="dlg-control" type="number" step="0.1" placeholder="m"></div><div class="row dlg-row" id="dlgTimeRow"><label class="dlg-label" title="时间 / Time">🕒</label><input id="dlgTime" class="dlg-control" type="datetime-local"></div><div class="actions"><button class="danger dlg-action-icon" onclick="deleteDialogTarget()" title="删除">🗑️</button><button class="dlg-action-icon" onclick="closeDialog()" title="取消">×</button><button class="active dlg-action-icon" onclick="saveDialog()" title="保存">✓</button></div></div></div>
   <div id="rowMenu" style="position:absolute;z-index:1500;display:none;min-width:140px;background:#17202a;border:1px solid rgba(255,255,255,.18);border-radius:6px;padding:4px 0;box-shadow:0 8px 24px rgba(0,0,0,.4);font-size:13px"></div>
 
-  <div id="classicKmlDialog" onclick="if(event.target===this)closeClassicKmlDialog()"><div class="classic-box"><div class="classic-head"><div id="classicKmlTitle" class="classic-title">经典轨迹</div><div class="classic-actions"><button type="button" onclick="reloadClassicKmlTree()" id="classicKmlRefreshBtn">刷新</button><button type="button" onclick="closeClassicKmlDialog()" id="classicKmlCloseBtn" title="关闭">×</button></div></div><div id="classicKmlHint" class="classic-hint">选择一个 KML 文件载入。</div><div id="classicKmlTree"></div></div></div>
+  <div id="classicKmlDialog" onclick="if(event.target===this)closeClassicKmlDialog()"><div class="classic-box"><div class="classic-head"><div id="classicKmlTitle" class="classic-title">经典轨迹</div>
+<input id="classicKmlTitleSearch" placeholder="搜索经典轨迹..." style="margin-left:8px;width:160px;padding:3px 6px;border-radius:6px;border:1px solid #444;background:#111;color:#fff;font-size:12px;"><div class="classic-actions"><button type="button" onclick="reloadClassicKmlTree()" id="classicKmlRefreshBtn">刷新</button><button type="button" onclick="closeClassicKmlDialog()" id="classicKmlCloseBtn" title="关闭">×</button></div></div><div id="classicKmlHint" class="classic-hint">选择一个 KML 文件载入。</div><div id="classicKmlTree"></div></div></div>
 
   <!-- 日志窗口：INFO/WARN 默认只记录；ERROR 自动打开窗口，不自动关闭。 -->
   <div id="logPanel" class="panel" aria-label="log panel">
@@ -358,8 +377,9 @@
     });
 
     var ICON_PINS={redPin:'pin-red',bluePin:'pin-blue',greenPin:'pin-green',orangePin:'pin-orange',purplePin:'pin-purple',yellowPin:'pin-yellow'};
-    var I18N={zh:{appTitle:'KML合并工具byYF v0.67',trackListLabel:'🛤️...🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.67',helpText:'<b>功能</b>：经典轨迹切换和分享；导入导出KML文件；添加标记点；手绘轨迹；查看距离、爬升、下降、耗时等。兼容手机操作，锁定地图触控后可以切换页面。<br><br><b>手绘轨迹</b>：点 ✏️ 后，单击地图添加点；再次点击 ✏️ 结束并保存。只有 1 个点时保存为标记点，例如钓点；2 个及以上点保存为轨迹。支持撤销、重做。<br><b>查看/编辑</b>：单击标记点或轨迹线查看信息；右键或双击标记点/轨迹线可打开编辑框。手机上也可双击/双触编辑。<br><b>KML/户外信息图例</b>：📍 标记点；🛰 GPS点；🛤️ 轨迹；↔ 距离；↑ 累计上升；↓ 累计下降；⛰ 海拔范围；🕒 耗时，hh:mm 为小时:分钟；└────┘ 比例尺；🗺️ 地图。<br><b>编辑操作图例</b>：👁 浏览状态；✏️ 手绘/编辑；🏃 1km/s；🏃🏃 2km/s；🗑️ 删除；× 取消/关闭；✓ 保存；🌐 在线帮助；🏠 主页；🔒 锁定地图触控；🔓 解锁地图触控；🏷️ 名称；📝 备注；🎨 颜色；⛰ 海拔；🕒 时间。<br><b>反馈问题或定制联系</b>：7189334@qq.com',mapLayer:'🗺️',gaode:'高德地形',google:'Google 地形',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',confirmDeleteMarker:'确定删除此标记点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图',classicKml:'经典轨迹',classicKmlLoading:'正在读取经典轨迹列表...',classicKmlLoadFailed:'经典轨迹列表读取失败',classicKmlEmpty:'经典轨迹列表为空',classicKmlConfirm:'切换经典轨迹会清空当前数据，是否继续？',classicKmlImported:'经典轨迹已载入',classicKmlTitle:'经典轨迹目录',classicKmlChoose:'选择一个 KML 文件载入。',classicKmlRefresh:'刷新',classicKmlRoot:'参考线路',classicKmlNoKml:'没有找到 KML 文件'},en:{appTitle:'KML Merge Tool by YF v0.67',trackListLabel:'🛤️...🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.67',helpText:'<b>Features</b>: Import KML files; add markers; draw tracks; merge and export standard KML files; view distance, ascent, descent, duration and more. Compatible with mobile operation; lock map touch to switch pages.<br><br><b>Draw</b>: Click ✏️, click the map to add points, then click ✏️ again to finish. One point is saved as a marker; two or more points are saved as a track. Undo/Redo is supported.<br><b>View/Edit</b>: Click markers or tracks to view info; right-click or double-click markers/tracks to edit. Mobile double-tap is supported.<br><b>KML/outdoor legend</b>: 📍 marker; 🛰 GPS point; 🛤️ track; ↔ distance; ↑ ascent; ↓ descent; ⛰ elevation range; 🕒 duration, hh:mm means hours:minutes; └────┘ scale; draw a bracket-like 1cm line with text scale; 🗺️ map.<br><b>Edit legend</b>: 👁 browse status; ✏️ draw/edit; 🏃 1km/s; 🏃🏃 2km/s; 🗑️ delete; × cancel/close; ✓ save; 🌐 online help; 🏠 home; 🔒 lock map touch; 🔓 unlock map touch; 🏷️ name; 📝 comment; 🎨 color; ⛰ elevation; 🕒 time.<br><b>Feedback/custom work</b>: 7189334@qq.com',mapLayer:'🗺️',gaode:'Amap Terrain',google:'Google Terrain',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',confirmDeleteMarker:'Delete this marker?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart',classicKml:'Classic KML',classicKmlLoading:'Loading classic KML list...',classicKmlLoadFailed:'Failed to load classic KML list',classicKmlEmpty:'Classic KML list is empty',classicKmlConfirm:'Switching to a classic KML will clear current data. Continue?',classicKmlImported:'Classic KML loaded',classicKmlTitle:'Classic KML Directory',classicKmlChoose:'Choose a KML file to load.',classicKmlRefresh:'Refresh',classicKmlRoot:'Reference Routes',classicKmlNoKml:'No KML files found'}};
+    var I18N={zh:{appTitle:'KML合并工具byYF v0.71',trackListLabel:'🛤️...🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.71',helpText:'<b>功能</b>：经典轨迹切换和分享；导入导出KML文件；添加标记点；手绘轨迹；查看距离、爬升、下降、耗时等。兼容手机操作，锁定地图触控后可以切换页面。<br><br><b>手绘轨迹</b>：点 ✏️ 后，单击地图添加点；再次点击 ✏️ 结束并保存。只有 1 个点时保存为标记点，例如钓点；2 个及以上点保存为轨迹。支持撤销、重做。<br><b>查看/编辑</b>：单击标记点或轨迹线查看信息；右键或双击标记点/轨迹线可打开编辑框。手机上也可双击/双触编辑。<br><b>KML/户外信息图例</b>：📍 标记点；🛰 GPS点；🛤️ 轨迹；↔ 距离；↑ 累计上升；↓ 累计下降；⛰ 海拔范围；🕒 耗时，hh:mm 为小时:分钟；└────┘ 比例尺；🗺️ 地图。<br><b>编辑操作图例</b>：👁 浏览状态；✏️ 手绘/编辑；🏃 1km/s；🏃🏃 2km/s；🗑️ 删除；× 取消/关闭；✓ 保存；🌐 在线帮助；🏠 主页；🔒 锁定地图触控；🔓 解锁地图触控；🏷️ 名称；📝 备注；🎨 颜色；⛰ 海拔；🕒 时间。<br><b>反馈问题或定制联系</b>：7189334@qq.com',mapLayer:'🗺️',gaode:'高德地形',google:'Google 地形',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',confirmDeleteMarker:'确定删除此标记点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图',classicKml:'经典轨迹',classicKmlLoading:'正在读取经典轨迹列表...',classicKmlLoadFailed:'经典轨迹列表读取失败',classicKmlEmpty:'经典轨迹列表为空',classicKmlConfirm:'切换经典轨迹会清空当前数据，是否继续？',classicKmlImported:'经典轨迹已载入',classicKmlTitle:'经典轨迹目录',classicKmlChoose:'选择一个 KML 文件载入。',classicKmlRefresh:'刷新',classicKmlRoot:'参考线路',classicKmlNoKml:'没有找到 KML 文件'},en:{appTitle:'KML Merge Tool by YF v0.71',trackListLabel:'🛤️...🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.71',helpText:'<b>Features</b>: Import KML files; add markers; draw tracks; merge and export standard KML files; view distance, ascent, descent, duration and more. Compatible with mobile operation; lock map touch to switch pages.<br><br><b>Draw</b>: Click ✏️, click the map to add points, then click ✏️ again to finish. One point is saved as a marker; two or more points are saved as a track. Undo/Redo is supported.<br><b>View/Edit</b>: Click markers or tracks to view info; right-click or double-click markers/tracks to edit. Mobile double-tap is supported.<br><b>KML/outdoor legend</b>: 📍 marker; 🛰 GPS point; 🛤️ track; ↔ distance; ↑ ascent; ↓ descent; ⛰ elevation range; 🕒 duration, hh:mm means hours:minutes; └────┘ scale; draw a bracket-like 1cm line with text scale; 🗺️ map.<br><b>Edit legend</b>: 👁 browse status; ✏️ draw/edit; 🏃 1km/s; 🏃🏃 2km/s; 🗑️ delete; × cancel/close; ✓ save; 🌐 online help; 🏠 home; 🔒 lock map touch; 🔓 unlock map touch; 🏷️ name; 📝 comment; 🎨 color; ⛰ elevation; 🕒 time.<br><b>Feedback/custom work</b>: 7189334@qq.com',mapLayer:'🗺️',gaode:'Amap Terrain',google:'Google Terrain',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',confirmDeleteMarker:'Delete this marker?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart',classicKml:'Classic KML',classicKmlLoading:'Loading classic KML list...',classicKmlLoadFailed:'Failed to load classic KML list',classicKmlEmpty:'Classic KML list is empty',classicKmlConfirm:'Switching to a classic KML will clear current data. Continue?',classicKmlImported:'Classic KML loaded',classicKmlTitle:'Classic KML Directory',classicKmlChoose:'Choose a KML file to load.',classicKmlRefresh:'Refresh',classicKmlRoot:'Reference Routes',classicKmlNoKml:'No KML files found'}};
     var lang=localStorage.getItem('yfx_lang')||'zh',mode='view',objects=[],lines=[],undoStack=[],redoStack=[],dialogTarget=null,suppressHistory=false,drawingLine=[],trackPolyline=null,selectedLines=new Set(),dlgSelectedIcon='redPin',clickTimer=null,dlgLineTarget=null,dlgLineColor='#ffd23f',dlgLineStartIcon='',dlgLineEndIcon='';
+    var editModeEnabled=localStorage.getItem('yfx_edit_mode')==='1';
     var lineInfoDialogLastPos=null; // 记录单轨迹信息窗口上一次显示/拖拽后的位置，切换轨迹时复用。
     var lineInfoDialogUserMoved=false; // 用户拖动过轨迹信息框后，后续切换轨迹继续沿用该位置。
     var runnerMarker=null,runnerAnimFrame=0,runnerActiveLine=null,runnerStartTime=0,runnerDurationMs=6000,runnerFollowMap=false,runnerLastPanTime=0,runnerSpeedMps=1000;
@@ -370,6 +390,10 @@
     var importKmlDuplicateLineSkipped=0;
     var gaodeBase=L.tileLayer('https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',{subdomains:'1234',maxZoom:18,attribution:'&copy; Amap'}),gaodeTerrain=L.tileLayer('https://tile.opentopomap.org/{z}/{x}/{y}.png',{maxZoom:17,opacity:.42,attribution:'&copy; OpenTopoMap'}),googleTerrain=L.tileLayer('https://mt{s}.google.com/vt/lyrs=p&hl=zh-CN&x={x}&y={y}&z={z}',{subdomains:['0','1','2','3'],maxZoom:20,attribution:'&copy; Google'});
     var map=L.map('map',{center:[29.351132,114.565086],zoom:15,zoomControl:false,doubleClickZoom:false,layers:[gaodeBase,gaodeTerrain]}),itemLayer=L.featureGroup().addTo(map),lineLayer=L.featureGroup().addTo(map),drawLayer=L.featureGroup().addTo(map),layerSets={gaode:[gaodeBase,gaodeTerrain],google:[googleTerrain]};
+// ===== v0.71 heading support =====
+var userHeading = null;
+var userLocationMarker = null;
+
     var mapTouchLocked=false;
 
     // V20：通用编辑对话框模板。
@@ -613,6 +637,7 @@
       updateSideFileTitle();
       refreshExportBtnLabel();
       updateMapTouchLockButton();
+      updateEditModeUI();
       var logLabels = lang==='en' ? ['Log Output','Copy','Save','Clear','Hide'] : ['日志输出','复制','保存','清空','隐藏'];
       var ids = ['logTitle','btnCopyLog','btnSaveLog','btnClearLog','btnHideLog'];
       for(var li=0; li<ids.length; li++){ var el=document.getElementById(ids[li]); if(el) el.textContent=logLabels[li]; }
@@ -621,7 +646,64 @@
       var cr=document.getElementById('classicKmlRefreshBtn'); if(cr) cr.textContent=tr('classicKmlRefresh');
       var cc=document.getElementById('classicKmlCloseBtn'); if(cc) cc.title=tr('close');
       var cd=document.getElementById('classicKmlDialog');
-      if(cd&&cd.style.display!=='none'&&classicKmlCache)renderClassicKmlTree(classicKmlCache);
+      if(cd&&cd.style.display!=='none'&&classicKmlCache)renderClassicKmlCurrentView(classicKmlCache);
+    }
+    function setToolbarButtonVisibleById(id,visible){
+      var el=document.getElementById(id);
+      if(el)el.style.display=visible?'':'none';
+    }
+    function setEditModeEnabled(enabled){
+      editModeEnabled=!!enabled;
+      localStorage.setItem('yfx_edit_mode',editModeEnabled?'1':'0');
+      if(!editModeEnabled){
+        if(mode==='track')finishAndExitTrackMode(false);
+        if(dialogTarget)closeDialog();
+        var dlg=document.getElementById('dialog');
+        var isLineEdit=!!(dlgLineTarget&&dlg&&dlg.querySelector&&dlg.querySelector('#dlgLineName'));
+        if(isLineEdit)closeLineDialog();
+      }
+      updateEditModeUI();
+    }
+    function updateMarkerEditInteractivity(){
+      for(var i=0;i<objects.length;i++){
+        var o=objects[i];
+        if(!o||!o.marker||!o.marker.dragging)continue;
+        try{
+          if(editModeEnabled&&o.draggable){
+            o.marker.dragging.enable();
+          }else{
+            o.marker.dragging.disable();
+          }
+        }catch(e){}
+      }
+    }
+    function updateEditModeUI(){
+      var visible=!!editModeEnabled;
+
+      // Import / export / classic route browser are viewing/data-loading operations,
+      // not editing operations. They must always be available.
+      setToolbarButtonVisibleById('btnClassicToolbar',true);
+      setToolbarButtonVisibleById('btnImport',true);
+      setToolbarButtonVisibleById('btnExport',true);
+      setToolbarButtonVisibleById('btnLocate',true);
+      setToolbarButtonVisibleById('btnMapLock',true);
+      setToolbarButtonVisibleById('btnHelp',true);
+      setToolbarButtonVisibleById('btnDonate',true);
+      setToolbarButtonVisibleById('btnLang',true);
+
+      // Only true editing controls are controlled by edit mode.
+      setToolbarButtonVisibleById('btnTrack',visible);
+      setToolbarButtonVisibleById('btnUndo',visible);
+      setToolbarButtonVisibleById('btnRedo',visible);
+      var clearBtn=document.querySelector('#toolbar [data-role="clear"]');
+      if(clearBtn)clearBtn.style.display=visible?'':'none';
+
+      updateMarkerEditInteractivity();
+
+      var helpToggle=document.getElementById('helpEditModeToggle');
+      if(helpToggle)helpToggle.checked=visible;
+
+      updateHistoryButtons();
     }
     function loadSettings(){updateLangButton();}
 
@@ -784,14 +866,25 @@
     // -- history --
     function snapshot(){var os=[],ls=[];for(var i=0;i<objects.length;i++){var o=objects[i],p=o.marker.getLatLng();os.push({id:o.id,kind:o.kind,name:o.name,icon:o.icon,description:o.description,sources:o.sources||[],lat:p.lat,lng:p.lng,alt:o.alt,ptype:o.ptype,comment:o.comment,time:o.time,sourceType:o.sourceType,lineId:o.lineId,draggable:o.draggable,pointIndex:o.pointIndex});}for(var j=0;j<lines.length;j++)ls.push({id:lines[j].id,name:lines[j].name,color:lines[j].color,startIcon:lines[j].startIcon,endIcon:lines[j].endIcon,autoLineName:lines[j].autoLineName||false,autoSegmentNo:lines[j].autoSegmentNo||0,sampleNameKey:lines[j].sampleNameKey||'',embeddedExampleLine:!!lines[j].embeddedExampleLine,_importedFile:lines[j]._importedFile||'',points:copyPoints(lines[j].points)});return{objects:os,lines:ls,file:document.getElementById('fileText').textContent,importedFilePaths:importedFilePaths.slice()};}
     function pushHistory(){if(suppressHistory)return;undoStack.push(snapshot());if(undoStack.length>80)undoStack.shift();redoStack=[];updateHistoryButtons();}
-    function undo(){finishAndExitTrackMode(true);if(!undoStack.length)return;redoStack.push(snapshot());restoreState(undoStack.pop());updateHistoryButtons();}
-    function redo(){finishAndExitTrackMode(true);if(!redoStack.length)return;undoStack.push(snapshot());restoreState(redoStack.pop());updateHistoryButtons();}
-    function updateHistoryButtons(){document.getElementById('btnUndo').disabled=!undoStack.length;document.getElementById('btnRedo').disabled=!redoStack.length;}
+    function undo(){if(!editModeEnabled)return;finishAndExitTrackMode(true);if(!undoStack.length)return;redoStack.push(snapshot());restoreState(undoStack.pop());updateHistoryButtons();}
+    function redo(){if(!editModeEnabled)return;finishAndExitTrackMode(true);if(!redoStack.length)return;undoStack.push(snapshot());restoreState(redoStack.pop());updateHistoryButtons();}
+    function updateHistoryButtons(){
+      var undoBtn=document.getElementById('btnUndo');
+      var redoBtn=document.getElementById('btnRedo');
+      if(undoBtn){
+        undoBtn.disabled=!editModeEnabled||!undoStack.length;
+        undoBtn.style.display=editModeEnabled?'':'none';
+      }
+      if(redoBtn){
+        redoBtn.disabled=!editModeEnabled||!redoStack.length;
+        redoBtn.style.display=editModeEnabled?'':'none';
+      }
+    }
     function restoreState(s){suppressHistory=true;clearRuntime();importedFilePaths=s.importedFilePaths?[].concat(s.importedFilePaths):[];for(var i=0;i<s.objects.length;i++)addObject(s.objects[i],true);for(var j=0;j<s.lines.length;j++){var ld=Object.assign({},s.lines[j]);var _if=ld._importedFile;delete ld._importedFile;var ln=addLine(ld,true);if(_if)ln._importedFile=_if;}if(s.file){document.getElementById('fileText').textContent=s.file;}else setFileStatusText(tr('none'));suppressHistory=false;updateStats();}
     function clearRuntime(){stopRunner();objects=[];lines=[];drawingLine=[];selectedLines.clear();importedFilePaths=[];if(trackPolyline){lineLayer.removeLayer(trackPolyline);trackPolyline=null;}itemLayer.clearLayers();lineLayer.clearLayers();drawLayer.clearLayers();}
 
     // -- mode --
-    function toggleTrackMode(){if(mode==='track'){finishAndExitTrackMode(true);}else{mode='track';resetDrawingLine();document.getElementById('btnTrack').classList.add('active');setModeStatus();map.getContainer().style.cursor='crosshair';deselectLine();}}
+    function toggleTrackMode(){if(!editModeEnabled)return;if(mode==='track'){finishAndExitTrackMode(true);}else{mode='track';resetDrawingLine();document.getElementById('btnTrack').classList.add('active');setModeStatus();map.getContainer().style.cursor='crosshair';deselectLine();}}
     function setMode(v){mode=v;if(mode!=='track')resetDrawingLine();document.getElementById('btnTrack').classList.toggle('active',mode==='track');setModeStatus();map.getContainer().style.cursor=mode==='view'?'':'crosshair';}
 
     // V11：统一退出手绘状态。
@@ -817,10 +910,70 @@
     function switchLayer(key){for(var s in layerSets){for(var i=0;i<layerSets[s].length;i++){if(map.hasLayer(layerSets[s][i]))map.removeLayer(layerSets[s][i]);}}var next=layerSets[key]||layerSets.gaode;for(var j=0;j<next.length;j++)next[j].addTo(map);document.getElementById('layerGaode').classList.toggle('active',key==='gaode');document.getElementById('layerGoogle').classList.toggle('active',key==='google');}
 
     // -- locate --
-    function locateMe(){finishAndExitTrackMode(true);if(!navigator.geolocation){toast('Geolocation not supported');return;}navigator.geolocation.getCurrentPosition(function(pos){map.setView([pos.coords.latitude,pos.coords.longitude],15);L.circleMarker([pos.coords.latitude,pos.coords.longitude],{radius:8,color:'#4aa3ff',weight:2,fillColor:'#4aa3ff',fillOpacity:.4}).addTo(map).bindPopup('<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#4aa3ff" stroke-width="2" style="vertical-align:middle"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2" fill="#4aa3ff" stroke="none"/></svg> '+tr('locate')).openPopup();},function(){toast('无法获取位置');},{enableHighAccuracy:true,timeout:10000});}
+    
 
-    // -- map touch lock: useful on iPhone/Safari when page gestures conflict with Leaflet map gestures. --
-    function setMapTouchLocked(locked){
+
+    function userArrowIcon(angle){
+      angle = Number(angle);
+      if(!isFinite(angle)) angle = 0;
+
+      return L.divIcon({
+        className: '',
+        iconSize: [42, 42],
+        iconAnchor: [21, 21],
+        html: '<div class="user-arrow-icon" style="transform:rotate(' + angle + 'deg);">' +
+              '<svg viewBox="0 0 48 48" width="42" height="42" aria-hidden="true">' +
+              '<path d="M6 24 L32 8 L26 24 L32 40 Z" fill="#ffd23f" stroke="#111" stroke-width="2.2" stroke-linejoin="round"/>' +
+              '<path d="M12 24 L26 16 L22.5 24 L26 32 Z" fill="rgba(255,255,255,.24)" stroke="none"/>' +
+              '</svg>' +
+              '</div>'
+      });
+    }
+
+function locateMe(){
+  if(!navigator.geolocation){
+    return;
+  }
+
+  if(window._watchId){
+    navigator.geolocation.clearWatch(window._watchId);
+  }
+
+  var firstFix = true;
+
+  window._watchId = navigator.geolocation.watchPosition(function(pos){
+
+    var lat = pos.coords.latitude;
+    var lng = pos.coords.longitude;
+
+    var heading = pos.coords.heading;
+    if(heading == null || isNaN(heading)) heading = 0;
+
+    if(!window._userMarker){
+      window._userMarker = L.marker([lat,lng],{
+        icon: userArrowIcon(heading),
+        interactive:false,
+        zIndexOffset:2000
+      }).addTo(map);
+    }else{
+      window._userMarker.setLatLng([lat,lng]);
+      window._userMarker.setIcon(userArrowIcon(heading));
+    }
+
+    if(firstFix){
+      map.setView([lat,lng]);
+      firstFix = false;
+    }
+
+  }, function(err){
+    console.log('geo error', err);
+  },{
+    enableHighAccuracy:true,
+    maximumAge:1000
+  });
+}
+
+function setMapTouchLocked(locked){
       mapTouchLocked=!!locked;
       var methods=['dragging','touchZoom','doubleClickZoom','scrollWheelZoom','boxZoom','keyboard'];
       for(var i=0;i<methods.length;i++){
@@ -882,6 +1035,27 @@
       mask._helpOldPointerEvents=mask.style.pointerEvents;
 
       dlg.innerHTML='<div class="donate-head"><h2 id="helpDialogTitle" title="拖动此处移动窗口">'+tr('helpTitle')+'</h2><button class="btn-flat-close" onclick="closeHelpDialog()" title="'+tr('close')+'" aria-label="close">×</button></div><div id="helpContent">'+tr('helpText')+'</div><div class="actions"><button onclick="window.open(\'https://swordll80.github.io/\',\'_self\')" title="'+tr('home')+'">🏠</button><button onclick="window.open(\'https://swordll80.github.io/outdoors/YFxGeoStudio/YFxGeoStudioHelp.html\',\'_blank\')" title="'+(lang==='en'?'Open help page':'打开帮助页面')+'">🌐</button></div>';
+      var helpContent=document.getElementById('helpContent');
+      if(helpContent){
+        var editOpt=document.createElement('div');
+        editOpt.className='hint';
+        editOpt.style.marginTop='12px';
+        editOpt.style.paddingTop='10px';
+        editOpt.style.borderTop='1px solid rgba(255,255,255,.12)';
+        editOpt.innerHTML='<label style="display:flex;align-items:center;gap:8px;cursor:pointer;">'
+          +'<input id="helpEditModeToggle" type="checkbox" style="width:16px;height:16px;">'
+          +'<span>'+(lang==='en'?'Enable editing mode':'开启编辑模式')+'</span>'
+          +'</label>'
+          +'<div style="margin-top:4px;color:#99a9b6;">'
+          +(lang==='en'?'When disabled, drawing, clear, undo and redo buttons are hidden.':'关闭时隐藏手绘轨迹、清空数据、撤销、重做按钮。')
+          +'</div>';
+        helpContent.parentNode.insertBefore(editOpt,helpContent.nextSibling);
+        var editToggle=document.getElementById('helpEditModeToggle');
+        if(editToggle){
+          editToggle.checked=!!editModeEnabled;
+          editToggle.onchange=function(){setEditModeEnabled(this.checked);};
+        }
+      }
       dlg.style.width='620px';
       dlg.style.maxWidth='calc(100vw - 16px)';
       dlg.style.position='absolute';
@@ -1020,7 +1194,7 @@
     function lineNameExists(n){for(var i=0;i<lines.length;i++)if(lines[i].name===n)return true;return false;}
 
     // -- objects (track points) --
-    function addObject(d,silent){var iconKey=d.icon||'redPin',cssClass=ICON_PINS[iconKey]||'pin-red';var o={id:d.id||('o'+Date.now()+'_'+Math.floor(Math.random()*100000)),kind:'track',name:d.name||nextName('track'),icon:iconKey,description:d.description||'',sources:d.sources||(d.source?[d.source]:[]),marker:null,alt:d.alt!=null?+d.alt:null,ptype:d.ptype||'',comment:d.comment||'',time:d.time!=null?+d.time:null,sourceType:d.sourceType||'manual',lineId:d.lineId||null,draggable:!!d.draggable,pointIndex:d.pointIndex!=null?d.pointIndex:null};o.marker=L.marker([d.lat,d.lng],{icon:pinIcon(cssClass),draggable:!!d.draggable,bubblingMouseEvents:false});o.marker._yfx=o;o.marker.bindPopup('');o.marker.on('click',function(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);}if(isDoubleTapTarget('marker:'+o.id)){openDialog(o);return;}updatePopup(o);o.marker.openPopup();});o.marker.on('dblclick',function(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}openDialog(o);});o.marker.on('contextmenu',function(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);openDialog(o);});o.marker.on('mouseover',function(){if(spiderfyActive)return;handleMarkerHover(o.marker);});o.marker.on('mouseout',function(){handleMarkerOut();});if(o.draggable){o.marker.on('dragstart',function(){pushHistory();});o.marker.on('drag',function(){onTrackMarkerDrag(o);});o.marker.on('dragend',function(){onTrackMarkerDragEnd(o);});}itemLayer.addLayer(o.marker);objects.push(o);updateMarkerLabel(o);if(!silent){updatePopup(o);updateStats();}return o;}
+    function addObject(d,silent){var iconKey=d.icon||'redPin',cssClass=ICON_PINS[iconKey]||'pin-red';var o={id:d.id||('o'+Date.now()+'_'+Math.floor(Math.random()*100000)),kind:'track',name:d.name||nextName('track'),icon:iconKey,description:d.description||'',sources:d.sources||(d.source?[d.source]:[]),marker:null,alt:d.alt!=null?+d.alt:null,ptype:d.ptype||'',comment:d.comment||'',time:d.time!=null?+d.time:null,sourceType:d.sourceType||'manual',lineId:d.lineId||null,draggable:!!d.draggable,pointIndex:d.pointIndex!=null?d.pointIndex:null};o.marker=L.marker([d.lat,d.lng],{icon:pinIcon(cssClass),draggable:(!!d.draggable&&!!editModeEnabled),bubblingMouseEvents:false});o.marker._yfx=o;o.marker.bindPopup('');o.marker.on('click',function(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);}if(editModeEnabled&&isDoubleTapTarget('marker:'+o.id)){openDialog(o);return;}updatePopup(o);o.marker.openPopup();});o.marker.on('dblclick',function(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}if(editModeEnabled){openDialog(o);}else{updatePopup(o);o.marker.openPopup();}});o.marker.on('contextmenu',function(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);if(editModeEnabled)openDialog(o);});o.marker.on('mouseover',function(){if(spiderfyActive)return;handleMarkerHover(o.marker);});o.marker.on('mouseout',function(){handleMarkerOut();});if(o.draggable){o.marker.on('dragstart',function(){pushHistory();});o.marker.on('drag',function(){onTrackMarkerDrag(o);});o.marker.on('dragend',function(){onTrackMarkerDragEnd(o);});}itemLayer.addLayer(o.marker);objects.push(o);updateMarkerLabel(o);if(!silent){updatePopup(o);updateStats();}return o;}
     // 构造节点弹窗。
     // 设计原则：
     //   1. 轨迹采样点已经在 description/comment 中有经纬度/海拔/时间时，不再重复显示顶部坐标、海拔、时间；
@@ -1211,29 +1385,23 @@
     function updateAllLineDirectionArrows(){ return; }
 
     // -- lines --
-    var DEFAULT_LINE_COLORS=['#ffd23f','#e53935','#1e88e5','#43a047','#fb8c00','#8e24aa'];
+    var DEFAULT_LINE_COLORS=['#e53935','#fb8c00','#8e24aa','#43a047','#1e88e5','#ffd23f'];
     // 自动分配默认轨迹颜色时排除蓝色，避免与选中轨迹的高亮蓝色混淆；颜色编辑器仍保留蓝色供用户手动选择。
-    var AUTO_LINE_COLORS=['#ffd23f','#e53935','#43a047','#fb8c00','#8e24aa'];
+    var AUTO_LINE_COLORS=['#e53935','#fb8c00','#8e24aa','#43a047'];
     function nextDefaultLineColor(){
+      // 自动颜色只使用：红、橙、紫、绿，按顺序循环。
+      // 蓝色用于选中状态，黄色在地图上不够明显，因此二者不参与自动分配；
+      // 但 DEFAULT_LINE_COLORS 仍保留蓝色、黄色，用户可在编辑模式中手动设置。
       var palette=AUTO_LINE_COLORS;
-      var counts={},i;
-      for(i=0;i<palette.length;i++)counts[palette[i]]=0;
-      for(i=0;i<lines.length;i++){
-        var c=lines[i]&&lines[i].color;
-        if(counts.hasOwnProperty(c))counts[c]++;
+      if(!palette||!palette.length)return '#e53935';
+
+      var idx=0;
+      for(var i=0;i<lines.length;i++){
+        var c=(lines[i]&&lines[i].color)||'';
+        if(palette.indexOf(c)>=0)idx++;
       }
-      var min=Infinity,candidates=[];
-      for(i=0;i<palette.length;i++){
-        var pc=palette[i],n=counts[pc]||0;
-        if(n<min){min=n;candidates=[pc];}
-        else if(n===min)candidates.push(pc);
-      }
-      var last=lines.length?lines[lines.length-1].color:null;
-      if(candidates.length>1&&last){
-        var filtered=candidates.filter(function(c){return c!==last;});
-        if(filtered.length)candidates=filtered;
-      }
-      return candidates[Math.floor(Math.random()*candidates.length)]||palette[0];
+
+      return palette[idx%palette.length];
     }
     function hasSpecificLineColor(d){return !!(d&&typeof d.color==='string'&&d.color.trim());}
     function addLine(d,silent){var lineColor=hasSpecificLineColor(d)?d.color:nextDefaultLineColor();var line={id:d.id||('l'+Date.now()+'_'+Math.floor(Math.random()*100000)),name:d.name||nextName('line'),color:lineColor,points:copyPoints(d.points||[]),polyline:null,hitPolyline:null,startIcon:d.startIcon||'',endIcon:d.endIcon||'',startMarker:null,endMarker:null,autoLineName:!!d.autoLineName,autoSegmentNo:d.autoSegmentNo||0,sampleNameKey:d.sampleNameKey||'',embeddedExampleLine:!!d.embeddedExampleLine};line.polyline=L.polyline(line.points,{color:line.color,weight:4,opacity:.9,className:'track-line'}).addTo(lineLayer);line.polyline._yfxLine=line;line.hitPolyline=L.polyline(line.points,{color:'#000',weight:22,opacity:0,className:'track-hit-line',interactive:true}).addTo(lineLayer);line.hitPolyline._yfxLine=line;function onLineClick(e){
@@ -1244,9 +1412,9 @@
           L.DomEvent.stopPropagation(e.originalEvent);
           L.DomEvent.preventDefault(e.originalEvent);
         }
-        if(isDoubleTapTarget('line:'+line.id)){openLineDialog(line);return;}
+        if(editModeEnabled&&isDoubleTapTarget('line:'+line.id)){openLineDialog(line);return;}
         selectLine(line,e&&e.latlng?e.latlng:null,false,'map');
-      }function onLineContext(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);if(e&&e.originalEvent)L.DomEvent.stop(e.originalEvent);openLineDialog(line);}function onLineDblClick(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}openLineDialog(line);}line.polyline.on('click',onLineClick);line.hitPolyline.on('click',onLineClick);line.polyline.on('dblclick',onLineDblClick);line.hitPolyline.on('dblclick',onLineDblClick);line.polyline.on('contextmenu',onLineContext);line.hitPolyline.on('contextmenu',onLineContext);lines.push(line);updateLineStartEndMarkers(line);updateStats();return line;}
+      }function onLineContext(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);if(e&&e.originalEvent)L.DomEvent.stop(e.originalEvent);if(editModeEnabled)openLineDialog(line);}function onLineDblClick(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}if(editModeEnabled)openLineDialog(line);else selectLine(line,e&&e.latlng?e.latlng:null,false,'map');}line.polyline.on('click',onLineClick);line.hitPolyline.on('click',onLineClick);line.polyline.on('dblclick',onLineDblClick);line.hitPolyline.on('dblclick',onLineDblClick);line.polyline.on('contextmenu',onLineContext);line.hitPolyline.on('contextmenu',onLineContext);lines.push(line);updateLineStartEndMarkers(line);updateStats();return line;}
     function removeLine(line){if(runnerActiveLine===line)stopRunner();selectedLines.delete(line);if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}clearLineDirectionArrows(line);if(line.polyline)lineLayer.removeLayer(line.polyline);if(line.hitPolyline)lineLayer.removeLayer(line.hitPolyline);for(var i=lines.length-1;i>=0;i--)if(lines[i]===line)lines.splice(i,1);var removedFileName=line._importedFile||null;for(var k=objects.length-1;k>=0;k--){var oo=objects[k];if(oo.lineId===line.id){if(oo.marker)itemLayer.removeLayer(oo.marker);if(!removedFileName&&oo.sources&&oo.sources.length)removedFileName=oo.sources[0];objects.splice(k,1);}}for(var fn=importedFilePaths.length-1;fn>=0;fn--){var fname=importedFilePaths[fn];var stillUsed=false;for(var oi=0;oi<objects.length;oi++){var sArr=objects[oi].sources||[];if(sArr.indexOf(fname)>=0){stillUsed=true;break;}}if(!stillUsed){for(var li=0;li<lines.length;li++){if(lines[li]._importedFile===fname){stillUsed=true;break;}}if(!stillUsed)importedFilePaths.splice(fn,1);}}var txt=document.getElementById('fileText');if(txt&&removedFileName){var cur=getFileStatusText();if(cur.indexOf(removedFileName)>=0){var parts=cur.split(',').map(function(s){return s.trim();}).filter(function(s){return s&&s!==removedFileName;});setFileStatusText(parts.length?parts.join(', '):tr('none'));}}updateStats();}
     function updateLineStartEndMarkers(line){if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}if(line.points.length>0&&line.startIcon){line.startMarker=L.marker(line.points[0],{icon:pinIcon(ICON_PINS[line.startIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}if(line.points.length>0&&line.endIcon){line.endMarker=L.marker(line.points[line.points.length-1],{icon:pinIcon(ICON_PINS[line.endIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}}
     function lineStats(line){var dist=0,up=0,down=0,elapsed=0,gpsPts=line.points.length;for(var i=1;i<line.points.length;i++){dist+=distanceMeters(line.points[i-1].lat,line.points[i-1].lng,line.points[i].lat,line.points[i].lng);var dh=(line.points[i].alt||0)-(line.points[i-1].alt||0);if(dh>0)up+=dh;else down-=dh;}var tm=lineTimeRange(line);if(tm.min!=null&&tm.max!=null&&tm.max>tm.min)elapsed=(tm.max-tm.min)/1000;return{distance:dist,ascent:up,descent:down,elapsed:elapsed,gpsPoints:gpsPts};}
@@ -1727,14 +1895,15 @@
       runnerSpeedMps=1000;
     }
 
+    
     function runnerIcon(label){
-      var text=label||'🏃';
-      var size=text.length>2?[38,28]:[28,28];
+      var text = label || '🏃';
+      var size = text.length > 2 ? [38, 28] : [28, 28];
       return L.divIcon({
-        className:'',
-        iconSize:size,
-        iconAnchor:[Math.round(size[0]/2),24],
-        html:'<div class="runner-icon">'+text+'</div>'
+        className: '',
+        iconSize: size,
+        iconAnchor: [Math.round(size[0] / 2), 24],
+        html: '<div class="runner-icon">' + escapeHtml(text) + '</div>'
       });
     }
 
@@ -2047,6 +2216,7 @@
 
     // -- dialog --
     function openDialog(o){
+      if(!editModeEnabled)return;
       // V20：右键编辑手绘点/标记点时，先关闭其它共用对话框并恢复编辑模板。
       if(document.getElementById('helpDialogTitle'))closeHelpDialog();
       if(dlgLineTarget)closeLineInfoDialog();
@@ -2072,16 +2242,17 @@
       mask.style.pointerEvents='auto';
     }
     function renderIconPicker(){var container=document.getElementById('dlgIcons'),html='';var keys=Object.keys(ICON_PINS);for(var i=0;i<keys.length;i++){var cls=keys[i]===dlgSelectedIcon?'dlg-icon-opt selected':'dlg-icon-opt';html+='<div class="'+cls+'" data-icon="'+keys[i]+'" onclick="pickIcon(\''+keys[i]+'\')"><div class="pin '+ICON_PINS[keys[i]]+'"></div></div>';}container.innerHTML=html;}
-    function pickIcon(key){dlgSelectedIcon=key;renderIconPicker();}
+    function pickIcon(key){if(!editModeEnabled)return;dlgSelectedIcon=key;renderIconPicker();}
     function closeDialog(){dialogTarget=null;document.getElementById('dialogMask').style.display='none';}
-    function saveDialog(){if(!dialogTarget)return;var name=document.getElementById('dlgName').value.trim();if(!name)name=dialogTarget.name;pushHistory();dialogTarget.name=name;dialogTarget.comment=document.getElementById('dlgComment').value.trim();dialogTarget.icon=dlgSelectedIcon;var altVal=document.getElementById('dlgAlt').value.trim();if(altVal===''){dialogTarget.alt=null;}else{var a=parseFloat(altVal);if(isFinite(a))dialogTarget.alt=a;else dialogTarget.alt=null;}var timeVal=document.getElementById('dlgTime').value;if(!timeVal){dialogTarget.time=null;}else{var t=Date.parse(timeVal);if(isFinite(t))dialogTarget.time=t;else dialogTarget.time=null;}if(dialogTarget.pointIndex!=null&&dialogTarget.lineId){var ld=findLineForObject(dialogTarget);if(ld&&ld.points[dialogTarget.pointIndex]){ld.points[dialogTarget.pointIndex].alt=dialogTarget.alt;ld.points[dialogTarget.pointIndex].time=dialogTarget.time;}}updateMarkerIcon(dialogTarget);updatePopup(dialogTarget);updateMarkerLabel(dialogTarget);updateStats();closeDialog();}
-    function deleteDialogTarget(){if(!dialogTarget)return;if(!confirm(tr('confirmDeleteMarker')||'确定删除此标记点？'))return;pushHistory();itemLayer.removeLayer(dialogTarget.marker);for(var i=objects.length-1;i>=0;i--)if(objects[i]===dialogTarget)objects.splice(i,1);updateStats();closeDialog();}
+    function saveDialog(){if(!editModeEnabled)return;if(!dialogTarget)return;var name=document.getElementById('dlgName').value.trim();if(!name)name=dialogTarget.name;pushHistory();dialogTarget.name=name;dialogTarget.comment=document.getElementById('dlgComment').value.trim();dialogTarget.icon=dlgSelectedIcon;var altVal=document.getElementById('dlgAlt').value.trim();if(altVal===''){dialogTarget.alt=null;}else{var a=parseFloat(altVal);if(isFinite(a))dialogTarget.alt=a;else dialogTarget.alt=null;}var timeVal=document.getElementById('dlgTime').value;if(!timeVal){dialogTarget.time=null;}else{var t=Date.parse(timeVal);if(isFinite(t))dialogTarget.time=t;else dialogTarget.time=null;}if(dialogTarget.pointIndex!=null&&dialogTarget.lineId){var ld=findLineForObject(dialogTarget);if(ld&&ld.points[dialogTarget.pointIndex]){ld.points[dialogTarget.pointIndex].alt=dialogTarget.alt;ld.points[dialogTarget.pointIndex].time=dialogTarget.time;}}updateMarkerIcon(dialogTarget);updatePopup(dialogTarget);updateMarkerLabel(dialogTarget);updateStats();closeDialog();}
+    function deleteDialogTarget(){if(!editModeEnabled)return;if(!dialogTarget)return;if(!confirm(tr('confirmDeleteMarker')||'确定删除此标记点？'))return;pushHistory();itemLayer.removeLayer(dialogTarget.marker);for(var i=objects.length-1;i>=0;i--)if(objects[i]===dialogTarget)objects.splice(i,1);updateStats();closeDialog();}
 
     // -- line edit dialog --
     var LINE_COLORS=DEFAULT_LINE_COLORS;
     var LINE_COLORS_EN={zh:{totalDistance:'总距离',ascent:'累计爬升',descent:'累计下降',color:'颜色',startIcon:'起点图标',endIcon:'终点图标',lineEdit:'✏️ 🛤️',noElevation:'*高程数据仅在导入KML含海拔时可用'},en:{totalDistance:'Total Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',color:'Color',startIcon:'Start Icon',endIcon:'End Icon',lineEdit:'✏️ 🛤️',noElevation:'*Elevation only available when KML contains altitude data'}};
     function trLine(k){return(LINE_COLORS_EN[lang]&&LINE_COLORS_EN[lang][k])||LINE_COLORS_EN.zh[k]||k;}
     function openLineDialog(line){
+      if(!editModeEnabled)return;
       dlgLineTarget=line;
       dlgLineColor=line.color;
       if(LINE_COLORS.indexOf(dlgLineColor)<0) dlgLineColor=LINE_COLORS[0];
@@ -2116,8 +2287,8 @@
       document.getElementById('dialogMask').style.pointerEvents='auto';
     }
     function closeLineDialog(){var dlg=document.getElementById('dialog');if(dlg._orig)dlg.innerHTML=dlg._orig;dlgLineTarget=null;document.getElementById('dialogMask').style.display='none';}
-    function saveLineDialog(){if(!dlgLineTarget)return;pushHistory();var newLineName=document.getElementById('dlgLineName').value.trim()||dlgLineTarget.name;dlgLineTarget.name=newLineName;dlgLineTarget.autoLineName=false;dlgLineTarget.autoSegmentNo=0;dlgLineTarget.sampleNameKey='';dlgLineTarget.embeddedExampleLine=false;dlgLineTarget.color=dlgLineColor;dlgLineTarget.startIcon=dlgLineStartIcon;dlgLineTarget.endIcon=dlgLineEndIcon;dlgLineTarget.polyline.setStyle({color:dlgLineTarget.color,weight:4,opacity:.9,className:'track-line'});if(dlgLineTarget.hitPolyline)dlgLineTarget.hitPolyline.setLatLngs(dlgLineTarget.points);updateLineStartEndMarkers(dlgLineTarget);updateStats();closeLineDialog();}
-    function deleteLineDialog(){if(!dlgLineTarget)return;if(!confirm(tr('confirmDeleteLine')||'确定删除此线路及其所有关联点？'))return;pushHistory();removeLine(dlgLineTarget);closeLineDialog();}
+    function saveLineDialog(){if(!editModeEnabled)return;if(!dlgLineTarget)return;pushHistory();var newLineName=document.getElementById('dlgLineName').value.trim()||dlgLineTarget.name;dlgLineTarget.name=newLineName;dlgLineTarget.autoLineName=false;dlgLineTarget.autoSegmentNo=0;dlgLineTarget.sampleNameKey='';dlgLineTarget.embeddedExampleLine=false;dlgLineTarget.color=dlgLineColor;dlgLineTarget.startIcon=dlgLineStartIcon;dlgLineTarget.endIcon=dlgLineEndIcon;dlgLineTarget.polyline.setStyle({color:dlgLineTarget.color,weight:4,opacity:.9,className:'track-line'});if(dlgLineTarget.hitPolyline)dlgLineTarget.hitPolyline.setLatLngs(dlgLineTarget.points);updateLineStartEndMarkers(dlgLineTarget);updateStats();closeLineDialog();}
+    function deleteLineDialog(){if(!editModeEnabled)return;if(!dlgLineTarget)return;if(!confirm(tr('confirmDeleteLine')||'确定删除此线路及其所有关联点？'))return;pushHistory();removeLine(dlgLineTarget);closeLineDialog();}
     function renderLineColorPicker(){var s=document.getElementById('dlgLineColorSwatches');if(!s)return;var h='';for(var i=0;i<LINE_COLORS.length;i++){var c=LINE_COLORS[i],sel=c===dlgLineColor?' selected':'';h+='<div style="width:24px;height:24px;border-radius:4px;background:'+c+';cursor:pointer;border:2px solid '+(sel?'#fff':'transparent')+';transition:border-color .15s" onclick="dlgLineColor=\''+c+'\';renderLineColorPicker()" title="'+c+'"></div>';}s.innerHTML=h;}
     function renderLineIconPicker(cid,selKey,type){var s=document.getElementById(cid);if(!s)return;var keys=Object.keys(ICON_PINS),h='';
     h+='<div class="dlg-icon-opt'+(selKey===''?' selected':'')+'" onclick="pickLineIcon'+type+'(\'\')" title="'+tr('none')+'" style="font-size:18px;display:flex;align-items:center;justify-content:center">✕</div>';
@@ -2203,7 +2374,7 @@
           if(!node.dirs[dir])node.dirs[dir]={dirs:{},files:[]};
           node=node.dirs[dir];
         }
-        node.files.push({idx:i,item:item,fileName:parts[parts.length-1]});
+        node.files.push({idx:(item&&item.__classicIndex!=null?item.__classicIndex:i),item:item,fileName:parts[parts.length-1]});
       }
       return root;
     }
@@ -2220,12 +2391,174 @@
       h+='</details>';
       return h;
     }
-    function renderClassicKmlTree(list){
-      if(!list||!list.length){setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(tr('classicKmlEmpty'))+'</div>');return;}
-      var root=buildClassicKmlTree(list);
-      if(!root.files.length&&!Object.keys(root.dirs).length){setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(tr('classicKmlNoKml'))+'</div>');return;}
-      setClassicKmlTreeHtml(renderClassicKmlNode(root,tr('classicKmlRoot'),true));
+    
+
+function buildClassicLazyNode(node, label, level, forceLoad){
+  var details = document.createElement('details');
+
+  // v0.71 fix: root is hidden, visible first-level folders are treated as forest roots.
+  // In normal lazy mode they remain closed; children are created only after opening.
+  if(forceLoad){
+    details.open = true;
+  }
+
+  var summary = document.createElement('summary');
+  summary.textContent = '📁 ' + classicKmlDirName(label || '未命名');
+  details.appendChild(summary);
+
+  function loadChildren(){
+    if(node._loaded) return;
+    node._loaded = true;
+
+    var dirs = Object.keys(node.dirs || {}).sort(function(a,b){
+      return a.localeCompare(b,'zh-Hans-CN');
+    });
+
+    var frag = document.createDocumentFragment();
+
+    for(var i=0;i<dirs.length;i++){
+      frag.appendChild(buildClassicLazyNode(node.dirs[dirs[i]], dirs[i], level+1, !!forceLoad));
     }
+
+    if(node.files && node.files.length){
+      node.files.sort(function(a,b){
+        return classicKmlDisplayName(a.item).localeCompare(classicKmlDisplayName(b.item),'zh-Hans-CN');
+      });
+
+      for(var j=0;j<node.files.length;j++){
+        var f = node.files[j];
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'classic-file';
+        btn.textContent = '🛤️ ' + classicKmlDisplayName(f.item);
+        btn.title = f.item.file;
+        btn.onclick = (function(idx){
+          return function(){ downloadClassicKml(idx); };
+        })(f.idx);
+        frag.appendChild(btn);
+      }
+    }
+
+    details.appendChild(frag);
+  }
+
+  summary.addEventListener('click', function(e){
+    e.stopPropagation();
+    loadChildren();
+  });
+
+  if(forceLoad){
+    loadChildren();
+  }
+
+  return details;
+}
+
+function appendClassicRootFiles(container, root){
+  if(!container || !root || !root.files || !root.files.length) return;
+
+  root.files.sort(function(a,b){
+    return classicKmlDisplayName(a.item).localeCompare(classicKmlDisplayName(b.item),'zh-Hans-CN');
+  });
+
+  for(var j=0;j<root.files.length;j++){
+    var f = root.files[j];
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'classic-file';
+    btn.textContent = '🛤️ ' + classicKmlDisplayName(f.item);
+    btn.title = f.item.file;
+    btn.onclick = (function(idx){
+      return function(){ downloadClassicKml(idx); };
+    })(f.idx);
+    container.appendChild(btn);
+  }
+}
+
+function renderClassicKmlRoot(root, forceLoad){
+  var container = document.getElementById('classicKmlTree');
+  if(!container) return;
+  container.innerHTML = '';
+
+  var dirNames = Object.keys((root && root.dirs) || {}).sort(function(a,b){
+    return a.localeCompare(b,'zh-Hans-CN');
+  });
+
+  if((!root || (!dirNames.length && (!root.files || !root.files.length)))){
+    setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(tr('classicKmlNoKml'))+'</div>');
+    return;
+  }
+
+  // Hidden virtual root: first-level folders are displayed directly as multiple tree roots.
+  for(var i=0;i<dirNames.length;i++){
+    var nodeName = dirNames[i];
+    container.appendChild(buildClassicLazyNode(root.dirs[nodeName], nodeName, 0, !!forceLoad));
+  }
+
+  appendClassicRootFiles(container, root);
+}
+
+function renderClassicKmlTree(list){
+  if(!list || !list.length){
+    setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(tr('classicKmlEmpty'))+'</div>');
+    return;
+  }
+
+  var root = buildClassicKmlTree(list);
+  renderClassicKmlRoot(root, false);
+}
+
+function classicKmlSearchText(item){
+  if(!item) return '';
+  return (classicKmlDisplayName(item) + ' ' + (item.file || '')).toLowerCase();
+}
+
+function renderClassicKmlSearchTree(list, keyword){
+  keyword = String(keyword || '').trim().toLowerCase();
+
+  if(!keyword){
+    renderClassicKmlTree(list);
+    return;
+  }
+
+  if(!list || !list.length){
+    setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(tr('classicKmlEmpty'))+'</div>');
+    return;
+  }
+
+  var filtered = [];
+  for(var i=0;i<list.length;i++){
+    var item = list[i];
+    if(classicKmlSearchText(item).indexOf(keyword) >= 0){
+      var copy = {};
+      for(var k in item){
+        if(Object.prototype.hasOwnProperty.call(item,k)) copy[k] = item[k];
+      }
+      copy.__classicIndex = i;
+      filtered.push(copy);
+    }
+  }
+
+  if(!filtered.length){
+    setClassicKmlTreeHtml('<div class="classic-empty">没有匹配的经典轨迹</div>');
+    return;
+  }
+
+  var root = buildClassicKmlTree(filtered);
+  // Search mode must materialize matching branches, otherwise lazy unloaded nodes cannot be filtered.
+  renderClassicKmlRoot(root, true);
+}
+
+function renderClassicKmlCurrentView(list){
+  var input = document.getElementById('classicKmlTitleSearch');
+  var q = input ? String(input.value || '').trim() : '';
+  if(q){
+    renderClassicKmlSearchTree(list, q);
+  }else{
+    renderClassicKmlTree(list);
+  }
+}
+
     function reloadClassicKmlTree(){
       classicKmlCache=null;
       setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(tr('classicKmlLoading'))+'</div>');
@@ -2235,7 +2568,7 @@
           setClassicKmlTreeHtml('<div class="classic-error">'+escapeHtml(tr('classicKmlLoadFailed'))+'</div>');
           return;
         }
-        renderClassicKmlTree(list);
+        renderClassicKmlCurrentView(list);
       });
     }
     function showClassicKmlMenu(e){
@@ -2256,49 +2589,56 @@
           setClassicKmlTreeHtml('<div class="classic-error">'+escapeHtml(tr('classicKmlLoadFailed'))+'</div>');
           return;
         }
-        renderClassicKmlTree(list);
+        renderClassicKmlCurrentView(list);
       });
     }
-    function downloadClassicKml(idx){
-      var menu=document.getElementById('rowMenu');
-      if(menu)menu.style.display='none';
-      closeClassicKmlDialog();
-      var item=classicKmlCache&&classicKmlCache[idx];
-      if(!item)return;
-      if((lines.length||objects.length)&&!confirm(tr('classicKmlConfirm')))return;
-      var url=classicKmlUrl(item.file);
-      logInfo('开始在线载入经典 KML：'+url);
-      fetch(url,{cache:'no-store'})
-        .then(function(resp){if(!resp.ok)throw new Error('HTTP '+resp.status);return resp.text();})
-        .then(function(text){
-          pushHistory();
-          closeLineInfoDialog();
-          closeMarkerInfoDialog();
-          clearRuntime();
-          embeddedExampleDataLoaded=false;
-          importingEmbeddedExampleData=false;
-          firstImportExamplePromptDone=true;
-          importKmlDuplicateLineSkipped=0;
-          var added=importKmlText(text,item.file);
-          importedFilePaths=[item.file];
-          setFileStatusText(item.file);
-          updateSideFileTitle();
-          updateStats();
-          updateAllMarkerLabels();
-          updateHistoryButtons();
-          refreshLineDisplayAfterLangChange();
-          fitData();
-          toast(tr('classicKmlImported')+'：'+classicKmlDisplayName(item));
-          logInfo('经典 KML 载入完成：'+item.file+'，实体数量：'+added);
-        })
-        .catch(function(err){
-          console.error('经典 KML 下载/导入失败：'+item.file, err);
-          toast(tr('importFailed')+'：'+item.file);
-        });
-    }
+    
+function downloadClassicKml(idx){
+  var menu=document.getElementById('rowMenu');
+  if(menu)menu.style.display='none';
+
+  var item=classicKmlCache&&classicKmlCache[idx];
+  if(!item)return;
+
+  // v0.71 fix: keep the classic KML dialog open if user cancels the confirm dialog.
+  if((lines.length||objects.length)&&!confirm(tr('classicKmlConfirm')))return;
+
+  closeClassicKmlDialog();
+
+  var url=classicKmlUrl(item.file);
+  logInfo('开始在线载入经典 KML：'+url);
+  fetch(url,{cache:'no-store'})
+    .then(function(resp){if(!resp.ok)throw new Error('HTTP '+resp.status);return resp.text();})
+    .then(function(text){
+      pushHistory();
+      closeLineInfoDialog();
+      closeMarkerInfoDialog();
+      clearRuntime();
+      embeddedExampleDataLoaded=false;
+      importingEmbeddedExampleData=false;
+      firstImportExamplePromptDone=true;
+      importKmlDuplicateLineSkipped=0;
+      var added=importKmlText(text,item.file);
+      importedFilePaths=[item.file];
+      setFileStatusText(item.file);
+      updateSideFileTitle();
+      updateStats();
+      updateAllMarkerLabels();
+      updateHistoryButtons();
+      refreshLineDisplayAfterLangChange();
+      fitData();
+      toast(tr('classicKmlImported')+'：'+classicKmlDisplayName(item));
+      logInfo('经典 KML 载入完成：'+item.file+'，实体数量：'+added);
+    })
+    .catch(function(err){
+      console.error('经典 KML 下载/导入失败：'+item.file, err);
+      toast(tr('importFailed')+'：'+item.file);
+    });
+}
 
     // -- import / export --
     function openImport(){
+      // Import is allowed even when edit mode is disabled.
       finishAndExitTrackMode(true);
       // iPhone/Android 兼容：动态创建 input，accept 同时允许多种 KML MIME；实际仍按文件名 .kml 忽略大小写过滤。
       var input=document.createElement('input');
@@ -3070,6 +3410,7 @@ function cleanImportedSegmentName(name) {
     }
 
     function exportKml(){
+      // Export is allowed even when edit mode is disabled.
       finishAndExitTrackMode(true);
       if(!assertOfficialExportPage())return false;
       logInfo('执行合并导出 KML：lines='+lines.length+', objects='+objects.length);
@@ -3124,7 +3465,7 @@ function cleanImportedSegmentName(name) {
     }
 
     // -- clear --
-    function clearAll(){finishAndExitTrackMode(true);if(!confirm(tr('confirmClear')))return;pushHistory();closeLineInfoDialog();closeMarkerInfoDialog();clearRuntime();setFileStatusText(tr('none'));updateStats();}
+    function clearAll(){if(!editModeEnabled)return;finishAndExitTrackMode(true);if(!confirm(tr('confirmClear')))return;pushHistory();closeLineInfoDialog();closeMarkerInfoDialog();clearRuntime();setFileStatusText(tr('none'));updateStats();}
     function fitData(){if(!objects.length&&!lines.length)return;try{var g=L.featureGroup();itemLayer.eachLayer(function(l){g.addLayer(l);});lineLayer.eachLayer(function(l){g.addLayer(l);});map.fitBounds(g.getBounds(),{padding:[36,36],maxZoom:16});}catch(e){}}
     function updateStats(){updateSideFileTitle();if(!lines.length){document.getElementById('stats').innerHTML='<div class="no-data">'+tr('noData')+'</div>';selectedLines.clear();refreshExportBtnLabel();return;}var h='<table><thead><tr><th class="ico-th" title="'+escapeHtml(tr('line'))+'">🛤️</th><th class="num ico-th" title="'+escapeHtml(tr('distance'))+'">↔</th><th class="num ico-th" title="'+escapeHtml(tr('duration'))+'">🕒</th><th class="num ico-th" title="'+escapeHtml(tr('ascent'))+'">↑</th><th class="num ico-th" title="'+escapeHtml(tr('descent'))+'">↓</th><th class="num ico-th" title="'+escapeHtml(tr('markPoints'))+'">📍</th></tr></thead><tbody>';var totalKm=0,totalUp=0,totalDown=0,totalElapsed=0,totalMark=0;for(var i=0;i<lines.length;i++){var st=lineStats(lines[i]),mk=countMarkPoints(lines[i]);totalKm+=st.distance;totalUp+=st.ascent;totalDown+=st.descent;totalElapsed+=st.elapsed;totalMark+=mk;h+='<tr data-lid="'+lines[i].id+'" oncontextmenu="showLineRowMenu(event,\''+lines[i].id+'\')"><td class="line-name" title="'+escapeHtml(displayLineName(lines[i]))+'">'+escapeHtml(displayLineName(lines[i]))+'</td><td class="num">'+(st.distance/1000).toFixed(2)+' km</td><td class="num">'+(st.elapsed>0?fmtDurationHHMM(st.elapsed):'-')+'</td><td class="num">'+st.ascent.toFixed(0)+' m</td><td class="num">'+st.descent.toFixed(0)+' m</td><td class="num">'+mk+'</td></tr>';}h+='</tbody><tfoot><tr style="border-top:1px solid rgba(255,255,255,.15);font-weight:600;color:#fff"><td>'+tr('total')+'</td><td class="num">'+(totalKm/1000).toFixed(2)+' km</td><td class="num">'+(totalElapsed>0?fmtDurationHHMM(totalElapsed):'-')+'</td><td class="num">'+totalUp.toFixed(0)+' m</td><td class="num">'+totalDown.toFixed(0)+' m</td><td class="num">'+totalMark+'</td></tr></tfoot></table>';document.getElementById('stats').innerHTML=h;bindStatsRows();if(selectedLines.size>0)highlightSelectedRows();refreshExportBtnLabel();}
 
@@ -3253,8 +3594,23 @@ function cleanImportedSegmentName(name) {
       },true);
     })();
 
-    loadSettings();applyLang();updateStats();updateHistoryButtons();setFileStatusText(tr('none'));setModeStatus();loadEmbeddedExampleData();
+    loadSettings();applyLang();updateStats();updateEditModeUI();setFileStatusText(tr('none'));setModeStatus();loadEmbeddedExampleData();
     document.getElementById('dialogMask').addEventListener('click',function(e){if(e.target===this){if(dlgLineTarget){closeLineInfoDialog();}else if(document.getElementById('helpDialogTitle')){closeHelpDialog();}else{closeDialog();}}});
   </script>
-<div id="donateMask" class="donate-mask"><div class="donate-box"><div class="donate-head"><h2 data-i18n="donateTitle">支持作者</h2><button class="btn-flat-close" onclick="closeDonate()" aria-label="close">×</button></div><div class="donate-hint" data-i18n="donateHint">扫码支持一下，您的鼓励是我继续开发的动力 ❤</div><div class="donate-qr-box"><img id="qrImg" class="donate-qr-img" alt="qr"></div></div></div></body>
+<div id="donateMask" class="donate-mask"><div class="donate-box"><div class="donate-head"><h2 data-i18n="donateTitle">支持作者</h2><button class="btn-flat-close" onclick="closeDonate()" aria-label="close">×</button></div><div class="donate-hint" data-i18n="donateHint">扫码支持一下，您的鼓励是我继续开发的动力 ❤</div><div class="donate-qr-box"><img id="qrImg" class="donate-qr-img" alt="qr"></div></div></div>
+<script>
+(function(){
+  var classicSearchTimer = 0;
+  document.addEventListener('input', function(e){
+    if(!e.target || e.target.id !== 'classicKmlTitleSearch') return;
+    if(classicSearchTimer) clearTimeout(classicSearchTimer);
+    classicSearchTimer = setTimeout(function(){
+      if(window.classicKmlCache && typeof window.renderClassicKmlCurrentView === 'function'){
+        window.renderClassicKmlCurrentView(window.classicKmlCache);
+      }
+    }, 160);
+  });
+})();
+</script>
+</body>
 </html>
