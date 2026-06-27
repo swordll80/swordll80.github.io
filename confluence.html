@@ -342,6 +342,7 @@
       var dirty = false;
       var loadedHtml = '';
       var loadedUsesConfluenceContent = false;
+      var loadedFileLastModified = 0;
 
       var treeEl = document.getElementById('tree');
       var editor = document.getElementById('editor');
@@ -588,27 +589,35 @@
           try {
             var handle = await confluenceHandle.getFileHandle(fileName);
             var file = await handle.getFile();
-            return await file.text();
+            var text = await file.text();
+            return { text: text, lastModified: file.lastModified || Date.now() };
           } catch (e) {}
         }
         try {
           var res = await fetch('confluence/' + encodeURIComponent(fileName).replace(/%2F/g, '/') + '?v=' + Date.now(), { cache: 'no-store' });
-          if (res.ok) return await res.text();
+          if (res.ok) {
+            var text = await res.text();
+            var lm = res.headers.get('Last-Modified');
+            var ts = lm ? new Date(lm).getTime() : Date.now();
+            return { text: text, lastModified: ts };
+          }
         } catch (e2) {
         }
         return null;
       }
 
       async function loadPageFile(node) {
-        var text = await getFileText(node.file);
-        if (text == null) {
+        var result = await getFileText(node.file);
+        if (result == null) {
           loadedHtml = '';
           loadedUsesConfluenceContent = true;
+          loadedFileLastModified = 0;
           setEditorHtml('<h1>' + escapeHtml(node.title || '新页面') + '</h1><p></p>');
           setStatus('正在编辑：' + node.file + '。未读取到现有文件，保存时会创建。');
         } else {
-          loadedHtml = text;
-          setEditorHtml(extractEditableHtml(text));
+          loadedHtml = result.text;
+          loadedFileLastModified = result.lastModified || Date.now();
+          setEditorHtml(extractEditableHtml(result.text));
           setStatus('已读取：' + node.file);
         }
       }
@@ -690,10 +699,21 @@
         }
         try {
           await saveMissingAncestorPages(hit.node.id);
+
+          // Sync check: only for auto-save (silent), skip for manual save (force)
+          if (!options.force && loadedFileLastModified > 0) {
+            var currentResult = await getFileText(hit.node.file);
+            if (currentResult && currentResult.lastModified && currentResult.lastModified > loadedFileLastModified) {
+              alert('⚠ 同步冲突：' + hit.node.file + ' 已被另一个 Confluence 实例修改。\n\n请刷新页面后重新编辑。');
+              return false;
+            }
+          }
+
           var fileHandle = await confluenceHandle.getFileHandle(hit.node.file, { create: true });
           var writable = await fileHandle.createWritable();
           await writable.write(html);
           await writable.close();
+          loadedFileLastModified = Date.now();
           setDirty(false);
           if (!options.silent) setStatus('已保存到 confluence/' + hit.node.file);
           return true;
@@ -710,7 +730,7 @@
           var node = chain[i];
           node.file = normalizeFileName(node.file || node.title);
           var existing = await getFileText(node.file);
-          if (existing != null) continue;
+          if (existing != null && existing.text != null) continue;
           var html = pageTemplate(node.title || '未命名', parentPageBody(node));
           var fileHandle = await confluenceHandle.getFileHandle(node.file, { create: true });
           var writable = await fileHandle.createWritable();
@@ -727,7 +747,7 @@
           var node = nodes[i];
           node.file = normalizeFileName(node.file || node.title);
           var existing = await getFileText(node.file);
-          if (existing != null) continue;
+          if (existing != null && existing.text != null) continue;
           var body = (node.children && node.children.length)
             ? parentPageBody(node)
             : '<h1>' + escapeHtml(node.title || '未命名') + '</h1>\n<p></p>';
@@ -833,9 +853,9 @@
           hideAuthGate();
           setStatus('已授权 confluence/ 目录。之后保存会直接写入该目录。');
           try {
-            var treeText = await getFileText(TREE_FILE_NAME);
-            if (treeText) {
-              var parsed = JSON.parse(treeText);
+            var treeResult = await getFileText(TREE_FILE_NAME);
+            if (treeResult && treeResult.text) {
+              var parsed = JSON.parse(treeResult.text);
               if (Array.isArray(parsed) && parsed.length) {
                 tree = parsed;
                 selectedId = selectedId || (tree[0] && tree[0].id);
@@ -861,7 +881,9 @@
 
       function initEvents() {
         authGateBtn.addEventListener('click', chooseRoot);
-        document.getElementById('saveBtn').addEventListener('click', saveCurrentPage);
+        document.getElementById('saveBtn').addEventListener('click', function () {
+          saveCurrentPage({ force: true });
+        });
         document.getElementById('homeBtn').addEventListener('click', async function (event) {
           event.preventDefault();
           var ok = await saveEverythingBeforeLeave();
@@ -923,9 +945,9 @@
           setStatus('已恢复 confluence/ 目录授权。');
           hideAuthGate();
           try {
-            var treeText = await getFileText(TREE_FILE_NAME);
-            if (treeText) {
-              var parsed = JSON.parse(treeText);
+            var treeResult = await getFileText(TREE_FILE_NAME);
+            if (treeResult && treeResult.text) {
+              var parsed = JSON.parse(treeResult.text);
               if (Array.isArray(parsed) && parsed.length) {
                 tree = parsed;
                 selectedId = localStorage.getItem(SELECTED_KEY) || (tree[0] && tree[0].id);
