@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Confluence · 本地网站编辑器</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --panel: #ffffff;
+      --panel-soft: #f9fbfe;
+      --text: #1f2937;
+      --muted: #667085;
+      --line: #e5eaf1;
+      --accent: #2f6fed;
+      --accent-soft: #eaf1ff;
+      --danger: #d92d20;
+      --shadow: 0 18px 45px rgba(31, 41, 55, .08);
+      --header-height: 68px;
+      --tree-width: 300px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; color: var(--text); background: var(--bg); font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif; }
+    body {
+      background:
+        radial-gradient(circle at 10% 8%, rgba(47,111,237,.10) 0, transparent 30rem),
+        radial-gradient(circle at 95% 95%, rgba(16,185,129,.08) 0, transparent 28rem),
+        var(--bg);
+    }
+    a { color: inherit; }
+    button, input, select { font: inherit; }
+    .topbar {
+      min-height: var(--header-height);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 10px clamp(14px, 3vw, 36px);
+      border-bottom: 1px solid rgba(229,234,241,.9);
+      background: rgba(255,255,255,.84);
+      backdrop-filter: blur(14px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; min-width: 0; text-decoration: none; }
+    .brand-mark { width: 38px; height: 38px; border-radius: 12px; display: grid; place-items: center; color: #fff; background: var(--accent); font-weight: 800; }
+    .brand strong { display: block; line-height: 1.1; }
+    .brand em { display: block; margin-top: 3px; color: var(--muted); font-size: 12px; font-style: normal; }
+    .top-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+    .btn {
+      min-height: 38px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #fff;
+      color: #344054;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 650;
+      cursor: pointer;
+      box-shadow: 0 6px 18px rgba(31,41,55,.05);
+    }
+    .btn:hover { color: var(--accent); border-color: rgba(47,111,237,.28); background: var(--panel-soft); }
+    .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .btn.primary:hover { color: #fff; background: #245fd0; }
+    .btn.danger { color: var(--danger); }
+    .btn.icon { width: 38px; padding: 0; font-size: 16px; }
+    .app { display: grid; grid-template-columns: var(--tree-width) minmax(0, 1fr); min-height: calc(100vh - var(--header-height)); }
+    .tree-pane {
+      border-right: 1px solid var(--line);
+      background: rgba(255,255,255,.78);
+      backdrop-filter: blur(12px);
+      padding: 18px 12px;
+      overflow: auto;
+    }
+    .pane-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 0 8px 12px; }
+    .pane-head strong { font-size: 16px; }
+    .tree-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 0 8px 12px; }
+    .tree-actions .btn { min-height: 34px; padding: 6px 9px; }
+    .tree { display: grid; gap: 2px; }
+    .tree-children { display: grid; gap: 2px; margin-left: 18px; padding-left: 8px; border-left: 1px solid var(--line); }
+    .tree-node { display: grid; gap: 2px; }
+    .tree-row {
+      min-height: 36px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: #344054;
+      padding: 7px 8px;
+      text-align: left;
+      cursor: pointer;
+    }
+    .tree-row:hover { background: var(--panel-soft); color: var(--accent); }
+    .tree-row.active { color: var(--accent); background: var(--accent-soft); font-weight: 700; }
+    .tree-row .twisty { width: 14px; color: var(--muted); font-size: 10px; }
+    .tree-row .title { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tree-row .file { color: var(--muted); font-size: 11px; }
+    .main {
+      min-width: 0;
+      padding: clamp(20px, 4vw, 42px);
+      overflow: auto;
+    }
+    .workspace { max-width: 1180px; margin: 0 auto; display: grid; gap: 14px; }
+    .title-row { display: grid; gap: 8px; }
+    .eyebrow { margin: 0; color: var(--accent); font-weight: 700; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { margin: 0; font-size: clamp(30px, 4vw, 46px); line-height: 1.1; letter-spacing: -.03em; }
+    p { margin: 0; color: var(--muted); line-height: 1.75; }
+    .status {
+      min-height: 42px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,255,255,.78);
+      padding: 10px 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .dirty-dot { width: 8px; height: 8px; border-radius: 999px; background: #f79009; display: none; flex: 0 0 auto; }
+    .dirty .dirty-dot { display: block; }
+    .editor-shell {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255,255,255,.88);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .page-meta {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(160px, 260px);
+      gap: 12px;
+      padding: 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-soft);
+    }
+    .field { display: grid; gap: 6px; }
+    .field label { color: var(--muted); font-size: 12px; font-weight: 650; }
+    .field input {
+      width: 100%;
+      height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: var(--text);
+      padding: 0 11px;
+      outline: none;
+    }
+    .field input:focus { border-color: rgba(47,111,237,.45); box-shadow: 0 0 0 4px rgba(47,111,237,.10); }
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.92);
+      position: sticky;
+      top: var(--header-height);
+      z-index: 3;
+    }
+    .toolbar .btn { min-height: 34px; border-radius: 10px; padding: 6px 10px; box-shadow: none; }
+    .toolbar .sep { width: 1px; height: 24px; background: var(--line); margin: 0 3px; }
+    .editor-wrap { background: #f4f7fb; padding: clamp(14px, 3vw, 30px); }
+    .editor {
+      min-height: 68vh;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: clamp(24px, 5vw, 54px);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: #111827;
+      outline: none;
+      box-shadow: 0 18px 45px rgba(31,41,55,.10);
+      line-height: 1.75;
+    }
+    .editor:empty::before { content: "在这里像编辑 Word 一样输入内容..."; color: #98a2b3; }
+    .editor h1, .editor h2, .editor h3, .editor p, .editor ul, .editor ol, .editor blockquote { margin-top: 0; }
+    .editor h1 { font-size: 34px; letter-spacing: 0; }
+    .editor h2 { font-size: 26px; }
+    .editor h3 { font-size: 20px; }
+    .editor blockquote { border-left: 4px solid var(--accent); margin-left: 0; padding: 8px 14px; background: var(--accent-soft); color: #344054; }
+    .editor img { max-width: 100%; height: auto; }
+    .support-note {
+      border: 1px solid rgba(247,144,9,.25);
+      background: rgba(255,250,235,.88);
+      color: #7a4a00;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    @media (max-width: 900px) {
+      :root { --header-height: 64px; --tree-width: 100%; }
+      .topbar { align-items: flex-start; flex-direction: column; }
+      .top-actions { justify-content: flex-start; }
+      .app { grid-template-columns: 1fr; }
+      .tree-pane { border-right: 0; border-bottom: 1px solid var(--line); }
+      .page-meta { grid-template-columns: 1fr; }
+      .toolbar { top: 0; }
+      .editor { min-height: 58vh; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="brand-mark" aria-hidden="true">C</span>
+      <span>
+        <strong>Confluence</strong>
+        <em>本地网站可视化编辑器</em>
+      </span>
+    </a>
+    <div class="top-actions">
+      <button class="btn" id="chooseRootBtn" type="button">授权 confluence 目录</button>
+      <button class="btn primary" id="saveBtn" type="button">保存页面</button>
+      <button class="btn" id="exportTreeBtn" type="button">备份目录</button>
+      <button class="btn" id="importTreeBtn" type="button">恢复目录</button>
+      <a class="btn" href="index.html">返回主页</a>
+    </div>
+  </header>
+
+  <div class="app">
+    <aside class="tree-pane">
+      <div class="pane-head">
+        <strong>页面树</strong>
+        <small id="rootState">confluence/</small>
+      </div>
+      <div class="tree-actions">
+        <button class="btn" id="addChildBtn" type="button">添加子节点</button>
+        <button class="btn" id="addRootBtn" type="button">添加根节点</button>
+        <button class="btn" id="renameBtn" type="button">重命名</button>
+        <button class="btn danger" id="deleteBtn" type="button">删除节点</button>
+      </div>
+      <div class="tree" id="tree"></div>
+    </aside>
+
+    <main class="main">
+      <div class="workspace">
+        <div class="title-row">
+          <p class="eyebrow">WYSIWYG</p>
+          <h1>像 Word 一样编辑 HTML 页面</h1>
+          <p>左侧每个节点对应 confluence/ 目录下的一个 HTML 文件。授权 confluence/ 后，点击“保存页面”会直接写入该节点的 HTML 文件。</p>
+        </div>
+
+        <div class="support-note" id="supportNote"></div>
+        <div class="status" id="status"><span class="dirty-dot"></span><span id="statusText">等待选择或创建页面。</span></div>
+
+        <section class="editor-shell">
+          <div class="page-meta">
+            <div class="field">
+              <label for="pageTitle">页面标题</label>
+              <input id="pageTitle" placeholder="页面标题">
+            </div>
+            <div class="field">
+              <label for="pageFile">HTML 文件名</label>
+              <input id="pageFile" placeholder="example.html">
+            </div>
+          </div>
+
+          <div class="toolbar" aria-label="编辑工具栏">
+            <button class="btn icon" type="button" data-cmd="bold" title="加粗"><strong>B</strong></button>
+            <button class="btn icon" type="button" data-cmd="italic" title="斜体"><em>I</em></button>
+            <button class="btn icon" type="button" data-cmd="underline" title="下划线"><u>U</u></button>
+            <span class="sep"></span>
+            <button class="btn" type="button" data-block="h1">标题 1</button>
+            <button class="btn" type="button" data-block="h2">标题 2</button>
+            <button class="btn" type="button" data-block="p">正文</button>
+            <button class="btn" type="button" data-block="blockquote">引用</button>
+            <span class="sep"></span>
+            <button class="btn icon" type="button" data-cmd="insertUnorderedList" title="项目符号">•</button>
+            <button class="btn icon" type="button" data-cmd="insertOrderedList" title="编号列表">1.</button>
+            <button class="btn" type="button" id="linkBtn">链接</button>
+            <button class="btn" type="button" id="imageBtn">图片</button>
+            <span class="sep"></span>
+            <button class="btn" type="button" data-cmd="undo">撤销</button>
+            <button class="btn" type="button" data-cmd="redo">重做</button>
+          </div>
+
+          <div class="editor-wrap">
+            <article class="editor" id="editor" contenteditable="true"></article>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <input id="treeFileInput" type="file" accept="application/json,.json" hidden>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var STORAGE_KEY = 'localConfluence.tree.v1';
+      var SELECTED_KEY = 'localConfluence.selectedId.v1';
+      var DIR_DB_NAME = 'localConfluence.fs.v1';
+      var DIR_STORE_NAME = 'handles';
+      var DIR_HANDLE_KEY = 'confluence';
+      var supportsDirectory = 'showDirectoryPicker' in window;
+      var confluenceHandle = null;
+      var tree = loadTree();
+      var selectedId = localStorage.getItem(SELECTED_KEY) || (tree[0] && tree[0].id);
+      var dirty = false;
+      var loadedHtml = '';
+      var loadedUsesConfluenceContent = false;
+
+      var treeEl = document.getElementById('tree');
+      var editor = document.getElementById('editor');
+      var pageTitle = document.getElementById('pageTitle');
+      var pageFile = document.getElementById('pageFile');
+      var statusBox = document.getElementById('status');
+      var statusText = document.getElementById('statusText');
+      var rootState = document.getElementById('rootState');
+      var supportNote = document.getElementById('supportNote');
+      var treeFileInput = document.getElementById('treeFileInput');
+
+      function uid() {
+        return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      }
+
+      function slugify(text) {
+        return (text || 'page')
+          .trim()
+          .toLowerCase()
+          .replace(/\.html?$/i, '')
+          .replace(/[^\w\u4e00-\u9fa5-]+/g, '-')
+          .replace(/^-+|-+$/g, '') || 'page';
+      }
+
+      function uniqueFileName(base) {
+        var slug = slugify(base);
+        var used = new Set();
+        walk(tree, function (node) { used.add((node.file || '').toLowerCase()); });
+        var name = slug + '.html';
+        var index = 2;
+        while (used.has(name.toLowerCase())) {
+          name = slug + '-' + index + '.html';
+          index++;
+        }
+        return name;
+      }
+
+      function openHandleDb() {
+        return new Promise(function (resolve, reject) {
+          var req = indexedDB.open(DIR_DB_NAME, 1);
+          req.onupgradeneeded = function () {
+            req.result.createObjectStore(DIR_STORE_NAME);
+          };
+          req.onsuccess = function () { resolve(req.result); };
+          req.onerror = function () { reject(req.error); };
+        });
+      }
+
+      async function saveStoredDirectoryHandle(handle) {
+        if (!window.indexedDB) return;
+        var db = await openHandleDb();
+        await new Promise(function (resolve, reject) {
+          var tx = db.transaction(DIR_STORE_NAME, 'readwrite');
+          tx.objectStore(DIR_STORE_NAME).put(handle, DIR_HANDLE_KEY);
+          tx.oncomplete = resolve;
+          tx.onerror = function () { reject(tx.error); };
+        });
+        db.close();
+      }
+
+      async function loadStoredDirectoryHandle() {
+        if (!window.indexedDB || !supportsDirectory) return null;
+        try {
+          var db = await openHandleDb();
+          var handle = await new Promise(function (resolve, reject) {
+            var tx = db.transaction(DIR_STORE_NAME, 'readonly');
+            var req = tx.objectStore(DIR_STORE_NAME).get(DIR_HANDLE_KEY);
+            req.onsuccess = function () { resolve(req.result || null); };
+            req.onerror = function () { reject(req.error); };
+          });
+          db.close();
+          if (!handle) return null;
+          var perm = await handle.queryPermission({ mode: 'readwrite' });
+          if (perm !== 'granted') perm = await handle.requestPermission({ mode: 'readwrite' });
+          return perm === 'granted' ? handle : null;
+        } catch (e) {
+          return null;
+        }
+      }
+
+      function defaultTree() {
+        return [{
+          id: uid(),
+          title: '首页',
+          file: 'index.html',
+          children: []
+        }];
+      }
+
+      function loadTree() {
+        try {
+          var parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        } catch (e) {}
+        return defaultTree();
+      }
+
+      function saveTree() {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(tree));
+      }
+
+      function walk(nodes, fn, parent, level) {
+        (nodes || []).forEach(function (node) {
+          fn(node, parent || null, level || 0);
+          walk(node.children || [], fn, node, (level || 0) + 1);
+        });
+      }
+
+      function findNode(id) {
+        var found = null;
+        walk(tree, function (node, parent, level) {
+          if (node.id === id) found = { node: node, parent: parent, level: level };
+        });
+        return found;
+      }
+
+      function current() {
+        return findNode(selectedId) || findNode(tree[0] && tree[0].id);
+      }
+
+      function setStatus(text) {
+        statusText.textContent = text;
+      }
+
+      function setDirty(value) {
+        dirty = !!value;
+        statusBox.classList.toggle('dirty', dirty);
+      }
+
+      function renderTree() {
+        treeEl.innerHTML = '';
+        function renderNode(node) {
+          var row = document.createElement('button');
+          row.type = 'button';
+          row.className = 'tree-row' + (node.id === selectedId ? ' active' : '');
+          row.innerHTML = '<span class="twisty">' + ((node.children || []).length ? '▾' : '') + '</span><span class="title"></span><span class="file"></span>';
+          row.querySelector('.title').textContent = node.title || '未命名';
+          row.querySelector('.file').textContent = node.file || '';
+          row.addEventListener('click', function () {
+            selectNode(node.id);
+          });
+          var wrap = document.createElement('div');
+          wrap.className = 'tree-node';
+          wrap.appendChild(row);
+          if (node.children && node.children.length) {
+            var children = document.createElement('div');
+            children.className = 'tree-children';
+            node.children.forEach(function (child) {
+              children.appendChild(renderNode(child));
+            });
+            wrap.appendChild(children);
+          }
+          return wrap;
+        }
+        tree.forEach(function (node) {
+          treeEl.appendChild(renderNode(node));
+        });
+      }
+
+      function selectNode(id) {
+        if (dirty && !confirm('当前页面还没有保存，确定切换？')) return;
+        selectedId = id;
+        localStorage.setItem(SELECTED_KEY, selectedId);
+        var hit = current();
+        if (!hit) return;
+        pageTitle.value = hit.node.title || '';
+        pageFile.value = hit.node.file || '';
+        renderTree();
+        loadPageFile(hit.node);
+      }
+
+      function setEditorHtml(html) {
+        editor.innerHTML = html || '';
+        setDirty(false);
+      }
+
+      function extractEditableHtml(fullHtml) {
+        try {
+          var doc = new DOMParser().parseFromString(fullHtml || '', 'text/html');
+          var content = doc.querySelector('[data-confluence-content]');
+          loadedUsesConfluenceContent = !!content;
+          if (content) return content.innerHTML;
+          return doc.body ? doc.body.innerHTML : fullHtml;
+        } catch (e) {
+          loadedUsesConfluenceContent = false;
+          return fullHtml || '';
+        }
+      }
+
+      async function getFileText(fileName) {
+        if (!confluenceHandle || !supportsDirectory) return null;
+        try {
+          var handle = await confluenceHandle.getFileHandle(fileName);
+          var file = await handle.getFile();
+          return await file.text();
+        } catch (e) {
+          return null;
+        }
+      }
+
+      async function loadPageFile(node) {
+        var text = await getFileText(node.file);
+        if (text == null) {
+          loadedHtml = '';
+          loadedUsesConfluenceContent = true;
+          setEditorHtml('<h1>' + escapeHtml(node.title || '新页面') + '</h1><p></p>');
+          setStatus('正在编辑：' + node.file + '。未读取到现有文件，保存时会创建。');
+        } else {
+          loadedHtml = text;
+          setEditorHtml(extractEditableHtml(text));
+          setStatus('已读取：' + node.file);
+        }
+      }
+
+      function escapeHtml(text) {
+        return String(text || '').replace(/[&<>"]/g, function (ch) {
+          return ch === '&' ? '&amp;' : ch === '<' ? '&lt;' : ch === '>' ? '&gt;' : '&quot;';
+        });
+      }
+
+      function pageTemplate(title, body) {
+        return '<!doctype html>\n'
+          + '<html lang="zh-CN">\n'
+          + '<head>\n'
+          + '  <meta charset="utf-8">\n'
+          + '  <meta name="viewport" content="width=device-width, initial-scale=1">\n'
+          + '  <title>' + escapeHtml(title) + '</title>\n'
+          + '  <style>\n'
+          + '    body { margin: 0; padding: 42px 18px; background: #f6f8fb; color: #1f2937; font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif; }\n'
+          + '    main { max-width: 900px; margin: 0 auto; padding: clamp(24px, 5vw, 54px); border: 1px solid #e5eaf1; border-radius: 12px; background: #fff; box-shadow: 0 18px 45px rgba(31, 41, 55, .08); line-height: 1.75; }\n'
+          + '    img { max-width: 100%; height: auto; }\n'
+          + '    blockquote { border-left: 4px solid #2f6fed; margin-left: 0; padding: 8px 14px; background: #eaf1ff; color: #344054; }\n'
+          + '  </style>\n'
+          + '</head>\n'
+          + '<body>\n'
+          + '  <main data-confluence-content>\n'
+          + body.trim() + '\n'
+          + '  </main>\n'
+          + '</body>\n'
+          + '</html>\n';
+      }
+
+      function mergeIntoLoadedHtml(title, body) {
+        if (!loadedHtml) return pageTemplate(title, body);
+        try {
+          var doc = new DOMParser().parseFromString(loadedHtml, 'text/html');
+          var titleEl = doc.querySelector('title');
+          if (titleEl) titleEl.textContent = title;
+          if (loadedUsesConfluenceContent) {
+            var content = doc.querySelector('[data-confluence-content]');
+            if (content) {
+              content.innerHTML = body;
+              return '<!doctype html>\n' + doc.documentElement.outerHTML + '\n';
+            }
+          }
+          if (doc.body) {
+            doc.body.innerHTML = body;
+            return '<!doctype html>\n' + doc.documentElement.outerHTML + '\n';
+          }
+        } catch (e) {}
+        return pageTemplate(title, body);
+      }
+
+      async function saveCurrentPage() {
+        var hit = current();
+        if (!hit) return;
+        hit.node.title = pageTitle.value.trim() || '未命名';
+        hit.node.file = normalizeFileName(pageFile.value || hit.node.title);
+        pageFile.value = hit.node.file;
+        saveTree();
+        renderTree();
+        var html = mergeIntoLoadedHtml(hit.node.title, editor.innerHTML);
+        if (!confluenceHandle || !supportsDirectory) {
+          downloadFile(hit.node.file, html);
+          setDirty(false);
+          setStatus('尚未授权 confluence/ 目录，已下载：' + hit.node.file);
+          return;
+        }
+        try {
+          var fileHandle = await confluenceHandle.getFileHandle(hit.node.file, { create: true });
+          var writable = await fileHandle.createWritable();
+          await writable.write(html);
+          await writable.close();
+          setDirty(false);
+          setStatus('已保存到 confluence/' + hit.node.file);
+        } catch (err) {
+          setStatus('保存失败：' + (err && err.message ? err.message : err));
+        }
+      }
+
+      function normalizeFileName(value) {
+        var name = slugify(value);
+        return /\.html?$/i.test(name) ? name : name + '.html';
+      }
+
+      function downloadFile(name, text) {
+        var blob = new Blob([text], { type: 'text/html;charset=utf-8' });
+        var url = URL.createObjectURL(blob);
+        var link = document.createElement('a');
+        link.href = url;
+        link.download = name;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function addNode(parent) {
+        var title = prompt('新页面标题：', '新页面');
+        if (!title) return;
+        var node = { id: uid(), title: title.trim(), file: uniqueFileName(title), children: [] };
+        if (parent) {
+          parent.children = parent.children || [];
+          parent.children.push(node);
+        } else {
+          tree.push(node);
+        }
+        selectedId = node.id;
+        saveTree();
+        renderTree();
+        selectNode(node.id);
+        setDirty(true);
+      }
+
+      function renameNode() {
+        var hit = current();
+        if (!hit) return;
+        var title = prompt('节点名称：', hit.node.title || '');
+        if (!title) return;
+        hit.node.title = title.trim();
+        pageTitle.value = hit.node.title;
+        saveTree();
+        renderTree();
+        setDirty(true);
+      }
+
+      function deleteNode() {
+        var hit = current();
+        if (!hit) return;
+        if (!confirm('删除树节点？不会自动删除已经保存到磁盘的 HTML 文件。')) return;
+        var list = hit.parent ? hit.parent.children : tree;
+        list.splice(list.indexOf(hit.node), 1);
+        selectedId = tree[0] && tree[0].id;
+        saveTree();
+        renderTree();
+        if (selectedId) selectNode(selectedId);
+        else {
+          pageTitle.value = '';
+          pageFile.value = '';
+          editor.innerHTML = '';
+          setStatus('页面树为空，请添加根节点。');
+        }
+      }
+
+      async function chooseRoot() {
+        if (!supportsDirectory) {
+          setStatus('当前浏览器不支持选择目录。请用最新版 Chrome 或 Edge 打开本页面。');
+          return;
+        }
+        try {
+          var picked = await window.showDirectoryPicker({ mode: 'readwrite' });
+          if (picked && picked.name && picked.name !== 'confluence') {
+            setStatus('请选择 confluence.html 所在目录旁边的 confluence 文件夹。当前选择的是：' + picked.name);
+            return;
+          }
+          confluenceHandle = picked;
+          await saveStoredDirectoryHandle(confluenceHandle);
+          rootState.textContent = 'confluence/';
+          setStatus('已授权 confluence/ 目录。之后保存会直接写入该目录。');
+          var hit = current();
+          if (hit) loadPageFile(hit.node);
+        } catch (err) {
+          if (err && err.name !== 'AbortError') setStatus('选择目录失败：' + (err.message || err));
+        }
+      }
+
+      function exportTree() {
+        downloadFile('confluence-tree.json', JSON.stringify(tree, null, 2));
+        setStatus('已下载页面树备份。');
+      }
+
+      function importTree(file) {
+        if (!file) return;
+        file.text().then(function (text) {
+          var parsed = JSON.parse(text);
+          if (!Array.isArray(parsed)) throw new Error('目录文件格式不正确');
+          tree = parsed;
+          selectedId = tree[0] && tree[0].id;
+          saveTree();
+          renderTree();
+          if (selectedId) selectNode(selectedId);
+          setStatus('已恢复页面树。');
+        }).catch(function (err) {
+          setStatus('恢复目录失败：' + (err.message || err));
+        });
+      }
+
+      function runCommand(cmd, value) {
+        editor.focus();
+        document.execCommand(cmd, false, value || null);
+        setDirty(true);
+      }
+
+      function initEvents() {
+        document.getElementById('chooseRootBtn').addEventListener('click', chooseRoot);
+        document.getElementById('saveBtn').addEventListener('click', saveCurrentPage);
+        document.getElementById('addChildBtn').addEventListener('click', function () {
+          var hit = current();
+          addNode(hit && hit.node);
+        });
+        document.getElementById('addRootBtn').addEventListener('click', function () { addNode(null); });
+        document.getElementById('renameBtn').addEventListener('click', renameNode);
+        document.getElementById('deleteBtn').addEventListener('click', deleteNode);
+        document.getElementById('exportTreeBtn').addEventListener('click', exportTree);
+        document.getElementById('importTreeBtn').addEventListener('click', function () { treeFileInput.click(); });
+        treeFileInput.addEventListener('change', function () {
+          importTree(treeFileInput.files && treeFileInput.files[0]);
+          treeFileInput.value = '';
+        });
+
+        Array.prototype.forEach.call(document.querySelectorAll('[data-cmd]'), function (button) {
+          button.addEventListener('click', function () {
+            runCommand(button.getAttribute('data-cmd'));
+          });
+        });
+        Array.prototype.forEach.call(document.querySelectorAll('[data-block]'), function (button) {
+          button.addEventListener('click', function () {
+            runCommand('formatBlock', button.getAttribute('data-block'));
+          });
+        });
+        document.getElementById('linkBtn').addEventListener('click', function () {
+          var url = prompt('链接地址：', 'https://');
+          if (url) runCommand('createLink', url);
+        });
+        document.getElementById('imageBtn').addEventListener('click', function () {
+          var url = prompt('图片地址或相对路径：', '');
+          if (url) runCommand('insertImage', url);
+        });
+
+        editor.addEventListener('input', function () { setDirty(true); });
+        pageTitle.addEventListener('input', function () { setDirty(true); });
+        pageFile.addEventListener('input', function () { setDirty(true); });
+        window.addEventListener('beforeunload', function (event) {
+          if (!dirty) return;
+          event.preventDefault();
+          event.returnValue = '';
+        });
+      }
+
+      async function init() {
+        supportNote.textContent = supportsDirectory
+          ? '固定页面库：confluence/。首次点击“授权 confluence 目录”并选择 confluence.html 旁边的 confluence 文件夹；浏览器保留授权后，后续打开会自动复用。'
+          : '当前浏览器不支持直接保存到本地目录。请用最新版 Chrome 或 Edge 打开本页面。';
+        renderTree();
+        initEvents();
+        confluenceHandle = await loadStoredDirectoryHandle();
+        if (confluenceHandle) {
+          rootState.textContent = 'confluence/';
+          setStatus('已恢复 confluence/ 目录授权。');
+        }
+        if (selectedId) selectNode(selectedId);
+      }
+
+      init();
+    })();
+  </script>
+</body>
+</html>

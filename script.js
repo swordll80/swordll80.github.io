@@ -4,7 +4,8 @@
   var STORAGE_KEY = 'swordll80.sidebarCollapsed';
   var MOBILE_QUERY = window.matchMedia('(max-width: 768px)');
   var navData = [
-    { title: '工具', target: 'tools-overview' }
+    { title: '工具', target: 'tools-overview' },
+    { title: 'Confluence', href: 'confluence.html' }
   ];
 
   var navTree = document.getElementById('navTree');
@@ -30,11 +31,13 @@
     navTree.innerHTML = '';
     navData.forEach(function (group) {
       var groupNode = el('div', 'nav-group open');
-      var titleBtn = group.target ? el('a', 'nav-title') : el('button', 'nav-title');
+      var titleBtn = (group.target || group.href) ? el('a', 'nav-title') : el('button', 'nav-title');
       if (group.target) {
         titleBtn.href = '#' + group.target;
         titleBtn.setAttribute('data-nav-link', '');
         titleBtn.setAttribute('data-target', group.target);
+      } else if (group.href) {
+        titleBtn.href = group.href;
       } else {
         titleBtn.type = 'button';
       }
