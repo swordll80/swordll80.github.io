@@ -249,7 +249,7 @@
       <button class="btn primary" id="saveBtn" type="button">保存页面</button>
       <button class="btn" id="exportTreeBtn" type="button">备份目录</button>
       <button class="btn" id="importTreeBtn" type="button">恢复目录</button>
-      <a class="btn" href="index.html">返回主页</a>
+      <a class="btn" id="homeBtn" href="index.html">返回主页</a>
     </div>
   </header>
 
@@ -554,8 +554,11 @@
         });
       }
 
-      function selectNode(id) {
-        if (dirty && !confirm('当前页面还没有保存，确定切换？')) return;
+      async function selectNode(id) {
+        if (selectedId && selectedId !== id) {
+          var saved = await saveCurrentPage({ silent: true, requireWritable: true });
+          if (!saved) return;
+        }
         selectedId = id;
         localStorage.setItem(SELECTED_KEY, selectedId);
         var hit = current();
@@ -671,9 +674,10 @@
         return pageTemplate(title, body);
       }
 
-      async function saveCurrentPage() {
+      async function saveCurrentPage(options) {
+        options = options || {};
         var hit = current();
-        if (!hit) return;
+        if (!hit) return false;
         hit.node.title = pageTitle.value.trim() || '未命名';
         hit.node.file = normalizeFileName(pageFile.value || hit.node.title);
         pageFile.value = hit.node.file;
@@ -681,10 +685,12 @@
         renderTree();
         var html = mergeIntoLoadedHtml(hit.node.title, editor.innerHTML);
         if (!confluenceHandle || !supportsDirectory) {
-          downloadFile(hit.node.file, html);
-          setDirty(false);
-          showAuthGate('尚未授权 confluence/ 目录，已下载：' + hit.node.file);
-          return;
+          if (!options.requireWritable) {
+            downloadFile(hit.node.file, html);
+            setDirty(false);
+          }
+          showAuthGate(options.requireWritable ? '需要授权 confluence/ 目录后才能自动保存。' : '尚未授权 confluence/ 目录，已下载：' + hit.node.file);
+          return false;
         }
         try {
           await saveMissingAncestorPages(hit.node.id);
@@ -693,9 +699,11 @@
           await writable.write(html);
           await writable.close();
           setDirty(false);
-          setStatus('已保存到 confluence/' + hit.node.file);
+          if (!options.silent) setStatus('已保存到 confluence/' + hit.node.file);
+          return true;
         } catch (err) {
           setStatus('保存失败：' + (err && err.message ? err.message : err));
+          return false;
         }
       }
 
@@ -713,6 +721,40 @@
           await writable.write(html);
           await writable.close();
         }
+      }
+
+      async function saveAllMissingTreePages() {
+        if (!confluenceHandle || !supportsDirectory) return false;
+        var nodes = [];
+        walk(tree, function (node) { nodes.push(node); });
+        for (var i = 0; i < nodes.length; i++) {
+          var node = nodes[i];
+          node.file = normalizeFileName(node.file || node.title);
+          var existing = await getFileText(node.file);
+          if (existing != null) continue;
+          var body = (node.children && node.children.length)
+            ? parentPageBody(node)
+            : '<h1>' + escapeHtml(node.title || '未命名') + '</h1>\n<p></p>';
+          var html = pageTemplate(node.title || '未命名', body);
+          var fileHandle = await confluenceHandle.getFileHandle(node.file, { create: true });
+          var writable = await fileHandle.createWritable();
+          await writable.write(html);
+          await writable.close();
+        }
+        return true;
+      }
+
+      async function saveEverythingBeforeLeave() {
+        if (!confluenceHandle || !supportsDirectory) {
+          showAuthGate('需要授权 confluence/ 目录后才能自动保存并返回主页。');
+          return false;
+        }
+        var saved = await saveCurrentPage({ silent: true, requireWritable: true });
+        if (!saved) return false;
+        await saveAllMissingTreePages();
+        await writeTreeFile();
+        setStatus('已保存所有 confluence 页面。');
+        return true;
       }
 
       function normalizeFileName(value) {
@@ -846,6 +888,11 @@
       function initEvents() {
         authGateBtn.addEventListener('click', chooseRoot);
         document.getElementById('saveBtn').addEventListener('click', saveCurrentPage);
+        document.getElementById('homeBtn').addEventListener('click', async function (event) {
+          event.preventDefault();
+          var ok = await saveEverythingBeforeLeave();
+          if (ok) window.location.href = 'index.html';
+        });
         document.getElementById('addChildBtn').addEventListener('click', function () {
           var hit = current();
           addNode(hit && hit.node);
