@@ -4,25 +4,7 @@
   var STORAGE_KEY = 'swordll80.sidebarCollapsed';
   var MOBILE_QUERY = window.matchMedia('(max-width: 768px)');
   var navData = [
-    { title: '简介', children: [
-      { title: '首页', target: 'intro-home' },
-      { title: '关于本站', target: 'intro-about' },
-      { title: '项目方向', target: 'intro-projects' }
-    ]},
-    { title: '工具', children: [
-      { title: '工具总览', target: 'tools-overview' },
-      { title: 'GIS 与 KML', target: 'tools-gis' },
-      { title: '数据结构工具', target: 'tools-data' },
-      { title: 'Web 小工具', target: 'tools-web' }
-    ]},
-    { title: '学习', children: [
-      { title: '学习总览', target: 'learn-overview' },
-      { title: '编程笔记', target: 'learn-programming' },
-      { title: 'C/C++ 工程实践', target: 'learn-engineering' }
-    ]},
-    { title: '户外', children: [
-      { title: '地图与轨迹', target: 'outdoor-map' }
-    ]}
+    { title: '工具', target: 'tools-overview' }
   ];
 
   var navTree = document.getElementById('navTree');
@@ -48,22 +30,30 @@
     navTree.innerHTML = '';
     navData.forEach(function (group) {
       var groupNode = el('div', 'nav-group open');
-      var titleBtn = el('button', 'nav-title');
-      titleBtn.type = 'button';
-      titleBtn.innerHTML = '<span class="arrow">▶</span><strong>' + group.title + '</strong>';
+      var titleBtn = group.target ? el('a', 'nav-title') : el('button', 'nav-title');
+      if (group.target) {
+        titleBtn.href = '#' + group.target;
+        titleBtn.setAttribute('data-nav-link', '');
+        titleBtn.setAttribute('data-target', group.target);
+      } else {
+        titleBtn.type = 'button';
+      }
+      titleBtn.innerHTML = (group.children && group.children.length ? '<span class="arrow">▶</span>' : '<span class="arrow"></span>') + '<strong>' + group.title + '</strong>';
       var children = el('div', 'nav-children');
-      group.children.forEach(function (item) {
+      (group.children || []).forEach(function (item) {
         var link = el('a', 'nav-link', item.title);
         link.href = '#' + item.target;
         link.setAttribute('data-nav-link', '');
         link.setAttribute('data-target', item.target);
         children.appendChild(link);
       });
-      titleBtn.addEventListener('click', function () {
-        groupNode.classList.toggle('open');
-      });
+      if (group.children && group.children.length) {
+        titleBtn.addEventListener('click', function () {
+          groupNode.classList.toggle('open');
+        });
+      }
       groupNode.appendChild(titleBtn);
-      groupNode.appendChild(children);
+      if (group.children && group.children.length) groupNode.appendChild(children);
       navTree.appendChild(groupNode);
     });
   }
@@ -94,13 +84,13 @@
   }
 
   function activate(targetId) {
-    var target = document.getElementById(targetId) || document.getElementById('intro-home');
+    var target = document.getElementById(targetId) || document.getElementById('tools-overview');
 
     Array.prototype.forEach.call(document.querySelectorAll('.content-section'), function (section) {
       section.classList.toggle('active', section === target);
     });
 
-    Array.prototype.forEach.call(document.querySelectorAll('.nav-link'), function (link) {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-target]'), function (link) {
       link.classList.toggle('active', link.getAttribute('data-target') === target.id);
     });
 
@@ -121,7 +111,7 @@
   }
 
   function handleHash() {
-    var id = location.hash ? decodeURIComponent(location.hash.slice(1)) : 'intro-home';
+    var id = location.hash ? decodeURIComponent(location.hash.slice(1)) : 'tools-overview';
     activate(id);
   }
 
