@@ -45,6 +45,8 @@
     #side.dragging * { pointer-events: none; }
     #side h1 { margin: 0 0 8px; font-size: 13px; font-weight: 650; letter-spacing: 0; cursor: grab; line-height: 1.35; white-space: pre-line; }
     #side .side-file-name { margin-left: 6px; color: #d8e0e8; font-size: 12px; font-weight: 600; max-width: 210px; display: inline-block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; vertical-align: -2px; }
+    #classicKmlBtn { margin-left: 8px; height: 24px; min-width: 0; padding: 0 8px; font-size: 12px; line-height: 22px; vertical-align: 0; color: #ffd966; border-color: rgba(255,217,102,.45); background: rgba(255,217,102,.10); }
+    #classicKmlBtn:hover { background: rgba(255,217,102,.20); border-color: rgba(255,217,102,.78); }
     #side .list-head { margin: 0 0 8px; font-size: 12px; font-weight: 600; color: #b7c1ca; letter-spacing: .2px; }
     #stats { margin-top: 6px; padding-top: 9px; border-top: 1px solid rgba(255,255,255,.12); color: #c9d3dc; font-size: 11px; }
     #stats table { width: 100%; border-collapse: collapse; table-layout: auto; }
@@ -202,7 +204,8 @@
     #logPanel.has-error { border-color: rgba(255,90,90,.65); box-shadow: 0 10px 34px rgba(120,0,0,.38); }
 
     @media (max-width: 760px) {
-      #side .side-file-name { max-width: 48vw; font-size: 11px; }
+      #side .side-file-name { max-width: 42vw; font-size: 11px; }
+      #classicKmlBtn { height: 23px; padding: 0 6px; font-size: 11px; }
     }
 
   </style>
@@ -215,7 +218,7 @@
 	<button id="btnDonate" class="donate-toolbar-btn" onclick="showDonate()" data-tip="donate">❤️</button><button onclick="undo()" id="btnUndo" data-tip="undo">↩️</button>
 	<button onclick="redo()" id="btnRedo" data-tip="redo">↪️</button><button id="btnLang" class="lang-btn" onclick="toggleLang()" title="切换语言">中</button>
   </div>
-  <div id="side" class="panel"><button id="sideToggle" type="button" onclick="toggleSidePanel(event)" title="显示/隐藏轨迹列表">◀</button><h1><span id="trackListTitleIcon" data-i18n="trackListLabel">🛤️...🛤️</span><span id="sideFileName" class="side-file-name"></span></h1><div id="stats"></div></div>
+  <div id="side" class="panel"><button id="sideToggle" type="button" onclick="toggleSidePanel(event)" title="显示/隐藏轨迹列表">◀</button><h1><span id="trackListTitleIcon" data-i18n="trackListLabel">🛤️...🛤️</span><span id="sideFileName" class="side-file-name"></span><button id="classicKmlBtn" type="button" onclick="showClassicKmlMenu(event)" data-tip="classicKml" data-i18n="classicKml">经典轨迹</button></h1><div id="stats"></div></div>
   <div id="layerBox" class="panel"><button id="layerToggle" type="button" onclick="toggleLayerPanel(event)" title="显示/隐藏地图切换">▶</button><div class="layer-inner"><div class="title" data-i18n="mapLayer">🗺️</div><button id="layerGaode" class="layer-choice active" onclick="switchLayer('gaode')">高德地形</button><button id="layerGoogle" class="layer-choice" onclick="switchLayer('google')">Google 地形</button></div></div>
   <div id="status" class="panel"><span id="modeText">👁</span><span id="coordText">📍 -</span><span id="zoomText">🔍 15</span><span id="scaleText"><span class="scale-ruler" aria-hidden="true"></span> -</span><span id="fileText">📄 -</span></div><input id="fileInput" type="file" accept=".kml,.KML,application/vnd.google-earth.kml+xml,application/xml,text/xml,text/plain,application/octet-stream" multiple style="display:none" onclick="this.value=null" onchange="handleFiles(this.files)"><div id="toast"></div>
   <div id="dialogMask"><div id="dialog"><h2 id="dlgTitle">✏️ 📍</h2><div class="row dlg-row"><label class="dlg-label" title="名称">🏷️</label><input id="dlgName" class="dlg-control"></div><div class="row dlg-row"><label class="dlg-label" title="备注 / Comment">📝</label><input id="dlgComment" class="dlg-control"></div><div class="row dlg-row"><label class="dlg-label" title="颜色 / Color">🎨</label><div id="dlgIcons" class="dlg-inline"></div></div><div class="row dlg-row"><label class="dlg-label">📍</label><span id="dlgLat" class="dlg-readonly">-</span><span id="dlgLng" class="dlg-readonly">-</span></div><div class="row dlg-row" id="dlgAltRow"><label class="dlg-label" title="海拔 / Elevation">⛰</label><input id="dlgAlt" class="dlg-control" type="number" step="0.1" placeholder="m"></div><div class="row dlg-row" id="dlgTimeRow"><label class="dlg-label" title="时间 / Time">🕒</label><input id="dlgTime" class="dlg-control" type="datetime-local"></div><div class="actions"><button class="danger dlg-action-icon" onclick="deleteDialogTarget()" title="删除">🗑️</button><button class="dlg-action-icon" onclick="closeDialog()" title="取消">×</button><button class="active dlg-action-icon" onclick="saveDialog()" title="保存">✓</button></div></div></div>
@@ -336,7 +339,7 @@
     });
 
     var ICON_PINS={redPin:'pin-red',bluePin:'pin-blue',greenPin:'pin-green',orangePin:'pin-orange',purplePin:'pin-purple',yellowPin:'pin-yellow'};
-    var I18N={zh:{appTitle:'KML合并工具byYF v0.67',trackListLabel:'🛤️...🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.67',helpText:'<b>功能</b>：导入 KML文件；添加标记点；手绘轨迹；合并导出标准 KML文件；查看距离、爬升、下降、耗时等。兼容手机操作，锁定地图触控后可以切换页面。<br><br><b>手绘轨迹</b>：点 ✏️ 后，单击地图添加点；再次点击 ✏️ 结束并保存。只有 1 个点时保存为标记点，例如钓点；2 个及以上点保存为轨迹。支持撤销、重做。<br><b>查看/编辑</b>：单击标记点或轨迹线查看信息；右键或双击标记点/轨迹线可打开编辑框。手机上也可双击/双触编辑。<br><b>KML/户外信息图例</b>：📍 标记点；🛰 GPS点；🛤️ 轨迹；↔ 距离；↑ 累计上升；↓ 累计下降；⛰ 海拔范围；🕒 耗时，hh:mm 为小时:分钟；└────┘ 比例尺；🗺️ 地图。<br><b>编辑操作图例</b>：👁 浏览状态；✏️ 手绘/编辑；🏃 1km/s；🏃🏃 2km/s；🗑️ 删除；× 取消/关闭；✓ 保存；🌐 在线帮助；🏠 主页；🔒 锁定地图触控；🔓 解锁地图触控；🏷️ 名称；📝 备注；🎨 颜色；⛰ 海拔；🕒 时间。<br><b>反馈问题或定制联系</b>：7189334@qq.com',mapLayer:'🗺️',gaode:'高德地形',google:'Google 地形',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',confirmDeleteMarker:'确定删除此标记点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图'},en:{appTitle:'KML Merge Tool by YF v0.67',trackListLabel:'🛤️...🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.67',helpText:'<b>Features</b>: Import KML files; add markers; draw tracks; merge and export standard KML files; view distance, ascent, descent, duration and more. Compatible with mobile operation; lock map touch to switch pages.<br><br><b>Draw</b>: Click ✏️, click the map to add points, then click ✏️ again to finish. One point is saved as a marker; two or more points are saved as a track. Undo/Redo is supported.<br><b>View/Edit</b>: Click markers or tracks to view info; right-click or double-click markers/tracks to edit. Mobile double-tap is supported.<br><b>KML/outdoor legend</b>: 📍 marker; 🛰 GPS point; 🛤️ track; ↔ distance; ↑ ascent; ↓ descent; ⛰ elevation range; 🕒 duration, hh:mm means hours:minutes; └────┘ scale; draw a bracket-like 1cm line with text scale; 🗺️ map.<br><b>Edit legend</b>: 👁 browse status; ✏️ draw/edit; 🏃 1km/s; 🏃🏃 2km/s; 🗑️ delete; × cancel/close; ✓ save; 🌐 online help; 🏠 home; 🔒 lock map touch; 🔓 unlock map touch; 🏷️ name; 📝 comment; 🎨 color; ⛰ elevation; 🕒 time.<br><b>Feedback/custom work</b>: 7189334@qq.com',mapLayer:'🗺️',gaode:'Amap Terrain',google:'Google Terrain',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',confirmDeleteMarker:'Delete this marker?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart'}};
+    var I18N={zh:{appTitle:'KML合并工具byYF v0.67',trackListLabel:'🛤️...🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.67',helpText:'<b>功能</b>：导入 KML文件；添加标记点；手绘轨迹；合并导出标准 KML文件；查看距离、爬升、下降、耗时等。兼容手机操作，锁定地图触控后可以切换页面。<br><br><b>手绘轨迹</b>：点 ✏️ 后，单击地图添加点；再次点击 ✏️ 结束并保存。只有 1 个点时保存为标记点，例如钓点；2 个及以上点保存为轨迹。支持撤销、重做。<br><b>查看/编辑</b>：单击标记点或轨迹线查看信息；右键或双击标记点/轨迹线可打开编辑框。手机上也可双击/双触编辑。<br><b>KML/户外信息图例</b>：📍 标记点；🛰 GPS点；🛤️ 轨迹；↔ 距离；↑ 累计上升；↓ 累计下降；⛰ 海拔范围；🕒 耗时，hh:mm 为小时:分钟；└────┘ 比例尺；🗺️ 地图。<br><b>编辑操作图例</b>：👁 浏览状态；✏️ 手绘/编辑；🏃 1km/s；🏃🏃 2km/s；🗑️ 删除；× 取消/关闭；✓ 保存；🌐 在线帮助；🏠 主页；🔒 锁定地图触控；🔓 解锁地图触控；🏷️ 名称；📝 备注；🎨 颜色；⛰ 海拔；🕒 时间。<br><b>反馈问题或定制联系</b>：7189334@qq.com',mapLayer:'🗺️',gaode:'高德地形',google:'Google 地形',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',confirmDeleteMarker:'确定删除此标记点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图',classicKml:'经典轨迹',classicKmlLoading:'正在读取经典轨迹列表...',classicKmlLoadFailed:'经典轨迹列表读取失败',classicKmlEmpty:'经典轨迹列表为空',classicKmlConfirm:'切换经典轨迹会清空当前数据，是否继续？',classicKmlImported:'经典轨迹已载入'},en:{appTitle:'KML Merge Tool by YF v0.67',trackListLabel:'🛤️...🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.67',helpText:'<b>Features</b>: Import KML files; add markers; draw tracks; merge and export standard KML files; view distance, ascent, descent, duration and more. Compatible with mobile operation; lock map touch to switch pages.<br><br><b>Draw</b>: Click ✏️, click the map to add points, then click ✏️ again to finish. One point is saved as a marker; two or more points are saved as a track. Undo/Redo is supported.<br><b>View/Edit</b>: Click markers or tracks to view info; right-click or double-click markers/tracks to edit. Mobile double-tap is supported.<br><b>KML/outdoor legend</b>: 📍 marker; 🛰 GPS point; 🛤️ track; ↔ distance; ↑ ascent; ↓ descent; ⛰ elevation range; 🕒 duration, hh:mm means hours:minutes; └────┘ scale; draw a bracket-like 1cm line with text scale; 🗺️ map.<br><b>Edit legend</b>: 👁 browse status; ✏️ draw/edit; 🏃 1km/s; 🏃🏃 2km/s; 🗑️ delete; × cancel/close; ✓ save; 🌐 online help; 🏠 home; 🔒 lock map touch; 🔓 unlock map touch; 🏷️ name; 📝 comment; 🎨 color; ⛰ elevation; 🕒 time.<br><b>Feedback/custom work</b>: 7189334@qq.com',mapLayer:'🗺️',gaode:'Amap Terrain',google:'Google Terrain',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',confirmDeleteMarker:'Delete this marker?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart',classicKml:'Classic KML',classicKmlLoading:'Loading classic KML list...',classicKmlLoadFailed:'Failed to load classic KML list',classicKmlEmpty:'Classic KML list is empty',classicKmlConfirm:'Switching to a classic KML will clear current data. Continue?',classicKmlImported:'Classic KML loaded'}};
     var lang=localStorage.getItem('yfx_lang')||'zh',mode='view',objects=[],lines=[],undoStack=[],redoStack=[],dialogTarget=null,suppressHistory=false,drawingLine=[],trackPolyline=null,selectedLines=new Set(),dlgSelectedIcon='redPin',clickTimer=null,dlgLineTarget=null,dlgLineColor='#ffd23f',dlgLineStartIcon='',dlgLineEndIcon='';
     var lineInfoDialogLastPos=null; // 记录单轨迹信息窗口上一次显示/拖拽后的位置，切换轨迹时复用。
     var lineInfoDialogUserMoved=false; // 用户拖动过轨迹信息框后，后续切换轨迹继续沿用该位置。
@@ -2096,6 +2099,114 @@
     for(var i=0;i<keys.length;i++){var sel=keys[i]===selKey?' selected':'';h+='<div class="dlg-icon-opt'+sel+'" onclick="pickLineIcon'+type+'(\''+keys[i]+'\')"><div class="pin '+ICON_PINS[keys[i]]+'"></div></div>';}s.innerHTML=h;}
     function pickLineIconstart(key){dlgLineStartIcon=key;renderLineIconPicker('dlgLineStartIcons',key,'start');}
     function pickLineIconend(key){dlgLineEndIcon=key;renderLineIconPicker('dlgLineEndIcons',key,'end');}
+
+    // -- online classic KML list --
+    // 经典轨迹始终从线上固定目录读取。即使 HTML 通过 file:// 本地打开，
+    // list.txt 和其中列出的 KML 文件也都访问 https://swordll80.github.io/outdoors/kml/。
+    var CLASSIC_KML_BASE_URL='https://swordll80.github.io/outdoors/kml/';
+    var CLASSIC_KML_LIST_URL=CLASSIC_KML_BASE_URL+'list.txt';
+    var classicKmlCache=null;
+    function classicKmlDisplayName(item){
+      if(!item)return '';
+      return (lang==='en'&&item.en)?item.en:(item.zh||item.name||item.file||'KML');
+    }
+    function normalizeClassicKmlEntry(line){
+      line=(line||'').trim();
+      if(!line||line.charAt(0)==='#'||line.indexOf('//')===0)return null;
+      var parts=line.split('|').map(function(s){return s.trim();});
+      var file=parts[0]||'';
+      if(!file)return null;
+      if(!/\.kml$/i.test(file))file+='.kml';
+      return{file:file,name:parts[1]||file.replace(/\.kml$/i,''),zh:parts[1]||file.replace(/\.kml$/i,''),en:parts[2]||''};
+    }
+    function parseClassicKmlList(text){
+      var arr=[];
+      var linesText=String(text||'').replace(/^\uFEFF/,'').split(/\r?\n/);
+      for(var i=0;i<linesText.length;i++){
+        var item=normalizeClassicKmlEntry(linesText[i]);
+        if(item)arr.push(item);
+      }
+      return arr;
+    }
+    function classicKmlUrl(file){
+      // list.txt 只把第一列当作文件名/相对路径处理，禁止受当前 HTML 路径影响。
+      // 例如本地 file:///C:/xxx/YFxGeoStudio.html 运行时，仍下载：
+      // https://swordll80.github.io/outdoors/kml/ + list.txt 中的文件名。
+      var raw=String(file||'').trim().replace(/^\/+/, '');
+      raw=raw.replace(/^https?:\/\/[^\/]+\/outdoors\/kml\//i,'');
+      var parts=raw.split('/');
+      for(var i=0;i<parts.length;i++)parts[i]=encodeURIComponent(parts[i]);
+      return CLASSIC_KML_BASE_URL+parts.join('/');
+    }
+    function ensureClassicKmlList(cb){
+      if(classicKmlCache){cb(null,classicKmlCache);return;}
+      logInfo('读取经典 KML 列表：'+CLASSIC_KML_LIST_URL);
+      fetch(CLASSIC_KML_LIST_URL,{cache:'no-store'})
+        .then(function(resp){if(!resp.ok)throw new Error('HTTP '+resp.status);return resp.text();})
+        .then(function(text){classicKmlCache=parseClassicKmlList(text);cb(null,classicKmlCache);})
+        .catch(function(err){cb(err,null);});
+    }
+    function showClassicKmlMenu(e){
+      finishAndExitTrackMode(true);
+      if(e){e.preventDefault();e.stopPropagation();}
+      var menu=document.getElementById('rowMenu');
+      if(!menu)return;
+      var btn=document.getElementById('classicKmlBtn');
+      var r=btn?btn.getBoundingClientRect():{left:16,bottom:80};
+      menu.style.left=Math.max(8,Math.min(r.left,window.innerWidth-230))+'px';
+      menu.style.top=Math.min(r.bottom+6,window.innerHeight-80)+'px';
+      menu.style.display='block';
+      menu.innerHTML='<div class="row-menu-item">'+escapeHtml(tr('classicKmlLoading'))+'</div>';
+      ensureClassicKmlList(function(err,list){
+        if(err){
+          logError('读取经典 KML 列表失败：'+(err&&err.message?err.message:err));
+          menu.innerHTML='<div class="row-menu-item danger">'+escapeHtml(tr('classicKmlLoadFailed'))+'</div>';
+          return;
+        }
+        if(!list||!list.length){menu.innerHTML='<div class="row-menu-item">'+escapeHtml(tr('classicKmlEmpty'))+'</div>';return;}
+        var h='';
+        for(var i=0;i<list.length;i++){
+          h+='<div class="row-menu-item" onclick="downloadClassicKml('+i+')">🛤️ '+escapeHtml(classicKmlDisplayName(list[i]))+'</div>';
+        }
+        menu.innerHTML=h;
+      });
+    }
+    function downloadClassicKml(idx){
+      var menu=document.getElementById('rowMenu');
+      if(menu)menu.style.display='none';
+      var item=classicKmlCache&&classicKmlCache[idx];
+      if(!item)return;
+      if((lines.length||objects.length)&&!confirm(tr('classicKmlConfirm')))return;
+      var url=classicKmlUrl(item.file);
+      logInfo('开始在线载入经典 KML：'+url);
+      fetch(url,{cache:'no-store'})
+        .then(function(resp){if(!resp.ok)throw new Error('HTTP '+resp.status);return resp.text();})
+        .then(function(text){
+          pushHistory();
+          closeLineInfoDialog();
+          closeMarkerInfoDialog();
+          clearRuntime();
+          embeddedExampleDataLoaded=false;
+          importingEmbeddedExampleData=false;
+          firstImportExamplePromptDone=true;
+          importKmlDuplicateLineSkipped=0;
+          var added=importKmlText(text,item.file);
+          importedFilePaths=[item.file];
+          setFileStatusText(item.file);
+          updateSideFileTitle();
+          updateStats();
+          updateAllMarkerLabels();
+          updateHistoryButtons();
+          refreshLineDisplayAfterLangChange();
+          fitData();
+          toast(tr('classicKmlImported')+'：'+classicKmlDisplayName(item));
+          logInfo('经典 KML 载入完成：'+item.file+'，实体数量：'+added);
+        })
+        .catch(function(err){
+          console.error('经典 KML 下载/导入失败：'+item.file, err);
+          toast(tr('importFailed')+'：'+item.file);
+        });
+    }
 
     // -- import / export --
     function openImport(){
