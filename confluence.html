@@ -247,8 +247,6 @@
     </a>
     <div class="top-actions">
       <button class="btn primary" id="saveBtn" type="button">保存页面</button>
-      <button class="btn" id="exportTreeBtn" type="button">备份目录</button>
-      <button class="btn" id="importTreeBtn" type="button">恢复目录</button>
       <a class="btn" id="homeBtn" href="index.html">返回主页</a>
     </div>
   </header>
@@ -318,8 +316,6 @@
     </main>
   </div>
 
-  <input id="treeFileInput" type="file" accept="application/json,.json" hidden>
-
   <div class="auth-gate" id="authGate" role="dialog" aria-modal="true" aria-labelledby="authTitle">
     <div class="auth-box">
       <h2 id="authTitle">授权 confluence 目录</h2>
@@ -355,7 +351,6 @@
       var statusText = document.getElementById('statusText');
       var rootState = document.getElementById('rootState');
       var supportNote = document.getElementById('supportNote');
-      var treeFileInput = document.getElementById('treeFileInput');
       var authGate = document.getElementById('authGate');
       var authGateBtn = document.getElementById('authGateBtn');
 
@@ -858,27 +853,6 @@
         }
       }
 
-      function exportTree() {
-        downloadFile('confluence-tree.json', JSON.stringify(tree, null, 2));
-        setStatus('已下载页面树备份。');
-      }
-
-      function importTree(file) {
-        if (!file) return;
-        file.text().then(function (text) {
-          var parsed = JSON.parse(text);
-          if (!Array.isArray(parsed)) throw new Error('目录文件格式不正确');
-          tree = parsed;
-          selectedId = tree[0] && tree[0].id;
-          writeTreeFile().catch(function () { saveTree(); });
-          renderTree();
-          if (selectedId) selectNode(selectedId);
-          setStatus('已恢复页面树。');
-        }).catch(function (err) {
-          setStatus('恢复目录失败：' + (err.message || err));
-        });
-      }
-
       function runCommand(cmd, value) {
         editor.focus();
         document.execCommand(cmd, false, value || null);
@@ -891,7 +865,10 @@
         document.getElementById('homeBtn').addEventListener('click', async function (event) {
           event.preventDefault();
           var ok = await saveEverythingBeforeLeave();
-          if (ok) window.location.href = 'index.html';
+          if (ok) {
+            alert('confluence 页面已保存。\n\n请手动运行 confluence\\git.bat 提交并推送 confluence 目录变更。');
+            window.location.href = 'index.html';
+          }
         });
         document.getElementById('addChildBtn').addEventListener('click', function () {
           var hit = current();
@@ -900,12 +877,6 @@
         document.getElementById('addRootBtn').addEventListener('click', function () { addNode(null); });
         document.getElementById('renameBtn').addEventListener('click', renameNode);
         document.getElementById('deleteBtn').addEventListener('click', deleteNode);
-        document.getElementById('exportTreeBtn').addEventListener('click', exportTree);
-        document.getElementById('importTreeBtn').addEventListener('click', function () { treeFileInput.click(); });
-        treeFileInput.addEventListener('change', function () {
-          importTree(treeFileInput.files && treeFileInput.files[0]);
-          treeFileInput.value = '';
-        });
 
         Array.prototype.forEach.call(document.querySelectorAll('[data-cmd]'), function (button) {
           button.addEventListener('click', function () {
