@@ -484,6 +484,21 @@
         return found;
       }
 
+      function pathToNode(id) {
+        var path = [];
+        function visit(nodes) {
+          for (var i = 0; i < (nodes || []).length; i++) {
+            var node = nodes[i];
+            path.push(node);
+            if (node.id === id) return true;
+            if (visit(node.children || [])) return true;
+            path.pop();
+          }
+          return false;
+        }
+        return visit(tree) ? path.slice() : [];
+      }
+
       function current() {
         return findNode(selectedId) || findNode(tree[0] && tree[0].id);
       }
@@ -627,6 +642,14 @@
           + '</html>\n';
       }
 
+      function parentPageBody(node) {
+        var childLinks = (node.children || []).map(function (child) {
+          return '<li><a href="' + encodeURIComponent(child.file).replace(/%2F/g, '/') + '">' + escapeHtml(child.title || child.file) + '</a></li>';
+        }).join('\n');
+        return '<h1>' + escapeHtml(node.title || '未命名') + '</h1>\n'
+          + (childLinks ? '<h2>子页面</h2>\n<ul>\n' + childLinks + '\n</ul>' : '<p></p>');
+      }
+
       function mergeIntoLoadedHtml(title, body) {
         if (!loadedHtml) return pageTemplate(title, body);
         try {
@@ -664,6 +687,7 @@
           return;
         }
         try {
+          await saveMissingAncestorPages(hit.node.id);
           var fileHandle = await confluenceHandle.getFileHandle(hit.node.file, { create: true });
           var writable = await fileHandle.createWritable();
           await writable.write(html);
@@ -672,6 +696,22 @@
           setStatus('已保存到 confluence/' + hit.node.file);
         } catch (err) {
           setStatus('保存失败：' + (err && err.message ? err.message : err));
+        }
+      }
+
+      async function saveMissingAncestorPages(nodeId) {
+        var chain = pathToNode(nodeId);
+        if (chain.length <= 1 || !confluenceHandle || !supportsDirectory) return;
+        for (var i = 0; i < chain.length - 1; i++) {
+          var node = chain[i];
+          node.file = normalizeFileName(node.file || node.title);
+          var existing = await getFileText(node.file);
+          if (existing != null) continue;
+          var html = pageTemplate(node.title || '未命名', parentPageBody(node));
+          var fileHandle = await confluenceHandle.getFileHandle(node.file, { create: true });
+          var writable = await fileHandle.createWritable();
+          await writable.write(html);
+          await writable.close();
         }
       }
 
