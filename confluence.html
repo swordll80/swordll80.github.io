@@ -199,6 +199,31 @@
       padding: 10px 12px;
       font-size: 13px;
     }
+    .auth-gate {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(246,248,251,.86);
+      backdrop-filter: blur(12px);
+    }
+    .auth-gate.show { display: flex; }
+    .auth-box {
+      width: min(440px, calc(100vw - 36px));
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      display: grid;
+      gap: 14px;
+    }
+    .auth-box h2 { margin: 0; font-size: 22px; }
+    .auth-box p { margin: 0; }
+    .auth-box .btn { width: 100%; min-height: 44px; }
     @media (max-width: 900px) {
       :root { --header-height: 64px; --tree-width: 100%; }
       .topbar { align-items: flex-start; flex-direction: column; }
@@ -221,7 +246,6 @@
       </span>
     </a>
     <div class="top-actions">
-      <button class="btn" id="chooseRootBtn" type="button">授权 confluence 目录</button>
       <button class="btn primary" id="saveBtn" type="button">保存页面</button>
       <button class="btn" id="exportTreeBtn" type="button">备份目录</button>
       <button class="btn" id="importTreeBtn" type="button">恢复目录</button>
@@ -296,19 +320,29 @@
 
   <input id="treeFileInput" type="file" accept="application/json,.json" hidden>
 
+  <div class="auth-gate" id="authGate" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <div class="auth-box">
+      <h2 id="authTitle">授权 confluence 目录</h2>
+      <p>为了直接保存 HTML 页面，需要授权 confluence.html 同级的 confluence 文件夹。浏览器保存授权后，下次打开会自动恢复。</p>
+      <button class="btn primary" id="authGateBtn" type="button">授权 confluence 目录</button>
+    </div>
+  </div>
+
   <script>
     (function () {
       'use strict';
 
       var STORAGE_KEY = 'localConfluence.tree.v1';
       var SELECTED_KEY = 'localConfluence.selectedId.v1';
+      var TREE_FILE_NAME = 'tree.json';
+      var TREE_URL = 'confluence/tree.json';
       var DIR_DB_NAME = 'localConfluence.fs.v1';
       var DIR_STORE_NAME = 'handles';
       var DIR_HANDLE_KEY = 'confluence';
       var supportsDirectory = 'showDirectoryPicker' in window;
       var confluenceHandle = null;
-      var tree = loadTree();
-      var selectedId = localStorage.getItem(SELECTED_KEY) || (tree[0] && tree[0].id);
+      var tree = [];
+      var selectedId = localStorage.getItem(SELECTED_KEY) || '';
       var dirty = false;
       var loadedHtml = '';
       var loadedUsesConfluenceContent = false;
@@ -322,6 +356,8 @@
       var rootState = document.getElementById('rootState');
       var supportNote = document.getElementById('supportNote');
       var treeFileInput = document.getElementById('treeFileInput');
+      var authGate = document.getElementById('authGate');
+      var authGateBtn = document.getElementById('authGateBtn');
 
       function uid() {
         return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
@@ -394,14 +430,14 @@
 
       function defaultTree() {
         return [{
-          id: uid(),
+          id: 'home',
           title: '首页',
           file: 'index.html',
           children: []
         }];
       }
 
-      function loadTree() {
+      function loadStoredTree() {
         try {
           var parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || 'null');
           if (Array.isArray(parsed) && parsed.length) return parsed;
@@ -411,6 +447,26 @@
 
       function saveTree() {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(tree));
+      }
+
+      async function loadPublishedTree() {
+        try {
+          var res = await fetch(TREE_URL + '?v=' + Date.now(), { cache: 'no-store' });
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          var parsed = await res.json();
+          if (Array.isArray(parsed) && parsed.length) return parsed;
+        } catch (e) {}
+        return null;
+      }
+
+      async function writeTreeFile() {
+        saveTree();
+        if (!confluenceHandle || !supportsDirectory) return false;
+        var handle = await confluenceHandle.getFileHandle(TREE_FILE_NAME, { create: true });
+        var writable = await handle.createWritable();
+        await writable.write(JSON.stringify(tree, null, 2) + '\n');
+        await writable.close();
+        return true;
       }
 
       function walk(nodes, fn, parent, level) {
@@ -439,6 +495,18 @@
       function setDirty(value) {
         dirty = !!value;
         statusBox.classList.toggle('dirty', dirty);
+      }
+
+      function showAuthGate(message) {
+        if (message) setStatus(message);
+        if (authGate) authGate.classList.add('show');
+        if (authGateBtn) {
+          setTimeout(function () { authGateBtn.focus(); }, 0);
+        }
+      }
+
+      function hideAuthGate() {
+        if (authGate) authGate.classList.remove('show');
       }
 
       function renderTree() {
@@ -502,14 +570,19 @@
       }
 
       async function getFileText(fileName) {
-        if (!confluenceHandle || !supportsDirectory) return null;
-        try {
-          var handle = await confluenceHandle.getFileHandle(fileName);
-          var file = await handle.getFile();
-          return await file.text();
-        } catch (e) {
-          return null;
+        if (confluenceHandle && supportsDirectory) {
+          try {
+            var handle = await confluenceHandle.getFileHandle(fileName);
+            var file = await handle.getFile();
+            return await file.text();
+          } catch (e) {}
         }
+        try {
+          var res = await fetch('confluence/' + encodeURIComponent(fileName).replace(/%2F/g, '/') + '?v=' + Date.now(), { cache: 'no-store' });
+          if (res.ok) return await res.text();
+        } catch (e2) {
+        }
+        return null;
       }
 
       async function loadPageFile(node) {
@@ -581,13 +654,13 @@
         hit.node.title = pageTitle.value.trim() || '未命名';
         hit.node.file = normalizeFileName(pageFile.value || hit.node.title);
         pageFile.value = hit.node.file;
-        saveTree();
+        await writeTreeFile();
         renderTree();
         var html = mergeIntoLoadedHtml(hit.node.title, editor.innerHTML);
         if (!confluenceHandle || !supportsDirectory) {
           downloadFile(hit.node.file, html);
           setDirty(false);
-          setStatus('尚未授权 confluence/ 目录，已下载：' + hit.node.file);
+          showAuthGate('尚未授权 confluence/ 目录，已下载：' + hit.node.file);
           return;
         }
         try {
@@ -619,7 +692,7 @@
         URL.revokeObjectURL(url);
       }
 
-      function addNode(parent) {
+      async function addNode(parent) {
         var title = prompt('新页面标题：', '新页面');
         if (!title) return;
         var node = { id: uid(), title: title.trim(), file: uniqueFileName(title), children: [] };
@@ -630,32 +703,32 @@
           tree.push(node);
         }
         selectedId = node.id;
-        saveTree();
+        await writeTreeFile();
         renderTree();
         selectNode(node.id);
         setDirty(true);
       }
 
-      function renameNode() {
+      async function renameNode() {
         var hit = current();
         if (!hit) return;
         var title = prompt('节点名称：', hit.node.title || '');
         if (!title) return;
         hit.node.title = title.trim();
         pageTitle.value = hit.node.title;
-        saveTree();
+        await writeTreeFile();
         renderTree();
         setDirty(true);
       }
 
-      function deleteNode() {
+      async function deleteNode() {
         var hit = current();
         if (!hit) return;
         if (!confirm('删除树节点？不会自动删除已经保存到磁盘的 HTML 文件。')) return;
         var list = hit.parent ? hit.parent.children : tree;
         list.splice(list.indexOf(hit.node), 1);
         selectedId = tree[0] && tree[0].id;
-        saveTree();
+        await writeTreeFile();
         renderTree();
         if (selectedId) selectNode(selectedId);
         else {
@@ -680,7 +753,22 @@
           confluenceHandle = picked;
           await saveStoredDirectoryHandle(confluenceHandle);
           rootState.textContent = 'confluence/';
+          hideAuthGate();
           setStatus('已授权 confluence/ 目录。之后保存会直接写入该目录。');
+          try {
+            var treeText = await getFileText(TREE_FILE_NAME);
+            if (treeText) {
+              var parsed = JSON.parse(treeText);
+              if (Array.isArray(parsed) && parsed.length) {
+                tree = parsed;
+                selectedId = selectedId || (tree[0] && tree[0].id);
+                saveTree();
+                renderTree();
+              }
+            } else {
+              await writeTreeFile();
+            }
+          } catch (e) {}
           var hit = current();
           if (hit) loadPageFile(hit.node);
         } catch (err) {
@@ -700,7 +788,7 @@
           if (!Array.isArray(parsed)) throw new Error('目录文件格式不正确');
           tree = parsed;
           selectedId = tree[0] && tree[0].id;
-          saveTree();
+          writeTreeFile().catch(function () { saveTree(); });
           renderTree();
           if (selectedId) selectNode(selectedId);
           setStatus('已恢复页面树。');
@@ -716,7 +804,7 @@
       }
 
       function initEvents() {
-        document.getElementById('chooseRootBtn').addEventListener('click', chooseRoot);
+        authGateBtn.addEventListener('click', chooseRoot);
         document.getElementById('saveBtn').addEventListener('click', saveCurrentPage);
         document.getElementById('addChildBtn').addEventListener('click', function () {
           var hit = current();
@@ -763,14 +851,35 @@
 
       async function init() {
         supportNote.textContent = supportsDirectory
-          ? '固定页面库：confluence/。首次点击“授权 confluence 目录”并选择 confluence.html 旁边的 confluence 文件夹；浏览器保留授权后，后续打开会自动复用。'
+          ? '固定页面库：confluence/。如果浏览器还没有保存授权，页面会自动要求授权 confluence 文件夹；授权后会自动复用。'
           : '当前浏览器不支持直接保存到本地目录。请用最新版 Chrome 或 Edge 打开本页面。';
-        renderTree();
         initEvents();
         confluenceHandle = await loadStoredDirectoryHandle();
+        var publishedTree = await loadPublishedTree();
+        tree = publishedTree || loadStoredTree() || defaultTree();
+        selectedId = localStorage.getItem(SELECTED_KEY) || (tree[0] && tree[0].id);
+        saveTree();
+        renderTree();
         if (confluenceHandle) {
           rootState.textContent = 'confluence/';
           setStatus('已恢复 confluence/ 目录授权。');
+          hideAuthGate();
+          try {
+            var treeText = await getFileText(TREE_FILE_NAME);
+            if (treeText) {
+              var parsed = JSON.parse(treeText);
+              if (Array.isArray(parsed) && parsed.length) {
+                tree = parsed;
+                selectedId = localStorage.getItem(SELECTED_KEY) || (tree[0] && tree[0].id);
+                saveTree();
+                renderTree();
+              }
+            } else {
+              await writeTreeFile();
+            }
+          } catch (e) {}
+        } else if (supportsDirectory) {
+          showAuthGate('需要授权 confluence/ 目录后才能直接保存。');
         }
         if (selectedId) selectNode(selectedId);
       }

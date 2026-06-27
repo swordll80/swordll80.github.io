@@ -1,0 +1,39 @@
+[
+  {
+    "id": "home",
+    "title": "首页",
+    "file": "index.html",
+    "children": [
+      {
+        "id": "page-new",
+        "title": "新页面",
+        "file": "新页面.html",
+        "children": []
+      },
+      {
+        "id": "page-new-2",
+        "title": "新页面-2",
+        "file": "新页面-2.html",
+        "children": []
+      },
+      {
+        "id": "page-new-3",
+        "title": "新页面-3",
+        "file": "新页面-3.html",
+        "children": []
+      },
+      {
+        "id": "page-new-4",
+        "title": "新页面-4",
+        "file": "新页面-4.html",
+        "children": []
+      },
+      {
+        "id": "page-new-5",
+        "title": "新页面-5",
+        "file": "新页面-5.html",
+        "children": []
+      }
+    ]
+  }
+]
