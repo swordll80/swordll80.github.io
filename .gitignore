@@ -1,1 +1,4 @@
 *.zip
+.codebuddy/
+.workbuddy/
+.agents/
