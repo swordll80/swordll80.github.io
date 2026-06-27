@@ -69,7 +69,7 @@
           },
           {
             "id": "pmqwir3uca8w5w",
-            "title": "2.5",
+            "title": "2.5测试",
             "file": "2-5.html",
             "children": []
           },
@@ -77,6 +77,12 @@
             "id": "pmqwiu7tf3lkwc",
             "title": "2.6",
             "file": "2-6.html",
+            "children": []
+          },
+          {
+            "id": "pmqwiy0cba3ts1",
+            "title": "2.7",
+            "file": "2-7.html",
             "children": []
           }
         ]
