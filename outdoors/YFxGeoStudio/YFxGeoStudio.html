@@ -318,6 +318,182 @@
       }
     }
 
+
+    /* v0.71 fixed14: mobile portrait final cleanup.
+       Collapsed track list becomes a small toggle tab only; no stats/content leakage. */
+    @media (max-width: 760px) and (orientation: portrait) {
+      #toolbar {
+        position: fixed !important;
+        left: 6px !important;
+        right: 6px !important;
+        top: calc(env(safe-area-inset-top, 0px) + 6px) !important;
+        transform: none !important;
+        width: auto !important;
+        max-width: calc(100vw - 12px) !important;
+        padding: 5px 6px !important;
+        gap: 4px !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        border-radius: 10px !important;
+        z-index: 1600 !important;
+      }
+      #toolbar button {
+        width: 38px !important;
+        min-width: 38px !important;
+        height: 38px !important;
+        padding: 0 !important;
+        font-size: 20px !important;
+        flex: 0 0 auto !important;
+      }
+      #toolbar svg {
+        width: 22px !important;
+        height: 22px !important;
+      }
+
+      #side {
+        position: fixed !important;
+        left: 6px !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 44px) !important;
+        width: calc(100vw - 12px) !important;
+        min-width: 0 !important;
+        max-width: calc(100vw - 12px) !important;
+        max-height: 42vh !important;
+        padding: 10px !important;
+        transform: none !important;
+        overflow: auto !important;
+        z-index: 1300 !important;
+      }
+
+      #side.side-collapsed {
+        left: 0 !important;
+        right: auto !important;
+        top: auto !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 116px) !important;
+        width: 52px !important;
+        min-width: 52px !important;
+        max-width: 52px !important;
+        height: 52px !important;
+        max-height: 52px !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        transform: none !important;
+        opacity: .96 !important;
+        border-radius: 0 10px 10px 0 !important;
+      }
+      #side.side-collapsed h1,
+      #side.side-collapsed #stats,
+      #side.side-collapsed .side-file-name,
+      #side.side-collapsed #classicKmlBtn,
+      #side.side-collapsed #trackListTitleIcon {
+        display: none !important;
+        visibility: hidden !important;
+      }
+      #side.side-collapsed #sideToggle {
+        position: absolute !important;
+        left: 8px !important;
+        right: auto !important;
+        top: 8px !important;
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 18px !important;
+        z-index: 10 !important;
+      }
+      #side.side-open {
+        left: 6px !important;
+        right: auto !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 44px) !important;
+        width: calc(100vw - 12px) !important;
+        max-width: calc(100vw - 12px) !important;
+        height: auto !important;
+        max-height: 42vh !important;
+        padding: 10px !important;
+        overflow: auto !important;
+        transform: none !important;
+        border-radius: 10px !important;
+      }
+      #side.side-open h1,
+      #side.side-open #stats {
+        display: block !important;
+        visibility: visible !important;
+      }
+      #side.side-open #sideToggle {
+        top: 8px !important;
+        right: 8px !important;
+        left: auto !important;
+      }
+
+      #layerBox {
+        position: fixed !important;
+        right: 6px !important;
+        left: auto !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 44px) !important;
+        transform: none !important;
+        z-index: 1250 !important;
+      }
+      #status {
+        position: fixed !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        z-index: 1200 !important;
+      }
+    }
+
+    /* v0.71 fixed15: final phone portrait bounds.  Keep the toolbar and lower panels inside the visual viewport. */
+    @media (max-width: 760px) and (orientation: portrait) {
+      #toolbar {
+        box-sizing: border-box !important;
+        left: 6px !important;
+        right: 6px !important;
+        width: calc(100vw - 12px) !important;
+        max-width: calc(100vw - 12px) !important;
+        min-width: 0 !important;
+        overflow-x: auto !important;
+        overflow-y: hidden !important;
+        overscroll-behavior-x: contain;
+      }
+      #toolbar button,
+      #toolbar .lang-btn {
+        width: 36px !important;
+        min-width: 36px !important;
+        height: 36px !important;
+        flex: 0 0 36px !important;
+      }
+      #side.side-open,
+      #side:not(.side-collapsed) {
+        box-sizing: border-box !important;
+        left: 6px !important;
+        right: auto !important;
+        width: calc(100vw - 112px) !important;
+        min-width: 0 !important;
+        max-width: calc(100vw - 112px) !important;
+        max-height: min(42dvh, calc(100dvh - 124px)) !important;
+        overflow: auto !important;
+        overscroll-behavior: contain;
+      }
+      #side.side-collapsed {
+        left: 0 !important;
+        right: auto !important;
+        width: 52px !important;
+        min-width: 52px !important;
+        max-width: 52px !important;
+        overflow: hidden !important;
+      }
+      #stats {
+        max-width: 100% !important;
+        overflow: auto !important;
+      }
+      #stats table {
+        min-width: max-content;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -798,9 +974,11 @@ var userLocationMarker = null;
       // 手机竖屏采用 CSS fixed 安全布局，不再使用历史 left/top。
       if(isMobilePortrait()){
         tb.style.position='fixed';
-        tb.style.left='4px';
-        tb.style.right='4px';
+        tb.style.left='6px';
+        tb.style.right='6px';
         tb.style.top='calc(env(safe-area-inset-top, 0px) + 6px)';
+        tb.style.width='calc(100vw - 12px)';
+        tb.style.maxWidth='calc(100vw - 12px)';
         tb.style.transform='none';
         return;
       }
@@ -873,8 +1051,28 @@ var userLocationMarker = null;
         if(isMobilePortrait()){
           sd.style.left='0px';
           sd.style.right='';
-          sd.style.bottom='42px';
+          sd.style.top='auto';
+          sd.style.bottom='calc(env(safe-area-inset-bottom, 0px) + 116px)';
+          sd.style.width='52px';
+          sd.style.maxWidth='52px';
+          sd.style.minWidth='52px';
+          sd.style.height='52px';
+          sd.style.transform='none';
         }
+        return;
+      }
+
+      if(isMobilePortrait()){
+        sd.style.position='fixed';
+        sd.style.left='6px';
+        sd.style.right='auto';
+        sd.style.top='auto';
+        sd.style.bottom='calc(env(safe-area-inset-bottom, 0px) + 44px)';
+        sd.style.width='calc(100vw - 112px)';
+        sd.style.maxWidth='calc(100vw - 112px)';
+        sd.style.minWidth='0';
+        sd.style.height='auto';
+        sd.style.transform='none';
         return;
       }
 
@@ -962,13 +1160,16 @@ var userLocationMarker = null;
         sd.style.position='fixed';
         sd.style.right='auto';
         sd.style.top='auto';
-        sd.style.bottom='calc(env(safe-area-inset-bottom, 0px) + 42px)';
-        sd.style.width='calc(100vw - 8px)';
-        sd.style.maxWidth='calc(100vw - 8px)';
+        sd.style.bottom='calc(env(safe-area-inset-bottom, 0px) + 44px)';
+        sd.style.width=collapsed?'52px':'calc(100vw - 112px)';
+        sd.style.maxWidth=collapsed?'52px':'calc(100vw - 112px)';
+        sd.style.minWidth=collapsed?'52px':'0';
       }else{
         sd.style.position='absolute';
         sd.style.right='';
         sd.style.width='';
+        sd.style.maxWidth='';
+        sd.style.minWidth='';
       }
 
       if(collapsed){
@@ -976,15 +1177,20 @@ var userLocationMarker = null;
         sd.classList.remove('side-open');
         if(isMobilePortrait()){
           sd.style.left='0px';
-        }else if(!isFinite(parseFloat(sd.style.left))){
-          sd.style.left='12px';
+          sd.style.bottom='calc(env(safe-area-inset-bottom, 0px) + 116px)';
+          sd.style.height='52px';
+          sd.style.transform='none';
+        }else{
+          if(!isFinite(parseFloat(sd.style.left)))sd.style.left='12px';
+          sd.style.transform='translateX(calc(-100% + 46px))';
         }
-        sd.style.transform='translateX(calc(-100% + 46px))';
       }else{
         sd.classList.remove('side-collapsed');
         sd.classList.add('side-open');
         if(isMobilePortrait()){
-          sd.style.left='4px';
+          sd.style.left='6px';
+          sd.style.bottom='calc(env(safe-area-inset-bottom, 0px) + 44px)';
+          sd.style.height='auto';
         }
         sd.style.transform='translateX(0)';
         clampSidePanelPosition();
