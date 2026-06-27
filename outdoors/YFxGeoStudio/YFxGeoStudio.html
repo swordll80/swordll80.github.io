@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <title>KML合并工具byYF v0.71</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
@@ -257,6 +257,64 @@
       #toolbar::-webkit-scrollbar { display: none; }
       #side {
         max-width: calc(100vw - 8px);
+      }
+    }
+
+
+    /* v0.71 fixed13: mobile safe layout.  Phones use fixed safe positions instead of draggable absolute positions. */
+    @media (max-width: 760px) and (orientation: portrait) {
+      html, body {
+        width: 100vw;
+        height: 100dvh;
+        overflow: hidden;
+        touch-action: manipulation;
+      }
+      #map {
+        width: 100vw !important;
+        height: 100dvh !important;
+      }
+      #toolbar {
+        position: fixed !important;
+        left: 4px !important;
+        right: 4px !important;
+        top: calc(env(safe-area-inset-top, 0px) + 6px) !important;
+        transform: none !important;
+        max-width: calc(100vw - 8px) !important;
+        width: auto !important;
+        overflow-x: auto !important;
+        overflow-y: visible !important;
+        flex-wrap: nowrap !important;
+        z-index: 1400 !important;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      #toolbar::-webkit-scrollbar { display: none; }
+      #side {
+        position: fixed !important;
+        left: 4px !important;
+        right: auto !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 42px) !important;
+        top: auto !important;
+        max-width: calc(100vw - 8px) !important;
+        width: calc(100vw - 8px) !important;
+        min-width: 0 !important;
+        max-height: 42vh !important;
+        z-index: 1200 !important;
+      }
+      #side.side-collapsed {
+        left: 0 !important;
+        right: auto !important;
+        transform: translateX(calc(-100% + 46px)) !important;
+        overflow: visible !important;
+      }
+      #side.side-open {
+        left: 4px !important;
+        transform: translateX(0) !important;
+      }
+      #layerBox {
+        position: fixed !important;
+        right: 4px !important;
+        bottom: calc(env(safe-area-inset-bottom, 0px) + 42px) !important;
       }
     }
 
@@ -736,6 +794,17 @@ var userLocationMarker = null;
     function clampToolbarPosition(){
       var tb=document.getElementById('toolbar');
       if(!tb)return;
+
+      // 手机竖屏采用 CSS fixed 安全布局，不再使用历史 left/top。
+      if(isMobilePortrait()){
+        tb.style.position='fixed';
+        tb.style.left='4px';
+        tb.style.right='4px';
+        tb.style.top='calc(env(safe-area-inset-top, 0px) + 6px)';
+        tb.style.transform='none';
+        return;
+      }
+
       var r=tb.getBoundingClientRect();
       var w=r.width||tb.offsetWidth||320;
       var h=r.height||tb.offsetHeight||36;
@@ -745,22 +814,13 @@ var userLocationMarker = null;
       var left=isFinite(parseFloat(tb.style.left))?parseFloat(tb.style.left):r.left;
       var top=isFinite(parseFloat(tb.style.top))?parseFloat(tb.style.top):r.top;
 
-      // 手机端优先固定在可视范围顶部，避免 toolbar 因拖动历史或视口变化完全不可见。
-      if(vw<=760){
-        left=Math.max(4,Math.min(left,vw-Math.min(44,w)));
-        top=Math.max(4,Math.min(top,vh-Math.min(32,h)));
-        if(r.right<24||r.left>vw-24||r.bottom<24||r.top>vh-24){
-          left=4;
-          top=8;
-        }
-      }else{
-        var maxLeft=Math.max(4,vw-Math.min(44,w));
-        var maxTop=Math.max(4,vh-Math.min(32,h));
-        left=Math.max(4,Math.min(left,maxLeft));
-        top=Math.max(4,Math.min(top,maxTop));
-      }
+      var maxLeft=Math.max(4,vw-Math.min(44,w));
+      var maxTop=Math.max(4,vh-Math.min(32,h));
+      left=Math.max(4,Math.min(left,maxLeft));
+      top=Math.max(4,Math.min(top,maxTop));
 
       tb.style.position='absolute';
+      tb.style.right='';
       tb.style.left=Math.round(left)+'px';
       tb.style.top=Math.round(top)+'px';
       tb.style.transform='none';
@@ -769,6 +829,7 @@ var userLocationMarker = null;
       var tb=document.getElementById('toolbar'),dragging=false,dx=0,dy=0,startX=0,startY=0,initLeft=0,initTop=0;
       tb.style.position='absolute';
       function onDown(e){
+        if(isMobilePortrait())return;
         if(e.target.closest('button,select,input,label,svg'))return;
         e.preventDefault();dragging=true;tb.classList.add('dragging');
         var r=tb.getBoundingClientRect();
@@ -847,6 +908,7 @@ var userLocationMarker = null;
       var sd=document.getElementById('side'),dragging=false,moved=false,dx=0,dy=0,startX=0,startY=0,initLeft=0,initTop=0;
       sd.style.position='absolute';
       function onDown(e){
+        if(isMobilePortrait())return;
         if(e.target.closest('button,td,tr,input,select,svg,a')||sd.classList.contains('side-collapsed'))return;
         e.preventDefault();dragging=true;moved=false;
         var r=sd.getBoundingClientRect();
@@ -895,26 +957,34 @@ var userLocationMarker = null;
     function setSideCollapsed(collapsed){
       var sd=document.getElementById('side');
       if(!sd)return;
-      sd.style.position='absolute';
+
+      if(isMobilePortrait()){
+        sd.style.position='fixed';
+        sd.style.right='auto';
+        sd.style.top='auto';
+        sd.style.bottom='calc(env(safe-area-inset-bottom, 0px) + 42px)';
+        sd.style.width='calc(100vw - 8px)';
+        sd.style.maxWidth='calc(100vw - 8px)';
+      }else{
+        sd.style.position='absolute';
+        sd.style.right='';
+        sd.style.width='';
+      }
+
       if(collapsed){
         sd.classList.add('side-collapsed');
         sd.classList.remove('side-open');
-        // 手机端收起时必须把左边沿固定到 0，否则拖拽过的位置会导致整个按钮也在屏幕外。
         if(isMobilePortrait()){
           sd.style.left='0px';
-          sd.style.top='';
-          sd.style.bottom='42px';
         }else if(!isFinite(parseFloat(sd.style.left))){
           sd.style.left='12px';
         }
-        sd.style.transform='translateX(calc(-100% + 44px))';
+        sd.style.transform='translateX(calc(-100% + 46px))';
       }else{
         sd.classList.remove('side-collapsed');
         sd.classList.add('side-open');
         if(isMobilePortrait()){
           sd.style.left='4px';
-          sd.style.right='';
-          sd.style.bottom='42px';
         }
         sd.style.transform='translateX(0)';
         clampSidePanelPosition();
@@ -924,18 +994,28 @@ var userLocationMarker = null;
     function updateSidePanelForScreen(){
       var sd=document.getElementById('side');
       if(!sd)return;
-      // 竖屏手机默认收起；用户手动展开/隐藏后，横竖屏切换时保留用户选择，避免隐藏按钮丢失。
+      // 手机竖屏：默认收起，但按钮必须始终留在屏幕内；用户手动展开后保持展开。
       if(isMobilePortrait()){
-        if(!sideUserToggled&&!sd.classList.contains('side-open'))setSideCollapsed(true);
-        else syncSideToggleText();
+        if(sd.classList.contains('side-open')){
+          setSideCollapsed(false);
+        }else if(!sideUserToggled||sd.classList.contains('side-collapsed')){
+          setSideCollapsed(true);
+        }else{
+          setSideCollapsed(false);
+        }
       }else{
         if(sideUserToggled){
+          sd.style.position='absolute';
           if(sd.classList.contains('side-collapsed'))sd.style.transform='translateX(calc(-100% + 44px))';
           if(sd.classList.contains('side-open'))sd.style.transform='translateX(0)';
           syncSideToggleText();
         }else{
           sd.classList.remove('side-collapsed');
           sd.classList.remove('side-open');
+          sd.style.position='absolute';
+          sd.style.right='';
+          sd.style.width='';
+          sd.style.maxWidth='';
           sd.style.transform='';
           syncSideToggleText();
         }
