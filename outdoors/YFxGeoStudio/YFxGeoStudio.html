@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KML合并工具byYF v0.53</title>
+  <title>KML合并工具byYF v0.55</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -336,7 +336,7 @@
     });
 
     var ICON_PINS={redPin:'pin-red',bluePin:'pin-blue',greenPin:'pin-green',orangePin:'pin-orange',purplePin:'pin-purple',yellowPin:'pin-yellow'};
-    var I18N={zh:{appTitle:'KML合并工具byYF v0.53',trackListLabel:'🛤️...🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.53',helpText:'<b>功能</b>：导入 KML文件；添加标记点；手绘轨迹；合并导出标准 KML文件；查看距离、爬升、下降、耗时等。兼容手机操作，锁定地图触控后可以切换页面。<br><br><b>手绘轨迹</b>：点 ✏️ 后，单击地图添加点；再次点击 ✏️ 结束并保存。只有 1 个点时保存为标记点，例如钓点；2 个及以上点保存为轨迹。支持撤销、重做。<br><b>查看/编辑</b>：单击标记点或轨迹线查看信息；右键或双击标记点/轨迹线可打开编辑框。手机上也可双击/双触编辑。<br><b>KML/户外信息图例</b>：📍 标记点；🛰 GPS点；🛤️ 轨迹；↔ 距离；↑ 累计上升；↓ 累计下降；⛰ 海拔范围；🕒 耗时，hh:mm 为小时:分钟；└────┘ 比例尺；🗺️ 地图。<br><b>编辑操作图例</b>：👁 浏览；✏️ 手绘/编辑；🏃 1km/s；🏃🏃 2km/s；🗑️ 删除；× 取消/关闭；✓ 保存；🌐 在线帮助；🏠 主页；🔒 锁定地图触控；🔓 解锁地图触控；🏷️ 名称；📝 备注；🎨 颜色；⛰ 海拔；🕒 时间。<br><b>反馈问题或定制联系</b>：7189334@qq.com',mapLayer:'🗺️',gaode:'高德地形',google:'Google 地形',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图'},en:{appTitle:'KML Merge Tool by YF v0.53',trackListLabel:'🛤️...🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.53',helpText:'<b>Features</b>: Import KML files; add markers; draw tracks; merge and export standard KML files; view distance, ascent, descent, duration and more. Compatible with mobile operation; lock map touch to switch pages.<br><br><b>Draw</b>: Click ✏️, click the map to add points, then click ✏️ again to finish. One point is saved as a marker; two or more points are saved as a track. Undo/Redo is supported.<br><b>View/Edit</b>: Click markers or tracks to view info; right-click or double-click markers/tracks to edit. Mobile double-tap is supported.<br><b>KML/outdoor legend</b>: 📍 marker; 🛰 GPS point; 🛤️ track; ↔ distance; ↑ ascent; ↓ descent; ⛰ elevation range; 🕒 duration, hh:mm means hours:minutes; └────┘ scale; draw a bracket-like 1cm line with text scale; 🗺️ map.<br><b>Edit legend</b>: 👁 browse; ✏️ draw/edit; 🏃 1km/s; 🏃🏃 2km/s; 🗑️ delete; × cancel/close; ✓ save; 🌐 online help; 🏠 home; 🔒 lock map touch; 🔓 unlock map touch; 🏷️ name; 📝 comment; 🎨 color; ⛰ elevation; 🕒 time.<br><b>Feedback/custom work</b>: 7189334@qq.com',mapLayer:'🗺️',gaode:'Amap Terrain',google:'Google Terrain',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart'}};
+    var I18N={zh:{appTitle:'KML合并工具byYF v0.55',trackListLabel:'🛤️...🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.55',helpText:'<b>功能</b>：导入 KML文件；添加标记点；手绘轨迹；合并导出标准 KML文件；查看距离、爬升、下降、耗时等。兼容手机操作，锁定地图触控后可以切换页面。<br><br><b>手绘轨迹</b>：点 ✏️ 后，单击地图添加点；再次点击 ✏️ 结束并保存。只有 1 个点时保存为标记点，例如钓点；2 个及以上点保存为轨迹。支持撤销、重做。<br><b>查看/编辑</b>：单击标记点或轨迹线查看信息；右键或双击标记点/轨迹线可打开编辑框。手机上也可双击/双触编辑。<br><b>KML/户外信息图例</b>：📍 标记点；🛰 GPS点；🛤️ 轨迹；↔ 距离；↑ 累计上升；↓ 累计下降；⛰ 海拔范围；🕒 耗时，hh:mm 为小时:分钟；└────┘ 比例尺；🗺️ 地图。<br><b>编辑操作图例</b>：👁 浏览；✏️ 手绘/编辑；🏃 1km/s；🏃🏃 2km/s；🗑️ 删除；× 取消/关闭；✓ 保存；🌐 在线帮助；🏠 主页；🔒 锁定地图触控；🔓 解锁地图触控；🏷️ 名称；📝 备注；🎨 颜色；⛰ 海拔；🕒 时间。<br><b>反馈问题或定制联系</b>：7189334@qq.com',mapLayer:'🗺️',gaode:'高德地形',google:'Google 地形',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图'},en:{appTitle:'KML Merge Tool by YF v0.55',trackListLabel:'🛤️...🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.55',helpText:'<b>Features</b>: Import KML files; add markers; draw tracks; merge and export standard KML files; view distance, ascent, descent, duration and more. Compatible with mobile operation; lock map touch to switch pages.<br><br><b>Draw</b>: Click ✏️, click the map to add points, then click ✏️ again to finish. One point is saved as a marker; two or more points are saved as a track. Undo/Redo is supported.<br><b>View/Edit</b>: Click markers or tracks to view info; right-click or double-click markers/tracks to edit. Mobile double-tap is supported.<br><b>KML/outdoor legend</b>: 📍 marker; 🛰 GPS point; 🛤️ track; ↔ distance; ↑ ascent; ↓ descent; ⛰ elevation range; 🕒 duration, hh:mm means hours:minutes; └────┘ scale; draw a bracket-like 1cm line with text scale; 🗺️ map.<br><b>Edit legend</b>: 👁 browse; ✏️ draw/edit; 🏃 1km/s; 🏃🏃 2km/s; 🗑️ delete; × cancel/close; ✓ save; 🌐 online help; 🏠 home; 🔒 lock map touch; 🔓 unlock map touch; 🏷️ name; 📝 comment; 🎨 color; ⛰ elevation; 🕒 time.<br><b>Feedback/custom work</b>: 7189334@qq.com',mapLayer:'🗺️',gaode:'Amap Terrain',google:'Google Terrain',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart'}};
     var lang=localStorage.getItem('yfx_lang')||'zh',mode='view',objects=[],lines=[],undoStack=[],redoStack=[],dialogTarget=null,suppressHistory=false,drawingLine=[],trackPolyline=null,selectedLines=new Set(),dlgSelectedIcon='redPin',clickTimer=null,dlgLineTarget=null,dlgLineColor='#ffd23f',dlgLineStartIcon='',dlgLineEndIcon='';
     var lineInfoDialogLastPos=null; // 记录单轨迹信息窗口上一次显示/拖拽后的位置，切换轨迹时复用。
     var lineInfoDialogUserMoved=false; // 用户拖动过轨迹信息框后，后续切换轨迹继续沿用该位置。
@@ -516,9 +516,11 @@
     }
 
     function tr(k){return(I18N[lang]&&I18N[lang][k])||I18N.zh[k]||k;}
+    function fmtCoordDisplay(v){var n=Number(v);if(!isFinite(n))return '-';return n.toFixed(5).replace(/0+$/,'').replace(/\.$/,'');}
+    function fmtLatLngDisplay(lat,lng){return fmtCoordDisplay(lat)+', '+fmtCoordDisplay(lng);}
     function modeStatusText(){return mode==='track'?'✏️ '+tr('tracking'):'👁 '+tr('browse');}
     function setModeStatus(){var el=document.getElementById('modeText');if(el)el.textContent=modeStatusText();}
-    function setCoordStatus(latlng){var el=document.getElementById('coordText');if(!el)return;el.textContent=latlng?('📍 '+latlng.lat.toFixed(6)+', '+latlng.lng.toFixed(6)):'📍 -';}
+    function setCoordStatus(latlng){var el=document.getElementById('coordText');if(!el)return;el.textContent=latlng?('📍 '+fmtLatLngDisplay(latlng.lat,latlng.lng)):'📍 -';}
     function setZoomStatus(){var el=document.getElementById('zoomText');if(el)el.textContent='🔍 '+(map&&map.getZoom?map.getZoom():'-');setScaleStatus();}
     function formatScaleDistance(m){
       if(!isFinite(m)||m<=0)return '-';
@@ -1005,7 +1007,7 @@
         linesHtml.push(buildPointInfoLine(o,p));
       }else{
         linesHtml.push('<b>'+escapeHtml(o.name)+'</b>');
-        linesHtml.push(p.lat.toFixed(6)+', '+p.lng.toFixed(6));
+        linesHtml.push(fmtLatLngDisplay(p.lat,p.lng));
         if(o.alt!=null)linesHtml.push(tr('altitude')+'：'+Number(o.alt).toFixed(0)+' m');
         if(o.ptype&&o.ptype!=='ptMiddle')linesHtml.push(tr(o.ptype));
         if(o.time!=null)linesHtml.push((new Date(o.time)).toLocaleString());
@@ -1123,8 +1125,8 @@
       var alt=(parsed.alt!=null && isFinite(parsed.alt)) ? parsed.alt : o.alt;
       var time=(parsed.time!=null && isFinite(parsed.time)) ? parsed.time : o.time;
       var parts=[];
-      parts.push('经度：'+Number(lng).toFixed(6));
-      parts.push('纬度：'+Number(lat).toFixed(6));
+      parts.push('经度：'+fmtCoordDisplay(lng));
+      parts.push('纬度：'+fmtCoordDisplay(lat));
       if(alt!=null && isFinite(Number(alt)))parts.push('海拔：'+formatAltitudeText(alt));
       if(time!=null && isFinite(Number(time)))parts.push('时间：'+formatPopupTime(time));
       return escapeHtml(parts.join(' '));
@@ -1133,8 +1135,8 @@
     function formatAltitudeText(v){
       var n=Number(v);
       if(!isFinite(n))return '';
-      // 原始 KML 中常见 618.815094 这种精度，弹窗中保留到 6 位小数，避免与备注信息不一致。
-      return n.toFixed(6).replace(/0+$/,'').replace(/\.$/,'')+' m';
+      // 查看信息统一显示整数米；编辑框仍保留 1 位小数，原始数据和导出精度不变。
+      return Math.round(n)+' m';
     }
 
     function formatPopupTime(t){
@@ -1861,8 +1863,8 @@
       titleEl.textContent='✏️ 📍';
       nameEl.value=o.name||'';
       commentEl.value=o.comment||'';
-      latEl.textContent=p.lat.toFixed(5);
-      lngEl.textContent=p.lng.toFixed(5);
+      latEl.textContent=fmtCoordDisplay(p.lat);
+      lngEl.textContent=fmtCoordDisplay(p.lng);
       altEl.value=o.alt!=null?(+o.alt).toFixed(1):'';
       if(o.time!=null){var d=new Date(o.time);function pad(n){return n<10?'0'+n:n;}timeEl.value=d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+'T'+pad(d.getHours())+':'+pad(d.getMinutes());}else{timeEl.value='';}
       renderIconPicker();
