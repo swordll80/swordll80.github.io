@@ -245,6 +245,21 @@
       pointer-events: none;
     }
 
+
+    @media (max-width: 760px) {
+      #toolbar {
+        max-width: calc(100vw - 8px);
+        overflow-x: auto;
+        overflow-y: visible;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      #toolbar::-webkit-scrollbar { display: none; }
+      #side {
+        max-width: calc(100vw - 8px);
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -718,10 +733,41 @@ var userLocationMarker = null;
     function loadSettings(){updateLangButton();}
 
     // -- toolbar drag --
+    function clampToolbarPosition(){
+      var tb=document.getElementById('toolbar');
+      if(!tb)return;
+      var r=tb.getBoundingClientRect();
+      var w=r.width||tb.offsetWidth||320;
+      var h=r.height||tb.offsetHeight||36;
+      var vw=window.innerWidth||document.documentElement.clientWidth||320;
+      var vh=window.innerHeight||document.documentElement.clientHeight||480;
+
+      var left=isFinite(parseFloat(tb.style.left))?parseFloat(tb.style.left):r.left;
+      var top=isFinite(parseFloat(tb.style.top))?parseFloat(tb.style.top):r.top;
+
+      // 手机端优先固定在可视范围顶部，避免 toolbar 因拖动历史或视口变化完全不可见。
+      if(vw<=760){
+        left=Math.max(4,Math.min(left,vw-Math.min(44,w)));
+        top=Math.max(4,Math.min(top,vh-Math.min(32,h)));
+        if(r.right<24||r.left>vw-24||r.bottom<24||r.top>vh-24){
+          left=4;
+          top=8;
+        }
+      }else{
+        var maxLeft=Math.max(4,vw-Math.min(44,w));
+        var maxTop=Math.max(4,vh-Math.min(32,h));
+        left=Math.max(4,Math.min(left,maxLeft));
+        top=Math.max(4,Math.min(top,maxTop));
+      }
+
+      tb.style.position='absolute';
+      tb.style.left=Math.round(left)+'px';
+      tb.style.top=Math.round(top)+'px';
+      tb.style.transform='none';
+    }
     (function(){
       var tb=document.getElementById('toolbar'),dragging=false,dx=0,dy=0,startX=0,startY=0,initLeft=0,initTop=0;
       tb.style.position='absolute';
-      function updatePos(){tb.style.left=initLeft+'px';tb.style.top=initTop+'px';tb.style.transform='none';}
       function onDown(e){
         if(e.target.closest('button,select,input,label,svg'))return;
         e.preventDefault();dragging=true;tb.classList.add('dragging');
@@ -732,12 +778,24 @@ var userLocationMarker = null;
       function onMove(e){
         if(!dragging)return;
         dx=e.clientX-startX;dy=e.clientY-startY;
-        tb.style.left=(initLeft+dx)+'px';tb.style.top=(initTop+dy)+'px';tb.style.transform='none';
+        var vw=window.innerWidth||document.documentElement.clientWidth||320;
+        var vh=window.innerHeight||document.documentElement.clientHeight||480;
+        var r=tb.getBoundingClientRect();
+        var w=r.width||tb.offsetWidth||320;
+        var h=r.height||tb.offsetHeight||36;
+        var nextLeft=initLeft+dx;
+        var nextTop=initTop+dy;
+        nextLeft=Math.max(4,Math.min(nextLeft,Math.max(4,vw-Math.min(44,w))));
+        nextTop=Math.max(4,Math.min(nextTop,Math.max(4,vh-Math.min(32,h))));
+        tb.style.left=Math.round(nextLeft)+'px';
+        tb.style.top=Math.round(nextTop)+'px';
+        tb.style.transform='none';
       }
       function onUp(){
         if(!dragging)return;
         dragging=false;tb.classList.remove('dragging');
-        initLeft=parseInt(tb.style.left);initTop=parseInt(tb.style.top);
+        clampToolbarPosition();
+        initLeft=parseInt(tb.style.left,10)||0;initTop=parseInt(tb.style.top,10)||0;
       }
       tb.addEventListener('mousedown',onDown);
       document.addEventListener('mousemove',onMove);
@@ -746,7 +804,19 @@ var userLocationMarker = null;
     // -- side panel drag --
     function clampSidePanelPosition(){
       var sd=document.getElementById('side');
-      if(!sd||sd.classList.contains('side-collapsed'))return;
+      if(!sd)return;
+      var vw=window.innerWidth||document.documentElement.clientWidth||320;
+      var vh=window.innerHeight||document.documentElement.clientHeight||480;
+
+      if(sd.classList.contains('side-collapsed')){
+        if(isMobilePortrait()){
+          sd.style.left='0px';
+          sd.style.right='';
+          sd.style.bottom='42px';
+        }
+        return;
+      }
+
       var r=sd.getBoundingClientRect();
       var left=isFinite(parseFloat(sd.style.left))?parseFloat(sd.style.left):r.left;
       var top=isFinite(parseFloat(sd.style.top))?parseFloat(sd.style.top):r.top;
@@ -754,10 +824,20 @@ var userLocationMarker = null;
       // 轨迹列表框禁止拖出浏览器左边沿。
       if(left<0)left=0;
 
-      // 同时避免窗口变窄后整个框被拖到右侧不可见，至少保留 44px 可见宽度。
+      // 如果已经完全不可见，直接拉回屏幕。
+      if(r.right<24||r.left>vw-24){
+        left=isMobilePortrait()?4:12;
+      }
+
+      // 避免窗口变窄后整个框被拖到右侧不可见，至少保留 44px 可见宽度。
       var minVisible=44;
-      var maxLeft=Math.max(0,window.innerWidth-minVisible);
+      var maxLeft=Math.max(0,vw-minVisible);
       if(left>maxLeft)left=maxLeft;
+
+      var minTop=4;
+      var maxTop=Math.max(4,vh-44);
+      if(!isFinite(top))top=42;
+      top=Math.max(minTop,Math.min(top,maxTop));
 
       sd.style.left=Math.round(left)+'px';
       sd.style.top=Math.round(top)+'px';
@@ -815,14 +895,29 @@ var userLocationMarker = null;
     function setSideCollapsed(collapsed){
       var sd=document.getElementById('side');
       if(!sd)return;
+      sd.style.position='absolute';
       if(collapsed){
         sd.classList.add('side-collapsed');
         sd.classList.remove('side-open');
-        sd.style.transform='translateX(calc(-100% + 42px))';
+        // 手机端收起时必须把左边沿固定到 0，否则拖拽过的位置会导致整个按钮也在屏幕外。
+        if(isMobilePortrait()){
+          sd.style.left='0px';
+          sd.style.top='';
+          sd.style.bottom='42px';
+        }else if(!isFinite(parseFloat(sd.style.left))){
+          sd.style.left='12px';
+        }
+        sd.style.transform='translateX(calc(-100% + 44px))';
       }else{
         sd.classList.remove('side-collapsed');
         sd.classList.add('side-open');
+        if(isMobilePortrait()){
+          sd.style.left='4px';
+          sd.style.right='';
+          sd.style.bottom='42px';
+        }
         sd.style.transform='translateX(0)';
+        clampSidePanelPosition();
       }
       syncSideToggleText();
     }
@@ -899,9 +994,9 @@ var userLocationMarker = null;
       var collapsed=box.classList.contains('layer-collapsed')&&!box.classList.contains('layer-open');
       setLayerCollapsed(!collapsed);
     }
-    window.addEventListener('resize',function(){updateSidePanelForScreen();clampSidePanelPosition();updateLayerPanelForScreen();if(dlgLineTarget)resizeActiveLineInfoDialog();});
-    window.addEventListener('orientationchange',function(){layerUserToggled=false;setTimeout(function(){updateSidePanelForScreen();updateLayerPanelForScreen();if(dlgLineTarget)resizeActiveLineInfoDialog();},250);});
-    setTimeout(function(){updateSidePanelForScreen();clampSidePanelPosition();updateLayerPanelForScreen();},0);
+    window.addEventListener('resize',function(){clampToolbarPosition();updateSidePanelForScreen();clampSidePanelPosition();updateLayerPanelForScreen();if(dlgLineTarget)resizeActiveLineInfoDialog();});
+    window.addEventListener('orientationchange',function(){layerUserToggled=false;setTimeout(function(){clampToolbarPosition();updateSidePanelForScreen();clampSidePanelPosition();updateLayerPanelForScreen();if(dlgLineTarget)resizeActiveLineInfoDialog();},250);});
+    setTimeout(function(){clampToolbarPosition();updateSidePanelForScreen();clampSidePanelPosition();updateLayerPanelForScreen();},0);
 
     // -- history --
     function snapshot(){var os=[],ls=[];for(var i=0;i<objects.length;i++){var o=objects[i],p=o.marker.getLatLng();os.push({id:o.id,kind:o.kind,name:o.name,icon:o.icon,description:o.description,sources:o.sources||[],lat:p.lat,lng:p.lng,alt:o.alt,ptype:o.ptype,comment:o.comment,time:o.time,sourceType:o.sourceType,lineId:o.lineId,draggable:o.draggable,pointIndex:o.pointIndex});}for(var j=0;j<lines.length;j++)ls.push({id:lines[j].id,name:lines[j].name,color:lines[j].color,startIcon:lines[j].startIcon,endIcon:lines[j].endIcon,autoLineName:lines[j].autoLineName||false,autoSegmentNo:lines[j].autoSegmentNo||0,sampleNameKey:lines[j].sampleNameKey||'',embeddedExampleLine:!!lines[j].embeddedExampleLine,_importedFile:lines[j]._importedFile||'',points:copyPoints(lines[j].points)});return{objects:os,lines:ls,file:document.getElementById('fileText').textContent,importedFilePaths:importedFilePaths.slice()};}
@@ -3687,7 +3782,7 @@ function cleanImportedSegmentName(name) {
       },true);
     })();
 
-    loadSettings();applyLang();updateLayerUI();updateStats();updateEditModeUI();setFileStatusText(tr('none'));setModeStatus();loadEmbeddedExampleData();
+    loadSettings();applyLang();updateLayerUI();updateStats();updateEditModeUI();setFileStatusText(tr('none'));setModeStatus();loadEmbeddedExampleData();setTimeout(function(){clampToolbarPosition();updateSidePanelForScreen();clampSidePanelPosition();},400);
     document.getElementById('dialogMask').addEventListener('click',function(e){if(e.target===this){if(dlgLineTarget){closeLineInfoDialog();}else if(document.getElementById('helpDialogTitle')){closeHelpDialog();}else{closeDialog();}}});
   </script>
 <div id="donateMask" class="donate-mask"><div class="donate-box"><div class="donate-head"><h2 data-i18n="donateTitle">支持作者</h2><button class="btn-flat-close" onclick="closeDonate()" aria-label="close">×</button></div><div class="donate-hint" data-i18n="donateHint">扫码支持一下，您的鼓励是我继续开发的动力 ❤</div><div class="donate-qr-box"><img id="qrImg" class="donate-qr-img" alt="qr"></div></div></div>
