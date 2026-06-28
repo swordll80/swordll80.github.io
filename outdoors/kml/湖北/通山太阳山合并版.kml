@@ -1,0 +1,1990 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+	<Document id="TbuluKmlVersion2">
+		<name><![CDATA[咸宁通山太阳山2017-12-02+2024-12-01 咸宁太阳山环线（合并）+太阳山瀑布完整版（合并）]]></name>
+		<Style id="TrackStyle_n">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=BYohR0x5OLAr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LineStyle>
+				<color>ee0000ff</color>
+				<width>5.000000</width>
+			</LineStyle>
+		</Style>
+		<Style id="TrackStyle_h">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=BYohR0x5OLAr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LineStyle>
+				<color>ff0000ff</color>
+				<width>7.000000</width>
+			</LineStyle>
+		</Style>
+		<StyleMap id="TrackStyle">
+			<Pair>
+				<key>normal</key>
+				<styleUrl>#TrackStyle_n</styleUrl>
+			</Pair>
+			<Pair>
+				<key>highlight</key>
+				<styleUrl>#TrackStyle_h</styleUrl>
+			</Pair>
+		</StyleMap>
+		<Style id="LineStringStyle">
+			<LineStyle>
+				<color>dd5cba55</color>
+				<width>6.000000</width>
+			</LineStyle>
+		</Style>
+		<Style id="startPointStyle">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=n%2BVE0NaFmzwndk%2BZ75NU9A%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+		</Style>
+		<Style id="endPointStyle">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=0Q3GJ5o%2FHpsr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+		</Style>
+		<Style id="MarkerStylePicture">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=vMzvc3dTBl0r0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<color>ff00ffff</color>
+			</LabelStyle>
+		</Style>
+		<Style id="MarkerStyleSound">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=poL0RfxWHTIr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<color>ff00ffff</color>
+			</LabelStyle>
+		</Style>
+		<Style id="MarkerStyleVideo">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=vMzvc3dTBl0r0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<color>ff00ffff</color>
+			</LabelStyle>
+		</Style>
+		<Style id="MarkerStyleText">
+			<IconStyle>
+				<Icon>
+					<href>https://files.2bulu.com/f/d1?downParams=s2An6%2B3%2BIWUr0OBxohfNOA%3D%3D%0A</href>
+				</Icon>
+			</IconStyle>
+			<LabelStyle>
+				<color>ff00ffff</color>
+			</LabelStyle>
+		</Style>
+		<ExtendedData>
+			<Data name="TrackId">
+				<value>81062166</value>
+			</Data>
+			<Data name="OriginTrackId">
+				<value>81062166</value>
+			</Data>
+			<Data name="SportTypeId">
+				<value>-1</value>
+			</Data>
+			<Data name="SportTypeName">
+				<value><![CDATA[其它]]></value>
+			</Data>
+			<Data name="OperationType">
+				<value>4,7</value>
+			</Data>
+			<Data name="Privacy">
+				<value>0</value>
+			</Data>
+			<Data name="PauseTime">
+				<value>0</value>
+			</Data>
+			<Data name="TrackTypeId">
+				<value>0</value>
+			</Data>
+			<Data name="TrackTags">
+				<value><![CDATA[合并获得]]></value>
+			</Data>
+			<Data name="PosStartName">
+				<value><![CDATA[安民寺]]></value>
+			</Data>
+			<Data name="PosEndName">
+			</Data>
+			<Data name="Distance">
+				<value>37598.17376932988</value>
+			</Data>
+			<Data name="ElevationGain">
+				<value>2100.23</value>
+			</Data>
+			<Data name="ElevationLoss">
+				<value>2133.13</value>
+			</Data>
+			<Data name="ProductVersion">
+				<value>9.1.5</value>
+			</Data>
+			<Data name="ContextInfo">
+				<value>region:zh_CN;lan:zh-Hans;model:iPhone13,2;system:26.3.1;app:2bulu-V8.1.5;tag:NotRecord</value>
+			</Data>
+			<Data name="CreaterId">
+				<value>37468137</value>
+			</Data>
+			<Data name="CreaterName">
+				<value><![CDATA[武哥游子]]></value>
+			</Data>
+			<Data name="CreaterIcon">
+				<value>1256293738</value>
+			</Data>
+			<Data name="OriginCreaterId">
+				<value>0</value>
+			</Data>
+			<Data name="OriginCreaterName">
+			</Data>
+			<Data name="OriginCreaterNickname">
+			</Data>
+			<Data name="OriginCreaterIcon">
+				<value>0</value>
+			</Data>
+			<Data name="ThumbnailId">
+				<value>1577990045</value>
+			</Data>
+			<Data name="Step">
+				<value>0</value>
+			</Data>
+			<Data name="Calorie">
+				<value>0.000000</value>
+			</Data>
+			<Data name="Mileage">
+				<value>37598.173769</value>
+			</Data>
+			<Data name="Source">
+				<value>0</value>
+			</Data>
+			<Data name="FragmentId">
+				<value>0</value>
+			</Data>
+			<Data name="color">
+				<value>dd55ba5c,dd55ba5c,dd55ba5c,dd55ba5c</value>
+			</Data>
+		</ExtendedData>
+		<Folder id="TbuluHisPointFolder">
+			<name><![CDATA[标注点]]></name>
+			<Placemark id="startPoint">
+				<name><![CDATA[起点]]></name>
+				<description><![CDATA[<div>经度：114.503455</div><div>纬度：29.351094</div><div>海拔：646.000000</div><div>时间：2001-01-01 08:00:00</div>]]></description>
+				<styleUrl>#startPointStyle</styleUrl>
+				<Point>
+					<coordinates>114.503455,29.351094,646.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="endPoint">
+				<name><![CDATA[终点]]></name>
+				<description><![CDATA[<div>经度：114.476840</div><div>纬度：29.355144</div><div>海拔：539.890000</div><div>时间：2001-01-01 08:00:00</div>]]></description>
+				<styleUrl>#endPointStyle</styleUrl>
+				<Point>
+					<coordinates>114.476840,29.355144,539.890000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.501832</div><div>纬度：29.352289</div><div>海拔：615.000000</div><div>时间：2017-12-02 11:18:31</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.501832</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.352289</value>
+					</Data>
+					<Data name="Altitude">
+						<value>615.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1512184711000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>4458707</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"4458707","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.501832,29.352289,615.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.501544</div><div>纬度：29.345165</div><div>海拔：615.000000</div><div>时间：2017-12-02 11:49:08</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.501544</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.345165</value>
+					</Data>
+					<Data name="Altitude">
+						<value>615.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1512186548000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>6504736</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"6504736","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.501544,29.345165,615.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.501109</div><div>纬度：29.344246</div><div>海拔：628.000000</div><div>时间：2017-12-02 11:58:11</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.501109</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.344246</value>
+					</Data>
+					<Data name="Altitude">
+						<value>628.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1512187091000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>6504448</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"6504448","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.501109,29.344246,628.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.501240</div><div>纬度：29.344146</div><div>海拔：628.000000</div><div>时间：2017-12-02 12:09:09</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.501240</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.344146</value>
+					</Data>
+					<Data name="Altitude">
+						<value>628.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1512187749000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>5898240</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"5898240","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.501240,29.344146,628.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.501877</div><div>纬度：29.343312</div><div>海拔：690.000000</div><div>时间：2017-12-02 14:06:16</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.501877</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.343312</value>
+					</Data>
+					<Data name="Altitude">
+						<value>690.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1512194776000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>5605058</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"5605058","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.501877,29.343312,690.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.502400</div><div>纬度：29.342982</div><div>海拔：702.000000</div><div>时间：2017-12-02 14:57:50</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.502400</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.342982</value>
+					</Data>
+					<Data name="Altitude">
+						<value>702.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1512197870000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>5603328</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"5603328","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.502400,29.342982,702.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.506347</div><div>纬度：29.351509</div><div>海拔：662.000000</div><div>时间：2017-12-02 16:19:31</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.506347</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.351509</value>
+					</Data>
+					<Data name="Altitude">
+						<value>662.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1512202771000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>4939776</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"4939776","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.506347,29.351509,662.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.500374</div><div>纬度：29.353420</div><div>海拔：623.000000</div><div>时间：2024-12-01 10:56:37</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.500374</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.353420</value>
+					</Data>
+					<Data name="Altitude">
+						<value>623.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.594570</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733021797227</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2093838</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2093838","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.500374,29.353420,623.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.502242</div><div>纬度：29.352679</div><div>海拔：647.000000</div><div>时间：2024-12-01 11:00:34</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.502242</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.352679</value>
+					</Data>
+					<Data name="Altitude">
+						<value>647.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.877127</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733022034250</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2521746</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2521746","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.502242,29.352679,647.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.503709</div><div>纬度：29.346637</div><div>海拔：794.000000</div><div>时间：2024-12-01 11:23:16</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.503709</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.346637</value>
+					</Data>
+					<Data name="Altitude">
+						<value>794.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.461440</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733023396233</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>3116628</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"3116628","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.503709,29.346637,794.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.503740</div><div>纬度：29.346528</div><div>海拔：794.000000</div><div>时间：2024-12-01 11:23:46</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.503740</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.346528</value>
+					</Data>
+					<Data name="Altitude">
+						<value>794.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.155926</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733023426231</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2585449</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2585449","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.503740,29.346528,794.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.503857</div><div>纬度：29.346341</div><div>海拔：811.000000</div><div>时间：2024-12-01 11:24:04</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.503857</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.346341</value>
+					</Data>
+					<Data name="Altitude">
+						<value>811.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.771845</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733023444227</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2469753</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2469753","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.503857,29.346341,811.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.503857</div><div>纬度：29.346341</div><div>海拔：811.000000</div><div>时间：2024-12-01 11:24:04</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.503857</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.346341</value>
+					</Data>
+					<Data name="Altitude">
+						<value>811.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.771845</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733023444227</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2727750</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2727750","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.503857,29.346341,811.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.505359</div><div>纬度：29.342719</div><div>海拔：844.000000</div><div>时间：2024-12-01 11:44:38</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.505359</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.342719</value>
+					</Data>
+					<Data name="Altitude">
+						<value>844.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.553119</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733024678686</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2470269</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2470269","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.505359,29.342719,844.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.505983</div><div>纬度：29.342286</div><div>海拔：844.000000</div><div>时间：2024-12-01 11:48:16</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.505983</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.342286</value>
+					</Data>
+					<Data name="Altitude">
+						<value>844.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.013023</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733024896204</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2568846</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2568846","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.505983,29.342286,844.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.506054</div><div>纬度：29.341018</div><div>海拔：847.000000</div><div>时间：2024-12-01 11:55:32</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.506054</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.341018</value>
+					</Data>
+					<Data name="Altitude">
+						<value>847.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.621063</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733025332226</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2323886</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2323886","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.506054,29.341018,847.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.503917</div><div>纬度：29.336195</div><div>海拔：937.000000</div><div>时间：2024-12-01 12:22:12</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.503917</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.336195</value>
+					</Data>
+					<Data name="Altitude">
+						<value>937.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.105113</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733026932223</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2884440</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2884440","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.503917,29.336195,937.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.500906</div><div>纬度：29.332486</div><div>海拔：995.000000</div><div>时间：2024-12-01 12:41:32</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.500906</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.332486</value>
+					</Data>
+					<Data name="Altitude">
+						<value>995.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.518821</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733028092223</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2844345</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2844345","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.500906,29.332486,995.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.495848</div><div>纬度：29.328073</div><div>海拔：1094.000000</div><div>时间：2024-12-01 13:04:58</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.495848</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.328073</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1094.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.674704</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733029498224</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2891388</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2891388","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.495848,29.328073,1094.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.497058</div><div>纬度：29.326624</div><div>海拔：1107.000000</div><div>时间：2024-12-01 13:38:00</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.497058</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.326624</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1107.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.633790</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733031480240</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2563176</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2563176","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.497058,29.326624,1107.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.501849</div><div>纬度：29.325614</div><div>海拔：1200.000000</div><div>时间：2024-12-01 14:07:00</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.501849</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.325614</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1200.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.116267</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733033220195</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1968412</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1968412","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.501849,29.325614,1200.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.505249</div><div>纬度：29.325828</div><div>海拔：1275.000000</div><div>时间：2024-12-01 14:19:16</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.505249</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.325828</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1275.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.527057</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733033956205</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>758438</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"758438","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.505249,29.325828,1275.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.510968</div><div>纬度：29.326688</div><div>海拔：1263.000000</div><div>时间：2024-12-01 14:50:02</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.510968</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.326688</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1263.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733035802836</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1436806</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1436806","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.510968,29.326688,1263.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<name><![CDATA[九宫山001界碑]]></name>
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.524098</div><div>纬度：29.332041</div><div>海拔：1377.000000</div><div>时间：2024-12-01 15:34:38</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.524098</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.332041</value>
+					</Data>
+					<Data name="Altitude">
+						<value>1377.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733038478231</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>2107308</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"2107308","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.524098,29.332041,1377.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.506763</div><div>纬度：29.351914</div><div>海拔：691.000000</div><div>时间：2024-12-01 17:41:04</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.506763</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.351914</value>
+					</Data>
+					<Data name="Altitude">
+						<value>691.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.225782</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733046064195</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>1588917</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"1588917","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.506763,29.351914,691.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.501678</div><div>纬度：29.353201</div><div>海拔：641.000000</div><div>时间：2024-12-01 17:54:14</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.501678</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.353201</value>
+					</Data>
+					<Data name="Altitude">
+						<value>641.000000</value>
+					</Data>
+					<Data name="Speed">
+						<value>1.440426</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1733046854428</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>940965</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"940965","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.501678,29.353201,641.000000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.496105</div><div>纬度：29.349064</div><div>海拔：424.170000</div><div>时间：2022-06-25 10:32:02</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.496105</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.349064</value>
+					</Data>
+					<Data name="Altitude">
+						<value>424.170000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.156610</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1656124322000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>0</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"0","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.496105,29.349064,424.170000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.500074</div><div>纬度：29.345745</div><div>海拔：507.470000</div><div>时间：2022-06-25 13:05:08</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.500074</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.345745</value>
+					</Data>
+					<Data name="Altitude">
+						<value>507.470000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.070298</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1656133508000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>0</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"0","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.500074,29.345745,507.470000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.500435</div><div>纬度：29.345157</div><div>海拔：540.340000</div><div>时间：2022-06-25 14:40:06</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.500435</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.345157</value>
+					</Data>
+					<Data name="Altitude">
+						<value>540.340000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.123137</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1656139206000</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>0</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"0","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.500435,29.345157,540.340000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.500441</div><div>纬度：29.351774</div><div>海拔：621.960000</div><div>时间：2023-06-11 08:57:01</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.500441</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.351774</value>
+					</Data>
+					<Data name="Altitude">
+						<value>621.960000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.490524</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1686445021572</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>0</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"0","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.500441,29.351774,621.960000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.500960</div><div>纬度：29.344190</div><div>海拔：609.110000</div><div>时间：2023-06-11 09:33:49</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.500960</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.344190</value>
+					</Data>
+					<Data name="Altitude">
+						<value>609.110000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.402038</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1686447229615</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>0</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"0","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.500960,29.344190,609.110000</coordinates>
+				</Point>
+			</Placemark>
+			<Placemark id="realPoint">
+				<description><![CDATA[<div><a href="" target="_blank"><img width="320" style="height:360" src=""/></a></div></br><div>经度：114.501744</div><div>纬度：29.343274</div><div>海拔：668.730000</div><div>时间：2023-06-11 10:00:57</div>]]></description>
+				<styleUrl>MarkerStylePicture</styleUrl>
+				<ExtendedData>
+					<Data name="Type">
+						<value>Point</value>
+					</Data>
+					<Data name="ServerId">
+						<value>0</value>
+					</Data>
+					<Data name="PosType">
+						<value>0</value>
+					</Data>
+					<Data name="description">
+					</Data>
+					<Data name="Longtitude">
+						<value>114.501744</value>
+					</Data>
+					<Data name="Latitude">
+						<value>29.343274</value>
+					</Data>
+					<Data name="Altitude">
+						<value>668.730000</value>
+					</Data>
+					<Data name="Speed">
+						<value>0.256613</value>
+					</Data>
+					<Data name="Accuracy">
+						<value>0.000000</value>
+					</Data>
+					<Data name="Time">
+						<value>1686448857573</value>
+					</Data>
+					<Data name="FileId">
+						<value>0</value>
+					</Data>
+					<Data name="FileSize">
+						<value>0</value>
+					</Data>
+					<Data name="FileName">
+					</Data>
+					<Data name="attach">
+						<value>[{"fileSize":"0","fileId":"0","fileType":"0"}]</value>
+					</Data>
+					<Data name="FileType">
+						<value>0</value>
+					</Data>
+					<Data name="FilePath">
+					</Data>
+				</ExtendedData>
+				<Point>
+					<coordinates>114.501744,29.343274,668.730000</coordinates>
+				</Point>
+			</Placemark>
+		</Folder>
+		<Folder id="TbuluLineStringFolder">
+			<name><![CDATA[导航线]]></name>
+			<Placemark>
+				<name><![CDATA[导航线片段1]]></name>
+				<styleUrl>#LineStringStyle</styleUrl>
+				<Style>
+					<LineStyle>
+						<color>dd5cba55</color>
+						<width>6.000000</width>
+					</LineStyle>
+				</Style>
+				<LineString>
+					<coordinates>114.503455,29.351094,646.000000 114.503307,29.351105,648.000000 114.503204,29.351112,640.000000 114.503081,29.351175,639.000000 114.503019,29.351268,640.000000 114.503076,29.351390,644.000000 114.503083,29.351501,639.000000 114.503200,29.351606,638.000000 114.503134,29.351703,627.000000 114.502988,29.351780,623.000000 114.502908,29.351895,627.000000 114.502793,29.351935,623.000000 114.502704,29.352017,621.000000 114.502594,29.352012,619.000000 114.502479,29.352078,620.000000 114.502362,29.352138,621.000000 114.502266,29.352256,619.000000 114.502140,29.352280,620.000000 114.501978,29.352273,617.000000 114.501866,29.352272,624.000000 114.501815,29.352287,617.000000 114.501826,29.352364,618.000000 114.501846,29.352387,617.000000 114.501826,29.352364,618.000000 114.501765,29.352266,616.000000 114.501672,29.352202,619.000000 114.501574,29.352165,616.000000 114.501512,29.352125,613.000000 114.501384,29.352081,617.000000 114.501291,29.352039,621.000000 114.501253,29.352014,619.000000 114.501174,29.351937,619.000000 114.501089,29.351872,618.000000 114.500992,29.351788,620.000000 114.500912,29.351718,617.000000 114.500809,29.351671,619.000000 114.500707,29.351651,616.000000 114.500583,29.351687,617.000000 114.500486,29.351772,621.000000 114.500460,29.351834,626.000000 114.500348,29.351872,635.000000 114.500211,29.351875,632.000000 114.500166,29.351794,632.000000 114.500217,29.351872,635.000000 114.500349,29.351878,628.000000 114.500298,29.351959,626.000000 114.500185,29.352013,622.000000 114.500059,29.351988,617.000000 114.500002,29.351886,606.000000 114.500024,29.351777,606.000000 114.500049,29.351721,612.000000 114.499987,29.351603,614.000000 114.499955,29.351486,614.000000 114.499912,29.351438,615.000000 114.499890,29.351339,613.000000 114.499818,29.351242,609.000000 114.499787,29.351242,613.000000 114.499800,29.351117,603.000000 114.499887,29.351040,605.000000 114.499988,29.350968,608.000000 114.500015,29.350879,613.000000 114.500130,29.350847,623.000000 114.500156,29.350751,617.000000 114.500125,29.350643,623.000000 114.500176,29.350558,623.000000 114.500087,29.350510,624.000000 114.499964,29.350454,620.000000 114.499919,29.350363,622.000000 114.499949,29.350311,620.000000 114.499965,29.350210,624.000000 114.499840,29.350165,629.000000 114.499753,29.350116,632.000000 114.499753,29.350010,628.000000 114.499786,29.349905,627.000000 114.499719,29.349834,628.000000 114.499634,29.349743,630.000000 114.499654,29.349652,626.000000 114.499606,29.349517,627.000000 114.499548,29.349439,628.000000 114.499435,29.349416,631.000000 114.499404,29.349320,632.000000 114.499426,29.349225,632.000000 114.499382,29.349129,634.000000 114.499361,29.349027,633.000000 114.499393,29.348938,631.000000 114.499404,29.348809,626.000000 114.499251,29.348753,632.000000 114.499213,29.348640,629.000000 114.499192,29.348547,623.000000 114.499178,29.348458,620.000000 114.499175,29.348366,621.000000 114.499195,29.348272,622.000000 114.499306,29.348250,611.000000 114.499408,29.348175,617.000000 114.499521,29.348120,613.000000 114.499549,29.348118,614.000000 114.499623,29.348038,618.000000 114.499701,29.347954,617.000000 114.499815,29.347961,618.000000 114.499897,29.348025,615.000000 114.499953,29.348043,613.000000 114.500078,29.348073,619.000000 114.500207,29.348083,617.000000 114.500316,29.348086,617.000000 114.500412,29.348048,611.000000 114.500521,29.348021,611.000000 114.500641,29.348051,614.000000 114.500733,29.348101,613.000000 114.500903,29.348003,620.000000 114.500999,29.347959,621.000000 114.501108,29.347975,622.000000 114.501190,29.348034,621.000000 114.501287,29.347961,623.000000 114.501334,29.347913,619.000000 114.501441,29.347864,625.000000 114.501449,29.347747,624.000000 114.501498,29.347637,620.000000 114.501460,29.347547,614.000000 114.501423,29.347435,615.000000 114.501378,29.347332,612.000000 114.501384,29.347230,612.000000 114.501425,29.347141,613.000000 114.501457,29.347116,612.000000 114.501483,29.347011,612.000000 114.501519,29.346923,616.000000 114.501493,29.346816,614.000000 114.501589,29.346759,613.000000 114.501659,29.346679,611.000000 114.501643,29.346589,612.000000 114.501661,29.346483,613.000000 114.501629,29.346388,616.000000 114.501549,29.346311,617.000000 114.501491,29.346224,618.000000 114.501470,29.346121,620.000000 114.501520,29.346032,620.000000 114.501495,29.345938,620.000000 114.501564,29.345857,614.000000 114.501499,29.345778,613.000000 114.501486,29.345659,608.000000 114.501498,29.345559,613.000000 114.501540,29.345460,610.000000 114.501574,29.345343,607.000000 114.501557,29.345230,609.000000 114.501528,29.345196,608.000000 114.501524,29.345094,618.000000 114.501629,29.345049,611.000000 114.501581,29.344968,618.000000 114.501537,29.344881,618.000000 114.501499,29.344776,617.000000 114.501446,29.344686,618.000000 114.501330,29.344630,619.000000 114.501280,29.344547,619.000000 114.501216,29.344462,621.000000 114.501228,29.344364,617.000000 114.501195,29.344241,619.000000 114.501107,29.344176,626.000000 114.501141,29.344279,627.000000 114.501239,29.344156,627.000000 114.501286,29.344237,631.000000 114.501309,29.344147,638.000000 114.501435,29.344190,641.000000 114.501409,29.344079,640.000000 114.501486,29.344003,644.000000 114.501523,29.343908,650.000000 114.501537,29.343803,648.000000 114.501556,29.343618,662.000000 114.501656,29.343555,667.000000 114.501735,29.343382,674.000000 114.501809,29.343449,681.000000 114.501919,29.343472,675.000000 114.501922,29.343481,676.000000 114.502013,29.343551,678.000000 114.502101,29.343605,676.000000 114.502212,29.343620,684.000000 114.502233,29.343517,673.000000 114.502150,29.343583,686.000000 114.502083,29.343657,704.000000 114.502072,29.343851,701.000000 114.502000,29.343917,706.000000 114.502044,29.343836,719.000000 114.501988,29.343759,718.000000 114.502130,29.343626,707.000000 114.502087,29.343515,710.000000 114.502025,29.343438,707.000000 114.502114,29.343378,700.000000 114.502011,29.343358,682.000000 114.501957,29.343271,683.000000 114.501871,29.343305,689.000000 114.501785,29.343378,680.000000 114.501723,29.343219,674.000000 114.501672,29.343038,673.000000 114.501638,29.342951,683.000000 114.501532,29.342926,696.000000 114.501419,29.342887,698.000000 114.501246,29.342869,718.000000 114.501331,29.342922,712.000000 114.501439,29.342929,707.000000 114.501533,29.343016,700.000000 114.501613,29.342956,698.000000 114.501726,29.342951,699.000000 114.501830,29.342938,695.000000 114.502026,29.343047,685.000000 114.502131,29.343055,682.000000 114.502218,29.342935,702.000000 114.502321,29.342970,703.000000 114.502432,29.343000,704.000000 114.502325,29.342922,710.000000 114.502222,29.342860,714.000000 114.502169,29.342779,735.000000 114.502230,29.342696,747.000000 114.502299,29.342627,750.000000 114.502356,29.342493,743.000000 114.502395,29.342579,743.000000 114.502475,29.342654,738.000000 114.502545,29.342723,731.000000 114.502650,29.342716,728.000000 114.502756,29.342694,720.000000 114.502861,29.342725,715.000000 114.502840,29.342743,735.000000 114.502738,29.342765,732.000000 114.502636,29.342739,726.000000 114.502742,29.342740,726.000000 114.502782,29.342981,745.000000 114.502777,29.343077,749.000000 114.502896,29.343120,745.000000 114.503011,29.343309,760.000000 114.502991,29.343398,767.000000 114.503070,29.343483,772.000000 114.503048,29.343584,777.000000 114.503111,29.343680,784.000000 114.503180,29.343763,783.000000 114.503186,29.343870,797.000000 114.503231,29.343966,791.000000 114.503189,29.344053,802.000000 114.503158,29.344142,807.000000 114.503101,29.344219,811.000000 114.503159,29.344357,809.000000 114.503171,29.344453,805.000000 114.503241,29.344570,805.000000 114.503242,29.344663,806.000000 114.503298,29.344740,803.000000 114.503388,29.344784,803.000000 114.503471,29.344863,802.000000 114.503421,29.344948,808.000000 114.503352,29.345015,806.000000 114.503284,29.345097,807.000000 114.503344,29.345179,807.000000 114.503379,29.345292,808.000000 114.503400,29.345397,806.000000 114.503515,29.345414,803.000000 114.503506,29.345508,804.000000 114.503463,29.345605,802.000000 114.503360,29.345673,807.000000 114.503370,29.345764,801.000000 114.503353,29.345875,798.000000 114.503402,29.345962,804.000000 114.503472,29.346036,811.000000 114.503575,29.346046,809.000000 114.503686,29.346074,810.000000 114.503779,29.346165,814.000000 114.503862,29.346229,807.000000 114.503842,29.346204,801.000000 114.503823,29.346293,794.000000 114.503731,29.346388,796.000000 114.503709,29.346495,796.000000 114.503658,29.346587,794.000000 114.503605,29.346695,788.000000 114.503524,29.346760,775.000000 114.503471,29.346839,778.000000 114.503361,29.346855,770.000000 114.503356,29.346871,771.000000 114.503283,29.346958,761.000000 114.503264,29.347052,770.000000 114.503194,29.347125,762.000000 114.503094,29.347175,747.000000 114.502991,29.347250,741.000000 114.502917,29.347372,742.000000 114.502851,29.347448,734.000000 114.502775,29.347509,736.000000 114.502755,29.347612,735.000000 114.502746,29.347702,738.000000 114.502759,29.347808,739.000000 114.502759,29.347994,742.000000 114.502864,29.347989,744.000000 114.502947,29.347926,739.000000 114.503003,29.348020,740.000000 114.503070,29.347937,735.000000 114.503149,29.348004,734.000000 114.503250,29.348028,722.000000 114.503331,29.348099,716.000000 114.503440,29.348116,714.000000 114.503455,29.348211,717.000000 114.503504,29.348295,711.000000 114.503547,29.348379,711.000000 114.503527,29.348244,702.000000 114.503608,29.348304,703.000000 114.503713,29.348346,706.000000 114.503817,29.348353,700.000000 114.503916,29.348386,702.000000 114.504006,29.348458,699.000000 114.504137,29.348554,697.000000 114.504243,29.348555,701.000000 114.504280,29.348663,701.000000 114.504229,29.348742,705.000000 114.504283,29.348868,701.000000 114.504200,29.348931,698.000000 114.504230,29.349027,695.000000 114.504327,29.349058,695.000000 114.504363,29.349143,689.000000 114.504391,29.349211,685.000000 114.504470,29.349281,681.000000 114.504520,29.349368,680.000000 114.504515,29.349488,679.000000 114.504571,29.349596,679.000000 114.504617,29.349685,681.000000 114.504719,29.349706,680.000000 114.504835,29.349698,674.000000 114.504909,29.349633,669.000000 114.505044,29.349624,671.000000 114.505183,29.349653,677.000000 114.505218,29.349741,679.000000 114.505195,29.349833,679.000000 114.505209,29.349923,675.000000 114.505267,29.350022,680.000000 114.505312,29.350116,676.000000 114.505415,29.350212,677.000000 114.505529,29.350238,674.000000 114.505637,29.350241,673.000000 114.505742,29.350242,675.000000 114.505786,29.350346,674.000000 114.505837,29.350464,675.000000 114.505922,29.350552,669.000000 114.506002,29.350619,666.000000 114.506058,29.350707,667.000000 114.506075,29.350708,665.000000 114.506112,29.350801,667.000000 114.506107,29.350900,669.000000 114.506084,29.351004,669.000000 114.506093,29.351114,670.000000 114.506139,29.351199,670.000000 114.506178,29.351295,668.000000 114.506190,29.351335,667.000000 114.506222,29.351434,672.000000 114.506260,29.351449,675.000000 114.506362,29.351432,669.000000 114.506356,29.351530,671.000000 114.506352,29.351522,664.000000 114.506275,29.351660,664.000000 114.506287,29.351691,665.000000 </coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name><![CDATA[轨迹片段1]]></name>
+				<styleUrl>#LineStringStyle</styleUrl>
+				<Style>
+					<LineStyle>
+						<color>dd5cba55</color>
+						<width>6.000000</width>
+					</LineStyle>
+				</Style>
+				<LineString>
+					<coordinates>114.500374,29.353420,623.000000 114.501363,29.353159,631.000000 114.502242,29.352679,647.000000 114.502831,29.351927,647.000000 114.503289,29.351118,659.000000 114.503686,29.350255,670.000000 114.503681,29.349350,682.000000 114.503542,29.348453,713.000000 114.503542,29.348453,713.000000 114.502748,29.347878,740.000000 114.502748,29.347878,740.000000 114.503182,29.347046,774.000000 114.503857,29.346341,811.000000 114.503471,29.345495,829.000000 114.503471,29.345495,829.000000 114.503272,29.344613,834.000000 114.503272,29.344613,834.000000 114.503685,29.343780,843.000000 114.504582,29.343312,850.000000 114.505359,29.342719,844.000000 114.505774,29.341891,836.000000 114.506054,29.341018,847.000000 114.505799,29.340139,849.000000 114.505587,29.339257,862.000000 114.505019,29.338485,872.000000 114.504342,29.337802,891.000000 114.503784,29.337034,903.000000 114.503813,29.336131,937.000000 114.503367,29.335310,973.000000 114.502812,29.334541,974.000000 114.502293,29.333761,968.000000 114.501434,29.333257,969.000000 114.500906,29.332486,995.000000 114.500082,29.331941,987.000000 114.499297,29.331357,998.000000 114.499297,29.331357,998.000000 114.498753,29.330585,1028.000000 114.498753,29.330585,1028.000000 114.498061,29.329908,1041.000000 114.497488,29.329160,1059.000000 114.496742,29.328525,1082.000000 114.495848,29.328073,1094.000000 114.495848,29.328073,1094.000000 114.495848,29.328073,1094.000000 114.495848,29.328073,1094.000000 114.496374,29.327297,1100.000000 114.496374,29.327297,1100.000000 114.497058,29.326624,1107.000000 114.497644,29.325879,1108.000000 114.498108,29.325077,1131.000000 114.499140,29.324969,1141.000000 114.500140,29.325198,1167.000000 114.501132,29.325445,1184.000000 114.502138,29.325642,1215.000000 114.503169,29.325749,1241.000000 114.504189,29.325939,1253.000000 114.505217,29.325856,1275.000000 114.505249,29.325828,1275.000000 114.506206,29.325482,1286.000000 114.505227,29.325845,1275.000000 114.506165,29.326010,1281.000000 114.507197,29.326044,1298.000000 114.507197,29.326044,1298.000000 114.508235,29.326027,1297.000000 114.508235,29.326027,1297.000000 114.509285,29.326088,1288.000000 114.509395,29.326128,1277.000000 114.510361,29.326456,1272.000000 114.510968,29.326688,1263.000000 114.511638,29.327382,1267.000000 114.512698,29.327305,1268.000000 114.512698,29.327305,1268.000000 114.513745,29.327386,1278.000000 114.514470,29.328028,1265.000000 114.515414,29.328423,1272.000000 114.516450,29.328272,1267.000000 114.517330,29.328775,1251.000000 114.518356,29.328960,1254.000000 114.518708,29.329592,1278.000000 114.519598,29.330060,1298.000000 114.520526,29.330452,1312.000000 114.521471,29.330837,1309.000000 114.522517,29.330861,1347.000000 114.523365,29.331400,1359.000000 114.524098,29.332041,1377.000000 114.524968,29.332533,1375.000000 114.525180,29.332779,1371.000000 114.525354,29.333678,1357.000000 114.525303,29.334584,1325.000000 114.524813,29.335376,1299.000000 114.524776,29.335793,1287.000000 114.524511,29.336666,1259.000000 114.524235,29.337551,1252.000000 114.524203,29.337669,1245.000000 114.524055,29.338565,1233.000000 114.523730,29.339420,1227.000000 114.523873,29.340322,1225.000000 114.523655,29.341202,1233.000000 114.523104,29.341966,1215.000000 114.522460,29.342683,1209.000000 114.522166,29.343546,1201.000000 114.521137,29.343645,1184.000000 114.520109,29.343574,1153.000000 114.519073,29.343692,1146.000000 114.518043,29.343739,1134.000000 114.517040,29.343969,1124.000000 114.516087,29.344335,1117.000000 114.515048,29.344342,1133.000000 114.514071,29.344009,1115.000000 114.514347,29.344884,1091.000000 114.514347,29.344884,1091.000000 114.514563,29.345764,1074.000000 114.514563,29.345764,1074.000000 114.514603,29.346665,1048.000000 114.515210,29.347393,1049.000000 114.515694,29.348202,1031.000000 114.515694,29.348202,1031.000000 114.515150,29.348973,1003.000000 114.515150,29.348973,1003.000000 114.514599,29.349745,983.000000 114.514014,29.350485,956.000000 114.513919,29.351395,945.000000 114.513133,29.351979,889.000000 114.512218,29.352424,842.000000 114.511292,29.352838,807.000000 114.510646,29.352119,776.000000 114.509606,29.352229,754.000000 114.508547,29.352265,730.000000 114.507523,29.352129,706.000000 114.506544,29.351831,691.000000 114.505510,29.351793,674.000000 114.504551,29.351428,667.000000 114.503595,29.351085,668.000000 114.503117,29.351892,669.000000 114.502455,29.352587,643.000000 114.501678,29.353201,641.000000 114.500633,29.353383,631.000000 114.500633,29.353383,631.000000 </coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name><![CDATA[轨迹片段1]]></name>
+				<styleUrl>#LineStringStyle</styleUrl>
+				<Style>
+					<LineStyle>
+						<color>dd5cba55</color>
+						<width>6.000000</width>
+					</LineStyle>
+				</Style>
+				<LineString>
+					<coordinates>114.493048,29.365982,311.610000 114.493050,29.365936,317.900000 114.493032,29.365843,319.500000 114.493006,29.365737,317.110000 114.492976,29.365633,316.220000 114.492950,29.365534,312.060000 114.492887,29.365438,311.340000 114.492806,29.365346,311.570000 114.492738,29.365264,311.920000 114.492680,29.365182,312.270000 114.492648,29.365096,312.250000 114.492603,29.365017,312.140000 114.492548,29.364934,312.530000 114.492503,29.364835,313.520000 114.492473,29.364733,314.150000 114.492451,29.364630,312.560000 114.492413,29.364537,311.880000 114.492397,29.364440,311.060000 114.492381,29.364332,311.960000 114.492372,29.364225,312.320000 114.492390,29.364215,315.940000 114.492362,29.364128,316.360000 114.492333,29.364021,317.100000 114.492326,29.363920,316.880000 114.492326,29.363804,316.880000 114.492318,29.363685,316.740000 114.492329,29.363568,317.130000 114.492359,29.363461,318.200000 114.492395,29.363359,321.260000 114.492428,29.363260,322.010000 114.492459,29.363169,322.600000 114.492511,29.363078,322.880000 114.492594,29.363003,323.090000 114.492678,29.362939,323.390000 114.492755,29.362873,323.810000 114.492828,29.362806,324.030000 114.492912,29.362739,325.240000 114.493008,29.362697,326.220000 114.493121,29.362664,327.480000 114.493222,29.362613,329.610000 114.493312,29.362562,330.140000 114.493411,29.362510,330.800000 114.493510,29.362448,330.860000 114.493593,29.362374,332.070000 114.493652,29.362285,332.650000 114.493677,29.362178,332.820000 114.493682,29.362080,333.350000 114.493690,29.361987,334.010000 114.493690,29.361879,332.930000 114.493664,29.361770,333.120000 114.493600,29.361673,333.790000 114.493534,29.361582,333.390000 114.493505,29.361491,333.760000 114.493470,29.361407,334.610000 114.493446,29.361319,335.440000 114.493453,29.361224,335.550000 114.493467,29.361127,337.230000 114.493466,29.361022,337.380000 114.493449,29.360921,337.390000 114.493419,29.360815,337.510000 114.493370,29.360728,337.500000 114.493291,29.360665,338.750000 114.493235,29.360585,336.520000 114.493172,29.360511,336.450000 114.493089,29.360451,336.360000 114.493029,29.360373,337.570000 114.492966,29.360286,340.060000 114.492908,29.360191,341.690000 114.492869,29.360094,343.000000 114.492827,29.359991,343.480000 114.492806,29.359887,343.050000 114.492828,29.359777,342.010000 114.492878,29.359690,341.280000 114.492957,29.359626,340.010000 114.493045,29.359572,339.400000 114.493154,29.359541,338.430000 114.493250,29.359489,336.360000 114.493361,29.359447,336.220000 114.493465,29.359391,337.170000 114.493551,29.359328,337.520000 114.493636,29.359255,338.050000 114.493679,29.359159,337.660000 114.493697,29.359061,337.570000 114.493740,29.358975,337.810000 114.493800,29.358901,338.440000 114.493866,29.358825,338.950000 114.493915,29.358734,340.540000 114.493987,29.358666,340.680000 114.494036,29.358586,342.000000 114.494068,29.358477,341.930000 114.494063,29.358376,341.220000 114.494063,29.358277,342.540000 114.494050,29.358181,344.990000 114.494024,29.358086,347.510000 114.494010,29.357986,348.470000 114.493991,29.357883,349.140000 114.493965,29.357781,349.130000 114.493927,29.357676,350.140000 114.493884,29.357576,349.930000 114.493840,29.357480,350.750000 114.493780,29.357401,351.470000 114.493711,29.357331,349.440000 114.493621,29.357270,348.540000 114.493512,29.357221,347.940000 114.493399,29.357172,348.680000 114.493294,29.357123,348.810000 114.493194,29.357086,348.510000 114.493093,29.357068,347.660000 114.493004,29.357019,347.010000 114.492910,29.356963,346.780000 114.492816,29.356905,346.550000 114.492730,29.356845,347.180000 114.492636,29.356800,346.810000 114.492534,29.356796,348.070000 114.492432,29.356778,348.640000 114.492327,29.356761,347.540000 114.492261,29.356693,347.520000 114.492235,29.356592,350.170000 114.492176,29.356489,352.430000 114.492113,29.356406,351.480000 114.492099,29.356316,352.730000 114.492122,29.356228,355.350000 114.492174,29.356145,353.720000 114.492235,29.356061,354.210000 114.492276,29.355970,352.170000 114.492346,29.355900,352.180000 114.492354,29.355811,353.360000 114.492423,29.355709,355.540000 114.492328,29.355669,352.030000 114.492283,29.355576,349.120000 114.492227,29.355501,347.610000 114.492216,29.355409,349.060000 114.492167,29.355319,352.850000 114.492248,29.355263,354.160000 114.492137,29.355201,355.570000 114.492031,29.355206,353.420000 114.492028,29.355216,351.910000 114.496759,29.349113,452.680000 114.496604,29.348999,394.040000 114.496593,29.348951,417.340000 114.496537,29.348990,416.070000 114.496022,29.349065,416.360000 114.496077,29.349049,426.430000 114.496034,29.348981,420.760000 114.496080,29.348876,423.180000 114.495980,29.348972,424.840000 114.495872,29.348981,424.440000 114.495969,29.348983,422.730000 114.495938,29.349065,425.550000 114.496061,29.349014,425.360000 114.496011,29.348930,422.250000 114.495944,29.349005,432.340000 114.496003,29.349088,438.380000 114.496052,29.349001,435.190000 114.495959,29.348952,431.540000 114.496063,29.348892,427.280000 114.496023,29.349064,426.680000 114.495966,29.348987,422.130000 114.495815,29.348906,419.270000 114.495846,29.348827,418.520000 114.495949,29.348810,415.680000 114.495915,29.348906,414.060000 114.495912,29.349021,412.450000 114.495825,29.349060,416.630000 114.495971,29.349086,415.730000 114.495937,29.348983,417.840000 114.495955,29.348877,419.160000 114.495964,29.348953,420.100000 114.495830,29.349083,420.720000 114.495829,29.349067,418.860000 114.495727,29.349049,417.380000 114.495747,29.348988,414.560000 114.495825,29.348919,413.920000 114.495937,29.348951,410.990000 114.496009,29.349038,408.120000 114.496090,29.349118,407.040000 114.496203,29.349149,408.730000 114.496316,29.349131,409.840000 114.496412,29.349073,417.040000 114.496516,29.349048,416.620000 114.496631,29.349021,415.430000 114.496741,29.349030,412.410000 114.496782,29.348966,413.650000 114.496810,29.348877,412.640000 114.496771,29.348790,417.130000 114.496776,29.348702,414.970000 114.496725,29.348627,418.080000 114.496763,29.348564,417.650000 114.496698,29.348512,417.960000 114.496722,29.348444,419.350000 114.496639,29.348480,420.380000 114.496732,29.348441,431.930000 114.496820,29.348391,430.750000 114.496736,29.348446,434.360000 114.496834,29.348404,428.880000 114.496736,29.348489,425.540000 114.496844,29.348505,423.930000 114.496933,29.348405,423.710000 114.496954,29.348467,396.000000 114.497010,29.348397,410.110000 114.497094,29.348340,419.540000 114.497200,29.348326,427.440000 114.497320,29.348263,439.060000 114.497221,29.348222,450.670000 114.497183,29.348137,450.950000 114.497176,29.348047,454.600000 114.497157,29.347958,460.330000 114.497083,29.347883,462.990000 114.496976,29.347793,465.500000 114.497010,29.347705,475.150000 114.497094,29.347766,490.550000 114.497146,29.347688,491.430000 114.497214,29.347598,500.010000 114.497315,29.347506,498.810000 114.497399,29.347422,502.150000 114.497497,29.347339,507.070000 114.497605,29.347257,510.960000 114.497689,29.347183,511.650000 114.497773,29.347103,512.180000 114.497815,29.347001,511.530000 114.497860,29.346911,513.680000 114.497924,29.346832,513.010000 114.498013,29.346781,512.000000 114.498097,29.346727,507.980000 114.498134,29.346644,512.000000 114.498170,29.346558,501.340000 114.498230,29.346480,490.050000 114.498303,29.346409,486.450000 114.498401,29.346382,485.850000 114.498508,29.346358,481.100000 114.498608,29.346325,481.040000 114.498700,29.346370,480.560000 114.498802,29.346431,478.890000 114.498895,29.346498,485.910000 114.498959,29.346578,484.730000 114.499159,29.346607,486.620000 114.499058,29.346653,486.460000 114.499079,29.346564,494.380000 114.499089,29.346624,491.660000 114.499145,29.346573,495.400000 114.499110,29.346616,498.370000 114.498992,29.346541,499.630000 114.499035,29.346643,495.920000 114.499080,29.346733,492.830000 114.499185,29.346743,495.010000 114.499288,29.346778,499.730000 114.499373,29.346839,500.020000 114.499477,29.346829,500.230000 114.499433,29.346760,499.140000 114.499495,29.346782,498.190000 114.499591,29.346772,500.240000 114.499704,29.346737,503.570000 114.499782,29.346671,502.860000 114.499871,29.346618,502.550000 114.499884,29.346520,507.960000 114.499924,29.346434,507.910000 114.499902,29.346339,507.660000 114.499907,29.346248,505.920000 114.500007,29.346213,501.790000 114.499981,29.346110,500.400000 114.499957,29.346020,501.040000 114.500021,29.345960,504.170000 114.500035,29.345870,505.420000 114.500076,29.345784,504.140000 114.500089,29.345692,507.060000 114.500052,29.345581,512.740000 114.499945,29.345601,514.280000 114.500049,29.345603,519.880000 114.499955,29.345610,518.790000 114.500072,29.345615,516.100000 114.499991,29.345577,518.680000 114.499925,29.345497,521.260000 114.500030,29.345571,518.830000 114.500050,29.345465,517.610000 114.500040,29.345558,514.660000 114.500116,29.345481,518.240000 114.500087,29.345510,515.300000 114.499992,29.345463,516.540000 114.500013,29.345374,517.310000 114.499920,29.345412,513.010000 114.500033,29.345427,512.550000 114.499936,29.345467,510.210000 114.500023,29.345516,508.250000 114.499941,29.345573,506.100000 114.499858,29.345630,505.100000 114.499757,29.345611,519.500000 114.499781,29.345524,527.730000 114.499868,29.345459,526.480000 114.499900,29.345362,523.620000 114.499932,29.345272,519.930000 114.499892,29.345178,523.740000 114.499800,29.345242,523.770000 114.499798,29.345150,525.780000 114.499910,29.345129,536.540000 114.499981,29.345052,533.720000 114.500095,29.345019,543.600000 114.500075,29.344925,545.400000 114.500045,29.345011,547.750000 114.500058,29.345109,546.210000 114.500079,29.345204,542.600000 114.500189,29.345211,531.370000 114.500182,29.345096,526.290000 114.500204,29.345194,523.150000 114.500265,29.345269,524.600000 114.500215,29.345220,532.520000 114.500274,29.345265,529.770000 114.500367,29.345223,531.250000 114.500345,29.345126,536.340000 114.500562,29.345209,537.500000 114.500485,29.345136,537.140000 114.500566,29.345089,535.530000 114.500673,29.345090,531.720000 114.500780,29.345055,531.160000 114.500886,29.345016,530.750000 114.500886,29.345076,525.830000 114.500792,29.345122,532.280000 114.500821,29.345104,537.740000 114.500870,29.345021,536.180000 114.500893,29.345264,536.650000 114.500802,29.345316,554.000000 114.500903,29.345627,558.260000 114.501100,29.345941,582.200000 114.501163,29.346019,594.770000 114.501277,29.346028,599.100000 114.501311,29.346117,601.430000 114.501411,29.346080,608.380000 114.501439,29.346176,625.310000 114.501408,29.346315,626.200000 114.501474,29.346400,626.940000 114.501536,29.346481,626.460000 114.501555,29.346574,624.600000 114.501583,29.346671,624.200000 114.501532,29.346752,623.010000 114.501497,29.346843,622.620000 114.501538,29.346957,619.280000 114.501508,29.347048,619.000000 114.501440,29.347129,617.860000 114.501335,29.347195,619.110000 114.501311,29.347277,618.380000 114.501338,29.347366,617.050000 114.501294,29.347463,622.310000 114.501269,29.347558,626.020000 114.501347,29.347635,628.500000 114.501385,29.347720,631.540000 114.501381,29.347809,627.940000 114.501364,29.347907,625.770000 114.501312,29.348001,627.900000 114.501261,29.347959,630.320000 114.501168,29.347925,632.750000 114.501042,29.347920,630.810000 114.500941,29.347963,628.720000 114.500855,29.348028,628.860000 114.500785,29.347991,628.440000 114.500689,29.347963,627.730000 114.500583,29.347946,630.230000 114.500493,29.347994,628.770000 114.500388,29.348027,628.940000 114.500255,29.348015,633.530000 114.500139,29.347973,637.200000 114.500044,29.347918,637.030000 114.499952,29.347863,637.660000 114.499834,29.347857,637.620000 114.499729,29.347905,638.770000 114.499650,29.348007,636.310000 114.499533,29.348035,637.850000 114.499416,29.348071,638.550000 114.499320,29.348137,637.550000 114.499232,29.348201,636.300000 114.499165,29.348289,632.120000 114.499138,29.348385,630.640000 114.499133,29.348489,626.790000 114.499176,29.348579,624.010000 114.499246,29.348659,623.900000 114.499347,29.348706,621.060000 114.499358,29.348780,623.300000 114.499371,29.348880,623.190000 114.499363,29.348979,624.890000 114.499315,29.349067,623.550000 114.499315,29.349167,623.150000 114.499337,29.349262,623.520000 114.499382,29.349358,622.220000 114.499485,29.349372,620.090000 114.499602,29.349384,618.940000 114.499592,29.349470,621.380000 114.499548,29.349570,625.470000 114.499519,29.349667,626.540000 114.499570,29.349751,625.980000 114.499653,29.349840,622.930000 114.499665,29.349935,623.060000 114.499657,29.350037,623.220000 114.499703,29.350115,619.980000 114.499798,29.350132,616.750000 114.499899,29.350199,619.360000 114.499915,29.350293,619.560000 114.499917,29.350393,619.740000 114.499990,29.350453,618.950000 114.500101,29.350527,618.820000 114.500125,29.350621,617.970000 114.500122,29.350728,620.330000 114.500072,29.350819,621.370000 114.499976,29.350877,622.720000 114.499915,29.350959,622.180000 114.499834,29.351035,622.910000 114.499754,29.351116,622.030000 114.499695,29.351197,621.060000 114.499776,29.351284,616.700000 114.499871,29.351326,617.660000 114.499883,29.351416,616.320000 114.499930,29.351508,615.050000 114.499976,29.351599,615.270000 114.500020,29.351691,615.580000 114.499988,29.351782,615.480000 114.499932,29.351867,615.210000 114.499936,29.351952,614.690000 114.499991,29.352023,615.300000 114.500084,29.352095,619.490000 114.500179,29.352072,624.140000 114.500285,29.352030,623.060000 114.500387,29.351959,623.220000 114.500452,29.351859,625.310000 114.500506,29.351758,623.940000 114.500587,29.351698,624.700000 114.500526,29.351724,624.750000 114.500467,29.351807,625.090000 114.500380,29.351884,626.230000 114.500310,29.351980,625.150000 114.500215,29.352032,625.620000 114.500159,29.352118,620.880000 114.500102,29.352204,618.240000 114.500055,29.352303,617.260000 114.500095,29.352382,616.980000 114.500158,29.352463,615.960000 114.500236,29.352545,614.020000 114.500303,29.352629,612.500000 114.500297,29.352724,613.750000 114.500262,29.352823,613.680000 114.500233,29.352928,612.460000 114.500192,29.353029,611.730000 114.500154,29.353128,612.640000 114.500132,29.353230,613.050000 114.500149,29.353325,612.930000 114.500173,29.353426,615.470000 114.500172,29.353533,617.060000 114.500130,29.353620,619.960000 114.500038,29.353655,621.970000 114.500089,29.353641,624.420000 114.500006,29.353648,632.330000 114.499892,29.353686,635.680000 114.499788,29.353717,634.520000 114.499673,29.353710,635.140000 114.499561,29.353711,640.000000 114.499472,29.353763,637.300000 114.499426,29.353852,633.500000 114.499425,29.353958,630.460000 114.499481,29.354066,622.410000 114.499568,29.354163,620.710000 114.499677,29.354226,623.350000 114.499774,29.354291,623.710000 114.499825,29.354373,624.070000 114.499827,29.354475,622.890000 114.499803,29.354575,622.740000 114.499776,29.354682,624.570000 114.499772,29.354790,628.110000 114.499813,29.354892,619.870000 114.499807,29.355005,625.580000 114.499787,29.355111,629.670000 114.499774,29.355210,629.340000 114.499808,29.355298,629.230000 114.499917,29.355324,627.220000 114.500043,29.355341,618.970000 114.500146,29.355379,617.150000 114.500260,29.355421,617.290000 114.500389,29.355458,616.110000 114.500489,29.355427,616.090000 114.500591,29.355427,613.500000 114.500702,29.355446,613.750000 114.500808,29.355443,609.340000 114.500906,29.355406,605.840000 114.500898,29.355458,603.410000 114.500941,29.355548,607.370000 114.501015,29.355642,612.270000 114.501080,29.355733,612.410000 114.501162,29.355798,612.920000 114.501275,29.355831,612.920000 114.501384,29.355791,611.960000 114.501478,29.355713,611.660000 114.501583,29.355695,612.190000 114.501695,29.355705,609.660000 114.501817,29.355741,610.000000 114.501926,29.355746,607.640000 114.502018,29.355703,609.210000 114.502094,29.355609,608.900000 114.502189,29.355537,608.910000 114.502296,29.355526,607.760000 114.502394,29.355560,608.790000 114.502520,29.355588,608.540000 114.502652,29.355649,608.150000 114.502710,29.355738,606.620000 114.502753,29.355837,607.720000 114.502842,29.355889,607.580000 114.502938,29.355933,602.630000 114.503072,29.355942,595.750000 114.503175,29.355897,591.220000 114.503294,29.355873,589.360000 114.503408,29.355857,588.720000 114.503499,29.355898,589.140000 114.503486,29.355981,584.860000 114.503487,29.356076,580.150000 114.503521,29.356164,581.400000 114.503621,29.356182,582.850000 114.503709,29.356129,582.240000 114.503822,29.356084,577.650000 114.503979,29.356048,578.140000 114.504115,29.356048,578.560000 114.504244,29.356066,579.190000 114.504363,29.356100,580.680000 114.504422,29.356195,581.350000 114.504406,29.356293,585.870000 114.504328,29.356380,589.060000 114.504300,29.356493,592.220000 114.504330,29.356595,590.930000 114.504404,29.356673,591.810000 114.504508,29.356684,590.720000 114.504631,29.356664,588.730000 114.504742,29.356633,588.310000 114.504848,29.356587,585.000000 114.504943,29.356533,583.880000 114.505041,29.356490,578.720000 114.505157,29.356458,578.290000 114.505259,29.356420,579.800000 114.505364,29.356404,580.290000 114.505474,29.356392,580.060000 114.505434,29.356438,584.740000 114.505364,29.356530,583.390000 114.505312,29.356629,581.590000 114.505310,29.356744,581.900000 114.505358,29.356846,582.520000 114.505406,29.356936,584.490000 114.505437,29.357034,587.750000 114.505478,29.357160,587.190000 114.505514,29.357266,588.580000 114.505578,29.357353,589.250000 114.505671,29.357432,590.990000 114.505777,29.357484,593.060000 114.505741,29.357444,590.100000 114.505629,29.357398,590.710000 114.505506,29.357380,591.470000 114.505380,29.357359,592.680000 114.505274,29.357320,593.820000 114.505155,29.357287,583.450000 114.505033,29.357259,576.880000 114.504922,29.357288,577.590000 114.504797,29.357346,576.500000 114.504699,29.357419,574.720000 114.504622,29.357506,575.970000 114.504548,29.357590,576.090000 114.504470,29.357662,575.960000 114.504359,29.357693,582.890000 114.504263,29.357759,582.660000 114.504195,29.357850,581.060000 114.504153,29.357943,576.000000 114.504109,29.358032,574.740000 114.504058,29.358120,576.160000 114.504052,29.358216,576.160000 114.504060,29.358314,575.880000 114.504088,29.358417,573.890000 114.504158,29.358506,570.500000 114.504260,29.358541,568.970000 114.504369,29.358560,562.800000 114.504477,29.358544,562.710000 114.504584,29.358520,561.580000 114.504693,29.358522,561.530000 114.504640,29.358538,560.820000 114.504561,29.358611,562.900000 114.504502,29.358707,563.470000 114.504453,29.358804,564.280000 114.504430,29.358902,565.450000 114.504411,29.359006,565.270000 114.504400,29.359108,563.310000 114.504452,29.359189,560.800000 114.504535,29.359262,557.740000 114.504665,29.359267,554.660000 114.504788,29.359274,552.310000 114.504915,29.359300,547.520000 114.504936,29.359375,543.990000 114.504846,29.359447,543.360000 114.504733,29.359518,542.280000 114.504625,29.359585,542.240000 114.504512,29.359633,541.540000 114.504400,29.359650,542.640000 114.504277,29.359677,542.390000 114.504150,29.359702,541.960000 114.504025,29.359736,541.900000 114.503911,29.359755,540.890000 114.503798,29.359743,541.610000 114.503702,29.359698,541.900000 114.503609,29.359649,540.390000 114.503500,29.359615,538.680000 114.503393,29.359615,537.590000 114.503274,29.359593,538.280000 114.503157,29.359571,536.840000 114.503053,29.359537,534.120000 114.502963,29.359484,534.740000 114.502872,29.359425,532.830000 114.502779,29.359369,533.170000 114.502670,29.359354,534.230000 114.502547,29.359336,534.370000 114.502431,29.359314,534.120000 114.502315,29.359306,535.880000 114.502198,29.359321,535.350000 114.502075,29.359336,533.520000 114.501970,29.359310,529.300000 114.501869,29.359249,528.190000 114.501759,29.359212,526.590000 114.501646,29.359201,524.460000 114.501525,29.359201,523.210000 114.501413,29.359216,523.690000 114.501305,29.359285,521.580000 114.501225,29.359370,513.100000 114.501187,29.359468,510.800000 114.501195,29.359592,507.630000 114.501154,29.359687,508.040000 114.501060,29.359707,506.600000 114.500943,29.359693,505.560000 114.500825,29.359668,502.860000 114.500700,29.359656,500.120000 114.500583,29.359653,498.610000 114.500469,29.359690,496.810000 114.500349,29.359704,496.260000 114.500227,29.359701,494.880000 114.500117,29.359737,492.990000 114.500021,29.359801,489.090000 114.499958,29.359886,488.420000 114.499892,29.359976,486.370000 114.499807,29.360044,484.260000 114.499693,29.360062,482.620000 114.499584,29.360096,482.180000 114.499492,29.360157,480.760000 114.499384,29.360216,479.970000 114.499316,29.360313,480.290000 114.499357,29.360411,476.740000 114.499370,29.360505,474.900000 114.499335,29.360602,473.660000 114.499235,29.360630,473.630000 114.499120,29.360609,473.580000 114.499005,29.360571,476.910000 114.498888,29.360519,476.990000 114.498783,29.360460,477.520000 114.498666,29.360417,475.910000 114.498555,29.360389,472.090000 114.498442,29.360379,472.790000 114.498318,29.360387,473.160000 114.498199,29.360418,472.250000 114.498092,29.360463,470.880000 114.497998,29.360513,470.330000 114.497907,29.360592,466.970000 114.497803,29.360677,464.720000 114.497700,29.360741,465.630000 114.497585,29.360742,463.940000 114.497477,29.360687,464.530000 114.497346,29.360670,464.700000 114.497209,29.360654,461.070000 114.497099,29.360622,458.200000 114.497001,29.360580,457.690000 114.496907,29.360536,457.110000 114.496802,29.360521,454.870000 114.496691,29.360518,453.870000 114.496580,29.360522,452.920000 114.496468,29.360536,449.260000 114.496364,29.360588,449.020000 114.496268,29.360642,448.410000 114.496199,29.360722,446.370000 114.496169,29.360831,440.190000 114.496143,29.360930,437.620000 114.496125,29.361039,438.060000 114.496124,29.361150,436.320000 114.496100,29.361257,434.810000 114.496062,29.361350,435.820000 114.495986,29.361442,439.050000 114.495902,29.361531,438.500000 114.495797,29.361599,439.630000 114.495692,29.361652,438.430000 114.495588,29.361689,433.690000 114.495497,29.361758,427.730000 114.495437,29.361838,420.380000 114.495384,29.361927,418.680000 114.495342,29.362032,418.780000 114.495310,29.362143,417.100000 114.495289,29.362258,415.350000 114.495281,29.362367,413.700000 114.495279,29.362480,411.510000 114.495225,29.362559,408.150000 114.495134,29.362616,407.150000 114.495032,29.362668,405.590000 114.494949,29.362739,401.980000 114.494874,29.362810,400.510000 114.494781,29.362877,399.870000 114.494681,29.362935,399.410000 114.494570,29.362980,398.200000 114.494460,29.363005,396.110000 114.494395,29.363068,394.400000 114.494429,29.363157,390.130000 114.494493,29.363255,382.620000 114.494598,29.363295,381.510000 114.494735,29.363309,380.340000 114.494855,29.363322,378.260000 114.494944,29.363377,376.690000 114.494889,29.363415,375.120000 114.494778,29.363438,374.580000 114.494644,29.363468,374.050000 114.494510,29.363502,373.700000 114.494391,29.363553,371.560000 114.494278,29.363610,373.390000 114.494161,29.363606,373.010000 114.494045,29.363584,371.130000 114.493931,29.363606,369.860000 114.493840,29.363662,370.250000 114.493758,29.363732,369.250000 114.493654,29.363795,365.800000 114.493547,29.363795,362.700000 114.493444,29.363743,359.370000 114.493360,29.363670,358.180000 114.493280,29.363585,356.390000 114.493205,29.363509,355.100000 114.493105,29.363476,351.650000 114.493071,29.363546,351.170000 114.493090,29.363646,349.420000 114.493149,29.363742,348.980000 114.493224,29.363841,349.210000 114.493283,29.363940,347.940000 114.493329,29.364035,347.630000 114.493352,29.364141,347.390000 114.493376,29.364246,346.890000 114.493423,29.364334,344.340000 114.493487,29.364410,341.800000 114.493559,29.364484,339.120000 114.493620,29.364570,337.800000 114.493677,29.364655,336.070000 114.493753,29.364743,334.300000 114.493823,29.364831,333.020000 114.493879,29.364922,330.420000 114.493930,29.365012,329.520000 114.493997,29.365102,329.800000 114.494008,29.365199,329.650000 114.493940,29.365275,327.840000 114.493845,29.365360,326.290000 114.493738,29.365436,326.160000 114.493630,29.365512,326.530000 114.493534,29.365592,325.880000 114.493452,29.365657,325.290000 114.493368,29.365719,325.450000 114.493283,29.365774,326.150000 114.493204,29.365842,325.710000 114.493100,29.365906,325.930000 114.493017,29.365970,324.770000 114.492922,29.366035,323.190000 </coordinates>
+				</LineString>
+			</Placemark>
+			<Placemark>
+				<name><![CDATA[轨迹片段2]]></name>
+				<styleUrl>#LineStringStyle</styleUrl>
+				<Style>
+					<LineStyle>
+						<color>dd5cba55</color>
+						<width>6.000000</width>
+					</LineStyle>
+				</Style>
+				<LineString>
+					<coordinates>114.502282,29.352502,617.970000 114.502390,29.352455,617.970000 114.502470,29.352387,619.830000 114.502553,29.352306,621.500000 114.502605,29.352222,623.000000 114.502652,29.352132,623.860000 114.502663,29.352031,624.440000 114.502581,29.352095,625.190000 114.502491,29.352162,626.250000 114.502398,29.352213,626.220000 114.502278,29.352241,626.110000 114.502156,29.352250,625.770000 114.502037,29.352258,625.420000 114.501927,29.352274,624.790000 114.501818,29.352282,624.150000 114.501709,29.352250,623.570000 114.501622,29.352191,622.570000 114.501527,29.352117,621.570000 114.501419,29.352063,620.600000 114.501302,29.352023,619.720000 114.501211,29.351970,618.900000 114.501135,29.351904,618.340000 114.501046,29.351839,617.540000 114.500965,29.351771,616.920000 114.500870,29.351716,616.430000 114.500774,29.351667,616.150000 114.500670,29.351663,616.670000 114.500545,29.351669,617.270000 114.500452,29.351729,618.280000 114.500407,29.351825,619.780000 114.500313,29.351878,620.140000 114.500206,29.351883,620.220000 114.500173,29.351807,621.070000 114.500190,29.351708,621.650000 114.500197,29.351592,622.180000 114.500250,29.351660,621.510000 114.500227,29.351754,621.160000 114.500223,29.351854,621.520000 114.500199,29.351952,622.310000 114.500161,29.352043,622.790000 114.500076,29.352029,621.940000 114.499967,29.352007,620.850000 114.499931,29.351916,619.970000 114.499948,29.351809,619.430000 114.499997,29.351707,618.620000 114.499983,29.351613,617.990000 114.499930,29.351519,617.510000 114.499866,29.351428,616.310000 114.499783,29.351359,615.360000 114.499706,29.351283,615.060000 114.499693,29.351196,614.600000 114.499730,29.351107,613.400000 114.499808,29.351030,612.020000 114.499915,29.350959,611.900000 114.500008,29.350883,608.320000 114.500053,29.350797,602.770000 114.500132,29.350749,602.320000 114.500142,29.350664,603.900000 114.500155,29.350569,604.440000 114.500156,29.350468,608.500000 114.500075,29.350441,610.710000 114.499971,29.350415,611.300000 114.499907,29.350347,611.030000 114.499867,29.350258,610.490000 114.499817,29.350170,610.170000 114.499738,29.350109,613.200000 114.499675,29.350036,613.580000 114.499653,29.349942,614.280000 114.499669,29.349849,612.270000 114.499647,29.349755,611.520000 114.499597,29.349668,609.800000 114.499590,29.349579,608.660000 114.499587,29.349488,608.140000 114.499568,29.349396,608.920000 114.499478,29.349375,609.790000 114.499413,29.349317,609.740000 114.499381,29.349233,609.630000 114.499355,29.349133,609.450000 114.499352,29.349020,609.330000 114.499393,29.348912,610.240000 114.499383,29.348813,611.810000 114.499338,29.348720,613.580000 114.499260,29.348643,614.590000 114.499189,29.348562,614.710000 114.499115,29.348487,614.510000 114.499103,29.348397,613.780000 114.499156,29.348304,613.660000 114.499218,29.348215,613.550000 114.499270,29.348117,613.840000 114.499368,29.348036,614.370000 114.499477,29.347996,615.000000 114.499564,29.347926,615.310000 114.499652,29.347871,617.540000 114.499756,29.347842,618.510000 114.499867,29.347830,618.410000 114.499985,29.347858,618.370000 114.500097,29.347896,618.490000 114.500202,29.347931,618.560000 114.500318,29.347953,618.700000 114.500432,29.347939,618.790000 114.500413,29.348007,618.600000 114.500297,29.348055,618.380000 114.500164,29.348068,618.160000 114.500044,29.348045,617.910000 114.499933,29.347991,617.410000 114.499983,29.347961,616.910000 114.500091,29.347946,616.200000 114.500215,29.347948,615.610000 114.500316,29.347997,615.400000 114.500418,29.347962,615.270000 114.500553,29.347936,615.430000 114.500671,29.347941,615.370000 114.500783,29.347986,615.360000 114.500891,29.348031,614.980000 114.500962,29.347976,614.870000 114.501058,29.347940,614.560000 114.501167,29.347945,614.560000 114.501267,29.347922,615.160000 114.501327,29.347845,615.630000 114.501414,29.347808,616.870000 114.501430,29.347711,618.030000 114.501437,29.347610,618.310000 114.501374,29.347519,618.530000 114.501332,29.347423,618.970000 114.501286,29.347329,617.750000 114.501238,29.347245,616.970000 114.501215,29.347156,616.690000 114.501283,29.347089,617.300000 114.501388,29.347006,617.310000 114.501432,29.346913,618.340000 114.501410,29.346825,618.630000 114.501430,29.346737,618.810000 114.501515,29.346709,618.790000 114.501538,29.346639,618.940000 114.501540,29.346551,618.490000 114.501519,29.346450,618.900000 114.501472,29.346361,618.870000 114.501421,29.346274,618.970000 114.501360,29.346183,618.710000 114.501381,29.346090,618.310000 114.501439,29.346003,617.410000 114.501436,29.345908,616.910000 114.501433,29.345813,616.850000 114.501391,29.345727,617.380000 114.501350,29.345636,617.090000 114.501354,29.345540,616.710000 114.501403,29.345450,617.210000 114.501445,29.345360,616.740000 114.501438,29.345267,616.880000 114.501468,29.345168,617.200000 114.501514,29.345079,616.930000 114.501551,29.344986,616.640000 114.501543,29.344892,616.080000 114.501486,29.344801,615.020000 114.501425,29.344714,614.840000 114.501334,29.344646,614.850000 114.501234,29.344595,615.670000 114.501149,29.344536,617.350000 114.501116,29.344442,618.880000 114.501048,29.344365,621.460000 114.501003,29.344276,623.330000 114.501176,29.344169,624.740000 114.501075,29.344227,623.610000 114.500960,29.344190,621.870000 114.501068,29.344195,616.380000 114.501103,29.344312,612.800000 114.500969,29.344266,614.860000 114.500884,29.344317,616.100000 114.500956,29.344291,617.310000 114.501102,29.344276,617.930000 114.500869,29.344250,618.770000 114.500938,29.344253,619.580000 114.501051,29.344271,624.860000 114.501155,29.344216,628.940000 114.501260,29.344227,631.070000 114.501286,29.344335,633.710000 114.501411,29.344269,635.810000 114.501328,29.344179,637.350000 114.501303,29.344078,638.130000 114.501334,29.343982,642.390000 114.501416,29.343911,645.080000 114.501347,29.343852,647.510000 114.501369,29.343752,649.590000 114.501305,29.343657,651.440000 114.501247,29.343570,653.070000 114.501287,29.343597,653.300000 114.501393,29.343603,654.100000 114.501423,29.343535,654.810000 114.501377,29.343566,654.840000 114.501255,29.343498,653.240000 114.501189,29.343578,651.720000 114.501229,29.343675,651.750000 114.501253,29.343626,653.160000 114.501214,29.343660,653.880000 114.501299,29.343723,654.530000 114.501426,29.343824,655.290000 114.501392,29.343822,656.820000 114.501357,29.343742,658.070000 114.501392,29.343654,659.640000 114.501482,29.343611,662.740000 114.501507,29.343524,663.820000 114.501555,29.343435,663.300000 114.501586,29.343336,661.980000 114.501661,29.343245,664.020000 114.501758,29.343280,663.880000 114.501711,29.343254,665.820000 114.501772,29.343273,666.340000 114.501871,29.343359,666.800000 114.501966,29.343404,666.830000 114.502057,29.343333,664.510000 114.502158,29.343400,662.740000 114.502195,29.343348,661.460000 114.502107,29.343298,660.370000 114.501976,29.343202,659.970000 114.501874,29.343219,659.560000 114.501953,29.343209,659.430000 114.501912,29.343285,659.410000 114.502007,29.343328,656.430000 114.501937,29.343320,655.260000 114.501908,29.343418,653.660000 114.501987,29.343356,652.810000 114.501923,29.343269,671.000000 114.501900,29.343340,680.700000 114.501869,29.343295,686.240000 114.501909,29.343336,689.390000 114.501869,29.343428,691.180000 114.501984,29.343437,686.550000 114.501971,29.343366,683.830000 114.501879,29.343316,680.810000 114.501704,29.343204,678.490000 114.501664,29.343098,676.600000 114.501636,29.343133,675.440000 114.501747,29.343145,674.540000 114.501843,29.342968,678.170000 114.501877,29.343056,683.130000 114.501987,29.342957,686.920000 114.502019,29.343051,691.930000 114.502115,29.343100,695.440000 114.502137,29.343010,699.790000 114.502228,29.343001,702.890000 114.502270,29.342917,708.720000 114.502169,29.342875,712.140000 114.502234,29.342785,714.720000 114.502295,29.342703,718.490000 114.502399,29.342699,720.780000 114.502515,29.342717,722.580000 114.502586,29.342668,724.530000 114.502683,29.342695,726.680000 114.502785,29.342695,728.600000 114.502838,29.342617,729.800000 114.502831,29.342734,730.430000 114.502790,29.342831,731.720000 114.502792,29.342924,736.950000 114.502796,29.343027,738.940000 114.502833,29.343114,741.850000 114.502930,29.343107,743.580000 114.502997,29.343172,752.700000 114.503054,29.343259,758.420000 114.502964,29.343306,761.130000 114.503027,29.343385,767.910000 114.503088,29.343460,773.680000 114.503039,29.343523,777.160000 114.503091,29.343560,779.510000 114.503147,29.343627,780.700000 114.503209,29.343710,781.550000 114.503234,29.343813,781.910000 114.503260,29.343910,784.020000 114.503189,29.344007,786.130000 114.503295,29.343984,793.950000 114.503406,29.344021,797.400000 114.503503,29.344060,800.980000 114.503564,29.343997,803.140000 114.503608,29.343905,804.470000 114.503636,29.343796,805.350000 114.503669,29.343693,806.220000 114.503702,29.343579,806.820000 114.503789,29.343509,806.950000 114.503893,29.343518,807.360000 114.503988,29.343581,807.580000 114.504054,29.343667,806.980000 114.504099,29.343635,806.740000 114.504144,29.343548,806.250000 114.504169,29.343444,805.770000 114.504161,29.343337,805.370000 114.504196,29.343233,805.150000 114.504281,29.343185,804.810000 114.504390,29.343156,804.390000 114.504506,29.343181,805.760000 114.504613,29.343235,806.760000 114.504650,29.343161,807.620000 114.504708,29.343066,806.210000 114.504799,29.343023,805.590000 114.504898,29.342982,805.040000 114.505006,29.342982,804.750000 114.505120,29.342949,804.830000 114.505224,29.342918,805.200000 114.505262,29.342840,804.960000 114.505287,29.342739,804.720000 114.505358,29.342671,804.490000 114.505460,29.342656,805.500000 114.505581,29.342678,805.280000 114.505696,29.342744,804.950000 114.505655,29.342724,805.250000 114.505595,29.342648,806.170000 114.505624,29.342547,807.480000 114.505692,29.342460,808.320000 114.505763,29.342379,808.350000 114.505846,29.342313,807.650000 114.505942,29.342273,807.460000 114.505881,29.342268,807.580000 114.505769,29.342254,808.290000 114.505670,29.342205,808.890000 114.505592,29.342133,809.310000 114.505594,29.342033,810.880000 114.505656,29.341944,811.600000 114.505745,29.341874,812.030000 114.505827,29.341794,812.260000 114.505900,29.341715,812.280000 114.505980,29.341648,817.630000 114.505969,29.341557,821.450000 114.505972,29.341457,822.780000 114.506049,29.341399,823.030000 114.506158,29.341382,821.200000 114.506163,29.341314,819.750000 114.506097,29.341249,819.300000 114.506034,29.341168,818.470000 114.506049,29.341085,817.270000 114.506083,29.340993,813.650000 114.506085,29.340894,812.340000 114.506102,29.340793,811.650000 114.506083,29.340699,811.210000 114.506003,29.340639,810.480000 114.505905,29.340587,810.260000 114.505854,29.340499,810.250000 114.505821,29.340408,810.370000 114.505772,29.340305,810.780000 114.505752,29.340203,811.340000 114.505759,29.340106,811.690000 114.505872,29.340051,811.600000 114.505881,29.339966,811.350000 114.505924,29.339873,813.080000 114.505948,29.339775,814.860000 114.505955,29.339678,815.200000 114.505984,29.339588,816.190000 114.505905,29.339547,817.250000 114.505797,29.339526,817.660000 114.505694,29.339474,817.790000 114.505653,29.339380,818.600000 114.505635,29.339276,819.260000 114.505601,29.339183,819.770000 114.505534,29.339105,818.600000 114.505543,29.339021,818.010000 114.505488,29.338947,817.950000 114.505416,29.338872,819.220000 114.505346,29.338799,818.970000 114.505305,29.338709,819.000000 114.505255,29.338596,818.930000 114.505164,29.338593,819.000000 114.505074,29.338554,818.920000 114.505012,29.338486,822.850000 114.504945,29.338417,827.520000 114.504857,29.338358,830.680000 114.504807,29.338262,832.480000 114.504724,29.338211,834.330000 114.504643,29.338144,835.450000 114.504560,29.338083,835.880000 114.504512,29.338001,835.410000 114.504501,29.337903,834.970000 114.504518,29.337809,836.410000 114.504443,29.337769,839.850000 114.504339,29.337738,841.420000 114.504259,29.337670,841.860000 114.504187,29.337595,842.440000 114.504088,29.337555,842.880000 114.504040,29.337481,842.760000 114.503981,29.337394,845.320000 114.503891,29.337343,846.700000 114.503840,29.337269,847.510000 114.503854,29.337164,848.140000 114.503863,29.337065,849.020000 114.503819,29.336977,849.600000 114.503770,29.336886,849.410000 114.503704,29.336807,850.520000 114.503658,29.336724,853.340000 114.503641,29.336629,854.210000 114.503712,29.336552,854.420000 114.503809,29.336601,856.870000 114.503811,29.336534,858.570000 114.503870,29.336468,861.160000 114.503965,29.336432,863.270000 114.504028,29.336362,868.250000 114.504002,29.336282,871.480000 114.503958,29.336189,874.350000 114.503990,29.336106,877.160000 114.503930,29.336018,879.080000 114.503849,29.335948,883.990000 114.503784,29.335872,888.980000 114.503692,29.335832,893.170000 114.503692,29.335764,896.920000 114.503664,29.335681,899.850000 114.503648,29.335587,902.580000 114.503583,29.335507,905.440000 114.503525,29.335419,907.550000 114.503435,29.335356,908.660000 114.503349,29.335299,909.400000 114.503281,29.335226,910.030000 114.503261,29.335128,910.870000 114.503229,29.335034,912.130000 114.503162,29.334966,914.040000 114.503096,29.334885,914.080000 114.503054,29.334796,913.630000 114.502981,29.334727,914.740000 114.502889,29.334675,917.100000 114.502801,29.334621,919.150000 114.502751,29.334539,920.710000 114.502672,29.334488,922.130000 114.502571,29.334452,923.280000 114.502470,29.334396,924.460000 114.502404,29.334297,925.780000 114.502395,29.334192,926.990000 114.502410,29.334092,927.970000 114.502437,29.333994,929.140000 114.502473,29.333887,930.810000 114.502496,29.333711,933.310000 114.502396,29.333733,935.090000 114.502496,29.333771,937.710000 114.502612,29.333723,938.160000 114.502603,29.333820,938.480000 114.502517,29.333882,938.860000 114.502504,29.333802,940.320000 114.502446,29.333865,941.730000 114.502544,29.333771,942.350000 114.502516,29.333865,942.950000 114.502435,29.333807,943.500000 114.502560,29.333789,942.810000 114.502464,29.333832,943.010000 114.502339,29.333817,943.540000 114.502308,29.333728,942.780000 114.502242,29.333657,942.130000 114.502170,29.333577,941.380000 114.502069,29.333568,940.770000 114.501964,29.333554,939.920000 114.501862,29.333517,939.630000 114.501750,29.333475,939.570000 114.501635,29.333457,939.220000 114.501542,29.333402,939.380000 114.501467,29.333324,939.170000 114.501401,29.333235,939.150000 114.501354,29.333140,939.010000 114.501344,29.333039,938.830000 114.501336,29.332939,939.220000 114.501321,29.332841,939.700000 114.501291,29.332750,940.240000 114.501268,29.332662,939.960000 114.501233,29.332570,939.440000 114.501156,29.332494,940.520000 114.501064,29.332427,943.710000 114.500961,29.332382,945.900000 114.500867,29.332334,947.200000 114.500770,29.332263,949.340000 114.500689,29.332196,952.070000 114.500596,29.332154,954.730000 114.500490,29.332154,956.840000 114.500399,29.332094,961.170000 114.500303,29.332021,963.980000 114.500239,29.331937,965.470000 114.500165,29.331866,965.960000 114.500092,29.331797,966.180000 114.499995,29.331777,966.200000 114.499892,29.331756,965.470000 114.499793,29.331726,965.200000 114.499696,29.331682,964.920000 114.499606,29.331634,963.420000 114.499553,29.331557,962.300000 114.499459,29.331521,961.810000 114.499373,29.331452,961.770000 114.499300,29.331371,961.770000 114.499255,29.331277,961.790000 114.499215,29.331180,963.420000 114.499161,29.331092,964.850000 114.499081,29.331027,966.440000 114.499048,29.330939,970.300000 114.498991,29.330858,972.320000 114.498933,29.330771,973.710000 114.498865,29.330693,973.930000 114.498773,29.330634,974.450000 114.498723,29.330554,974.350000 114.498660,29.330470,974.410000 114.498586,29.330388,975.110000 114.498517,29.330314,976.030000 114.498429,29.330264,977.230000 114.498337,29.330222,978.740000 114.498262,29.330146,980.310000 114.498176,29.330078,982.130000 114.498096,29.330008,984.380000 114.498037,29.329931,988.020000 114.497980,29.329830,990.860000 114.497883,29.329785,992.810000 114.497819,29.329711,994.440000 114.497747,29.329645,995.680000 114.497657,29.329595,997.820000 114.497600,29.329521,1000.400000 114.497587,29.329433,1002.500000 114.497588,29.329336,1004.120000 114.497572,29.329226,1007.780000 114.497521,29.329141,1010.690000 114.497451,29.329066,1012.960000 114.497406,29.328984,1014.600000 114.497342,29.328907,1015.530000 114.497268,29.328838,1018.310000 114.497172,29.328784,1020.690000 114.497089,29.328720,1022.450000 114.497067,29.328626,1024.440000 114.497009,29.328554,1027.540000 114.496919,29.328504,1029.340000 114.496811,29.328495,1032.300000 114.496746,29.328437,1036.860000 114.496658,29.328369,1040.270000 114.496557,29.328353,1043.730000 114.496464,29.328301,1045.790000 114.496388,29.328236,1048.250000 114.496292,29.328181,1049.860000 114.496205,29.328119,1054.380000 114.496122,29.328052,1057.810000 114.496046,29.327986,1059.790000 114.495951,29.327949,1061.080000 114.495848,29.327964,1063.120000 114.495730,29.327978,1065.320000 114.495615,29.327981,1067.690000 114.495504,29.327968,1069.210000 114.495397,29.327957,1071.850000 114.495279,29.327964,1072.660000 114.495172,29.327980,1072.360000 114.495058,29.327978,1072.320000 114.494948,29.327990,1072.030000 114.494847,29.328038,1071.710000 114.494744,29.328082,1071.390000 114.494635,29.328129,1071.680000 114.494527,29.328176,1073.950000 114.494409,29.328210,1074.800000 114.494286,29.328219,1074.850000 114.494166,29.328220,1074.880000 114.494058,29.328206,1075.070000 114.493940,29.328213,1075.290000 114.493830,29.328235,1075.620000 114.493721,29.328273,1076.240000 114.493626,29.328333,1076.780000 114.493540,29.328412,1077.400000 114.493485,29.328512,1078.140000 114.493464,29.328613,1079.110000 114.493462,29.328725,1079.700000 114.493483,29.328833,1080.540000 114.493508,29.328929,1080.960000 114.493533,29.329034,1081.410000 114.493560,29.329126,1082.130000 114.493563,29.329227,1082.600000 114.493559,29.329324,1083.360000 114.493547,29.329425,1083.770000 114.493526,29.329531,1084.930000 114.493508,29.329642,1085.100000 114.493490,29.329743,1085.940000 114.493487,29.329844,1087.090000 114.493503,29.329948,1087.910000 114.493537,29.330058,1088.360000 114.493601,29.330158,1088.680000 114.493659,29.330246,1089.160000 114.493690,29.330333,1088.990000 114.493680,29.330426,1088.830000 114.493630,29.330518,1089.280000 114.493533,29.330570,1089.290000 114.493416,29.330594,1089.250000 114.493256,29.330603,1089.090000 114.493117,29.330607,1088.430000 114.492991,29.330610,1087.710000 114.492880,29.330613,1087.870000 114.492773,29.330622,1088.360000 114.492656,29.330640,1088.800000 114.492542,29.330630,1088.700000 114.492419,29.330618,1088.170000 114.492308,29.330609,1087.840000 114.492194,29.330594,1087.270000 114.492078,29.330560,1086.770000 114.491960,29.330524,1085.770000 114.491844,29.330501,1085.180000 114.491732,29.330501,1085.730000 114.491621,29.330521,1087.220000 114.491509,29.330561,1088.050000 114.491404,29.330598,1088.480000 114.491298,29.330618,1088.920000 114.491185,29.330625,1089.620000 114.491077,29.330622,1091.200000 114.490965,29.330602,1092.770000 114.490852,29.330565,1094.970000 114.490738,29.330557,1099.060000 114.490620,29.330566,1101.410000 114.490508,29.330550,1102.280000 114.490403,29.330511,1102.550000 114.490311,29.330452,1102.020000 114.490211,29.330405,1101.320000 114.490109,29.330352,1100.390000 114.490010,29.330298,1099.810000 114.489928,29.330229,1099.280000 114.489843,29.330163,1099.140000 114.489747,29.330119,1099.080000 114.489648,29.330086,1098.990000 114.489529,29.330068,1099.060000 114.489411,29.330036,1099.170000 114.489305,29.329981,1098.810000 114.489211,29.329922,1097.900000 114.489135,29.329844,1096.770000 114.489081,29.329752,1095.330000 114.489026,29.329660,1094.490000 114.488948,29.329588,1093.600000 114.488849,29.329562,1092.580000 114.488747,29.329530,1089.370000 114.488650,29.329483,1087.320000 114.488561,29.329428,1085.960000 114.488468,29.329364,1084.990000 114.488376,29.329295,1084.060000 114.488319,29.329214,1083.050000 114.488270,29.329131,1082.820000 114.488201,29.329044,1082.370000 114.488111,29.328970,1082.300000 114.488028,29.328887,1082.160000 114.487962,29.328804,1081.960000 114.487902,29.328718,1081.910000 114.487830,29.328648,1081.980000 114.487737,29.328588,1081.530000 114.487646,29.328517,1081.450000 114.487543,29.328460,1082.710000 114.487435,29.328450,1084.680000 114.487315,29.328443,1084.750000 114.487190,29.328423,1084.380000 114.487062,29.328414,1083.910000 114.486942,29.328400,1083.330000 114.486840,29.328339,1081.940000 114.486779,29.328248,1080.790000 114.486747,29.328144,1079.410000 114.486713,29.328051,1077.480000 114.486672,29.327964,1075.590000 114.486623,29.327872,1074.090000 114.486555,29.327800,1073.080000 114.486462,29.327754,1071.820000 114.486361,29.327714,1070.270000 114.486254,29.327660,1068.460000 114.486159,29.327597,1066.590000 114.486042,29.327573,1063.600000 114.485932,29.327567,1061.930000 114.485811,29.327581,1060.670000 114.485694,29.327612,1059.550000 114.485576,29.327644,1058.690000 114.485460,29.327683,1057.380000 114.485342,29.327718,1054.920000 114.485230,29.327742,1053.030000 114.485124,29.327755,1051.600000 114.485010,29.327783,1050.100000 114.484886,29.327812,1047.940000 114.484769,29.327826,1046.410000 114.484658,29.327823,1044.860000 114.484548,29.327819,1043.190000 114.484440,29.327806,1041.710000 114.484330,29.327777,1040.810000 114.484224,29.327751,1039.820000 114.484112,29.327737,1038.620000 114.484008,29.327749,1037.160000 114.483913,29.327792,1036.670000 114.483822,29.327861,1036.010000 114.483734,29.327943,1034.650000 114.483639,29.328021,1033.090000 114.483548,29.328077,1031.120000 114.483459,29.328133,1029.500000 114.483366,29.328198,1028.090000 114.483265,29.328256,1026.970000 114.483166,29.328301,1025.430000 114.483071,29.328356,1023.980000 114.482969,29.328418,1022.520000 114.482867,29.328470,1020.900000 114.482762,29.328514,1019.290000 114.482658,29.328530,1017.680000 114.482556,29.328553,1016.360000 114.482447,29.328561,1015.370000 114.482343,29.328570,1014.330000 114.482229,29.328572,1013.520000 114.482114,29.328556,1012.800000 114.482007,29.328550,1012.130000 114.481904,29.328555,1011.690000 114.481797,29.328565,1011.030000 114.481685,29.328574,1010.520000 114.481571,29.328586,1010.120000 114.481456,29.328611,1009.040000 114.481349,29.328666,1008.730000 114.481249,29.328724,1008.890000 114.481155,29.328787,1008.760000 114.481066,29.328854,1008.740000 114.480961,29.328880,1008.920000 114.480847,29.328875,1008.900000 114.480738,29.328862,1008.710000 114.480635,29.328833,1008.510000 114.480534,29.328794,1008.150000 114.480429,29.328773,1007.630000 114.480378,29.328836,1007.130000 114.480373,29.328869,1006.030000 114.480466,29.328951,1005.210000 114.480553,29.329024,1004.020000 114.480613,29.329100,1002.470000 114.480696,29.329155,1000.990000 114.480783,29.329222,998.730000 114.480869,29.329286,997.460000 114.480932,29.329369,996.250000 114.480955,29.329461,994.980000 114.480977,29.329558,993.580000 114.480975,29.329662,992.560000 114.481012,29.329750,993.020000 114.481069,29.329826,993.630000 114.481117,29.329907,994.040000 114.481156,29.330002,994.710000 114.481118,29.330083,995.500000 114.481047,29.330164,996.130000 114.480974,29.330237,996.810000 114.480906,29.330312,997.920000 114.480818,29.330366,998.650000 114.480850,29.330431,998.410000 114.480918,29.330504,998.820000 114.480892,29.330585,1000.200000 114.480853,29.330674,1003.690000 114.480800,29.330769,1007.820000 114.480740,29.330853,1010.750000 114.480658,29.330928,1013.970000 114.480570,29.330998,1016.480000 114.480505,29.331074,1019.000000 114.480449,29.331152,1020.720000 114.480448,29.331246,1021.960000 114.480465,29.331342,1022.470000 114.480497,29.331437,1022.500000 114.480508,29.331535,1024.520000 114.480492,29.331635,1024.990000 114.480447,29.331725,1025.100000 114.480346,29.331780,1024.320000 114.480327,29.331878,1023.630000 114.480336,29.331983,1022.390000 114.480345,29.332076,1020.870000 114.480370,29.332166,1019.890000 114.480383,29.332264,1019.560000 114.480406,29.332365,1018.490000 114.480366,29.332462,1018.100000 114.480294,29.332539,1017.840000 114.480299,29.332619,1017.320000 114.480327,29.332710,1016.290000 114.480336,29.332818,1015.490000 114.480284,29.332900,1014.320000 114.480241,29.332987,1013.510000 114.480335,29.333042,1012.690000 114.480421,29.333104,1012.390000 114.480529,29.333131,1011.990000 114.480581,29.333206,1011.990000 114.480610,29.333299,1012.060000 114.480643,29.333389,1011.540000 114.480655,29.333491,1011.240000 114.480634,29.333587,1011.960000 114.480613,29.333688,1012.750000 114.480589,29.333781,1013.620000 114.480621,29.333866,1013.950000 114.480688,29.333941,1014.790000 114.480778,29.334007,1015.610000 114.480845,29.334086,1016.630000 114.480894,29.334176,1017.180000 114.480920,29.334270,1017.360000 114.480901,29.334362,1017.600000 114.480858,29.334457,1017.690000 114.480789,29.334533,1017.760000 114.480683,29.334575,1017.740000 114.480578,29.334616,1017.340000 114.480612,29.334726,1018.240000 114.480638,29.334831,1019.220000 114.480664,29.334929,1019.950000 114.480630,29.335018,1021.130000 114.480565,29.335108,1022.330000 114.480515,29.335203,1023.190000 114.480566,29.335280,1023.260000 114.480662,29.335350,1022.860000 114.480745,29.335424,1022.840000 114.480823,29.335495,1021.990000 114.480906,29.335554,1020.490000 114.480952,29.335645,1019.400000 114.480910,29.335726,1018.230000 114.480812,29.335773,1016.800000 114.480782,29.335859,1014.740000 114.480764,29.335962,1011.940000 114.480769,29.336061,1009.640000 114.480775,29.336163,1006.020000 114.480794,29.336263,1002.850000 114.480824,29.336371,1000.920000 114.480823,29.336485,999.780000 114.480795,29.336593,998.800000 114.480694,29.336645,997.610000 114.480585,29.336624,995.770000 114.480464,29.336633,992.360000 114.480392,29.336724,988.160000 114.480358,29.336817,983.930000 114.480313,29.336901,981.500000 114.480243,29.336974,980.470000 114.480140,29.337024,980.780000 114.480212,29.337069,982.890000 114.480311,29.337124,983.260000 114.480421,29.337148,984.150000 114.480509,29.337197,987.320000 114.480555,29.337289,989.320000 114.480569,29.337390,989.960000 114.480544,29.337489,990.080000 114.480531,29.337587,990.310000 114.480583,29.337670,990.740000 114.480681,29.337725,990.680000 114.480784,29.337772,990.710000 114.480842,29.337849,990.360000 114.480858,29.337940,989.500000 114.480899,29.338034,989.630000 114.480913,29.338135,989.410000 114.480885,29.338232,989.130000 114.480812,29.338308,989.510000 114.480732,29.338379,988.990000 114.480659,29.338450,989.230000 114.480570,29.338502,990.260000 114.480531,29.338582,990.340000 114.480601,29.338680,989.980000 114.480675,29.338767,989.830000 114.480767,29.338839,989.970000 114.480863,29.338912,990.580000 114.480958,29.338987,991.130000 114.481034,29.339064,991.970000 114.481017,29.339145,992.550000 114.480943,29.339220,991.790000 114.480857,29.339300,990.060000 114.480809,29.339399,988.730000 114.480781,29.339497,988.270000 114.480829,29.339582,989.730000 114.480847,29.339675,990.630000 114.480813,29.339765,991.230000 114.480761,29.339855,991.480000 114.480648,29.339887,990.960000 114.480523,29.339868,989.530000 114.480407,29.339874,987.900000 114.480344,29.339944,985.970000 114.480276,29.340016,985.120000 114.480194,29.340092,983.850000 114.480169,29.340185,983.450000 114.480186,29.340282,983.510000 114.480225,29.340380,983.440000 114.480181,29.340469,984.110000 114.480123,29.340550,985.080000 114.480164,29.340616,985.000000 114.480245,29.340690,983.970000 114.480321,29.340766,983.690000 114.480403,29.340837,984.880000 114.480491,29.340896,985.730000 114.480578,29.340973,986.420000 114.480660,29.341044,986.440000 114.480726,29.341123,986.740000 114.480770,29.341224,986.870000 114.480801,29.341332,986.800000 114.480827,29.341432,986.750000 114.480817,29.341525,986.450000 114.480903,29.341582,987.040000 114.481027,29.341585,987.750000 114.480916,29.341595,987.450000 114.480981,29.341545,987.580000 114.481095,29.341516,986.920000 114.481214,29.341473,987.610000 114.481338,29.341442,988.030000 114.481452,29.341442,989.000000 114.481572,29.341416,988.550000 114.481692,29.341404,986.860000 114.481815,29.341431,985.320000 114.481921,29.341486,983.710000 114.482013,29.341547,982.250000 114.482079,29.341641,982.030000 114.482119,29.341735,981.930000 114.482133,29.341835,981.080000 114.482172,29.341931,980.120000 114.482206,29.342027,979.290000 114.482252,29.342115,978.750000 114.482321,29.342190,977.400000 114.482396,29.342258,976.650000 114.482457,29.342343,974.970000 114.482488,29.342453,974.510000 114.482472,29.342555,973.130000 114.482411,29.342645,972.300000 114.482360,29.342745,970.620000 114.482324,29.342845,968.700000 114.482312,29.342945,967.030000 114.482335,29.343038,965.300000 114.482408,29.343110,963.920000 114.482456,29.343197,964.760000 114.482531,29.343262,966.060000 114.482608,29.343328,967.680000 114.482652,29.343409,968.740000 114.482678,29.343514,969.130000 114.482716,29.343616,970.580000 114.482752,29.343714,971.830000 114.482813,29.343798,969.950000 114.482874,29.343876,969.620000 114.482927,29.343960,970.260000 114.482969,29.344058,970.810000 114.483015,29.344163,972.220000 114.483096,29.344232,973.090000 114.483160,29.344308,971.930000 114.483195,29.344393,971.040000 114.483220,29.344483,970.000000 114.483176,29.344596,969.020000 114.483172,29.344702,970.140000 114.483175,29.344824,970.810000 114.483145,29.344920,971.550000 114.483117,29.345010,971.270000 114.483086,29.345101,970.950000 114.483080,29.345223,970.220000 114.483070,29.345326,967.470000 114.482987,29.345344,963.960000 114.482933,29.345405,962.120000 114.482967,29.345475,960.730000 114.483039,29.345551,958.660000 114.483100,29.345640,957.160000 114.483094,29.345731,954.590000 114.483045,29.345828,951.490000 114.483000,29.345936,947.600000 114.482962,29.346056,944.690000 114.482935,29.346157,940.080000 114.482926,29.346249,934.180000 114.482909,29.346340,929.700000 114.482919,29.346434,925.430000 114.482939,29.346530,922.180000 114.482976,29.346621,919.480000 114.483005,29.346721,916.900000 114.483033,29.346814,914.060000 114.483055,29.346907,910.150000 114.483025,29.346994,907.090000 114.482953,29.347060,903.610000 114.482864,29.347116,900.270000 114.482820,29.347200,896.790000 114.482779,29.347287,894.190000 114.482700,29.347351,891.800000 114.482625,29.347418,890.160000 114.482592,29.347522,888.640000 114.482537,29.347610,886.870000 114.482465,29.347681,885.650000 114.482370,29.347744,882.950000 114.482272,29.347795,877.550000 114.482183,29.347857,872.940000 114.482221,29.347955,864.620000 114.482183,29.347863,860.430000 114.482307,29.347855,859.340000 114.482254,29.347940,856.660000 114.482272,29.348028,855.450000 114.482328,29.348122,852.030000 114.482446,29.348163,849.640000 114.482543,29.348214,847.540000 114.482633,29.348274,845.500000 114.482741,29.348286,843.390000 114.482851,29.348276,838.790000 114.482957,29.348321,834.910000 114.482949,29.348405,831.850000 114.482883,29.348490,828.740000 114.482871,29.348582,825.870000 114.482907,29.348667,821.220000 114.482950,29.348762,817.140000 114.482954,29.348854,813.930000 114.482984,29.348943,811.390000 114.482992,29.349037,809.190000 114.482964,29.349124,807.430000 114.482978,29.349224,805.860000 114.482978,29.349328,803.500000 114.482942,29.349418,800.070000 114.482851,29.349470,797.920000 114.482737,29.349477,795.950000 114.482615,29.349491,793.210000 114.482503,29.349515,791.070000 114.482410,29.349563,788.800000 114.482309,29.349554,786.000000 114.482211,29.349582,781.960000 114.482128,29.349651,779.420000 114.482085,29.349749,777.170000 114.482033,29.349840,774.210000 114.481962,29.349917,771.780000 114.481905,29.349996,768.390000 114.481838,29.350068,765.230000 114.481834,29.350158,759.430000 114.481854,29.350258,755.390000 114.481851,29.350356,751.660000 114.481796,29.350429,748.330000 114.481719,29.350504,745.010000 114.481620,29.350563,741.360000 114.481725,29.350551,738.450000 114.481601,29.350574,734.240000 114.481488,29.350621,724.770000 114.481405,29.350570,717.790000 114.481325,29.350503,713.370000 114.481230,29.350453,710.510000 114.481171,29.350371,707.650000 114.481103,29.350296,705.530000 114.481008,29.350268,704.080000 114.480887,29.350270,703.290000 114.480772,29.350286,702.650000 114.480654,29.350282,702.240000 114.480531,29.350295,701.600000 114.480416,29.350309,700.730000 114.480305,29.350285,699.670000 114.480193,29.350259,698.560000 114.480089,29.350213,697.970000 114.479984,29.350179,696.970000 114.479881,29.350141,696.050000 114.479783,29.350100,695.530000 114.479682,29.350052,694.920000 114.479583,29.350013,694.480000 114.479479,29.349984,693.700000 114.479368,29.349931,692.930000 114.479275,29.349870,692.550000 114.479183,29.349805,691.990000 114.479093,29.349754,692.070000 114.479005,29.349674,692.060000 114.478915,29.349615,692.060000 114.478823,29.349565,691.560000 114.478733,29.349510,690.750000 114.478656,29.349445,690.150000 114.478575,29.349388,689.770000 114.478481,29.349334,688.930000 114.478422,29.349247,687.950000 114.478348,29.349168,687.850000 114.478309,29.349079,686.410000 114.478288,29.348987,684.250000 114.478265,29.348894,683.000000 114.478289,29.348797,681.950000 114.478304,29.348700,682.000000 114.478280,29.348599,682.210000 114.478240,29.348510,681.950000 114.478201,29.348417,681.800000 114.478106,29.348385,681.430000 114.478002,29.348411,680.010000 114.477915,29.348479,677.670000 114.477910,29.348573,675.910000 114.477926,29.348681,674.800000 114.477904,29.348786,672.020000 114.477840,29.348864,670.040000 114.477749,29.348932,668.020000 114.477860,29.348968,665.950000 114.477944,29.349022,662.770000 114.477987,29.349108,660.220000 114.477955,29.349205,658.460000 114.477978,29.349297,657.310000 114.478011,29.349387,655.170000 114.478035,29.349478,653.950000 114.478042,29.349572,651.990000 114.478048,29.349666,649.730000 114.478060,29.349760,646.840000 114.478109,29.349840,643.940000 114.478138,29.349927,642.500000 114.478175,29.350015,641.170000 114.478217,29.350103,638.570000 114.478227,29.350199,635.830000 114.478230,29.350295,633.930000 114.478200,29.350384,631.120000 114.478159,29.350475,629.290000 114.478164,29.350566,627.510000 114.478211,29.350651,625.540000 114.478219,29.350742,622.780000 114.478192,29.350832,620.300000 114.478180,29.350933,618.130000 114.478183,29.351031,615.760000 114.478204,29.351123,611.850000 114.478221,29.351219,609.460000 114.478222,29.351318,608.500000 114.478267,29.351399,608.170000 114.478303,29.351487,606.870000 114.478325,29.351587,606.320000 114.478371,29.351672,604.860000 114.478336,29.351752,603.040000 114.478324,29.351849,603.600000 114.478303,29.351941,603.150000 114.478229,29.352003,602.190000 114.478120,29.352034,601.470000 114.478018,29.352085,601.850000 114.477937,29.352148,600.700000 114.477879,29.352226,600.510000 114.477860,29.352326,599.710000 114.477823,29.352415,599.450000 114.477827,29.352507,599.340000 114.477780,29.352589,597.640000 114.477775,29.352681,595.300000 114.477756,29.352778,593.730000 114.477733,29.352880,593.150000 114.477688,29.352965,592.390000 114.477668,29.353059,591.650000 114.477611,29.353147,590.640000 114.477572,29.353240,589.390000 114.477519,29.353324,588.640000 114.477490,29.353412,584.150000 114.477519,29.353501,576.970000 114.477564,29.353589,572.860000 114.477608,29.353676,568.760000 114.477626,29.353766,566.280000 114.477646,29.353869,564.530000 114.477664,29.353969,563.440000 114.477655,29.354068,562.200000 114.477662,29.354166,560.570000 114.477595,29.354247,558.620000 114.477510,29.354318,555.050000 114.477406,29.354352,551.840000 114.477296,29.354374,549.340000 114.477193,29.354419,546.820000 114.477089,29.354468,545.460000 114.476989,29.354510,544.490000 114.476910,29.354579,542.790000 114.476833,29.354647,540.540000 114.476730,29.354696,539.150000 114.476673,29.354772,538.070000 114.476699,29.354863,537.770000 114.476746,29.354956,538.370000 114.476785,29.355052,537.690000 114.476840,29.355144,539.890000 114.476840,29.355144,539.890000 </coordinates>
+				</LineString>
+			</Placemark>
+		</Folder>
+	</Document>
+</kml>
