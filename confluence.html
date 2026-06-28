@@ -69,7 +69,9 @@
     .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
     .btn.primary:hover { color: #fff; background: #245fd0; }
     .btn.danger { color: var(--danger); }
-    .btn.icon { width: 38px; padding: 0; font-size: 16px; }
+    .btn.icon { width: 38px; padding: 0; font-size: 16px; display: inline-flex; align-items: center; justify-content: center; }
+    .btn svg { width: 18px; height: 18px; flex: 0 0 auto; pointer-events: none; }
+    .btn.icon svg { width: 16px; height: 16px; }
     .app { display: grid; grid-template-columns: var(--tree-width) minmax(0, 1fr); min-height: calc(100vh - var(--header-height)); }
     .tree-pane {
       border-right: 1px solid var(--line);
@@ -107,7 +109,8 @@
     .main {
       min-width: 0;
       padding: clamp(20px, 4vw, 42px);
-      overflow: auto;
+      overflow-y: auto;
+      max-height: calc(100vh - var(--header-height));
     }
     .workspace { max-width: 1180px; margin: 0 auto; display: grid; gap: 14px; }
     .title-row { display: grid; gap: 8px; }
@@ -130,7 +133,7 @@
     .dirty .dirty-dot { display: block; }
     .editor-shell {
       border: 1px solid var(--line);
-      border-radius: 18px;
+      border-radius: 0 0 18px 18px;
       background: rgba(255,255,255,.88);
       box-shadow: var(--shadow);
       overflow: hidden;
@@ -162,13 +165,18 @@
       gap: 6px;
       flex-wrap: wrap;
       padding: 10px 12px;
-      border-bottom: 1px solid var(--line);
+      border: 1px solid var(--line);
+      border-radius: 16px 16px 0 0;
       background: rgba(255,255,255,.92);
+      backdrop-filter: blur(12px);
       position: sticky;
       top: var(--header-height);
-      z-index: 3;
+      z-index: 5;
+      box-shadow: 0 4px 20px rgba(31,41,55,.06);
     }
     .toolbar .btn { min-height: 34px; border-radius: 10px; padding: 6px 10px; box-shadow: none; }
+    .toolbar .btn.icon { width: 36px; padding: 0; }
+    .toolbar .btn.icon svg { width: 17px; height: 17px; }
     .toolbar .sep { width: 1px; height: 24px; background: var(--line); margin: 0 3px; }
     .editor-wrap { background: #f4f7fb; padding: clamp(14px, 3vw, 30px); }
     .editor {
@@ -191,6 +199,76 @@
     .editor h3 { font-size: 20px; }
     .editor blockquote { border-left: 4px solid var(--accent); margin-left: 0; padding: 8px 14px; background: var(--accent-soft); color: #344054; }
     .editor img { max-width: 100%; height: auto; }
+    .editor a { color: #2f6fed; text-decoration: underline; text-underline-offset: 2px; }
+    .editor a:hover { color: #1d4ed8; }
+
+    .status-spacer { flex: 1 1 auto; }
+    #editorCount { white-space: nowrap; color: #98a2b3; }
+    .toolbar.ribbon { align-items: stretch; gap: 8px; }
+    .tool-group { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; padding: 2px 0; }
+    .tool-label { align-self: center; color: var(--muted); font-size: 11px; font-weight: 750; letter-spacing: .06em; }
+    .toolbar select {
+      height: 34px;
+      max-width: 180px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: #344054;
+      padding: 0 8px;
+      outline: none;
+      box-shadow: none;
+    }
+    .toolbar select:focus { border-color: rgba(47,111,237,.45); box-shadow: 0 0 0 3px rgba(47,111,237,.10); }
+    .toolbar .btn.active { color: var(--accent); background: var(--accent-soft); border-color: rgba(47,111,237,.32); }
+    .color-btn {
+      width: 38px;
+      min-height: 34px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: #344054;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .color-btn svg { width: 16px; height: 16px; }
+    .color-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .source-editor {
+      display: none;
+      width: min(100%, 900px);
+      min-height: 68vh;
+      margin: 0 auto;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #0f172a;
+      color: #e5e7eb;
+      outline: none;
+      font: 13px/1.65 Consolas, "Courier New", monospace;
+      resize: vertical;
+      box-shadow: 0 18px 45px rgba(31,41,55,.10);
+    }
+    .source-mode .editor { display: none; }
+    .source-mode .source-editor { display: block; }
+    .editor table { width: 100%; border-collapse: collapse; margin: 16px 0; }
+    .editor th, .editor td { border: 1px solid #d0d5dd; padding: 8px 10px; vertical-align: top; min-width: 48px; }
+    .editor th { background: #f2f4f7; font-weight: 750; }
+    .editor tr:nth-child(even) td { background: #fbfcfe; }
+    .editor hr { border: 0; border-top: 1px solid #d0d5dd; margin: 24px 0; }
+    .editor pre { background: #111827; color: #f9fafb; padding: 14px 16px; border-radius: 10px; overflow: auto; line-height: 1.55; }
+    .editor code { font-family: Consolas, "Courier New", monospace; }
+    .editor .callout { border: 1px solid rgba(47,111,237,.24); border-left: 5px solid var(--accent); border-radius: 12px; background: #f5f8ff; padding: 12px 14px; margin: 14px 0; }
+    .editor .task-line { display: flex; align-items: flex-start; gap: 8px; margin: 6px 0; }
+    .editor .task-box { flex: 0 0 auto; width: 18px; height: 18px; margin-top: 4px; border: 1px solid #98a2b3; border-radius: 5px; display: inline-grid; place-items: center; color: var(--accent); font-size: 13px; line-height: 1; }
+    .editor .task-line.done .task-box::before { content: "✓"; }
+    .editor .task-line.done .task-text { color: #98a2b3; text-decoration: line-through; }
+    .editor .find-hit { background: #ffe066; color: inherit; padding: 0 1px; }
+    .editor .find-hit.current { outline: 2px solid #f79009; }
+
     .support-note {
       border: 1px solid rgba(247,144,9,.25);
       background: rgba(255,250,235,.88);
@@ -224,6 +302,245 @@
     .auth-box h2 { margin: 0; font-size: 22px; }
     .auth-box p { margin: 0; }
     .auth-box .btn { width: 100%; min-height: 44px; }
+    /* Conflict resolution modal */
+    .conflict-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      background: rgba(15,23,42,.65);
+      backdrop-filter: blur(8px);
+    }
+    .conflict-overlay.show { display: flex; }
+    .conflict-box {
+      width: min(1300px, calc(100vw - 36px));
+      max-height: calc(100vh - 72px);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fff;
+      box-shadow: 0 24px 64px rgba(15,23,42,.24);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      overflow: hidden;
+    }
+    .conflict-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--line);
+      background: #fffbeb;
+    }
+    .conflict-head h3 { margin: 0; font-size: 17px; color: #92400e; display: flex; align-items: center; gap: 8px; }
+    .conflict-head .badge { font-size: 12px; font-weight: 650; color: #b45309; background: #fef3c7; border: 1px solid #fcd34d; border-radius: 6px; padding: 2px 8px; }
+    .conflict-head .btn-close {
+      width: 32px; height: 32px;
+      display: inline-flex; align-items: center; justify-content: center;
+      border: 1px solid var(--line); border-radius: 8px;
+      background: #fff; color: var(--muted); cursor: pointer; font-size: 18px;
+    }
+    .conflict-title-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid #fed7aa;
+      background: #fff7ed;
+    }
+    .conflict-title-cell {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      font-size: 13px;
+    }
+    .conflict-title-cell:first-child {
+      border-right: 1px solid #fed7aa;
+    }
+    .conflict-title-label {
+      font-weight: 700;
+      color: #92400e;
+      flex-shrink: 0;
+    }
+    .conflict-title-input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid #fed7aa;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #b45309;
+      background: #fff;
+      outline: none;
+    }
+    .conflict-title-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(47,111,237,.12);
+    }
+    .conflict-pane-actions {
+      padding: 10px 14px;
+      border-top: 1px solid var(--line);
+      background: var(--panel-soft);
+      display: flex;
+      justify-content: center;
+    }
+    .conflict-pane-actions .btn {
+      min-height: 34px;
+      padding: 6px 14px;
+      font-size: 13px;
+      font-weight: 650;
+    }
+    .conflict-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .conflict-pane {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      overflow: hidden;
+      min-height: 0;
+    }
+    .conflict-pane:first-child { border-right: 1px solid var(--line); }
+    .conflict-pane-head {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      background: var(--panel-soft);
+    }
+    .conflict-pane-head .label { font-size: 13px; font-weight: 700; color: #344054; }
+    .conflict-pane-head .tag {
+      font-size: 11px; font-weight: 650;
+      border-radius: 6px; padding: 3px 8px;
+    }
+    .tag-older { background: #fee2e2; color: #991b1b; }
+    .tag-newer { background: #dcfce7; color: #166534; }
+    .conflict-editor-wrap {
+      overflow: auto;
+      height: 360px;
+      background: #f4f7fb;
+      padding: 12px;
+    }
+    .conflict-editor {
+      min-height: 100%;
+      padding: clamp(14px, 3vw, 28px);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #fff;
+      color: #111827;
+      outline: none;
+      line-height: 1.75;
+      font-size: 14px;
+      font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif;
+      box-shadow: 0 4px 12px rgba(31,41,55,.06);
+    }
+    .conflict-editor:focus { box-shadow: 0 0 0 3px rgba(47,111,237,.12); border-color: rgba(47,111,237,.4); }
+    .conflict-editor:empty::before { content: "（空）"; color: #98a2b3; }
+    .conflict-editor h1, .conflict-editor h2, .conflict-editor h3 { margin-top: 0; line-height: 1.25; }
+    .conflict-editor h1 { font-size: 28px; }
+    .conflict-editor h2 { font-size: 22px; }
+    .conflict-editor h3 { font-size: 18px; }
+    .conflict-editor p { margin: 0 0 8px; }
+    .conflict-editor blockquote { border-left: 4px solid var(--accent); margin-left: 0; padding: 6px 12px; background: var(--accent-soft); color: #344054; }
+    .conflict-editor img { max-width: 100%; height: auto; }
+    .conflict-editor table { width: 100%; border-collapse: collapse; margin: 8px 0; }
+    .conflict-editor th, .conflict-editor td { border: 1px solid #d0d5dd; padding: 6px 8px; }
+    .conflict-editor th { background: #f2f4f7; }
+    .conflict-source-editor {
+      display: none;
+      width: 100%;
+      height: 100%;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: #0f172a;
+      color: #e5e7eb;
+      outline: none;
+      font: 13px/1.65 Consolas, "Courier New", monospace;
+      resize: none;
+      box-shadow: 0 4px 12px rgba(31,41,55,.06);
+    }
+    .conflict-pane.source-view .conflict-editor { display: none; }
+    .conflict-pane.source-view .conflict-source-editor { display: block; }
+    .conflict-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 14px 20px;
+      border-top: 1px solid var(--line);
+      background: var(--panel-soft);
+    }
+    .conflict-diff-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 10px;
+      background: var(--panel-soft);
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      min-width: 56px;
+    }
+    .diff-nav-btn {
+      width: 32px; height: 32px;
+      padding: 0;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #344054;
+      cursor: pointer;
+    }
+    .diff-nav-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .diff-nav-btn:disabled { opacity: .35; cursor: default; }
+    .diff-nav-btn:disabled:hover { border-color: var(--line); color: #344054; background: #fff; }
+    .diff-nav-btn svg { width: 16px; height: 16px; }
+    .diff-nav-counter {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 48px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: .02em;
+      white-space: nowrap;
+    }
+    /* Diff highlight markers inside conflict editors */
+    .conflict-editor mark.conflict-diff-mark {
+      background: #fde68a;
+      color: inherit;
+      border-radius: 3px;
+      padding: 1px 2px;
+    }
+    .conflict-editor mark.conflict-diff-mark.current {
+      background: #f59e0b;
+      color: #fff;
+      outline: 2px solid #d97706;
+      outline-offset: 1px;
+    }
+    .conflict-actions .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
+    .conflict-actions .btn { min-height: 38px; padding: 8px 16px; font-size: 13px; font-weight: 650; }
+    .conflict-actions .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .conflict-actions .btn.primary:hover { background: #245fd0; }
+    .conflict-actions .btn.outline { background: #fff; border: 1px solid var(--line); color: #344054; }
+    .conflict-actions .btn.outline:hover { border-color: var(--accent); color: var(--accent); }
+    .conflict-actions .toggle-label { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+    .conflict-actions .toggle-label input { cursor: pointer; }
+    @media (max-width: 900px) {
+      .conflict-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr 1fr; }
+      .conflict-pane:first-child { border-right: 0; border-bottom: 1px solid var(--line); }
+      .conflict-diff-col { flex-direction: row; padding: 8px 10px; border-left: 0; border-right: 0; border-bottom: 1px solid var(--line); min-width: auto; }
+    }
+
     @media (max-width: 900px) {
       :root { --header-height: 64px; --tree-width: 100%; }
       .topbar { align-items: flex-start; flex-direction: column; }
@@ -231,8 +548,12 @@
       .app { grid-template-columns: 1fr; }
       .tree-pane { border-right: 0; border-bottom: 1px solid var(--line); }
       .page-meta { grid-template-columns: 1fr; }
-      .toolbar { top: 0; }
-      .editor { min-height: 58vh; }
+      .main { max-height: none; position: static; }
+      .toolbar { top: 0; position: static; }
+      .editor, .source-editor { min-height: 58vh; }
+      .toolbar.ribbon { max-height: none; }
+      .tool-group { width: 100%; }
+      .toolbar select { max-width: 100%; flex: 1 1 120px; }
     }
   </style>
 </head>
@@ -246,8 +567,9 @@
       </span>
     </a>
     <div class="top-actions">
-      <button class="btn primary" id="saveBtn" type="button">保存页面</button>
-      <a class="btn" id="homeBtn" href="index.html">返回主页</a>
+      <button class="btn primary" id="saveBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg> 保存页面</button>
+      <a class="btn" id="homeBtn" href="index.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> 返回主页</a>
+      <a class="btn" href="https://swordll80.github.io/confluence.html" target="_blank" title="跳转到线上版本"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg> 线上版</a>
     </div>
   </header>
 
@@ -258,10 +580,10 @@
         <small id="rootState">confluence/</small>
       </div>
       <div class="tree-actions">
-        <button class="btn" id="addChildBtn" type="button">添加子节点</button>
-        <button class="btn" id="addRootBtn" type="button">添加根节点</button>
-        <button class="btn" id="renameBtn" type="button">重命名</button>
-        <button class="btn danger" id="deleteBtn" type="button">删除节点</button>
+        <button class="btn" id="addChildBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 子节点</button>
+        <button class="btn" id="addRootBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> 根节点</button>
+        <button class="btn" id="renameBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 重命名</button>
+        <button class="btn danger" id="deleteBtn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg> 删除</button>
       </div>
       <div class="tree" id="tree"></div>
     </aside>
@@ -275,7 +597,103 @@
         </div>
 
         <div class="support-note" id="supportNote"></div>
-        <div class="status" id="status"><span class="dirty-dot"></span><span id="statusText">等待选择或创建页面。</span></div>
+        <div class="status" id="status"><span class="dirty-dot"></span><span id="statusText">等待选择或创建页面。</span><span class="status-spacer"></span><span id="editorCount">0 字 / 0 词</span></div>
+
+        <div class="toolbar ribbon" aria-label="编辑工具栏">
+          <div class="tool-group">
+            <span class="tool-label">样式</span>
+            <select id="formatSelect" title="段落样式">
+              <option value="p">正文</option>
+              <option value="h1">标题 1</option>
+              <option value="h2">标题 2</option>
+              <option value="h3">标题 3</option>
+              <option value="blockquote">引用</option>
+              <option value="pre">代码块</option>
+            </select>
+            <select id="fontFamilySelect" title="字体">
+              <option value='"Microsoft YaHei", Arial, sans-serif'>微软雅黑</option>
+              <option value='SimSun, serif'>宋体</option>
+              <option value='KaiTi, serif'>楷体</option>
+              <option value='Arial, sans-serif'>Arial</option>
+              <option value='Georgia, serif'>Georgia</option>
+              <option value='Consolas, "Courier New", monospace'>Consolas</option>
+            </select>
+            <select id="fontSizeSelect" title="字号">
+              <option value="12px">12</option>
+              <option value="14px">14</option>
+              <option value="16px" selected>16</option>
+              <option value="18px">18</option>
+              <option value="22px">22</option>
+              <option value="26px">26</option>
+              <option value="32px">32</option>
+              <option value="40px">40</option>
+            </select>
+          </div>
+          <span class="sep"></span>
+          <div class="tool-group">
+            <span class="tool-label">文字</span>
+            <button class="btn icon" type="button" data-cmd="bold" title="加粗 Ctrl+B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 4h8a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/><path d="M6 12h9a4 4 0 0 1 4 4 4 4 0 0 1-4 4H6z"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="italic" title="斜体 Ctrl+I"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="4" x2="10" y2="4"/><line x1="14" y1="20" x2="5" y2="20"/><line x1="15" y1="4" x2="9" y2="20"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="underline" title="下划线 Ctrl+U"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3v7a6 6 0 0 0 6 6 6 6 0 0 0 6-6V3"/><line x1="4" y1="21" x2="20" y2="21" stroke="var(--danger)"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="strikeThrough" title="删除线"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 5 L7 19 M7 5 C7 5 18 5 18 12 C18 19 7 19 7 19"/><line x1="5" y1="12" x2="19" y2="12" stroke="var(--danger)" stroke-width="2.5"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="subscript" title="下标"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="5" x2="14" y2="19"/><line x1="14" y1="5" x2="4" y2="19"/><line x1="17" y1="18" x2="22" y2="18" stroke="var(--danger)" stroke-width="2.5"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="superscript" title="上标"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="4" y1="5" x2="14" y2="19"/><line x1="14" y1="5" x2="4" y2="19"/><line x1="17" y1="6" x2="22" y2="6" stroke="var(--danger)" stroke-width="2.5"/></svg></button>
+            <label class="color-btn" title="文字颜色"><svg viewBox="0 0 24 24" fill="none" stroke="var(--danger)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="12,3 4,21"/><polyline points="12,3 20,21"/><line x1="7" y1="14" x2="17" y2="14"/></svg><input id="foreColorInput" type="color" value="#111827"></label>
+            <label class="color-btn" title="高亮颜色"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9" stroke="var(--danger)" stroke-width="2.5"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg><input id="backColorInput" type="color" value="#fff3bf"></label>
+            <button class="btn icon" type="button" id="clearFormatBtn" title="清除格式"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="3" x2="12" y2="21"/><polyline points="5,18 12,12 19,18"/></svg></button>
+          </div>
+          <span class="sep"></span>
+          <div class="tool-group">
+            <span class="tool-label">段落</span>
+            <button class="btn icon" type="button" data-cmd="justifyLeft" title="左对齐"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="17" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="17" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="justifyCenter" title="居中"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="10" x2="6" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="18" y1="14" x2="6" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="justifyRight" title="右对齐"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="7" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="7" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="justifyFull" title="两端对齐"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="10" x2="3" y2="10"/><line x1="21" y1="6" x2="3" y2="6"/><line x1="21" y1="14" x2="3" y2="14"/><line x1="21" y1="18" x2="3" y2="18"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="insertUnorderedList" title="项目符号列表"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><circle cx="4" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="12" r="1.5" fill="currentColor" stroke="none"/><circle cx="4" cy="18" r="1.5" fill="currentColor" stroke="none"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="insertOrderedList" title="编号列表"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 4h1v4H4"/><path d="M4 14h1v4H4"/><path d="M4 10h1v4H4"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="outdent" title="减少缩进"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="3" x2="3" y2="21"/><path d="M8 6l-5 6 5 6"/><line x1="21" y1="6" x2="11" y2="6"/><line x1="21" y1="10" x2="11" y2="10"/><line x1="21" y1="14" x2="11" y2="14"/><line x1="21" y1="18" x2="11" y2="18"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="indent" title="增加缩进"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="21" y1="3" x2="21" y2="21"/><path d="M16 6l5 6-5 6"/><line x1="3" y1="6" x2="13" y2="6"/><line x1="3" y1="10" x2="13" y2="10"/><line x1="3" y1="14" x2="13" y2="14"/><line x1="3" y1="18" x2="13" y2="18"/></svg></button>
+            <select id="lineHeightSelect" title="行距">
+              <option value="1.2">1.2</option>
+              <option value="1.5">1.5</option>
+              <option value="1.75" selected>1.75</option>
+              <option value="2">2.0</option>
+            </select>
+          </div>
+          <span class="sep"></span>
+          <div class="tool-group">
+            <span class="tool-label">插入</span>
+            <button class="btn icon" type="button" id="linkBtn" title="插入/编辑链接"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></button>
+            <button class="btn icon" type="button" id="unlinkBtn" title="取消链接"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18.36 5.64a5 5 0 0 0-7.07 0L9.57 7.36"/><path d="M5.64 18.36a5 5 0 0 0 7.07 0l1.72-1.72"/><line x1="2" y1="2" x2="22" y2="22"/></svg></button>
+            <button class="btn icon" type="button" id="imageBtn" title="网络图片"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/><circle cx="12" cy="12" r="10" opacity="0.35" stroke-width="1"/><line x1="2" y1="12" x2="22" y2="12" opacity="0.35"/></svg></button>
+            <button class="btn icon" type="button" id="imageFileBtn" title="本地图片"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/><polyline points="21 15 16 10 5 21"/></svg></button>
+            <button class="btn icon" type="button" id="hrBtn" title="分隔线"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="2" y1="12" x2="22" y2="12"/></svg></button>
+            <button class="btn icon" type="button" id="calloutBtn" title="提示框"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8,4 4,4 4,20 8,20" stroke="var(--accent)"/><rect x="8" y="4" width="14" height="16" rx="1"/></svg></button>
+            <button class="btn icon" type="button" id="taskBtn" title="待办事项"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="16" height="16" rx="2"/><polyline points="7,12 10,15 17,8" stroke="var(--danger)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <input id="imageFileInput" type="file" accept="image/*" hidden>
+          </div>
+          <span class="sep"></span>
+          <div class="tool-group">
+            <span class="tool-label">表格</span>
+            <button class="btn icon" type="button" id="tableBtn" title="插入表格"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg></button>
+            <button class="btn icon" type="button" data-table="rowBefore" title="上方插入行"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="16 9 12 5 8 9"/><rect x="3" y="12" width="18" height="9" rx="1"/></svg></button>
+            <button class="btn icon" type="button" data-table="rowAfter" title="下方插入行"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="16 15 12 19 8 15"/><rect x="3" y="3" width="18" height="9" rx="1"/></svg></button>
+            <button class="btn icon" type="button" data-table="colBefore" title="左侧插入列"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="9 8 5 12 9 16"/><rect x="12" y="3" width="9" height="18" rx="1"/></svg></button>
+            <button class="btn icon" type="button" data-table="colAfter" title="右侧插入列"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="15 8 19 12 15 16"/><rect x="3" y="3" width="9" height="18" rx="1"/></svg></button>
+            <button class="btn icon danger" type="button" data-table="deleteRow" title="删除行"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="4" y1="12" x2="20" y2="12" stroke="var(--danger)" stroke-width="2.5"/></svg></button>
+            <button class="btn icon danger" type="button" data-table="deleteCol" title="删除列"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="12" y1="4" x2="12" y2="20" stroke="var(--danger)" stroke-width="2.5"/></svg></button>
+            <button class="btn icon danger" type="button" data-table="deleteTable" title="删除表格"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/><line x1="5" y1="5" x2="19" y2="19" stroke="var(--danger)" stroke-width="2.5"/></svg></button>
+          </div>
+          <span class="sep"></span>
+          <div class="tool-group">
+            <span class="tool-label">编辑</span>
+            <button class="btn icon" type="button" data-cmd="undo" title="撤销 Ctrl+Z"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></button>
+            <button class="btn icon" type="button" data-cmd="redo" title="重做 Ctrl+Y"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></button>
+            <button class="btn icon" type="button" id="findBtn" title="查找 Ctrl+F"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
+            <button class="btn icon" type="button" id="replaceBtn" title="替换"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/></svg></button>
+            <button class="btn icon" type="button" id="sourceBtn" title="查看/编辑源码"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></button>
+          </div>
+        </div>
 
         <section class="editor-shell">
           <div class="page-meta">
@@ -289,31 +707,80 @@
             </div>
           </div>
 
-          <div class="toolbar" aria-label="编辑工具栏">
-            <button class="btn icon" type="button" data-cmd="bold" title="加粗"><strong>B</strong></button>
-            <button class="btn icon" type="button" data-cmd="italic" title="斜体"><em>I</em></button>
-            <button class="btn icon" type="button" data-cmd="underline" title="下划线"><u>U</u></button>
-            <span class="sep"></span>
-            <button class="btn" type="button" data-block="h1">标题 1</button>
-            <button class="btn" type="button" data-block="h2">标题 2</button>
-            <button class="btn" type="button" data-block="p">正文</button>
-            <button class="btn" type="button" data-block="blockquote">引用</button>
-            <span class="sep"></span>
-            <button class="btn icon" type="button" data-cmd="insertUnorderedList" title="项目符号">•</button>
-            <button class="btn icon" type="button" data-cmd="insertOrderedList" title="编号列表">1.</button>
-            <button class="btn" type="button" id="linkBtn">链接</button>
-            <button class="btn" type="button" id="imageBtn">图片</button>
-            <span class="sep"></span>
-            <button class="btn" type="button" data-cmd="undo">撤销</button>
-            <button class="btn" type="button" data-cmd="redo">重做</button>
-          </div>
-
           <div class="editor-wrap">
-            <article class="editor" id="editor" contenteditable="true"></article>
+            <article class="editor" id="editor" contenteditable="true" spellcheck="true"></article>
+            <textarea class="source-editor" id="sourceEditor" spellcheck="false" aria-label="HTML 源码编辑器"></textarea>
           </div>
         </section>
       </div>
     </main>
+  </div>
+
+  <!-- Conflict Resolution Modal -->
+  <div class="conflict-overlay" id="conflictOverlay" role="dialog" aria-modal="true" aria-labelledby="conflictTitle">
+    <div class="conflict-box">
+      <div class="conflict-head">
+        <h3 id="conflictTitle">⚠ 同步冲突</h3>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="badge" id="conflictFile">—</span>
+          <button class="btn-close" id="conflictCloseBtn" type="button" title="关闭">✕</button>
+        </div>
+      </div>
+      <!-- Title row: always visible, left=disk title, right=editing title, both editable -->
+      <div class="conflict-title-row" id="conflictTitleRow">
+        <div class="conflict-title-cell">
+          <span class="conflict-title-label">☁️ 磁盘标题</span>
+          <input class="conflict-title-input" id="conflictDiskTitleVal" value="—" />
+        </div>
+        <div class="conflict-title-cell">
+          <span class="conflict-title-label">� 编辑标题</span>
+          <input class="conflict-title-input" id="conflictMyTitleVal" value="—" />
+        </div>
+      </div>
+      <div class="conflict-body">
+        <div class="conflict-pane" id="conflictLeftPane">
+          <div class="conflict-pane-head" id="conflictLeftHead">
+            <span class="label">☁️ 文件系统中的版本</span>
+            <span class="tag tag-newer" id="conflictLeftTag">磁盘文件</span>
+          </div>
+          <div class="conflict-editor-wrap">
+            <div class="conflict-editor" id="conflictLeftEditor" contenteditable="true" spellcheck="true"></div>
+            <textarea class="conflict-source-editor" id="conflictLeftSourceEditor" spellcheck="false" placeholder="（空）"></textarea>
+          </div>
+          <div class="conflict-pane-actions">
+            <button class="btn outline" id="conflictUseLeftBtn" type="button">◀ 使用磁盘版本</button>
+          </div>
+        </div>
+        <div class="conflict-diff-col" id="conflictDiffCol" style="display:none;">
+          <button class="btn icon diff-nav-btn" id="conflictDiffPrev" type="button" title="上一处差异">
+            <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span class="diff-nav-counter" id="conflictDiffCounter">0/0</span>
+          <button class="btn icon diff-nav-btn" id="conflictDiffNext" type="button" title="下一处差异">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <div class="conflict-pane" id="conflictRightPane">
+          <div class="conflict-pane-head" id="conflictRightHead">
+            <span class="label">� 当前编辑中的版本</span>
+            <span class="tag tag-older" id="conflictRightTag">本地编辑</span>
+          </div>
+          <div class="conflict-editor-wrap">
+            <div class="conflict-editor" id="conflictRightEditor" contenteditable="true" spellcheck="true"></div>
+            <textarea class="conflict-source-editor" id="conflictRightSourceEditor" spellcheck="false" placeholder="（空）"></textarea>
+          </div>
+          <div class="conflict-pane-actions">
+            <button class="btn outline" id="conflictUseRightBtn" type="button">使用编辑版本 ▶</button>
+          </div>
+        </div>
+      </div>
+      <div class="conflict-actions">
+        <label class="toggle-label">
+          <input type="checkbox" id="conflictShowHtml">
+          显示 HTML 源码
+        </label>
+      </div>
+    </div>
   </div>
 
   <div class="auth-gate" id="authGate" role="dialog" aria-modal="true" aria-labelledby="authTitle">
@@ -343,9 +810,17 @@
       var loadedHtml = '';
       var loadedUsesConfluenceContent = false;
       var loadedFileLastModified = 0;
+      var loadedTreeLastModified = 0;
+      var sourceMode = false;
+      var savedRange = null;
+      var findHits = [];
+      var findHitIndex = -1;
 
       var treeEl = document.getElementById('tree');
       var editor = document.getElementById('editor');
+      var sourceEditor = document.getElementById('sourceEditor');
+      var editorWrap = document.querySelector('.editor-wrap');
+      var editorCount = document.getElementById('editorCount');
       var pageTitle = document.getElementById('pageTitle');
       var pageFile = document.getElementById('pageFile');
       var statusBox = document.getElementById('status');
@@ -480,6 +955,15 @@
         return found;
       }
 
+      function findNodeById(nodes, id) {
+        for (var i = 0; i < (nodes || []).length; i++) {
+          if (nodes[i].id === id) return nodes[i];
+          var child = findNodeById(nodes[i].children || [], id);
+          if (child) return child;
+        }
+        return null;
+      }
+
       function pathToNode(id) {
         var path = [];
         function visit(nodes) {
@@ -567,8 +1051,10 @@
       }
 
       function setEditorHtml(html) {
-        editor.innerHTML = html || '';
+        editor.innerHTML = sanitizeHtml(html || '');
+        if (sourceEditor) sourceEditor.value = prettyHtml(editor.innerHTML);
         setDirty(false);
+        updateEditorCount();
       }
 
       function extractEditableHtml(fullHtml) {
@@ -628,6 +1114,401 @@
         });
       }
 
+
+      function escapeAttr(text) {
+        return escapeHtml(text).replace(/'/g, '&#39;');
+      }
+
+      function sanitizeUrl(url) {
+        url = String(url || '').trim();
+        if (!url) return '';
+        if (/^(javascript|vbscript|data:text\/html)/i.test(url)) return '';
+        return url;
+      }
+
+      function cleanStyle(styleText) {
+        var out = [];
+        String(styleText || '').split(';').forEach(function (part) {
+          var bits = part.split(':');
+          if (bits.length < 2) return;
+          var key = bits.shift().trim().toLowerCase();
+          var val = bits.join(':').trim();
+          if (!key || !val || /^mso-/i.test(key) || /expression\s*\(/i.test(val)) return;
+          if ([
+            'color', 'background-color', 'font-size', 'font-family', 'font-weight', 'font-style',
+            'text-decoration', 'text-align', 'line-height', 'width', 'height', 'max-width',
+            'border', 'border-collapse', 'padding', 'margin', 'vertical-align'
+          ].indexOf(key) >= 0) out.push(key + ': ' + val);
+        });
+        return out.join('; ');
+      }
+
+      function sanitizeHtml(html) {
+        var box = document.createElement('div');
+        box.innerHTML = String(html || '');
+        var banned = box.querySelectorAll('script, style, iframe, object, embed, link, meta, base, form, input, button, textarea, select');
+        Array.prototype.forEach.call(banned, function (el) { el.remove(); });
+        var nodes = box.querySelectorAll('*');
+        Array.prototype.forEach.call(nodes, function (el) {
+          Array.prototype.slice.call(el.attributes).forEach(function (attr) {
+            var name = attr.name.toLowerCase();
+            var value = attr.value;
+            if (name.indexOf('on') === 0 || name === 'id') {
+              el.removeAttribute(attr.name);
+              return;
+            }
+            if (name === 'class') {
+              var allowedClasses = String(value || '').split(/\s+/).filter(function (cls) {
+                return ['callout', 'task-line', 'task-box', 'task-text', 'done'].indexOf(cls) >= 0;
+              });
+              if (allowedClasses.length) el.setAttribute('class', allowedClasses.join(' '));
+              else el.removeAttribute(attr.name);
+              return;
+            }
+            if ((name === 'href' || name === 'src') && !sanitizeUrl(value)) {
+              el.removeAttribute(attr.name);
+              return;
+            }
+            if (name === 'style') {
+              var clean = cleanStyle(value);
+              if (clean) el.setAttribute('style', clean);
+              else el.removeAttribute('style');
+              return;
+            }
+            if (['href', 'src', 'alt', 'title', 'target', 'rel', 'colspan', 'rowspan', 'style'].indexOf(name) < 0) {
+              el.removeAttribute(attr.name);
+            }
+          });
+          if (el.tagName === 'A') {
+            el.setAttribute('rel', 'noopener noreferrer');
+            if (el.getAttribute('href') && /^https?:\/\//i.test(el.getAttribute('href'))) el.setAttribute('target', '_blank');
+          }
+        });
+        return box.innerHTML;
+      }
+
+      function prettyHtml(html) {
+        return String(html || '')
+          .replace(/></g, '>\n<')
+          .replace(/\n{3,}/g, '\n\n')
+          .trim();
+      }
+
+      function getCurrentBodyHtml() {
+        if (sourceMode) applySourceToEditor(false);
+        var clone = document.createElement('div');
+        clone.innerHTML = editor.innerHTML;
+        Array.prototype.forEach.call(clone.querySelectorAll('mark.find-hit'), function (mark) {
+          mark.replaceWith(document.createTextNode(mark.textContent));
+        });
+        return sanitizeHtml(clone.innerHTML);
+      }
+
+      function updateEditorCount() {
+        if (!editorCount) return;
+        var text = sourceMode ? sourceEditor.value : editor.innerText || '';
+        var zh = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+        var words = (text.replace(/[\u4e00-\u9fff]/g, ' ').match(/[A-Za-z0-9_]+/g) || []).length;
+        var chars = text.replace(/\s/g, '').length;
+        editorCount.textContent = chars + ' 字符 / ' + (zh + words) + ' 词';
+      }
+
+      function saveSelection() {
+        var sel = window.getSelection && window.getSelection();
+        if (!sel || !sel.rangeCount) return;
+        var range = sel.getRangeAt(0);
+        if (editor.contains(range.commonAncestorContainer)) savedRange = range.cloneRange();
+      }
+
+      function restoreSelection() {
+        if (!savedRange) return false;
+        var sel = window.getSelection && window.getSelection();
+        if (!sel) return false;
+        sel.removeAllRanges();
+        sel.addRange(savedRange);
+        return true;
+      }
+
+      function insertHtmlAtCaret(html) {
+        if (sourceMode) applySourceToEditor(false);
+        editor.focus();
+        restoreSelection();
+        try {
+          document.execCommand('insertHTML', false, html);
+        } catch (e) {
+          var range = window.getSelection().getRangeAt(0);
+          var temp = document.createElement('div');
+          temp.innerHTML = html;
+          var frag = document.createDocumentFragment();
+          while (temp.firstChild) frag.appendChild(temp.firstChild);
+          range.deleteContents();
+          range.insertNode(frag);
+        }
+        setDirty(true);
+        updateEditorCount();
+      }
+
+      function closestElement(node, selector) {
+        var el = node && (node.nodeType === 1 ? node : node.parentElement);
+        while (el && el !== editor) {
+          if (el.matches && el.matches(selector)) return el;
+          el = el.parentElement;
+        }
+        return null;
+      }
+
+      function selectedElement(selector) {
+        var sel = window.getSelection && window.getSelection();
+        if (!sel || !sel.rangeCount) return null;
+        return closestElement(sel.getRangeAt(0).commonAncestorContainer, selector);
+      }
+
+      function selectedBlocks() {
+        var sel = window.getSelection && window.getSelection();
+        if (!sel || !sel.rangeCount) return [];
+        var range = sel.getRangeAt(0);
+        var selector = 'p,h1,h2,h3,h4,h5,h6,li,blockquote,pre,div';
+        var rootBlock = closestElement(range.commonAncestorContainer, selector);
+        var blocks = [];
+        if (range.collapsed && rootBlock) return [rootBlock];
+        Array.prototype.forEach.call(editor.querySelectorAll(selector), function (el) {
+          try {
+            if (range.intersectsNode(el)) blocks.push(el);
+          } catch (e) {}
+        });
+        return blocks.length ? blocks : (rootBlock ? [rootBlock] : []);
+      }
+
+      function applyBlockStyle(prop, value) {
+        if (sourceMode) return;
+        restoreSelection();
+        selectedBlocks().forEach(function (el) { el.style[prop] = value; });
+        setDirty(true);
+      }
+
+      function replaceFontTags(prop, value) {
+        Array.prototype.forEach.call(editor.querySelectorAll('font'), function (font) {
+          var span = document.createElement('span');
+          span.innerHTML = font.innerHTML;
+          if (prop === 'fontSize') span.style.fontSize = value;
+          if (prop === 'fontFamily') span.style.fontFamily = value;
+          if (font.getAttribute('color')) span.style.color = font.getAttribute('color');
+          font.parentNode.replaceChild(span, font);
+        });
+      }
+
+      function setFormatBlock(value) {
+        if (value === 'pre') {
+          var text = (window.getSelection && window.getSelection().toString()) || 'code';
+          insertHtmlAtCaret('<pre><code>' + escapeHtml(text) + '</code></pre><p></p>');
+        } else {
+          runCommand('formatBlock', value);
+        }
+      }
+
+      function applyFontSize(value) {
+        runCommand('fontSize', '7');
+        replaceFontTags('fontSize', value);
+        setDirty(true);
+      }
+
+      function applyFontFamily(value) {
+        runCommand('fontName', value);
+        replaceFontTags('fontFamily', value);
+        setDirty(true);
+      }
+
+      function toggleSourceMode() {
+        var sourceBtn = document.getElementById('sourceBtn');
+        if (!sourceMode) {
+          clearFindHighlights();
+          sourceEditor.value = prettyHtml(editor.innerHTML);
+          sourceMode = true;
+          editorWrap.classList.add('source-mode');
+          sourceBtn.classList.add('active');
+          sourceEditor.focus();
+        } else {
+          applySourceToEditor(true);
+          sourceMode = false;
+          editorWrap.classList.remove('source-mode');
+          sourceBtn.classList.remove('active');
+          editor.focus();
+        }
+        updateEditorCount();
+      }
+
+      function applySourceToEditor(markDirty) {
+        if (!sourceEditor) return;
+        editor.innerHTML = sanitizeHtml(sourceEditor.value);
+        if (markDirty) setDirty(true);
+        updateEditorCount();
+      }
+
+      function clearFindHighlights() {
+        findHits = [];
+        findHitIndex = -1;
+        Array.prototype.forEach.call(editor.querySelectorAll('mark.find-hit'), function (mark) {
+          mark.replaceWith(document.createTextNode(mark.textContent));
+        });
+        editor.normalize();
+      }
+
+      function markFindText(term) {
+        clearFindHighlights();
+        term = String(term || '');
+        if (!term) return 0;
+        var walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT, {
+          acceptNode: function (node) {
+            if (!node.nodeValue || node.nodeValue.indexOf(term) < 0) return NodeFilter.FILTER_REJECT;
+            if (closestElement(node, 'script,style,mark')) return NodeFilter.FILTER_REJECT;
+            return NodeFilter.FILTER_ACCEPT;
+          }
+        });
+        var textNodes = [];
+        while (walker.nextNode()) textNodes.push(walker.currentNode);
+        textNodes.forEach(function (node) {
+          var parts = node.nodeValue.split(term);
+          var frag = document.createDocumentFragment();
+          parts.forEach(function (part, i) {
+            if (part) frag.appendChild(document.createTextNode(part));
+            if (i < parts.length - 1) {
+              var mark = document.createElement('mark');
+              mark.className = 'find-hit';
+              mark.textContent = term;
+              frag.appendChild(mark);
+            }
+          });
+          node.parentNode.replaceChild(frag, node);
+        });
+        findHits = Array.prototype.slice.call(editor.querySelectorAll('mark.find-hit'));
+        if (findHits.length) {
+          findHitIndex = 0;
+          findHits[0].classList.add('current');
+          findHits[0].scrollIntoView({ block: 'center', behavior: 'smooth' });
+        }
+        return findHits.length;
+      }
+
+      function replaceText(findText, replaceText) {
+        if (!findText) return 0;
+        clearFindHighlights();
+        var count = 0;
+        var walker = document.createTreeWalker(editor, NodeFilter.SHOW_TEXT, null);
+        var nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(function (node) {
+          if (node.nodeValue.indexOf(findText) >= 0) {
+            count += node.nodeValue.split(findText).length - 1;
+            node.nodeValue = node.nodeValue.split(findText).join(replaceText);
+          }
+        });
+        if (count) setDirty(true);
+        updateEditorCount();
+        return count;
+      }
+
+      function buildTable(rows, cols) {
+        rows = Math.max(1, Math.min(30, parseInt(rows, 10) || 3));
+        cols = Math.max(1, Math.min(12, parseInt(cols, 10) || 3));
+        var html = '<table><tbody>';
+        for (var r = 0; r < rows; r++) {
+          html += '<tr>';
+          for (var c = 0; c < cols; c++) {
+            html += (r === 0 ? '<th>标题</th>' : '<td><br></td>');
+          }
+          html += '</tr>';
+        }
+        html += '</tbody></table><p></p>';
+        return html;
+      }
+
+      function insertTableDialog() {
+        var rows = prompt('表格行数：', '3');
+        if (rows == null) return;
+        var cols = prompt('表格列数：', '3');
+        if (cols == null) return;
+        insertHtmlAtCaret(buildTable(rows, cols));
+      }
+
+      function activeCell() {
+        return selectedElement('td,th');
+      }
+
+      function replaceTableHtml(table, newHtml) {
+        // Replace table using execCommand so the undo stack captures it.
+        var range = document.createRange();
+        range.selectNode(table);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('insertHTML', false, newHtml);
+      }
+
+      function tableAction(action) {
+        editor.focus();
+        var cell = activeCell();
+        var table = closestElement(cell, 'table') || selectedElement('table');
+        if (!table && action !== 'deleteTable') table = editor.querySelector('table');
+        if (action === 'deleteTable') {
+          if (!table) { setStatus('未找到表格。'); return; }
+          replaceTableHtml(table, '<p></p>');
+          setDirty(true);
+          updateEditorCount();
+          return;
+        }
+        if (!cell) { setStatus('请先把光标放到表格单元格中。'); return; }
+        table = closestElement(cell, 'table');
+        var row = cell.parentElement;
+        var cellIndex = Array.prototype.indexOf.call(row.children, cell);
+        if (action === 'rowBefore' || action === 'rowAfter') {
+          var newRow = row.cloneNode(true);
+          Array.prototype.forEach.call(newRow.children, function (td) { td.innerHTML = '<br>'; });
+          if (action === 'rowBefore') row.parentNode.insertBefore(newRow, row);
+          else row.parentNode.insertBefore(newRow, row.nextSibling);
+        } else if (action === 'colBefore' || action === 'colAfter') {
+          Array.prototype.forEach.call(table.rows, function (tr) {
+            var ref = tr.children[cellIndex];
+            var newCell = ref.cloneNode(false);
+            newCell.innerHTML = '<br>';
+            if (action === 'colBefore') tr.insertBefore(newCell, ref);
+            else tr.insertBefore(newCell, ref ? ref.nextSibling : null);
+          });
+        } else if (action === 'deleteRow') {
+          if (table.rows.length <= 1) { replaceTableHtml(table, '<p></p>'); setDirty(true); updateEditorCount(); return; }
+          else row.remove();
+        } else if (action === 'deleteCol') {
+          if (table.rows[0] && table.rows[0].children.length <= 1) { replaceTableHtml(table, '<p></p>'); setDirty(true); updateEditorCount(); return; }
+          Array.prototype.forEach.call(table.rows, function (tr) {
+            if (tr.children[cellIndex]) tr.children[cellIndex].remove();
+          });
+        }
+        // After DOM mutation, re-select and replace so undo works
+        if (table && table.parentNode) {
+          replaceTableHtml(table, table.outerHTML);
+        }
+        setDirty(true);
+        updateEditorCount();
+      }
+
+      function insertLocalImage(file) {
+        if (!file) return;
+        if (!/^image\//i.test(file.type || '')) { setStatus('请选择图片文件。'); return; }
+        var reader = new FileReader();
+        reader.onload = function () {
+          insertHtmlAtCaret('<p><img src="' + reader.result + '" alt="' + escapeAttr(file.name || 'image') + '"></p>');
+        };
+        reader.onerror = function () { setStatus('读取图片失败。'); };
+        reader.readAsDataURL(file);
+      }
+
+      function toggleTaskLine(target) {
+        var task = closestElement(target, '.task-line');
+        if (task) {
+          task.classList.toggle('done');
+          setDirty(true);
+        }
+      }
+
       function pageTemplate(title, body) {
         return '<!doctype html>\n'
           + '<html lang="zh-CN">\n'
@@ -639,7 +1520,19 @@
           + '    body { margin: 0; padding: 42px 18px; background: #f6f8fb; color: #1f2937; font-family: "Segoe UI", "Microsoft YaHei", Arial, sans-serif; }\n'
           + '    main { max-width: 900px; margin: 0 auto; padding: clamp(24px, 5vw, 54px); border: 1px solid #e5eaf1; border-radius: 12px; background: #fff; box-shadow: 0 18px 45px rgba(31, 41, 55, .08); line-height: 1.75; }\n'
           + '    img { max-width: 100%; height: auto; }\n'
+          + '    h1, h2, h3 { line-height: 1.25; }\n'
           + '    blockquote { border-left: 4px solid #2f6fed; margin-left: 0; padding: 8px 14px; background: #eaf1ff; color: #344054; }\n'
+          + '    table { width: 100%; border-collapse: collapse; margin: 16px 0; }\n'
+          + '    th, td { border: 1px solid #d0d5dd; padding: 8px 10px; vertical-align: top; }\n'
+          + '    th { background: #f2f4f7; }\n'
+          + '    hr { border: 0; border-top: 1px solid #d0d5dd; margin: 24px 0; }\n'
+          + '    pre { background: #111827; color: #f9fafb; padding: 14px 16px; border-radius: 10px; overflow: auto; }\n'
+          + '    code { font-family: Consolas, "Courier New", monospace; }\n'
+          + '    .callout { border: 1px solid rgba(47,111,237,.24); border-left: 5px solid #2f6fed; border-radius: 12px; background: #f5f8ff; padding: 12px 14px; margin: 14px 0; }\n'
+          + '    .task-line { display: flex; gap: 8px; margin: 6px 0; }\n'
+          + '    .task-box { width: 18px; height: 18px; margin-top: 4px; border: 1px solid #98a2b3; border-radius: 5px; display: inline-grid; place-items: center; color: #2f6fed; font-size: 13px; }\n'
+          + '    .task-line.done .task-box::before { content: "✓"; }\n'
+          + '    .task-line.done .task-text { color: #98a2b3; text-decoration: line-through; }\n'
           + '  </style>\n'
           + '</head>\n'
           + '<body>\n'
@@ -679,43 +1572,478 @@
         return pageTemplate(title, body);
       }
 
+      // --- Conflict Resolution ---
+      // conflictState: { resolve, reject, file, title, myHtml, diskHtml, titleConflict, myTitle, diskTitle, resolvedTitle }
+      var conflictState = null;
+
+      function stripHtml(html) {
+        var div = document.createElement('div');
+        div.innerHTML = html;
+        return div.textContent || div.innerText || '';
+      }
+
+      function showConflictDialog(fileName, title, myHtml, diskHtml, diskTime, myTime, titleConflict, deleted) {
+        var overlay = document.getElementById('conflictOverlay');
+        var leftEditor = document.getElementById('conflictLeftEditor');
+        var rightEditor = document.getElementById('conflictRightEditor');
+        var leftSourceEditor = document.getElementById('conflictLeftSourceEditor');
+        var rightSourceEditor = document.getElementById('conflictRightSourceEditor');
+        var showHtmlCb = document.getElementById('conflictShowHtml');
+        var fileSpan = document.getElementById('conflictFile');
+        var leftTag = document.getElementById('conflictLeftTag');
+        var rightTag = document.getElementById('conflictRightTag');
+        var leftPane = document.getElementById('conflictLeftPane');
+        var rightPane = document.getElementById('conflictRightPane');
+        var leftHead = document.getElementById('conflictLeftHead');
+        var titleH3 = document.getElementById('conflictTitle');
+        var diskTitleVal = document.getElementById('conflictDiskTitleVal');
+        var myTitleVal = document.getElementById('conflictMyTitleVal');
+
+        // --- Build conflict type description ---
+        var titleConflictExists = !!(titleConflict && titleConflict.diskTitle !== titleConflict.myTitle);
+        // Compare body content: extract editable body from both full HTML docs
+        var diskBody = extractEditableHtml(diskHtml || '');
+        var myBody = extractEditableHtml(myHtml);
+        var bodyConflictExists = (diskBody !== myBody);
+        // Determine title text with colored HTML spans
+        var conflictDescHtml;
+        if (deleted) {
+          conflictDescHtml = '<span style="color:var(--danger)">磁盘文件已被删除</span>';
+        } else if (!titleConflictExists && !bodyConflictExists) {
+          conflictDescHtml = '<span style="color:var(--primary)">完全相同（无冲突）</span>';
+        } else {
+          var parts = [];
+          parts.push('<span style="color:' + (titleConflictExists ? 'var(--danger)' : 'var(--primary)') + '">' + (titleConflictExists ? '标题冲突' : '标题一致') + '</span>');
+          parts.push('<span style="color:' + (bodyConflictExists ? 'var(--danger)' : 'var(--primary)') + '">' + (bodyConflictExists ? '内容冲突' : '内容一致') + '</span>');
+          conflictDescHtml = parts.join('，');
+        }
+        titleH3.innerHTML = '⚠ 同步冲突 — ' + conflictDescHtml;
+
+        // Title row: left = disk title, right = editing title (both editable)
+        var diskTitle = (titleConflict && titleConflict.diskTitle) ? titleConflict.diskTitle : title;
+        var myTitleShow = (titleConflict && titleConflict.myTitle) ? titleConflict.myTitle : title;
+        diskTitleVal.value = diskTitle;
+        myTitleVal.value = myTitleShow;
+
+        // Left = disk version, Right = editing version
+        leftEditor.setAttribute('data-html', diskHtml || '');
+        rightEditor.setAttribute('data-html', myHtml);
+
+        if (deleted) {
+          leftEditor.innerHTML = '<p style="color:var(--danger);font-style:italic;padding:16px;">磁盘上的文件已被删除。</p>';
+          leftSourceEditor.value = '';
+        } else {
+          leftEditor.innerHTML = diskBody;
+          leftSourceEditor.value = prettyHtml(diskHtml);
+        }
+        rightEditor.innerHTML = myBody;
+        rightSourceEditor.value = prettyHtml(myHtml);
+
+        fileSpan.textContent = fileName;
+        showHtmlCb.checked = false;
+        leftPane.classList.remove('source-view');
+        rightPane.classList.remove('source-view');
+
+        overlay.classList.add('show');
+        rightEditor.focus();
+
+        // Tag display
+        if (deleted) {
+          leftTag.textContent = '已删除';
+          rightTag.textContent = '本地编辑';
+          leftHead.style.display = 'flex';
+        } else {
+          var isDiskNewer = diskTime > myTime;
+          leftTag.textContent = '磁盘 · ' + new Date(diskTime).toLocaleTimeString() + (isDiskNewer ? ' (新)' : ' (旧)');
+          rightTag.textContent = '本地 · ' + new Date(myTime).toLocaleTimeString() + (isDiskNewer ? ' (旧)' : ' (新)');
+        }
+
+        // Initialize diff comparison after editors are populated
+        setTimeout(initConflictDiff, 100);
+      }
+
+      function updateConflictView() {
+        var showHtml = document.getElementById('conflictShowHtml').checked;
+        var leftEditor = document.getElementById('conflictLeftEditor');
+        var rightEditor = document.getElementById('conflictRightEditor');
+        var leftSourceEditor = document.getElementById('conflictLeftSourceEditor');
+        var rightSourceEditor = document.getElementById('conflictRightSourceEditor');
+        var leftPane = document.getElementById('conflictLeftPane');
+        var rightPane = document.getElementById('conflictRightPane');
+
+        if (showHtml) {
+          // Switching TO source view: save current WYSIWYG HTML to source textareas
+          leftSourceEditor.value = prettyHtml(leftEditor.innerHTML);
+          rightSourceEditor.value = prettyHtml(rightEditor.innerHTML);
+        } else {
+          // Switching TO WYSIWYG view: apply source edits back to contenteditable
+          leftEditor.innerHTML = leftSourceEditor.value;
+          rightEditor.innerHTML = rightSourceEditor.value;
+        }
+        leftPane.classList.toggle('source-view', showHtml);
+        rightPane.classList.toggle('source-view', showHtml);
+      }
+
+      function closeConflictDialog() {
+        document.getElementById('conflictOverlay').classList.remove('show');
+        if (conflictState) {
+          var st = conflictState;
+          conflictState = null;
+          st.reject(new Error('Conflict dialog closed by user'));
+        }
+      }
+
+      // --- Diff comparison for conflict editors ---
+      var conflictDiffRanges = [];
+      var conflictDiffIndex = -1;
+
+      // Compute text diffs between two strings at word granularity.
+      // Returns array of { leftStart, leftEnd, rightStart, rightEnd, leftText, rightText } for differing segments.
+      // Positions are character offsets in the ORIGINAL strings, suitable for TreeWalker seek.
+      function computeTextDiffs(textA, textB) {
+        var result = [];
+        // Split original strings into word+whitespace tokens, preserving original positions
+        var tokensA = tokenizeWithPositions(textA);
+        var tokensB = tokenizeWithPositions(textB);
+
+        var i = 0, j = 0;
+        var lastMatchEndA = 0, lastMatchEndB = 0;
+
+        while (i < tokensA.length || j < tokensB.length) {
+          // Try to match current tokens (case-sensitive, exact word match)
+          if (i < tokensA.length && j < tokensB.length && tokensA[i].text === tokensB[j].text) {
+            // Match: advance both
+            lastMatchEndA = tokensA[i].end;
+            lastMatchEndB = tokensB[j].end;
+            i++; j++;
+          } else {
+            // We have a difference. Find how far until the next match.
+            // Look ahead up to 30 tokens for a resync point.
+            var bestSkipA = -1, bestSkipB = -1, bestScore = Infinity;
+            for (var lookA = 1; lookA <= 30 && (i + lookA) <= tokensA.length; lookA++) {
+              for (var lookB = 1; lookB <= 30 && (j + lookB) <= tokensB.length; lookB++) {
+                if (tokensA[i + lookA - 1].text === tokensB[j + lookB - 1].text) {
+                  var score = lookA + lookB; // prefer fewer skipped tokens
+                  if (score < bestScore) {
+                    bestScore = score;
+                    bestSkipA = lookA;
+                    bestSkipB = lookB;
+                  }
+                  break;
+                }
+              }
+            }
+
+            if (bestSkipA > 0 && bestSkipB > 0) {
+              // Found a resync point: the diff spans [lastMatchEnd, resyncStart)
+              var diffEndA = tokensA[i + bestSkipA - 1].start; // start of the matched token
+              var diffEndB = tokensB[j + bestSkipB - 1].start;
+              result.push({
+                leftStart: lastMatchEndA, leftEnd: diffEndA,
+                rightStart: lastMatchEndB, rightEnd: diffEndB,
+                leftText: textA.substring(lastMatchEndA, diffEndA),
+                rightText: textB.substring(lastMatchEndB, diffEndB)
+              });
+              // Advance to the matched token
+              i += bestSkipA;
+              j += bestSkipB;
+              lastMatchEndA = tokensA[i - 1].end;
+              lastMatchEndB = tokensB[j - 1].end;
+            } else {
+              // No resync found: everything remaining is different
+              var tailEndA = i < tokensA.length ? tokensA[tokensA.length - 1].end : lastMatchEndA;
+              var tailEndB = j < tokensB.length ? tokensB[tokensB.length - 1].end : lastMatchEndB;
+              if (tailEndA > lastMatchEndA || tailEndB > lastMatchEndB) {
+                result.push({
+                  leftStart: lastMatchEndA, leftEnd: tailEndA,
+                  rightStart: lastMatchEndB, rightEnd: tailEndB,
+                  leftText: textA.substring(lastMatchEndA, tailEndA),
+                  rightText: textB.substring(lastMatchEndB, tailEndB)
+                });
+              }
+              break;
+            }
+          }
+        }
+        return result;
+      }
+
+      // Tokenize a string into { text, start, end } chunks (words and whitespace separately)
+      function tokenizeWithPositions(str) {
+        var tokens = [];
+        var re = /(\S+|\s+)/g;
+        var m;
+        while ((m = re.exec(str))) {
+          tokens.push({ text: m[1], start: m.index, end: m.index + m[1].length });
+        }
+        return tokens;
+      }
+
+      // Find the text node at a given character offset within an element's textContent
+      function findTextNodeAtOffset(root, offset) {
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        var currentOffset = 0;
+        var node;
+        while ((node = walker.nextNode())) {
+          var len = node.textContent.length;
+          if (currentOffset + len > offset) {
+            return { node: node, offset: offset - currentOffset };
+          }
+          currentOffset += len;
+        }
+        // Fallback: return last text node
+        return { node: node, offset: node ? node.textContent.length : 0 };
+      }
+
+      // Clear all existing diff highlights in both editors
+      function clearDiffHighlights() {
+        var leftEditor = document.getElementById('conflictLeftEditor');
+        var rightEditor = document.getElementById('conflictRightEditor');
+        [leftEditor, rightEditor].forEach(function (editor) {
+          if (!editor) return;
+          var marks = editor.querySelectorAll('mark.conflict-diff-mark');
+          for (var m = 0; m < marks.length; m++) {
+            var parent = marks[m].parentNode;
+            while (marks[m].firstChild) {
+              parent.insertBefore(marks[m].firstChild, marks[m]);
+            }
+            parent.removeChild(marks[m]);
+            parent.normalize();
+          }
+        });
+      }
+
+      // Highlight the diff at given index in both editors, scroll into view
+      function highlightDiff(index) {
+        if (index < 0 || index >= conflictDiffRanges.length) return;
+
+        clearDiffHighlights();
+        var diff = conflictDiffRanges[index];
+        var leftEditor = document.getElementById('conflictLeftEditor');
+        var rightEditor = document.getElementById('conflictRightEditor');
+
+        // Highlight left side
+        if (leftEditor && diff.leftStart < diff.leftEnd) {
+          var leftInfo = findTextNodeAtOffset(leftEditor, diff.leftStart);
+          var leftEndInfo = findTextNodeAtOffset(leftEditor, diff.leftEnd);
+          if (leftInfo.node && leftEndInfo.node) {
+            try {
+              var leftRange = document.createRange();
+              leftRange.setStart(leftInfo.node, leftInfo.offset);
+              leftRange.setEnd(leftEndInfo.node, leftEndInfo.offset);
+              var leftMark = document.createElement('mark');
+              leftMark.className = 'conflict-diff-mark current';
+              leftRange.surroundContents(leftMark);
+              leftMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } catch (e) { /* ignore range errors */ }
+          }
+        }
+
+        // Highlight right side
+        if (rightEditor && diff.rightStart < diff.rightEnd) {
+          var rightInfo = findTextNodeAtOffset(rightEditor, diff.rightStart);
+          var rightEndInfo = findTextNodeAtOffset(rightEditor, diff.rightEnd);
+          if (rightInfo.node && rightEndInfo.node) {
+            try {
+              var rightRange = document.createRange();
+              rightRange.setStart(rightInfo.node, rightInfo.offset);
+              rightRange.setEnd(rightEndInfo.node, rightEndInfo.offset);
+              var rightMark = document.createElement('mark');
+              rightMark.className = 'conflict-diff-mark current';
+              rightRange.surroundContents(rightMark);
+              rightMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } catch (e) { /* ignore range errors */ }
+          }
+        }
+
+        // Update counter display
+        document.getElementById('conflictDiffCounter').textContent = (index + 1) + '/' + conflictDiffRanges.length;
+      }
+
+      // Initialize diff comparison for the current conflict
+      function initConflictDiff() {
+        conflictDiffRanges = [];
+        conflictDiffIndex = -1;
+        var leftEditor = document.getElementById('conflictLeftEditor');
+        var rightEditor = document.getElementById('conflictRightEditor');
+        var diffCol = document.getElementById('conflictDiffCol');
+        var conflictBody = document.querySelector('.conflict-body');
+        if (!leftEditor || !rightEditor || !diffCol) return;
+
+        var leftText = (leftEditor.textContent || '').trim();
+        var rightText = (rightEditor.textContent || '').trim();
+        if (!leftText && !rightText) { diffCol.style.display = 'none'; return; }
+        if (leftText === rightText) { diffCol.style.display = 'none'; return; }
+
+        conflictDiffRanges = computeTextDiffs(leftText, rightText);
+        if (conflictDiffRanges.length === 0) { diffCol.style.display = 'none'; return; }
+
+        // Switch to three-column layout for diff navigation
+        if (conflictBody) conflictBody.style.gridTemplateColumns = '1fr auto 1fr';
+        conflictDiffIndex = 0;
+        diffCol.style.display = 'flex';
+        document.getElementById('conflictDiffCounter').textContent = '1/' + conflictDiffRanges.length;
+        highlightDiff(0);
+      }
+
+      // Navigate to previous/next diff
+      function navigateDiff(delta) {
+        if (conflictDiffRanges.length === 0) return;
+        var newIndex = conflictDiffIndex + delta;
+        if (newIndex < 0) newIndex = conflictDiffRanges.length - 1;
+        if (newIndex >= conflictDiffRanges.length) newIndex = 0;
+        conflictDiffIndex = newIndex;
+        highlightDiff(newIndex);
+      }
+
+      // Returns a promise: resolves with { html, title } object, or rejects if user cancels
+      function resolveConflict(fileName, title, myHtml, diskHtml, diskTime, myTime, titleConflict, deleted) {
+        return new Promise(function (resolve, reject) {
+          conflictState = {
+            resolve: resolve, reject: reject,
+            file: fileName, title: title,
+            myHtml: myHtml, diskHtml: diskHtml,
+            titleConflict: titleConflict || null,
+            resolvedTitle: titleConflict ? titleConflict.myTitle : title,
+            deleted: deleted || false
+          };
+          showConflictDialog(fileName, title, myHtml, diskHtml, diskTime, myTime, titleConflict, deleted);
+        });
+      }
+
+      // Check for conflict and return { conflict: bool, diskText, diskTime, deleted: bool }
+      async function detectConflict(fileName) {
+        if (!confluenceHandle || !supportsDirectory || loadedFileLastModified <= 0) {
+          return { conflict: false, diskText: null, diskTime: 0, deleted: false };
+        }
+        try {
+          var result = await getFileText(fileName);
+          if (result && result.lastModified && result.lastModified > loadedFileLastModified) {
+            return { conflict: true, diskText: result.text, diskTime: result.lastModified, deleted: false };
+          }
+        } catch (e) {
+          // File may have been deleted externally
+          if (e && (e.name === 'NotFoundError' || String(e).indexOf('NotFound') >= 0 || String(e).indexOf('not found') >= 0)) {
+            return { conflict: true, diskText: null, diskTime: Date.now(), deleted: true };
+          }
+        }
+        return { conflict: false, diskText: null, diskTime: 0, deleted: false };
+      }
+
+      // Check for tree.json title conflict and return { conflict: bool, diskTitle, diskTime }
+      async function detectTreeConflict(nodeId) {
+        if (!confluenceHandle || !supportsDirectory || loadedTreeLastModified <= 0) {
+          return { conflict: false, diskTitle: null, diskTime: 0 };
+        }
+        try {
+          var result = await getFileText(TREE_FILE_NAME);
+          if (result && result.lastModified && result.lastModified > loadedTreeLastModified) {
+            var parsed = JSON.parse(result.text);
+            var diskNode = findNodeById(parsed, nodeId);
+            if (diskNode) {
+              return { conflict: true, diskTitle: diskNode.title || '', diskTime: result.lastModified };
+            }
+          }
+        } catch (e) {}
+        return { conflict: false, diskTitle: null, diskTime: 0 };
+      }
+
       async function saveCurrentPage(options) {
         options = options || {};
         var hit = current();
         if (!hit) return false;
-        hit.node.title = pageTitle.value.trim() || '未命名';
-        hit.node.file = normalizeFileName(pageFile.value || hit.node.title);
-        pageFile.value = hit.node.file;
-        await writeTreeFile();
-        renderTree();
-        var html = mergeIntoLoadedHtml(hit.node.title, editor.innerHTML);
+        var myTitle = pageTitle.value.trim() || '未命名';
+        var myFile = normalizeFileName(pageFile.value || myTitle);
+        pageFile.value = myFile;
+
+        // Build my HTML before any disk writes
+        var myHtml = mergeIntoLoadedHtml(myTitle, getCurrentBodyHtml());
         if (!confluenceHandle || !supportsDirectory) {
           if (!options.requireWritable) {
-            downloadFile(hit.node.file, html);
+            downloadFile(myFile, myHtml);
             setDirty(false);
           }
-          showAuthGate(options.requireWritable ? '需要授权 confluence/ 目录后才能自动保存。' : '尚未授权 confluence/ 目录，已下载：' + hit.node.file);
+          showAuthGate(options.requireWritable ? '需要授权 confluence/ 目录后才能自动保存。' : '尚未授权 confluence/ 目录，已下载：' + myFile);
           return false;
         }
         try {
           await saveMissingAncestorPages(hit.node.id);
 
-          // Sync check: only for auto-save (silent), skip for manual save (force)
-          if (!options.force && loadedFileLastModified > 0) {
-            var currentResult = await getFileText(hit.node.file);
-            if (currentResult && currentResult.lastModified && currentResult.lastModified > loadedFileLastModified) {
-              alert('⚠ 同步冲突：' + hit.node.file + ' 已被另一个 Confluence 实例修改。\n\n请刷新页面后重新编辑。');
-              return false;
-            }
+          // --- Step 1: Detect tree.json title conflict ---
+          var treeConflict = await detectTreeConflict(hit.node.id);
+          var titleConflict = null;
+          if (treeConflict.conflict && treeConflict.diskTitle !== myTitle) {
+            titleConflict = { myTitle: myTitle, diskTitle: treeConflict.diskTitle, diskTime: treeConflict.diskTime };
           }
 
-          var fileHandle = await confluenceHandle.getFileHandle(hit.node.file, { create: true });
+          // --- Step 2: Detect HTML file content conflict ---
+          var htmlConflict = await detectConflict(myFile);
+          var hasHtmlConflict = htmlConflict.conflict;
+
+          // --- Step 3: If any conflict exists, show resolution dialog ---
+          if (hasHtmlConflict || titleConflict) {
+            var diskHtml = htmlConflict.diskText || myHtml;
+            var diskTime = htmlConflict.diskTime || (titleConflict ? titleConflict.diskTime : Date.now());
+            try {
+              var result = await resolveConflict(myFile, myTitle, myHtml, diskHtml, diskTime, loadedFileLastModified, titleConflict, htmlConflict.deleted);
+              if (result != null) {
+                console.log('[CONFLICT] 保存路径收到结果: title=' + result.title + ' htmlLen=' + (result.html ? result.html.length : 0) + ' htmlEmpty=' + (!result.html));
+                // Resolve title conflict: update node title and write tree.json
+                var resolvedTitle = result.title || myTitle;
+                console.log('[CONFLICT] 保存路径写入tree: nodeId=' + hit.node.id + ' oldTitle=' + hit.node.title + ' newTitle=' + resolvedTitle);
+                hit.node.title = resolvedTitle;
+                hit.node.file = myFile;
+                await writeTreeFile();
+                console.log('[CONFLICT] 保存路径tree写入完成, 验证title=' + hit.node.title);
+                loadedTreeLastModified = Date.now();
+                renderTree();
+
+                // Merge the resolved title into the HTML
+                var extractedBody = extractEditableHtml(result.html);
+                console.log('[CONFLICT] 提取body长度=' + (extractedBody ? extractedBody.length : 0) + ' loadedUsesConfluenceContent=' + loadedUsesConfluenceContent);
+                var finalHtml = mergeIntoLoadedHtml(resolvedTitle, extractedBody);
+                console.log('[CONFLICT] 最终HTML长度=' + (finalHtml ? finalHtml.length : 0));
+
+                // Write the HTML file
+                var fileHandle = await confluenceHandle.getFileHandle(myFile, { create: true });
+                var writable = await fileHandle.createWritable();
+                await writable.write(finalHtml);
+                await writable.close();
+                loadedFileLastModified = Date.now();
+                // Reload editor from the saved result
+                loadedHtml = finalHtml;
+                setEditorHtml(extractEditableHtml(finalHtml));
+                pageTitle.value = resolvedTitle;
+                pageFile.value = myFile;
+                setDirty(false);
+                if (!options.silent) setStatus('已解决冲突并保存到 confluence/' + myFile);
+                return true;
+              }
+            } catch (err) {
+              if (err && err.message === 'Conflict dialog closed by user') {
+                setStatus('冲突解决已取消。');
+              } else {
+                setStatus('冲突解决失败：' + (err && err.message ? err.message : err));
+              }
+              return false;
+            }
+            return false;
+          }
+
+          // --- No conflict: write tree.json then HTML ---
+          hit.node.title = myTitle;
+          hit.node.file = myFile;
+          await writeTreeFile();
+          loadedTreeLastModified = Date.now();
+          renderTree();
+
+          var fileHandle = await confluenceHandle.getFileHandle(myFile, { create: true });
           var writable = await fileHandle.createWritable();
-          await writable.write(html);
+          await writable.write(myHtml);
           await writable.close();
           loadedFileLastModified = Date.now();
           setDirty(false);
-          if (!options.silent) setStatus('已保存到 confluence/' + hit.node.file);
+          if (!options.silent) setStatus('已保存到 confluence/' + myFile);
           return true;
         } catch (err) {
           setStatus('保存失败：' + (err && err.message ? err.message : err));
@@ -859,11 +2187,13 @@
               if (Array.isArray(parsed) && parsed.length) {
                 tree = parsed;
                 selectedId = selectedId || (tree[0] && tree[0].id);
+                loadedTreeLastModified = treeResult.lastModified || Date.now();
                 saveTree();
                 renderTree();
               }
             } else {
               await writeTreeFile();
+              loadedTreeLastModified = Date.now();
             }
           } catch (e) {}
           var hit = current();
@@ -874,13 +2204,111 @@
       }
 
       function runCommand(cmd, value) {
+        if (sourceMode && cmd !== 'undo' && cmd !== 'redo') return;
         editor.focus();
-        document.execCommand(cmd, false, value || null);
+        restoreSelection();
+        try {
+          if (cmd === 'formatBlock') document.execCommand(cmd, false, '<' + value + '>');
+          else document.execCommand(cmd, false, value || null);
+        } catch (e) {
+          setStatus('当前浏览器不支持此编辑命令：' + cmd);
+        }
         setDirty(true);
+        updateEditorCount();
+        setTimeout(updateToolbarState, 0);
+      }
+
+      function updateToolbarState() {
+        ['bold', 'italic', 'underline', 'strikeThrough', 'insertUnorderedList', 'insertOrderedList'].forEach(function (cmd) {
+          Array.prototype.forEach.call(document.querySelectorAll('[data-cmd="' + cmd + '"]'), function (btn) {
+            try { btn.classList.toggle('active', document.queryCommandState(cmd)); } catch (e) {}
+          });
+        });
       }
 
       function initEvents() {
         authGateBtn.addEventListener('click', chooseRoot);
+
+        // Conflict modal events
+        document.getElementById('conflictCloseBtn').addEventListener('click', closeConflictDialog);
+        document.getElementById('conflictShowHtml').addEventListener('change', updateConflictView);
+        document.getElementById('conflictDiffPrev').addEventListener('click', function () { navigateDiff(-1); });
+        document.getElementById('conflictDiffNext').addEventListener('click', function () { navigateDiff(1); });
+        // Helper: extract <title> text from a full HTML string
+        function extractTitleFromHtml(html) {
+          try {
+            var m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+            return m ? m[1].trim() : '';
+          } catch (e) { return ''; }
+        }
+
+        // Helper: merge an edited body (from contenteditable) back into a full HTML template.
+        // The template (fullHtml) provides <!doctype>, <html>, <head> structure.
+        // The editedBody is the new innerHTML for the body (or [data-confluence-content] element).
+        function mergeEditedBodyIntoHtml(fullHtml, editedBody) {
+          try {
+            var doc = new DOMParser().parseFromString(fullHtml, 'text/html');
+            var content = doc.querySelector('[data-confluence-content]');
+            if (content) {
+              content.innerHTML = editedBody;
+            } else if (doc.body) {
+              doc.body.innerHTML = editedBody;
+            }
+            return '<!doctype html>\n' + doc.documentElement.outerHTML + '\n';
+          } catch (e) {
+            // Fallback: return edited body as-is (caller will handle via extractEditableHtml)
+            return fullHtml;
+          }
+        }
+
+        // Left button: use disk version (user can edit disk title and left content)
+        document.getElementById('conflictUseLeftBtn').addEventListener('click', function () {
+          if (conflictState) {
+            // Read current editor content (user may have edited the left pane)
+            var leftEditor = document.getElementById('conflictLeftEditor');
+            var editedBody = leftEditor.innerHTML;
+            // Merge edited body into the disk HTML template
+            var html = mergeEditedBodyIntoHtml(conflictState.diskHtml, editedBody);
+            // Read title from the editable input (user may have modified it)
+            var diskTitle = document.getElementById('conflictDiskTitleVal').value.trim();
+            if (!diskTitle) diskTitle = conflictState.title;
+            console.log('[CONFLICT] 使用磁盘版本: title=' + diskTitle + ' htmlLen=' + (html ? html.length : 0) + ' titleConflict=' + !!conflictState.titleConflict);
+            conflictState.resolve({ html: html, title: diskTitle });
+            conflictState = null;
+            document.getElementById('conflictOverlay').classList.remove('show');
+          }
+        });
+        // Right button: use editing version (user can edit my title and right content)
+        document.getElementById('conflictUseRightBtn').addEventListener('click', function () {
+          if (conflictState) {
+            // Read current editor content (user may have edited the right pane)
+            var rightEditor = document.getElementById('conflictRightEditor');
+            var editedBody = rightEditor.innerHTML;
+            // Merge edited body into the editing HTML template
+            var html = mergeEditedBodyIntoHtml(conflictState.myHtml, editedBody);
+            // Read title from the editable input (user may have modified it)
+            var myTitle = document.getElementById('conflictMyTitleVal').value.trim();
+            if (!myTitle) myTitle = conflictState.title;
+            console.log('[CONFLICT] 使用编辑版本: title=' + myTitle + ' htmlLen=' + (html ? html.length : 0) + ' titleConflict=' + !!conflictState.titleConflict);
+            conflictState.resolve({ html: html, title: myTitle });
+            conflictState = null;
+            document.getElementById('conflictOverlay').classList.remove('show');
+          }
+        });
+
+
+        // Allow keyboard shortcut: Ctrl+S inside conflict dialog saves custom
+        document.getElementById('conflictOverlay').addEventListener('keydown', function (e) {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+            e.preventDefault();
+            document.getElementById('conflictUseRightBtn').click();
+          }
+          if (e.key === 'Escape') {
+            e.preventDefault();
+            closeConflictDialog();
+          }
+        });
+
         document.getElementById('saveBtn').addEventListener('click', function () {
           saveCurrentPage({ force: true });
         });
@@ -905,23 +2333,197 @@
             runCommand(button.getAttribute('data-cmd'));
           });
         });
-        Array.prototype.forEach.call(document.querySelectorAll('[data-block]'), function (button) {
-          button.addEventListener('click', function () {
-            runCommand('formatBlock', button.getAttribute('data-block'));
-          });
-        });
-        document.getElementById('linkBtn').addEventListener('click', function () {
-          var url = prompt('链接地址：', 'https://');
-          if (url) runCommand('createLink', url);
-        });
-        document.getElementById('imageBtn').addEventListener('click', function () {
-          var url = prompt('图片地址或相对路径：', '');
-          if (url) runCommand('insertImage', url);
-        });
 
-        editor.addEventListener('input', function () { setDirty(true); });
+        document.getElementById('formatSelect').addEventListener('change', function () { setFormatBlock(this.value); });
+        document.getElementById('fontFamilySelect').addEventListener('change', function () { applyFontFamily(this.value); });
+        document.getElementById('fontSizeSelect').addEventListener('change', function () { applyFontSize(this.value); });
+        document.getElementById('lineHeightSelect').addEventListener('change', function () { applyBlockStyle('lineHeight', this.value); });
+        document.getElementById('foreColorInput').addEventListener('input', function () { runCommand('foreColor', this.value); });
+        document.getElementById('backColorInput').addEventListener('input', function () { runCommand('hiliteColor', this.value); });
+        document.getElementById('clearFormatBtn').addEventListener('click', function () { runCommand('removeFormat'); });
+
+        document.getElementById('linkBtn').addEventListener('click', function () {
+          var existing = selectedElement('a');
+          if (existing) {
+            // 修改已有链接
+            var newUrl = prompt('修改链接地址：', existing.getAttribute('href') || 'https://');
+            newUrl = sanitizeUrl(newUrl);
+            if (newUrl) {
+              existing.setAttribute('href', newUrl);
+              if (/^https?:\/\//i.test(newUrl)) existing.setAttribute('target', '_blank');
+              else existing.removeAttribute('target');
+              existing.setAttribute('rel', 'noopener noreferrer');
+              setDirty(true);
+              updateEditorCount();
+            }
+          } else {
+            // 创建新链接
+            var sel = window.getSelection && window.getSelection();
+            var hasSelection = sel && !sel.isCollapsed;
+            if (!hasSelection) {
+              var text = prompt('链接文本：', '');
+              if (!text) return;
+              insertHtmlAtCaret(text);
+            }
+            var url = prompt('链接地址：', 'https://');
+            url = sanitizeUrl(url);
+            if (url) runCommand('createLink', url);
+          }
+        });
+        document.getElementById('unlinkBtn').addEventListener('click', function () { runCommand('unlink'); });
+        document.getElementById('imageBtn').addEventListener('click', function () {
+          var url = sanitizeUrl(prompt('图片地址或相对路径：', ''));
+          if (url) insertHtmlAtCaret('<p><img src="' + escapeAttr(url) + '" alt=""></p>');
+        });
+        document.getElementById('imageFileBtn').addEventListener('click', function () { document.getElementById('imageFileInput').click(); });
+        document.getElementById('imageFileInput').addEventListener('change', function () {
+          insertLocalImage(this.files && this.files[0]);
+          this.value = '';
+        });
+        document.getElementById('hrBtn').addEventListener('click', function () { insertHtmlAtCaret('<hr><p></p>'); });
+        document.getElementById('calloutBtn').addEventListener('click', function () {
+          insertHtmlAtCaret('<div class="callout"><strong>提示</strong><p>在这里输入提示内容。</p></div><p></p>');
+        });
+        document.getElementById('taskBtn').addEventListener('click', function () {
+          insertHtmlAtCaret('<div class="task-line"><span class="task-box"></span><span class="task-text">待办事项</span></div>');
+        });
+        document.getElementById('tableBtn').addEventListener('click', insertTableDialog);
+        Array.prototype.forEach.call(document.querySelectorAll('[data-table]'), function (button) {
+          button.addEventListener('click', function () { tableAction(button.getAttribute('data-table')); });
+        });
+        document.getElementById('findBtn').addEventListener('click', function () {
+          var term = prompt('查找内容：', '');
+          if (term == null) return;
+          var count = markFindText(term);
+          setStatus(count ? ('找到 ' + count + ' 处：' + term) : ('未找到：' + term));
+        });
+        document.getElementById('replaceBtn').addEventListener('click', function () {
+          var from = prompt('查找内容：', '');
+          if (!from) return;
+          var to = prompt('替换为：', '');
+          if (to == null) return;
+          var count = replaceText(from, to);
+          setStatus('已替换 ' + count + ' 处。');
+        });
+        document.getElementById('sourceBtn').addEventListener('click', toggleSourceMode);
+
+        editor.addEventListener('input', function () { setDirty(true); updateEditorCount(); });
+        editor.addEventListener('mouseup', function () { saveSelection(); updateToolbarState(); });
+        editor.addEventListener('keyup', function () { saveSelection(); updateToolbarState(); updateEditorCount(); });
+        editor.addEventListener('focus', saveSelection);
+        editor.addEventListener('click', function (event) { toggleTaskLine(event.target); });
+        editor.addEventListener('paste', function (event) {
+          event.preventDefault();
+          var data = event.clipboardData || window.clipboardData;
+          var html = data && data.getData('text/html');
+          var text = data && data.getData('text/plain');
+          if (html) insertHtmlAtCaret(sanitizeHtml(html));
+          else if (text) insertHtmlAtCaret('<p>' + escapeHtml(text).replace(/\n{2,}/g, '</p><p>').replace(/\n/g, '<br>') + '</p>');
+        });
+        sourceEditor.addEventListener('input', function () { setDirty(true); updateEditorCount(); });
         pageTitle.addEventListener('input', function () { setDirty(true); });
         pageFile.addEventListener('input', function () { setDirty(true); });
+        document.addEventListener('keydown', function (event) {
+          if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 's') {
+            event.preventDefault();
+            saveCurrentPage({ force: true });
+          }
+          if (!sourceMode && event.key === 'Tab' && document.activeElement === editor) {
+            event.preventDefault();
+            runCommand(event.shiftKey ? 'outdent' : 'indent');
+          }
+          if (event.key === 'Escape') clearFindHighlights();
+        });
+        // Wake-up conflict detection: when the page becomes visible again, check if
+        // the on-disk file was modified externally (e.g. by another tab or process).
+        document.addEventListener('visibilitychange', async function () {
+          if (document.hidden) return;
+          if (conflictState) return; // already showing a conflict dialog
+          if (!confluenceHandle || !supportsDirectory) return;
+          var hit = current();
+          if (!hit || !hit.node || !hit.node.file) return;
+          var fileName = hit.node.file;
+          var myTitle = pageTitle.value.trim() || hit.node.title || '未命名';
+          var myHtml = mergeIntoLoadedHtml(myTitle, getCurrentBodyHtml());
+
+          // Check HTML file conflict (or deletion)
+          var htmlConflict = { conflict: false, diskText: null, diskTime: 0, deleted: false };
+          if (loadedFileLastModified > 0) {
+            try {
+              var result = await getFileText(fileName);
+              if (result && result.lastModified && result.lastModified > loadedFileLastModified) {
+                htmlConflict = { conflict: true, diskText: result.text, diskTime: result.lastModified, deleted: false };
+              }
+            } catch (e) {
+              if (e && (e.name === 'NotFoundError' || String(e).indexOf('NotFound') >= 0 || String(e).indexOf('not found') >= 0)) {
+                htmlConflict = { conflict: true, diskText: null, diskTime: Date.now(), deleted: true };
+              }
+            }
+          }
+
+          // Check tree.json title conflict
+          var treeConflict = null;
+          if (loadedTreeLastModified > 0) {
+            try {
+              var treeResult = await getFileText(TREE_FILE_NAME);
+              if (treeResult && treeResult.lastModified && treeResult.lastModified > loadedTreeLastModified) {
+                var parsed = JSON.parse(treeResult.text);
+                var diskNode = findNodeById(parsed, hit.node.id);
+                if (diskNode && diskNode.title !== myTitle) {
+                  treeConflict = { myTitle: myTitle, diskTitle: diskNode.title || '', diskTime: treeResult.lastModified };
+                }
+              }
+            } catch (e) {}
+          }
+
+          var hasHtmlConflict = htmlConflict.conflict;
+          var hasTitleConflict = (treeConflict !== null);
+
+          // If no conflict at all, nothing to do
+          if (!hasHtmlConflict && !hasTitleConflict) return;
+
+          // Build diskHtml: if only title conflict, use myHtml as diskHtml placeholder
+          var diskHtml = htmlConflict.diskText || myHtml;
+          var diskTime = htmlConflict.diskTime || (treeConflict ? treeConflict.diskTime : Date.now());
+
+          try {
+            var resolved = await resolveConflict(fileName, myTitle, myHtml, diskHtml, diskTime, loadedFileLastModified, treeConflict, htmlConflict.deleted);
+            if (resolved != null) {
+              console.log('[CONFLICT] 唤醒路径收到结果: title=' + resolved.title + ' htmlLen=' + (resolved.html ? resolved.html.length : 0) + ' htmlEmpty=' + (!resolved.html));
+              var resolvedTitle = resolved.title || myTitle;
+              console.log('[CONFLICT] 唤醒路径写入tree: nodeId=' + hit.node.id + ' oldTitle=' + hit.node.title + ' newTitle=' + resolvedTitle);
+              hit.node.title = resolvedTitle;
+              hit.node.file = fileName;
+              await writeTreeFile();
+              console.log('[CONFLICT] 唤醒路径tree写入完成, 验证title=' + hit.node.title);
+              loadedTreeLastModified = Date.now();
+              renderTree();
+              var extractedBody = extractEditableHtml(resolved.html);
+              console.log('[CONFLICT] 唤醒提取body长度=' + (extractedBody ? extractedBody.length : 0) + ' loadedUsesConfluenceContent=' + loadedUsesConfluenceContent);
+              var finalHtml = mergeIntoLoadedHtml(resolvedTitle, extractedBody);
+              console.log('[CONFLICT] 唤醒最终HTML长度=' + (finalHtml ? finalHtml.length : 0));
+
+              // Write the resolved HTML back to disk
+              var fileHandle = await confluenceHandle.getFileHandle(fileName, { create: true });
+              var writable = await fileHandle.createWritable();
+              await writable.write(finalHtml);
+              await writable.close();
+
+              loadedHtml = finalHtml;
+              setEditorHtml(extractEditableHtml(finalHtml));
+              pageTitle.value = resolvedTitle;
+              pageFile.value = fileName;
+              loadedFileLastModified = Date.now();
+              setDirty(false);
+              setStatus('已解决唤醒时冲突：' + fileName);
+            }
+          } catch (err) {
+            if (err && err.message === 'Conflict dialog closed by user') {
+              setStatus('磁盘文件已被外部修改，当前编辑可能覆盖外部更改。');
+            }
+          }
+        });
+
         window.addEventListener('beforeunload', function (event) {
           if (!dirty) return;
           event.preventDefault();
@@ -951,11 +2553,13 @@
               if (Array.isArray(parsed) && parsed.length) {
                 tree = parsed;
                 selectedId = localStorage.getItem(SELECTED_KEY) || (tree[0] && tree[0].id);
+                loadedTreeLastModified = treeResult.lastModified || Date.now();
                 saveTree();
                 renderTree();
               }
             } else {
               await writeTreeFile();
+              loadedTreeLastModified = Date.now();
             }
           } catch (e) {}
         } else if (supportsDirectory) {
@@ -963,6 +2567,18 @@
         }
         if (selectedId) selectNode(selectedId);
       }
+
+      window.__confluenceEditorTest = {
+        insertTable: function (rows, cols) { insertHtmlAtCaret(buildTable(rows || 2, cols || 2)); },
+        toggleSource: toggleSourceMode,
+        getBodyHtml: getCurrentBodyHtml,
+        sanitizeHtml: sanitizeHtml,
+        replaceText: replaceText,
+        showConflictDialog: showConflictDialog,
+        closeConflictDialog: closeConflictDialog,
+        detectConflict: detectConflict,
+        detectTreeConflict: detectTreeConflict
+      };
 
       init();
     })();
