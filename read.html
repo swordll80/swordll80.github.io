@@ -106,9 +106,6 @@
 
   <script>
   (function() {
-    // Embedded fallback tree data (mirrors tree.json)
-    var EMBEDDED_TREE = [{"id":"home","title":"首页","file":"index.html","children":[]},{"id":"pmqxigdfjik4e8","title":"编程","file":"programming.html","children":[{"id":"pmqxigjrzn70iw","title":"c","file":"c.html","children":[]},{"id":"pmqxih80z4an8g","title":"cpp","file":"cpp.html","children":[]},{"id":"pmqxihz5i24wr4","title":"js","file":"js.html","children":[]},{"id":"pmqxii40ntudbt","title":"json","file":"json.html","children":[]},{"id":"pmqxiiail75y85","title":"python","file":"python.html","children":[]},{"id":"pmqxiiifej7wkk","title":"xml","file":"xml.html","children":[]}]},{"id":"pmqxjuqzqlyjf2","title":"古文","file":"古文.html","children":[{"id":"pmqxjwjadqhufg","title":"聊斋志异","file":"聊斋志异.html","children":[]}]}];
-
     var treePanel = document.getElementById('treePanel');
     var viewPanel = document.getElementById('viewPanel');
     var placeholder = document.getElementById('placeholder');
@@ -125,20 +122,68 @@
     });
     treeOverlay.addEventListener('click', closeTree);
 
-    // load tree.json — try fetch, fall back to embedded data
-    var treeUrl = new URL('tree.json', window.location.href).href;
-    fetch(treeUrl)
-      .then(function(r) {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.json();
-      })
-      .then(function(data) {
-        renderTree(data, treePanel);
-      })
-      .catch(function(e) {
-        console.warn('tree.json fetch failed, using embedded data:', e.message);
-        renderTree(EMBEDDED_TREE, treePanel);
+    function showLoadError(msg) {
+      treePanel.innerHTML = '<div style="padding:24px 16px;color:#c0392b;font-size:14px;line-height:1.8">' +
+        '<strong>\u26A0 \u76EE\u5F55\u52A0\u8F7D\u5931\u8D25</strong><br><small>' +
+        msg.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') +
+        '</small></div>';
+      console.error(msg);
+    }
+
+    // Load list.txt and build tree
+    function loadTree() {
+      fetch('notes/list.txt')
+        .then(function(res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          return res.text();
+        })
+        .then(function(text) {
+          var tree = buildTreeFromList(text);
+          if (tree.length === 0) {
+            showLoadError('list.txt \u4E2D\u6CA1\u6709\u6587\u4EF6\u3002');
+            return;
+          }
+          renderTree(tree, treePanel);
+        })
+        .catch(function(err) {
+          showLoadError('\u65E0\u6CD5\u52A0\u8F7D notes/list.txt\uFF1A' + err.message);
+        });
+    }
+
+    // Convert flat list into tree: {title, children: [{title, file}]}
+    function buildTreeFromList(text) {
+      var lines = text.split(/\r?\n/);
+      var folders = {};
+      lines.forEach(function(line) {
+        line = line.trim();
+        if (!line) return;
+        // line: "folder/sub/file.html" or "folder/file.html"
+        var parts = line.split('/');
+        var folderName = parts[0];
+        var fileName = parts.slice(1).join('/');
+        var title = fileName.replace(/\.html?$/i, '');
+        if (!folders[folderName]) {
+          folders[folderName] = [];
+        }
+        folders[folderName].push({ title: title, file: 'notes/' + line });
       });
+
+      var tree = [];
+      Object.keys(folders).sort().forEach(function(folderName) {
+        var files = folders[folderName];
+        // Sort files by title (natural order)
+        files.sort(function(a, b) {
+          return a.title.localeCompare(b.title, 'zh-CN', { numeric: true });
+        });
+        tree.push({
+          title: folderName,
+          children: files
+        });
+      });
+      return tree;
+    }
+
+    loadTree();
 
     function renderTree(nodes, parent) {
       nodes.forEach(function(node) {
@@ -151,7 +196,6 @@
         var hasChildren = node.children && node.children.length > 0;
         var hasFile = !!node.file;
 
-        // arrow
         var arrow = document.createElement('span');
         arrow.className = 'arrow';
         if (hasChildren) {
@@ -159,19 +203,16 @@
         }
         row.appendChild(arrow);
 
-        // icon
         var icon = document.createElement('span');
         icon.className = 'icon ' + (hasChildren ? 'folder' : 'file');
         icon.textContent = hasChildren ? '\uD83D\uDCC1' : '\uD83D\uDCC4';
         row.appendChild(icon);
 
-        // label
         var label = document.createElement('span');
         label.className = 'label';
         label.textContent = node.title;
         row.appendChild(label);
 
-        // children container
         var childrenDiv = document.createElement('div');
         childrenDiv.className = 'tree-children';
         if (hasChildren) {
@@ -179,7 +220,6 @@
           renderTree(node.children, childrenDiv);
         }
 
-        // arrow click: toggle children only
         if (hasChildren) {
           arrow.addEventListener('click', function(e) {
             e.stopPropagation();
@@ -194,7 +234,6 @@
           });
         }
 
-        // row click: open file if has one, otherwise toggle children
         row.addEventListener('click', function(e) {
           e.stopPropagation();
           if (hasFile) {
@@ -222,7 +261,6 @@
     }
 
     function openFile(file, title) {
-      // remove old iframe
       var old = viewPanel.querySelector('iframe');
       if (old) old.remove();
       placeholder.style.display = 'none';

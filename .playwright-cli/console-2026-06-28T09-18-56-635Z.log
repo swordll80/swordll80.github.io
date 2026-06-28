@@ -66,3 +66,5 @@
     at Object.<anonymous> (https://lf-welfare.amemv.com/obj/douyin-welfare-image/guji/shidian/chunk/4080.342be056.js:1:224646)
     at n (https://lf-welfare.amemv.com/obj/douyin-welfare-image/guji/shidian/chunk/4080.342be056.js:1:217505)
     at u (https://lf-welfare.amemv.com/obj/douyin-welfare-image/guji/shidian/chunk/4080.342be056.js:1:217702) @ https://lf-welfare.amemv.com/obj/douyin-welfare-image/guji/shidian/9438.09bc5fb1.js:0
+[17201085ms] [ERROR] Access to fetch at 'https://security.zijieapi.com/api/metrics/emit' from origin 'https://www.shidianguji.com' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ https://www.shidianguji.com/book/XYXLZZY/chapter/1lzu4928m0xln:0
+[17201086ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://security.zijieapi.com/api/metrics/emit:0

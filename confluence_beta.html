@@ -235,7 +235,7 @@
     // ─── State ──────────────────────────────────
     var STORAGE_KEY = 'localConfluence.tree.v1';
     var SELECTED_KEY = 'localConfluence.selectedId.v1';
-    var TREE_FILE_NAME = 'tree.json';
+    var TREE_FILE_NAME = 'tree_data.js';
     var DIR_DB_NAME = 'localConfluence.fs.v1';
     var DIR_STORE_NAME = 'handles';
     var DIR_HANDLE_KEY = 'confluence';
@@ -904,13 +904,23 @@
       if (!confluenceHandle || !supportsDirectory) return;
       var h = await confluenceHandle.getFileHandle(TREE_FILE_NAME, {create:true});
       var w = await h.createWritable();
-      await w.write(JSON.stringify(tree, null, 2) + '\n');
+      await w.write('window.__TREE_DATA__=' + JSON.stringify(tree) + ';\n');
       await w.close();
     }
 
     function defaultTree() {
       return [{id:'home',title:'首页',file:'index.html',children:[]}];
     }
+
+    function parseTreeDataJs(text) {
+      // Extract JSON from 'window.__TREE_DATA__=...;'
+      var m = text.match(/window\.__TREE_DATA__\s*=\s*(\[[\s\S]*\])\s*;?\s*$/);
+      if (m) return JSON.parse(m[1]);
+      // Fallback: try raw JSON (for old tree.json format)
+      return JSON.parse(text);
+    }
+
+
 
     // ─── Tree CRUD ─────────────────────────────
     async function addNode(parent) {
@@ -974,7 +984,7 @@
         try {
           var tr = await getFileText(TREE_FILE_NAME);
           if (tr && tr.text) {
-            var p = JSON.parse(tr.text);
+            var p = parseTreeDataJs(tr.text);
             if (Array.isArray(p) && p.length) {
               tree = p;
               selectedId = selectedId || (tree[0]&&tree[0].id);
@@ -1052,7 +1062,7 @@
         try {
           var tr = await getFileText(TREE_FILE_NAME);
           if (tr && tr.text) {
-            var p = JSON.parse(tr.text);
+            var p = parseTreeDataJs(tr.text);
             if (Array.isArray(p) && p.length) {
               tree = p;
               localStorage.setItem(STORAGE_KEY, JSON.stringify(tree));

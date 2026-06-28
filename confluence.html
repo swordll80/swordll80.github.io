@@ -978,8 +978,8 @@
 
       var STORAGE_KEY = 'localConfluence.tree.v1';
       var SELECTED_KEY = 'localConfluence.selectedId.v1';
-      var TREE_FILE_NAME = 'tree.json';
-      var TREE_URL = 'confluence/tree.json';
+      var TREE_FILE_NAME = 'tree_data.js';
+      var TREE_URL = 'confluence/tree_data.js';
       var DIR_DB_NAME = 'localConfluence.fs.v1';
       var DIR_STORE_NAME = 'handles';
       var DIR_HANDLE_KEY = 'confluence';
@@ -1107,7 +1107,8 @@
         try {
           var res = await fetch(TREE_URL + '?v=' + Date.now(), { cache: 'no-store' });
           if (!res.ok) throw new Error('HTTP ' + res.status);
-          var parsed = await res.json();
+          var text = await res.text();
+          var parsed = parseTreeDataJs(text);
           if (Array.isArray(parsed) && parsed.length) return parsed;
         } catch (e) {}
         return null;
@@ -1118,7 +1119,7 @@
         if (!confluenceHandle || !supportsDirectory) return false;
         var handle = await confluenceHandle.getFileHandle(TREE_FILE_NAME, { create: true });
         var writable = await handle.createWritable();
-        await writable.write(JSON.stringify(tree, null, 2) + '\n');
+        await writable.write('window.__TREE_DATA__=' + JSON.stringify(tree) + ';\n');
         await writable.close();
         return true;
       }
@@ -2832,6 +2833,12 @@
         return true;
       }
 
+      function parseTreeDataJs(text) {
+        var m = text.match(/window\.__TREE_DATA__\s*=\s*(\[[\s\S]*\])\s*;?\s*$/);
+        if (m) return JSON.parse(m[1]);
+        return JSON.parse(text);
+      }
+
       function normalizeFileName(value) {
         var name = slugify(value);
         return /\.html?$/i.test(name) ? name : name + '.html';
@@ -2914,7 +2921,7 @@
           try {
             var treeResult = await getFileText(TREE_FILE_NAME);
             if (treeResult && treeResult.text) {
-              var parsed = JSON.parse(treeResult.text);
+              var parsed = parseTreeDataJs(treeResult.text);
               if (Array.isArray(parsed) && parsed.length) {
                 tree = parsed;
                 selectedId = selectedId || (tree[0] && tree[0].id);
@@ -3436,7 +3443,7 @@
             try {
               var treeResult = await getFileText(TREE_FILE_NAME);
               if (treeResult && treeResult.lastModified && treeResult.lastModified > loadedTreeLastModified) {
-                var parsed = JSON.parse(treeResult.text);
+                var parsed = parseTreeDataJs(treeResult.text);
                 var diskNode = findNodeById(parsed, hit.node.id);
                 if (diskNode && diskNode.title !== myTitle) {
                   treeConflict = { myTitle: myTitle, diskTitle: diskNode.title || '', diskTime: treeResult.lastModified };
@@ -3518,7 +3525,7 @@
           try {
             var treeResult = await getFileText(TREE_FILE_NAME);
             if (treeResult && treeResult.text) {
-              var parsed = JSON.parse(treeResult.text);
+              var parsed = parseTreeDataJs(treeResult.text);
               if (Array.isArray(parsed) && parsed.length) {
                 tree = parsed;
                 selectedId = localStorage.getItem(SELECTED_KEY) || (tree[0] && tree[0].id);
