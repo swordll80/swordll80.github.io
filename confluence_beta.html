@@ -1227,7 +1227,14 @@
           // so the editor doesn't show the page's own topbar/scripts
           if (doc.body) {
             var container = doc.body.querySelector('.container');
-            if (container) return container.innerHTML;
+            if (container) {
+              // Ensure first section is open by default (c.html script normally does this)
+              var firstSection = container.querySelector('.section');
+              if (firstSection && !firstSection.classList.contains('open')) {
+                firstSection.classList.add('open');
+              }
+              return container.innerHTML;
+            }
             return doc.body.innerHTML;
           }
           return fullHtml;
