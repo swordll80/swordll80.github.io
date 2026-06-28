@@ -3,6 +3,13 @@
     "id": "home",
     "title": "首页",
     "file": "index.html",
-    "children": []
+    "children": [
+      {
+        "id": "pmqxeexw6h2ugr",
+        "title": "C语言笔记",
+        "file": "c.html",
+        "children": []
+      }
+    ]
   }
 ]

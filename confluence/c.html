@@ -1,0 +1,1112 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C语言笔记</title>
+  <style>
+    :root {
+      --bg: #f5f6fa;
+      --accent: #356ae6;
+      --muted: #7d8599;
+      --line: #e2e5ee;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      background: #fff;
+      color: #1a1a2e;
+      line-height: 1.7;
+      padding: 24px;
+    }
+    h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+      color: #1a1a2e;
+    }
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.04);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      min-width: 900px;
+    }
+    thead {
+      background: linear-gradient(135deg, #356ae6, #5a4de0);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 2;
+    }
+    thead th {
+      padding: 12px 14px;
+      text-align: left;
+      font-weight: 650;
+      font-size: 13px;
+      letter-spacing: .03em;
+      white-space: nowrap;
+    }
+    tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+    }
+    tbody tr:nth-child(even) { background: #fafbfc; }
+    tbody tr:hover { background: #f0f3ff; }
+    td:first-child { text-align: center; color: var(--muted); font-weight: 600; white-space: nowrap; min-width: 52px; }
+    td:nth-child(2) { font-weight: 600; min-width: 160px; }
+    td:nth-child(3) {
+      font-family: "Cascadia Code", "Fira Code", "Consolas", "Courier New", monospace;
+      font-size: 12px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      min-width: 280px;
+      max-width: 500px;
+      background: #f8f9fc;
+    }
+    td:nth-child(4) { text-align: center; color: var(--muted); white-space: nowrap; min-width: 70px; }
+    .section-row td {
+      background: #eef1f8 !important;
+      font-weight: 750;
+      color: #1a1a2e;
+      font-size: 14px;
+      padding: 10px 14px;
+      border-bottom: 2px solid var(--line);
+    }
+    .section-row td:first-child { color: var(--accent); }
+    code {
+      background: #eef1f8;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: "Cascadia Code", "Fira Code", "Consolas", monospace;
+      font-size: 12px;
+    }
+    .keyword { color: #8b3fc7; }
+    .comment { color: #7d8599; }
+    .string { color: #1b8c3c; }
+    .num { color: #c7640a; }
+    .func { color: #356ae6; }
+    @media (max-width: 768px) {
+      body { padding: 12px; }
+      table { font-size: 12px; min-width: 750px; }
+      thead th, tbody td { padding: 8px 10px; }
+      td:nth-child(3) { font-size: 11px; min-width: 220px; max-width: 350px; }
+    }
+  </style>
+</head>
+<body>
+  <h1>C语言知识速查表</h1>
+  <p>涵盖基础语法、指针、内存管理、结构体、文件IO、预处理、常见Bug与编程建议 · 共 150+ 条目</p>
+
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>序号</th>
+          <th>知识点</th>
+          <th>代码示例 / 说明</th>
+          <th>版本</th>
+        </tr>
+      </thead>
+      <tbody>
+
+        <!-- ===== 一、基础语法 ===== -->
+        <tr><td colspan="4">一、基础语法</td></tr>
+
+        <tr><td>1</td><td>Hello World</td><td><span>#include</span> <span>&lt;stdio.h&gt;</span>
+<span>int</span> <span>main</span>(<span>void</span>) {
+  <span>printf</span>(<span>"Hello, World!\n"</span>);
+  <span>return</span> <span>0</span>;
+}</td><td>C89</td></tr>
+
+        <tr><td>2</td><td>注释</td><td><span>// 单行注释 (C99+)</span>
+<span>/* 多行注释 */</span></td><td>C89/C99</td></tr>
+
+        <tr><td>3</td><td>基本数据类型</td><td><span>char</span> c = <span>'A'</span>;           <span>// 1字节</span>
+<span>int</span> i = <span>42</span>;               <span>// 通常4字节</span>
+<span>float</span> f = <span>3.14f</span>;          <span>// 4字节</span>
+<span>double</span> d = <span>3.1415926535</span>; <span>// 8字节</span></td><td>C89</td></tr>
+
+        <tr><td>4</td><td>修饰符</td><td><span>short int</span> s = <span>32767</span>;
+<span>long int</span> l = <span>2147483647L</span>;
+<span>long long</span> ll = <span>9223372036854775807LL</span>; <span>// C99</span>
+<span>unsigned int</span> u = <span>4294967295U</span>;
+<span>signed char</span> sc = <span>-128</span>;</td><td>C89/C99</td></tr>
+
+        <tr><td>5</td><td>sizeof 运算符</td><td><span>printf</span>(<span>"%zu\n"</span>, <span>sizeof</span>(<span>int</span>));     <span>// 4</span>
+<span>printf</span>(<span>"%zu\n"</span>, <span>sizeof</span>(arr)/<span>sizeof</span>(arr[<span>0</span>])); <span>// 数组元素个数</span></td><td>C89</td></tr>
+
+        <tr><td>6</td><td>变量声明与定义</td><td><span>int</span> a;                 <span>// 声明（未初始化）</span>
+<span>int</span> b = <span>10</span>;              <span>// 定义并初始化</span>
+<span>extern</span> <span>int</span> global_var;  <span>// 声明外部变量（不分配空间）</span></td><td>C89</td></tr>
+
+        <tr><td>7</td><td>常量</td><td><span>const</span> <span>int</span> MAX = <span>100</span>;          <span>// 运行时常量</span>
+<span>#define</span> PI <span>3.1415926535</span>         <span>// 编译时常量</span>
+<span>enum</span> { RED, GREEN, BLUE };    <span>// 枚举常量</span></td><td>C89</td></tr>
+
+        <tr><td>8</td><td>格式化输入输出</td><td><span>int</span> age;
+<span>scanf</span>(<span>"%d"</span>, &amp;age);                     <span>// 输入</span>
+<span>printf</span>(<span>"年龄: %d\n"</span>, age);              <span>// 输出</span>
+<span>fprintf</span>(stderr, <span>"错误!\n"</span>);            <span>// 错误输出</span>
+<span>char</span> buf[<span>64</span>];
+<span>sprintf</span>(buf, <span>"num=%d"</span>, <span>42</span>);           <span>// 格式化到字符串</span>
+<span>snprintf</span>(buf, <span>sizeof</span>(buf), <span>"%d"</span>, <span>42</span>); <span>// 安全格式化 (C99)</span></td><td>C89/C99</td></tr>
+
+        <tr><td>9</td><td>常用格式说明符</td><td><span>%d %i</span>   <span>→ int 有符号十进制</span>
+<span>%u</span>      <span>→ unsigned int</span>
+<span>%x %X</span>   <span>→ 十六进制</span>
+<span>%o</span>      <span>→ 八进制</span>
+<span>%f %lf</span>  <span>→ float / double</span>
+<span>%e %E</span>   <span>→ 科学计数法</span>
+<span>%c</span>      <span>→ 字符</span>
+<span>%s</span>      <span>→ 字符串</span>
+<span>%p</span>      <span>→ 指针地址</span>
+<span>%%</span>      <span>→ 百分号本身</span>
+<span>%zu</span>     <span>→ size_t (C99)</span></td><td>C89/C99</td></tr>
+
+        <tr><td>10</td><td>算术运算符</td><td><span>int</span> r = a + b - c * d / e % f;  <span>// + - * / %</span>
+<span>int</span> x = <span>5</span> / <span>2</span>;  <span>// =2 (整数除法截断)</span>
+<span>float</span> y = <span>5.0f</span> / <span>2</span>; <span>// =2.5</span></td><td>C89</td></tr>
+
+        <tr><td>11</td><td>自增自减</td><td><span>int</span> a = <span>5</span>;
+<span>int</span> b = a++;  <span>// b=5, a=6 (先用后加)</span>
+<span>int</span> c = ++a;  <span>// c=7, a=7 (先加后用)</span>
+<span>int</span> d = a--;  <span>// d=7, a=6</span>
+<span>int</span> e = --a;  <span>// e=5, a=5</span></td><td>C89</td></tr>
+
+        <tr><td>12</td><td>关系运算符</td><td><span>if</span> (a == b) { }   <span>// 等于（注意不是 =）</span>
+<span>if</span> (a != b) { }   <span>// 不等于</span>
+<span>if</span> (a &gt; b) { }    <span>// 大于</span>
+<span>if</span> (a &lt; b) { }    <span>// 小于</span>
+<span>if</span> (a &gt;= b) { }   <span>// 大于等于</span>
+<span>if</span> (a &lt;= b) { }   <span>// 小于等于</span></td><td>C89</td></tr>
+
+        <tr><td>13</td><td>逻辑运算符</td><td><span>if</span> (a &amp;&amp; b) { }  <span>// 逻辑与（短路）</span>
+<span>if</span> (a || b) { }  <span>// 逻辑或（短路）</span>
+<span>if</span> (!a) { }      <span>// 逻辑非</span></td><td>C89</td></tr>
+
+        <tr><td>14</td><td>位运算符</td><td><span>int</span> r = a &amp; b;   <span>// 按位与</span>
+<span>int</span> r = a | b;   <span>// 按位或</span>
+<span>int</span> r = a ^ b;   <span>// 按位异或</span>
+<span>int</span> r = ~a;      <span>// 按位取反</span>
+<span>int</span> r = a &lt;&lt; n;  <span>// 左移 (乘以2^n)</span>
+<span>int</span> r = a &gt;&gt; n;  <span>// 右移 (除以2^n, 算术右移)</span></td><td>C89</td></tr>
+
+        <tr><td>15</td><td>赋值运算符</td><td>a = b; a += b; a -= b; a *= b; a /= b;
+a %= b; a &amp;= b; a |= b; a ^= b;
+a &lt;&lt;= b; a &gt;&gt;= b;</td><td>C89</td></tr>
+
+        <tr><td>16</td><td>条件（三元）运算符</td><td><span>int</span> max = (a &gt; b) ? a : b;
+<span>const</span> <span>char</span>* s = (score &gt;= <span>60</span>) ? <span>"及格"</span> : <span>"不及格"</span>;</td><td>C89</td></tr>
+
+        <tr><td>17</td><td>逗号运算符</td><td><span>int</span> a, b;
+<span>for</span> (i=<span>0</span>, j=<span>10</span>; i&lt;j; i++, j--) { }
+<span>int</span> x = (a=<span>3</span>, a+<span>2</span>); <span>// x=5</span></td><td>C89</td></tr>
+
+        <tr><td>18</td><td>运算符优先级（要点）</td><td><span>// 从高到低:</span>
+<span>// () [] -&gt; .   → 后缀</span>
+<span>// ! ~ ++ -- + - * &amp; (type) sizeof → 一元</span>
+<span>// * / %  → 乘除</span>
+<span>// + -   → 加减</span>
+<span>// &lt;&lt; &gt;&gt; → 移位</span>
+<span>// &lt; &lt;= &gt; &gt;= → 关系</span>
+<span>// == != → 相等</span>
+<span>// &amp; → 按位与</span>
+<span>// ^ → 按位异或</span>
+<span>// | → 按位或</span>
+<span>// &amp;&amp; → 逻辑与</span>
+<span>// || → 逻辑或</span>
+<span>// ?: → 条件</span>
+<span>// = += -= 等 → 赋值</span>
+<span>// , → 逗号</span></td><td>C89</td></tr>
+
+        <!-- ===== 二、控制流 ===== -->
+        <tr><td colspan="4">二、控制流</td></tr>
+
+        <tr><td>19</td><td>if / else if / else</td><td><span>if</span> (x &gt; <span>0</span>) {
+  <span>printf</span>(<span>"正数\n"</span>);
+} <span>else</span> <span>if</span> (x == <span>0</span>) {
+  <span>printf</span>(<span>"零\n"</span>);
+} <span>else</span> {
+  <span>printf</span>(<span>"负数\n"</span>);
+}</td><td>C89</td></tr>
+
+        <tr><td>20</td><td>switch / case</td><td><span>switch</span> (ch) {
+  <span>case</span> <span>'A'</span>: <span>/* 注意 fall-through */</span>
+  <span>case</span> <span>'a'</span>: <span>printf</span>(<span>"元音\n"</span>); <span>break</span>;
+  <span>default</span>: <span>printf</span>(<span>"其他\n"</span>);
+}</td><td>C89</td></tr>
+
+        <tr><td>21</td><td>for 循环</td><td><span>for</span> (<span>int</span> i = <span>0</span>; i &lt; n; i++) {  <span>// C99允许声明</span>
+  <span>printf</span>(<span>"%d "</span>, i);
+}</td><td>C89/C99</td></tr>
+
+        <tr><td>22</td><td>while 循环</td><td><span>int</span> i = <span>0</span>;
+<span>while</span> (i &lt; <span>10</span>) {
+  <span>printf</span>(<span>"%d "</span>, i++);
+}</td><td>C89</td></tr>
+
+        <tr><td>23</td><td>do-while 循环</td><td><span>int</span> i = <span>0</span>;
+<span>do</span> {
+  <span>printf</span>(<span>"%d "</span>, i++);
+} <span>while</span> (i &lt; <span>10</span>);   <span>// 至少执行一次</span></td><td>C89</td></tr>
+
+        <tr><td>24</td><td>break / continue</td><td><span>for</span> (<span>int</span> i=<span>0</span>; i&lt;<span>100</span>; i++) {
+  <span>if</span> (i == <span>5</span>) <span>continue</span>;  <span>// 跳过本次</span>
+  <span>if</span> (i == <span>10</span>) <span>break</span>;     <span>// 退出循环</span>
+}</td><td>C89</td></tr>
+
+        <tr><td>25</td><td>goto</td><td><span>int</span> i = <span>0</span>;
+loop:
+  <span>if</span> (i++ &lt; <span>10</span>) <span>goto</span> loop;
+<span>// 一般用于错误处理和跳出多层循环</span></td><td>C89</td></tr>
+
+        <!-- ===== 三、数组与字符串 ===== -->
+        <tr><td colspan="4">三、数组与字符串</td></tr>
+
+        <tr><td>26</td><td>一维数组</td><td><span>int</span> arr[<span>5</span>] = {<span>1</span>, <span>2</span>, <span>3</span>, <span>4</span>, <span>5</span>};
+<span>int</span> arr2[] = {<span>1</span>, <span>2</span>, <span>3</span>};         <span>// 自动推断大小</span>
+<span>int</span> arr3[<span>5</span>] = {<span>0</span>};               <span>// 全零初始化</span>
+<span>int</span> arr4[<span>5</span>] = {<span>1</span>};               <span>// {1,0,0,0,0}</span>
+arr[<span>0</span>] = <span>42</span>;
+<span>int</span> n = <span>sizeof</span>(arr) / <span>sizeof</span>(arr[<span>0</span>]);</td><td>C89</td></tr>
+
+        <tr><td>27</td><td>多维数组</td><td><span>int</span> mat[<span>2</span>][<span>3</span>] = {
+  {<span>1</span>, <span>2</span>, <span>3</span>},
+  {<span>4</span>, <span>5</span>, <span>6</span>}
+};
+mat[<span>0</span>][<span>1</span>] = <span>99</span>;</td><td>C89</td></tr>
+
+        <tr><td>28</td><td>变长数组 (VLA)</td><td><span>void</span> <span>func</span>(<span>int</span> n) {
+  <span>int</span> arr[n];         <span>// C99 VLA, 运行时确定大小</span>
+  <span>// 注意: C11起VLA为可选, 堆栈上分配, 不宜过大</span>
+}</td><td>C99</td></tr>
+
+        <tr><td>29</td><td>C风格字符串</td><td><span>char</span> s1[] = <span>"hello"</span>;                 <span>// 自动添加 \0, 长度6</span>
+<span>char</span> s2[<span>20</span>] = <span>"hello"</span>;
+<span>const</span> <span>char</span>* s3 = <span>"hello"</span>;          <span>// 指向字符串字面量（只读）</span>
+<span>// 字符串以 '\0' (NUL) 结尾</span></td><td>C89</td></tr>
+
+        <tr><td>30</td><td>字符串操作函数</td><td><span>#include</span> <span>&lt;string.h&gt;</span>
+<span>size_t</span> len = <span>strlen</span>(s);              <span>// 长度（不含\0）</span>
+<span>strcpy</span>(dst, src);                  <span>// 复制（危险，不检查边界）</span>
+<span>strncpy</span>(dst, src, n);              <span>// 安全复制（可能不追加\0）</span>
+<span>strcat</span>(dst, src);                  <span>// 拼接（危险）</span>
+<span>strncat</span>(dst, src, n);              <span>// 安全拼接</span>
+<span>int</span> cmp = <span>strcmp</span>(a, b);              <span>// 比较: 0=相等, &lt;0=a&lt;b, &gt;0=a&gt;b</span>
+<span>int</span> cmp2 = <span>strncmp</span>(a, b, n);          <span>// 比较前n个字符</span>
+<span>char</span>* p = <span>strchr</span>(s, <span>'c'</span>);           <span>// 查找字符</span>
+<span>char</span>* p2 = <span>strstr</span>(haystack, needle); <span>// 查找子串</span>
+<span>char</span>* tok = <span>strtok</span>(s, delim);       <span>// 分割字符串（会修改原串）</span></td><td>C89</td></tr>
+
+        <tr><td>31</td><td>字符分类函数</td><td><span>#include</span> <span>&lt;ctype.h&gt;</span>
+<span>isalpha</span>(c)   <span>// 字母</span>
+<span>isdigit</span>(c)   <span>// 数字</span>
+<span>isalnum</span>(c)   <span>// 字母或数字</span>
+<span>isspace</span>(c)   <span>// 空白字符</span>
+<span>isupper</span>(c)   <span>// 大写</span>
+<span>islower</span>(c)   <span>// 小写</span>
+<span>toupper</span>(c)   <span>// 转大写</span>
+<span>tolower</span>(c)   <span>// 转小写</span></td><td>C89</td></tr>
+
+        <tr><td>32</td><td>字符串与数字转换</td><td><span>#include</span> <span>&lt;stdlib.h&gt;</span>
+<span>int</span> i = <span>atoi</span>(<span>"42"</span>);          <span>// 字符串→int (无错误检测)</span>
+<span>long</span> l = <span>atol</span>(<span>"123456"</span>);
+<span>double</span> d = <span>atof</span>(<span>"3.14"</span>);
+<span>// 推荐使用 strtol/strtod 系列（有错误检测）:</span>
+<span>char</span>* end;
+<span>long</span> val = <span>strtol</span>(<span>"123abc"</span>, &amp;end, <span>10</span>);
+<span>if</span> (*end != <span>'\0'</span>) { <span>/* 有非数字字符 */</span> }</td><td>C89</td></tr>
+
+        <!-- ===== 四、指针 ===== -->
+        <tr><td colspan="4">四、指针</td></tr>
+
+        <tr><td>33</td><td>指针基本概念</td><td><span>int</span> a = <span>42</span>;
+<span>int</span>* p = &amp;a;       <span>// p 存储 a 的地址</span>
+<span>printf</span>(<span>"%d\n"</span>, *p); <span>// 解引用，输出 42</span>
+*p = <span>100</span>;            <span>// 通过指针修改 a</span></td><td>C89</td></tr>
+
+        <tr><td>34</td><td>空指针</td><td><span>int</span>* p = <span>NULL</span>;   <span>// C89 传统写法</span>
+<span>int</span>* q = <span>nullptr</span>;   <span>// C23 新增</span>
+<span>if</span> (p == <span>NULL</span>) { <span>/* 检查空指针 */</span> }
+<span>if</span> (!p) { <span>/* 等价写法 */</span> }</td><td>C89/C23</td></tr>
+
+        <tr><td>35</td><td>void 指针</td><td><span>void</span>* vp = &amp;a;          <span>// 可指向任意类型</span>
+<span>int</span>* ip = (<span>int</span>*)vp;      <span>// 需要显式转换才能解引用</span>
+<span>// 常用于 malloc 返回值, 回调函数参数</span></td><td>C89</td></tr>
+
+        <tr><td>36</td><td>指针与数组</td><td><span>int</span> arr[<span>5</span>] = {<span>1</span>,<span>2</span>,<span>3</span>,<span>4</span>,<span>5</span>};
+<span>int</span>* p = arr;              <span>// 数组名退化为首元素指针</span>
+<span>printf</span>(<span>"%d\n"</span>, *(p+<span>2</span>));    <span>// arr[2] = 3</span>
+<span>printf</span>(<span>"%d\n"</span>, p[<span>2</span>]);       <span>// 等价写法</span>
+<span>// arr 和 &amp;arr[0] 值相同, 但 sizeof(arr) ≠ sizeof(p)</span></td><td>C89</td></tr>
+
+        <tr><td>37</td><td>指针运算</td><td><span>int</span> arr[<span>5</span>] = {<span>10</span>,<span>20</span>,<span>30</span>,<span>40</span>,<span>50</span>};
+<span>int</span>* p = arr;
+p++;      <span>// 指向 arr[1], 地址+sizeof(int)</span>
+p--;      <span>// 回到 arr[0]</span>
+p += <span>3</span>;   <span>// 指向 arr[3]</span>
+<span>ptrdiff_t</span> diff = p - arr; <span>// 指针差 = 3 (元素个数)</span>
+<span>// 指针加减整数以所指类型大小为单位移动</span></td><td>C89</td></tr>
+
+        <tr><td>38</td><td>二级指针</td><td><span>int</span> a = <span>10</span>;
+<span>int</span>* p = &amp;a;
+<span>int</span>** pp = &amp;p;     <span>// 指向指针的指针</span>
+**pp = <span>20</span>;          <span>// 修改 a 为 20</span></td><td>C89</td></tr>
+
+        <tr><td>39</td><td>函数指针</td><td><span>int</span> <span>add</span>(<span>int</span> a, <span>int</span> b) { <span>return</span> a+b; }
+<span>int</span> (*fp)(<span>int</span>, <span>int</span>) = add;  <span>// 声明函数指针</span>
+<span>int</span> result = <span>fp</span>(<span>3</span>, <span>4</span>);        <span>// 通过指针调用</span>
+<span>// typedef 简化:</span>
+<span>typedef</span> <span>int</span> (*BinaryOp)(<span>int</span>, <span>int</span>);
+BinaryOp op = add;</td><td>C89</td></tr>
+
+        <tr><td>40</td><td>指针数组 vs 数组指针</td><td><span>// 指针数组: 数组元素是指针</span>
+<span>int</span>* ptrArr[<span>5</span>];
+<span>// 数组指针: 指向数组的指针</span>
+<span>int</span> (*arrPtr)[<span>5</span>];   <span>// 指向有5个int的数组</span>
+<span>int</span> mat[<span>3</span>][<span>5</span>];
+arrPtr = mat;        <span>// 指向第一行</span>
+<span>// 阅读规则: 从内向外, 先右后左</span></td><td>C89</td></tr>
+
+        <tr><td>41</td><td>const 与指针</td><td><span>const</span> <span>int</span>* p1;     <span>// 指向常量的指针（不能通过p1修改值）</span>
+<span>int</span> <span>const</span>* p2;     <span>// 同上</span>
+<span>int</span>* <span>const</span> p3 = &amp;a; <span>// 常量指针（p3不能指向别处）</span>
+<span>const</span> <span>int</span>* <span>const</span> p4 = &amp;a; <span>// 两者都不能改</span></td><td>C89</td></tr>
+
+        <tr><td>42</td><td>restrict 指针</td><td><span>void</span> <span>cpy</span>(<span>int</span>* <span>restrict</span> dst, <span>int</span>* <span>restrict</span> src, <span>size_t</span> n) {
+  <span>// 承诺 dst 和 src 不重叠, 编译器可优化</span>
+  <span>for</span> (<span>size_t</span> i=<span>0</span>; i&lt;n; i++) dst[i] = src[i];
+}</td><td>C99</td></tr>
+
+        <!-- ===== 五、函数 ===== -->
+        <tr><td colspan="4">五、函数</td></tr>
+
+        <tr><td>43</td><td>函数定义</td><td><span>// 返回值类型 函数名(参数列表) { 函数体 }</span>
+<span>int</span> <span>max</span>(<span>int</span> a, <span>int</span> b) {
+  <span>return</span> (a &gt; b) ? a : b;
+}</td><td>C89</td></tr>
+
+        <tr><td>44</td><td>函数声明（原型）</td><td><span>int</span> <span>max</span>(<span>int</span> a, <span>int</span> b);      <span>// 声明（通常放在头文件）</span>
+<span>int</span> <span>max</span>(<span>int</span>, <span>int</span>);           <span>// 参数名可省略</span></td><td>C89</td></tr>
+
+        <tr><td>45</td><td>void 函数</td><td><span>void</span> <span>greet</span>(<span>void</span>) {   <span>// 无参数, 无返回值</span>
+  <span>printf</span>(<span>"Hello\n"</span>);
+}</td><td>C89</td></tr>
+
+        <tr><td>46</td><td>传值 vs 传址</td><td><span>// C语言只有传值。要修改外部变量, 传指针:</span>
+<span>void</span> <span>swap</span>(<span>int</span>* a, <span>int</span>* b) {
+  <span>int</span> tmp = *a; *a = *b; *b = tmp;
+}
+<span>swap</span>(&amp;x, &amp;y);</td><td>C89</td></tr>
+
+        <tr><td>47</td><td>数组作为参数</td><td><span>void</span> <span>printArr</span>(<span>int</span> arr[], <span>int</span> n) { }
+<span>// 等价于:</span>
+<span>void</span> <span>printArr</span>(<span>int</span>* arr, <span>int</span> n) { }
+<span>// 数组退化为指针, sizeof(arr) = 指针大小, 不是数组大小!</span></td><td>C89</td></tr>
+
+        <tr><td>48</td><td>可变参数</td><td><span>#include</span> <span>&lt;stdarg.h&gt;</span>
+<span>int</span> <span>sum</span>(<span>int</span> count, ...) {
+  <span>va_list</span> args;
+  <span>va_start</span>(args, count);
+  <span>int</span> total = <span>0</span>;
+  <span>for</span> (<span>int</span> i=<span>0</span>; i&lt;count; i++)
+    total += <span>va_arg</span>(args, <span>int</span>);
+  <span>va_end</span>(args);
+  <span>return</span> total;
+}
+<span>// 调用: sum(3, 10, 20, 30) → 60</span></td><td>C89</td></tr>
+
+        <tr><td>49</td><td>内联函数</td><td><span>inline</span> <span>int</span> <span>square</span>(<span>int</span> x) {
+  <span>return</span> x * x;
+}
+<span>// 建议编译器内联展开, 减少函数调用开销</span></td><td>C99</td></tr>
+
+        <tr><td>50</td><td>static 函数</td><td><span>static</span> <span>int</span> <span>helper</span>(<span>int</span> x) {
+  <span>return</span> x * x;
+}
+<span>// 函数仅在当前翻译单元(.c文件)内可见</span></td><td>C89</td></tr>
+
+        <tr><td>51</td><td>递归</td><td><span>int</span> <span>factorial</span>(<span>int</span> n) {
+  <span>if</span> (n &lt;= <span>1</span>) <span>return</span> <span>1</span>;
+  <span>return</span> n * <span>factorial</span>(n - <span>1</span>);
+}
+<span>// 注意栈溢出风险, 尾递归不一定被优化</span></td><td>C89</td></tr>
+
+        <tr><td>52</td><td>main 函数签名</td><td><span>int</span> <span>main</span>(<span>void</span>) { <span>return</span> <span>0</span>; }
+<span>int</span> <span>main</span>(<span>int</span> argc, <span>char</span>* argv[]) { <span>return</span> <span>0</span>; }
+<span>// argc: 参数个数, argv[0]是程序名</span></td><td>C89</td></tr>
+
+        <!-- ===== 六、动态内存管理 ===== -->
+        <tr><td colspan="4">六、动态内存管理</td></tr>
+
+        <tr><td>53</td><td>malloc</td><td><span>#include</span> <span>&lt;stdlib.h&gt;</span>
+<span>int</span>* arr = (<span>int</span>*)<span>malloc</span>(n * <span>sizeof</span>(<span>int</span>));
+<span>if</span> (arr == <span>NULL</span>) {
+  <span>/* 分配失败处理 */</span>
+}
+<span>// malloc 不初始化内存, 内容是未定义的</span></td><td>C89</td></tr>
+
+        <tr><td>54</td><td>calloc</td><td><span>int</span>* arr = (<span>int</span>*)<span>calloc</span>(n, <span>sizeof</span>(<span>int</span>));
+<span>// 分配并初始化为0</span>
+<span>// 注意: calloc 参数顺序是 (个数, 大小)</span></td><td>C89</td></tr>
+
+        <tr><td>55</td><td>realloc</td><td><span>int</span>* tmp = (<span>int</span>*)<span>realloc</span>(arr, newSize * <span>sizeof</span>(<span>int</span>));
+<span>if</span> (tmp == <span>NULL</span>) {
+  <span>/* 扩容失败, 原内存 arr 仍然有效! */</span>
+  <span>free</span>(arr);
+} <span>else</span> {
+  arr = tmp;
+}
+<span>// 始终用临时变量接收, 防止原指针丢失导致泄漏</span></td><td>C89</td></tr>
+
+        <tr><td>56</td><td>free</td><td><span>free</span>(arr);
+arr = <span>NULL</span>;     <span>// 防止悬垂指针</span>
+<span>// free(NULL) 是安全的(什么都不做)</span>
+<span>// 不能 double-free, 不能 free 非堆内存</span></td><td>C89</td></tr>
+
+        <tr><td>57</td><td>内存泄漏检测模式</td><td><span>// 每个 malloc 必须有对应的 free</span>
+<span>// 配对原则: 谁分配谁释放</span>
+<span>// 工具: valgrind --leak-check=full ./a.out</span>
+<span>// Windows: Dr. Memory, Visual Studio CRT Debug</span></td><td>C89</td></tr>
+
+        <tr><td>58</td><td>常见内存错误</td><td><span>// 1. 忘记 free → 内存泄漏</span>
+<span>// 2. free 后继续使用 → use-after-free</span>
+<span>// 3. 重复 free → double-free</span>
+<span>// 4. 越界访问 → buffer overflow</span>
+<span>// 5. 未初始化就使用 → undefined behavior</span>
+<span>// 6. free 非堆地址 → crash</span>
+<span>// 7. realloc 后仍用旧指针</span></td><td>C89</td></tr>
+
+        <!-- ===== 七、结构体、联合体、枚举 ===== -->
+        <tr><td colspan="4">七、结构体、联合体、枚举</td></tr>
+
+        <tr><td>59</td><td>结构体定义</td><td><span>struct</span> Point {
+  <span>int</span> x;
+  <span>int</span> y;
+};
+<span>struct</span> Point p1 = {<span>10</span>, <span>20</span>};
+p1.x = <span>30</span>;</td><td>C89</td></tr>
+
+        <tr><td>60</td><td>typedef 简化结构体</td><td><span>typedef</span> <span>struct</span> {
+  <span>int</span> x, y;
+} Point;
+Point p = {<span>1</span>, <span>2</span>};  <span>// 无需 struct 关键字</span></td><td>C89</td></tr>
+
+        <tr><td>61</td><td>结构体指针</td><td>Point* pp = &amp;p;
+pp-&gt;x = <span>100</span>;       <span>// 等价于 (*pp).x = 100</span></td><td>C89</td></tr>
+
+        <tr><td>62</td><td>结构体嵌套</td><td><span>struct</span> Rect {
+  Point topLeft;
+  Point bottomRight;
+};</td><td>C89</td></tr>
+
+        <tr><td>63</td><td>指定初始化器</td><td>Point p = { .x = <span>10</span>, .y = <span>20</span> };
+<span>struct</span> { <span>int</span> a,b,c; } s = { .c=<span>3</span>, .a=<span>1</span> };
+<span>// 不按顺序初始化, 未指定的成员为0</span></td><td>C99</td></tr>
+
+        <tr><td>64</td><td>结构体内存对齐</td><td><span>struct</span> Demo {
+  <span>char</span> a;      <span>// 1字节 + 3填充</span>
+  <span>int</span> b;       <span>// 4字节</span>
+  <span>char</span> c;      <span>// 1字节 + 3填充</span>
+}; <span>// sizeof = 12 (不是 6)</span>
+<span>// 优化: 把相同大小成员放一起, 大的在前</span></td><td>C89</td></tr>
+
+        <tr><td>65</td><td>联合体 (union)</td><td><span>union</span> Value {
+  <span>int</span> i;
+  <span>float</span> f;
+  <span>char</span> s[<span>4</span>];
+};
+<span>union</span> Value v;
+v.i = <span>42</span>;
+<span>// 所有成员共享同一块内存, sizeof = 最大成员大小</span>
+<span>// 同一时间只能使用一个成员</span></td><td>C89</td></tr>
+
+        <tr><td>66</td><td>枚举 (enum)</td><td><span>enum</span> Color { RED, GREEN, BLUE }; <span>// 0,1,2</span>
+<span>enum</span> Status { OK=<span>200</span>, NOT_FOUND=<span>404</span>, ERROR=<span>500</span> };
+<span>enum</span> Color c = GREEN;
+<span>typedef</span> <span>enum</span> { MON=<span>1</span>, TUE, WED } Weekday;</td><td>C89</td></tr>
+
+        <tr><td>67</td><td>位域</td><td><span>struct</span> Flags {
+  <span>unsigned int</span> isReady : <span>1</span>;
+  <span>unsigned int</span> mode    : <span>3</span>;
+  <span>unsigned int</span> count   : <span>4</span>;
+};
+<span>// 紧凑存储, 节省内存</span></td><td>C89</td></tr>
+
+        <tr><td>68</td><td>柔性数组成员</td><td><span>struct</span> Buffer {
+  <span>size_t</span> len;
+  <span>char</span> data[];  <span>// 柔性数组, 必须放在最后</span>
+};
+<span>// 分配: malloc(sizeof(struct Buffer) + data_len)</span></td><td>C99</td></tr>
+
+        <tr><td>69</td><td>复合字面量</td><td>Point p = (Point){<span>10</span>, <span>20</span>};
+<span>draw</span>((Point){x, y});
+<span>// 匿名临时结构体, 作用域与变量相同</span></td><td>C99</td></tr>
+
+        <!-- ===== 八、预处理器 ===== -->
+        <tr><td colspan="4">八、预处理器</td></tr>
+
+        <tr><td>70</td><td>#include</td><td><span>#include</span> <span>&lt;stdio.h&gt;</span>       <span>// 系统头文件</span>
+<span>#include</span> <span>"myheader.h"</span>     <span>// 自定义头文件</span></td><td>C89</td></tr>
+
+        <tr><td>71</td><td>#define 宏常量</td><td><span>#define</span> PI <span>3.14159</span>
+<span>#define</span> MAX_SIZE <span>1024</span>
+<span>#define</span> VERSION <span>"1.0.0"</span></td><td>C89</td></tr>
+
+        <tr><td>72</td><td>#define 宏函数</td><td><span>#define</span> SQUARE(x) ((x)*(x))
+<span>#define</span> MAX(a,b) ((a)&gt;(b)?(a):(b))
+<span>#define</span> SWAP(a,b) <span>do</span> { <span>typeof</span>(a) _t=a; a=b; b=_t; } <span>while</span>(<span>0</span>)
+<span>// 注意: 参数必须加括号, 否则有优先级陷阱</span>
+<span>// SQUARE(1+2) → ((1+2)*(1+2)) ✓</span>
+<span>// 如果写成 x*x → 1+2*1+2 = 5 ✗</span></td><td>C89</td></tr>
+
+        <tr><td>73</td><td>条件编译</td><td><span>#ifdef</span> DEBUG
+  <span>printf</span>(<span>"debug mode\n"</span>);
+<span>#endif</span>
+
+<span>#if</span> VERSION &gt;= <span>2</span>
+  <span>/* 新版本代码 */</span>
+<span>#elif</span> VERSION == <span>1</span>
+  <span>/* 旧版本代码 */</span>
+<span>#else</span>
+  <span>/* 其他 */</span>
+<span>#endif</span></td><td>C89</td></tr>
+
+        <tr><td>74</td><td>头文件保护</td><td><span>#ifndef</span> MYHEADER_H
+<span>#define</span> MYHEADER_H
+<span>/* 头文件内容 */</span>
+<span>#endif</span> <span>/* MYHEADER_H */</span>
+<span>// 或使用 #pragma once (非标准但广泛支持)</span></td><td>C89</td></tr>
+
+        <tr><td>75</td><td>#error / #pragma</td><td><span>#if</span> <span>defined</span>(__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &lt; <span>199901L</span>
+<span>#error</span> <span>"需要 C99 或更高版本"</span>
+<span>#endif</span>
+<span>#pragma</span> <span>once</span>                <span>// 头文件保护 (非标准)</span>
+<span>#pragma</span> pack(<span>1</span>)              <span>// 设置结构体对齐</span></td><td>C89</td></tr>
+
+        <tr><td>76</td><td>预定义宏</td><td><span>printf</span>(<span>"%s\n"</span>, __FILE__);      <span>// 当前文件名</span>
+<span>printf</span>(<span>"%d\n"</span>, __LINE__);      <span>// 当前行号</span>
+<span>printf</span>(<span>"%s\n"</span>, __DATE__);      <span>// 编译日期</span>
+<span>printf</span>(<span>"%s\n"</span>, __TIME__);      <span>// 编译时间</span>
+<span>printf</span>(<span>"%s\n"</span>, __func__);      <span>// 当前函数名 (C99)</span>
+<span>// __STDC_VERSION__ → 199901L (C99), 201112L (C11), 201710L (C17)</span></td><td>C89/C99</td></tr>
+
+        <tr><td>77</td><td>宏的字符串化与拼接</td><td><span>#define</span> STR(x) <span>#x</span>
+<span>#define</span> CONCAT(a,b) a##b
+<span>printf</span>(<span>"%s\n"</span>, <span>STR</span>(hello));  <span>// "hello"</span>
+<span>int</span> CONCAT(my, Var) = <span>42</span>;     <span>// int myVar = 42;</span></td><td>C89</td></tr>
+
+        <!-- ===== 九、文件 I/O ===== -->
+        <tr><td colspan="4">九、文件 I/O</td></tr>
+
+        <tr><td>78</td><td>文件打开与关闭</td><td><span>FILE</span>* fp = <span>fopen</span>(<span>"data.txt"</span>, <span>"r"</span>);
+<span>if</span> (fp == <span>NULL</span>) {
+  <span>perror</span>(<span>"打开文件失败"</span>);
+  <span>return</span> <span>1</span>;
+}
+<span>fclose</span>(fp);</td><td>C89</td></tr>
+
+        <tr><td>79</td><td>文件打开模式</td><td><span>"r"</span>   <span>→ 只读 (文件必须存在)</span>
+<span>"w"</span>   <span>→ 只写 (创建或截断)</span>
+<span>"a"</span>   <span>→ 追加 (创建或追加)</span>
+<span>"r+"</span>  <span>→ 读写 (文件必须存在)</span>
+<span>"w+"</span>  <span>→ 读写 (创建或截断)</span>
+<span>"a+"</span>  <span>→ 读写追加</span>
+<span>"rb"</span> <span>"wb"</span> <span>"ab"</span> → 二进制模式</td><td>C89</td></tr>
+
+        <tr><td>80</td><td>逐字符读写</td><td><span>int</span> ch;
+<span>while</span> ((ch = <span>fgetc</span>(fp)) != <span>EOF</span>) {
+  <span>putchar</span>(ch);
+}
+<span>fputc</span>(<span>'A'</span>, fp);   <span>// 写一个字符</span>
+<span>// fgetc 返回 int, 不是 char! 因为 EOF 通常是 -1</span></td><td>C89</td></tr>
+
+        <tr><td>81</td><td>逐行读写</td><td><span>char</span> line[<span>256</span>];
+<span>while</span> (<span>fgets</span>(line, <span>sizeof</span>(line), fp) != <span>NULL</span>) {
+  <span>printf</span>(<span>"%s"</span>, line);  <span>// fgets 保留换行符</span>
+}
+<span>fputs</span>(<span>"hello\n"</span>, fp);</td><td>C89</td></tr>
+
+        <tr><td>82</td><td>格式化读写</td><td><span>fprintf</span>(fp, <span>"Name: %s, Age: %d\n"</span>, name, age);
+<span>char</span> name[<span>64</span>]; <span>int</span> age;
+<span>fscanf</span>(fp, <span>"%s %d"</span>, name, &amp;age);  <span>// 注意缓冲区溢出</span></td><td>C89</td></tr>
+
+        <tr><td>83</td><td>二进制读写</td><td><span>int</span> data[] = {<span>1</span>,<span>2</span>,<span>3</span>};
+<span>size_t</span> n = <span>fwrite</span>(data, <span>sizeof</span>(<span>int</span>), <span>3</span>, fp);
+
+<span>int</span> buf[<span>3</span>];
+<span>size_t</span> n2 = <span>fread</span>(buf, <span>sizeof</span>(<span>int</span>), <span>3</span>, fp);
+<span>// 返回值 = 成功读写的元素个数</span></td><td>C89</td></tr>
+
+        <tr><td>84</td><td>文件定位</td><td><span>fseek</span>(fp, <span>0</span>, SEEK_SET);  <span>// 移到开头</span>
+<span>fseek</span>(fp, <span>0</span>, SEEK_END);  <span>// 移到末尾</span>
+<span>fseek</span>(fp, <span>10</span>, SEEK_CUR); <span>// 从当前位置移10字节</span>
+<span>long</span> pos = <span>ftell</span>(fp);    <span>// 获取当前位置</span>
+<span>rewind</span>(fp);             <span>// 回到开头</span></td><td>C89</td></tr>
+
+        <tr><td>85</td><td>获取文件大小</td><td><span>fseek</span>(fp, <span>0</span>, SEEK_END);
+<span>long</span> size = <span>ftell</span>(fp);
+<span>rewind</span>(fp);
+<span>// 注意: 对大文件(&gt;2GB)应使用平台特定API</span></td><td>C89</td></tr>
+
+        <tr><td>86</td><td>错误处理</td><td><span>if</span> (<span>ferror</span>(fp)) {
+  <span>fprintf</span>(stderr, <span>"文件操作出错\n"</span>);
+  <span>clearerr</span>(fp);  <span>// 清除错误标志</span>
+}
+<span>if</span> (<span>feof</span>(fp)) {
+  <span>printf</span>(<span>"已到文件末尾\n"</span>);
+}</td><td>C89</td></tr>
+
+        <tr><td>87</td><td>临时文件</td><td><span>FILE</span>* tmp = <span>tmpfile</span>();
+<span>// 创建临时文件, fclose或程序结束时自动删除</span>
+<span>char</span> name[L_tmpnam];
+<span>tmpnam</span>(name);  <span>// 生成临时文件名 (有竞态风险)</span></td><td>C89</td></tr>
+
+        <!-- ===== 十、标准库 ===== -->
+        <tr><td colspan="4">十、常用标准库函数</td></tr>
+
+        <tr><td>88</td><td>stdlib.h 常用函数</td><td><span>atoi</span>, <span>atof</span>, <span>strtol</span>, <span>strtod</span>  <span>// 字符串转换</span>
+<span>rand</span>(), <span>srand</span>(seed)            <span>// 随机数</span>
+<span>malloc</span>, <span>calloc</span>, <span>realloc</span>, <span>free</span> <span>// 内存管理</span>
+<span>exit</span>(status)                  <span>// 退出程序</span>
+<span>atexit</span>(func)                  <span>// 注册退出回调</span>
+<span>system</span>(cmd)                   <span>// 执行系统命令</span>
+<span>qsort</span>(base,n,size,cmp)        <span>// 快速排序</span>
+<span>bsearch</span>(key,base,n,size,cmp)  <span>// 二分查找</span>
+<span>abs</span>, <span>labs</span>, <span>llabs</span>              <span>// 绝对值</span></td><td>C89/C99</td></tr>
+
+        <tr><td>89</td><td>qsort 使用示例</td><td><span>int</span> <span>cmpInt</span>(<span>const</span> <span>void</span>* a, <span>const</span> <span>void</span>* b) {
+  <span>return</span> (*(<span>int</span>*)a - *(<span>int</span>*)b);  <span>// 升序</span>
+}
+<span>int</span> arr[] = {<span>5</span>,<span>2</span>,<span>8</span>,<span>1</span>,<span>3</span>};
+<span>qsort</span>(arr, <span>5</span>, <span>sizeof</span>(<span>int</span>), cmpInt);
+<span>// 注意: 减法可能溢出, 生产环境用 if-else</span></td><td>C89</td></tr>
+
+        <tr><td>90</td><td>math.h 常用函数</td><td><span>#include</span> <span>&lt;math.h&gt;</span>
+<span>// 编译时需链接 -lm</span>
+<span>sqrt</span>(x), <span>pow</span>(x,y), <span>exp</span>(x), <span>log</span>(x), <span>log10</span>(x)
+<span>sin</span>(x), <span>cos</span>(x), <span>tan</span>(x), <span>asin</span>(x), <span>acos</span>(x), <span>atan</span>(x)
+<span>atan2</span>(y,x)  <span>// 计算角度 (考虑象限)</span>
+<span>ceil</span>(x), <span>floor</span>(x), <span>round</span>(x) <span>// C99</span>
+<span>fabs</span>(x)    <span>// 浮点绝对值</span>
+<span>fmod</span>(x,y)  <span>// 浮点取模</span></td><td>C89/C99</td></tr>
+
+        <tr><td>91</td><td>time.h 常用函数</td><td><span>#include</span> <span>&lt;time.h&gt;</span>
+<span>time_t</span> now = <span>time</span>(<span>NULL</span>);
+<span>struct</span> <span>tm</span>* t = <span>localtime</span>(&amp;now);
+<span>printf</span>(<span>"%04d-%02d-%02d\n"</span>,
+  t-&gt;tm_year+<span>1900</span>, t-&gt;tm_mon+<span>1</span>, t-&gt;tm_mday);
+<span>char</span> buf[<span>64</span>];
+<span>strftime</span>(buf, <span>sizeof</span>(buf), <span>"%Y-%m-%d %H:%M:%S"</span>, t);
+<span>clock</span>()  <span>// CPU时间 (性能测量)</span>
+<span>difftime</span>(t1, t2)  <span>// 时间差(秒)</span></td><td>C89</td></tr>
+
+        <tr><td>92</td><td>assert.h 断言</td><td><span>#include</span> <span>&lt;assert.h&gt;</span>
+<span>int</span> <span>divide</span>(<span>int</span> a, <span>int</span> b) {
+  <span>assert</span>(b != <span>0</span>);  <span>// 条件为假时终止程序</span>
+  <span>return</span> a / b;
+}
+<span>// Release 版本: #define NDEBUG 后 assert 失效</span></td><td>C89</td></tr>
+
+        <tr><td>93</td><td>setjmp.h 非局部跳转</td><td><span>#include</span> <span>&lt;setjmp.h&gt;</span>
+<span>jmp_buf</span> env;
+<span>if</span> (<span>setjmp</span>(env) == <span>0</span>) {
+  <span>// 首次执行</span>
+  <span>if</span> (error) <span>longjmp</span>(env, <span>1</span>);
+} <span>else</span> {
+  <span>// longjmp 跳回此处</span>
+  <span>printf</span>(<span>"错误恢复\n"</span>);
+}</td><td>C89</td></tr>
+
+        <tr><td>94</td><td>errno.h 错误码</td><td><span>#include</span> <span>&lt;errno.h&gt;</span>
+<span>#include</span> <span>&lt;string.h&gt;</span>
+<span>FILE</span>* fp = <span>fopen</span>(<span>"nonexist"</span>, <span>"r"</span>);
+<span>if</span> (fp == <span>NULL</span>) {
+  <span>fprintf</span>(stderr, <span>"Error: %s\n"</span>, <span>strerror</span>(errno));
+  <span>perror</span>(<span>"fopen"</span>);
+}</td><td>C89</td></tr>
+
+        <tr><td>95</td><td>signal.h 信号处理</td><td><span>#include</span> <span>&lt;signal.h&gt;</span>
+<span>void</span> <span>handler</span>(<span>int</span> sig) {
+  <span>printf</span>(<span>"收到信号 %d\n"</span>, sig);
+  <span>exit</span>(<span>1</span>);
+}
+<span>signal</span>(SIGINT, handler);   <span>// Ctrl+C</span>
+<span>signal</span>(SIGSEGV, handler);  <span>// 段错误</span>
+<span>// 信号处理中可做的事非常有限, 尽量避免复杂操作</span></td><td>C89</td></tr>
+
+        <!-- ===== 十一、多文件编程与链接 ===== -->
+        <tr><td colspan="4">十一、多文件编程与链接</td></tr>
+
+        <tr><td>96</td><td>extern 关键字</td><td><span>// file1.c</span>
+<span>int</span> globalVar = <span>42</span>;
+<span>// file2.c</span>
+<span>extern</span> <span>int</span> globalVar;  <span>// 声明, 不定义</span></td><td>C89</td></tr>
+
+        <tr><td>97</td><td>static 全局变量</td><td><span>static</span> <span>int</span> counter = <span>0</span>;
+<span>// 仅当前文件可见, 不会与其它文件的同名符号冲突</span></td><td>C89</td></tr>
+
+        <tr><td>98</td><td>static 局部变量</td><td><span>void</span> <span>counter</span>(<span>void</span>) {
+  <span>static</span> <span>int</span> count = <span>0</span>;  <span>// 只初始化一次, 函数返回后值保留</span>
+  count++;
+  <span>printf</span>(<span>"%d\n"</span>, count);
+}</td><td>C89</td></tr>
+
+        <tr><td>99</td><td>编译与链接流程</td><td><span>// 预处理: gcc -E main.c -o main.i</span>
+<span>// 编译:   gcc -S main.c -o main.s</span>
+<span>// 汇编:   gcc -c main.c -o main.o</span>
+<span>// 链接:   gcc main.o helper.o -o program</span>
+<span>// 一步:   gcc main.c helper.c -o program</span></td><td>C89</td></tr>
+
+        <!-- ===== 十二、高级特性 ===== -->
+        <tr><td colspan="4">十二、高级特性</td></tr>
+
+        <tr><td>100</td><td>_Bool 类型</td><td><span>#include</span> <span>&lt;stdbool.h&gt;</span>  <span>// C99</span>
+<span>bool</span> flag = <span>true</span>;
+<span>if</span> (flag) { ... }
+<span>// C23 起 bool/true/false 成为关键字</span></td><td>C99</td></tr>
+
+        <tr><td>101</td><td>_Complex 复数</td><td><span>#include</span> <span>&lt;complex.h&gt;</span>
+<span>double</span> <span>complex</span> z = <span>1.0</span> + <span>2.0</span>*I;
+<span>double</span> r = <span>cabs</span>(z);
+<span>double</span> <span>complex</span> z2 = <span>cpow</span>(z, <span>2</span>);</td><td>C99</td></tr>
+
+        <tr><td>102</td><td>_Atomic 原子类型</td><td><span>#include</span> <span>&lt;stdatomic.h&gt;</span>
+<span>atomic_int</span> counter = <span>0</span>;
+<span>atomic_fetch_add</span>(&amp;counter, <span>1</span>);
+<span>// 多线程安全的原子操作</span></td><td>C11</td></tr>
+
+        <tr><td>103</td><td>_Generic 泛型选择</td><td><span>#define</span> TYPEOF(x) <span>_Generic</span>((x), \
+  <span>int</span>: <span>"int"</span>,               \
+  <span>float</span>: <span>"float"</span>,           \
+  <span>double</span>: <span>"double"</span>,         \
+  <span>default</span>: <span>"other"</span>)
+<span>printf</span>(<span>"%s\n"</span>, <span>TYPEOF</span>(<span>42</span>));  <span>// "int"</span></td><td>C11</td></tr>
+
+        <tr><td>104</td><td>_Alignas / _Alignof</td><td><span>#include</span> <span>&lt;stdalign.h&gt;</span>
+<span>_Alignas</span>(<span>16</span>) <span>int</span> x;       <span>// 指定对齐</span>
+<span>size_t</span> a = <span>_Alignof</span>(<span>int</span>);   <span>// 查询对齐要求</span></td><td>C11</td></tr>
+
+        <tr><td>105</td><td>_Thread_local</td><td><span>#include</span> <span>&lt;threads.h&gt;</span>
+<span>thread_local</span> <span>int</span> tls_var = <span>0</span>;
+<span>// 每个线程有独立副本</span></td><td>C11</td></tr>
+
+        <tr><td>106</td><td>_Noreturn</td><td><span>#include</span> <span>&lt;stdnoreturn.h&gt;</span>
+<span>_Noreturn</span> <span>void</span> <span>die</span>(<span>void</span>) {
+  <span>exit</span>(<span>1</span>);
+}
+<span>// 告诉编译器此函数不会返回, 有助于优化和警告</span></td><td>C11</td></tr>
+
+        <!-- ===== 十三、常见Bug与陷阱 ===== -->
+        <tr><td colspan="4">十三、常见Bug与陷阱</td></tr>
+
+        <tr><td>107</td><td>= 与 == 混淆</td><td><span>if</span> (a = <span>5</span>) { }   <span>// BUG! 赋值而非比较</span>
+<span>if</span> (<span>5</span> == a) { }   <span>// 防御: 常量放左边, 误写 5=a 会编译错误</span></td><td>C89</td></tr>
+
+        <tr><td>108</td><td>数组越界</td><td><span>int</span> arr[<span>5</span>];
+arr[<span>5</span>] = <span>10</span>;   <span>// BUG! 越界, 未定义行为</span>
+arr[-<span>1</span>] = <span>10</span>;  <span>// BUG! 同样越界</span>
+<span>// C语言不检查数组边界, 需程序员自行保证</span></td><td>C89</td></tr>
+
+        <tr><td>109</td><td>缓冲区溢出</td><td><span>char</span> buf[<span>10</span>];
+<span>gets</span>(buf);          <span>// 永远不要用 gets! C11已移除</span>
+<span>strcpy</span>(buf, longStr); <span>// 如果 longStr &gt; 10 则溢出</span>
+<span>// 改用 fgets(buf, sizeof(buf), stdin)</span>
+<span>// 改用 strncpy / snprintf</span></td><td>C89</td></tr>
+
+        <tr><td>110</td><td>悬垂指针</td><td><span>int</span>* <span>bad</span>(<span>void</span>) {
+  <span>int</span> x = <span>42</span>;
+  <span>return</span> &amp;x;  <span>// BUG! 返回局部变量地址</span>
+}
+<span>int</span>* p = <span>malloc</span>(<span>4</span>);
+<span>free</span>(p);
+*p = <span>10</span>;  <span>// BUG! use-after-free</span></td><td>C89</td></tr>
+
+        <tr><td>111</td><td>空指针解引用</td><td><span>int</span>* p = <span>NULL</span>;
+*p = <span>42</span>;    <span>// BUG! 段错误</span>
+<span>// 解引用前检查: if (p != NULL) *p = 42;</span></td><td>C89</td></tr>
+
+        <tr><td>112</td><td>未初始化变量</td><td><span>int</span> x;
+<span>printf</span>(<span>"%d\n"</span>, x);  <span>// 未定义行为, 输出任意值</span>
+<span>// 始终初始化: int x = 0;</span></td><td>C89</td></tr>
+
+        <tr><td>113</td><td>整数溢出</td><td><span>unsigned int</span> a = <span>UINT_MAX</span>;
+a++;  <span>// 回绕为0 (有符号溢出是未定义行为!)</span>
+<span>int</span> b = <span>INT_MAX</span>;
+b++;  <span>// 未定义行为!</span>
+<span>// 检查: if (a &gt; INT_MAX - b) { /* 溢出 */ }</span></td><td>C89</td></tr>
+
+        <tr><td>114</td><td>除零错误</td><td><span>int</span> a = <span>10</span>, b = <span>0</span>;
+<span>int</span> c = a / b;  <span>// 未定义行为! 程序可能崩溃</span>
+<span>int</span> d = a % b;  <span>// 同样未定义行为</span>
+<span>// 始终检查: if (b != 0) c = a / b;</span></td><td>C89</td></tr>
+
+        <tr><td>115</td><td>符号扩展陷阱</td><td><span>char</span> c = <span>0x80</span>;       <span>// -128</span>
+<span>int</span> i = c;            <span>// 符号扩展 → -128 (不是 128!)</span>
+<span>unsigned</span> <span>char</span> uc = <span>0x80</span>;
+<span>int</span> j = uc;           <span>// 零扩展 → 128</span></td><td>C89</td></tr>
+
+        <tr><td>116</td><td>printf 格式不匹配</td><td><span>long</span> l = <span>123456789L</span>;
+<span>printf</span>(<span>"%d\n"</span>, l);   <span>// BUG! 应使用 %ld</span>
+<span>size_t</span> s = <span>100</span>;
+<span>printf</span>(<span>"%d\n"</span>, s);   <span>// BUG! 应使用 %zu</span></td><td>C89/C99</td></tr>
+
+        <tr><td>117</td><td>scanf 的 &amp; 遗漏</td><td><span>int</span> x;
+<span>scanf</span>(<span>"%d"</span>, x);     <span>// BUG! 应传入 &amp;x</span>
+<span>char</span> str[<span>100</span>];
+<span>scanf</span>(<span>"%s"</span>, &amp;str); <span>// 虽能工作但不正确, 应为 str</span></td><td>C89</td></tr>
+
+        <tr><td>118</td><td>宏的副作用</td><td><span>#define</span> SQUARE(x) (x*x)    <span>// BUG! 缺少括号</span>
+<span>#define</span> MAX(a,b) ((a)&gt;(b)?(a):(b))
+<span>int</span> m = <span>MAX</span>(i++, j);  <span>// BUG! i 可能被递增两次</span>
+<span>// 避免宏中有副作用的表达式</span></td><td>C89</td></tr>
+
+        <tr><td>119</td><td>fgets 保留换行符</td><td><span>char</span> line[<span>256</span>];
+<span>fgets</span>(line, <span>sizeof</span>(line), stdin);
+<span>// line 末尾包含 '\n', 需要手动去除:</span>
+line[<span>strcspn</span>(line, <span>"\n"</span>)] = <span>'\0'</span>;</td><td>C89</td></tr>
+
+        <tr><td>120</td><td>strncpy 不追加 \0</td><td><span>char</span> dst[<span>10</span>];
+<span>strncpy</span>(dst, <span>"hello world"</span>, <span>sizeof</span>(dst));
+dst[<span>sizeof</span>(dst)-<span>1</span>] = <span>'\0'</span>;  <span>// 手动保证以 \0 结尾</span>
+<span>// 更安全: snprintf(dst, sizeof(dst), "%s", src);</span></td><td>C89</td></tr>
+
+        <tr><td>121</td><td>sizeof(指针) ≠ sizeof(数组)</td><td><span>void</span> <span>func</span>(<span>int</span> arr[]) {
+  <span>size_t</span> s = <span>sizeof</span>(arr); <span>// = 8 (64位指针), 不是数组大小!</span>
+}
+<span>// 传递数组时需额外传递长度参数</span></td><td>C89</td></tr>
+
+        <tr><td>122</td><td>位运算优先级</td><td><span>if</span> (flags &amp; MASK == MASK) { }  <span>// BUG! == 优先级高于 &amp;</span>
+<span>if</span> ((flags &amp; MASK) == MASK) { }  <span>// 正确</span></td><td>C89</td></tr>
+
+        <tr><td>123</td><td>switch 缺少 break</td><td><span>switch</span> (x) {
+  <span>case</span> <span>1</span>: <span>doA</span>();   <span>// 会继续执行 case 2!</span>
+  <span>case</span> <span>2</span>: <span>doB</span>(); <span>break</span>;
+}</td><td>C89</td></tr>
+
+        <tr><td>124</td><td>有符号右移陷阱</td><td><span>int</span> x = <span>-8</span>;
+<span>int</span> y = x &gt;&gt; <span>1</span>;  <span>// 实现定义 (通常算术右移=-4)</span>
+<span>unsigned</span> <span>int</span> u = <span>0x80000000</span>;
+u &gt;&gt;= <span>1</span>;          <span>// 逻辑右移, 高位补0</span></td><td>C89</td></tr>
+
+        <tr><td>125</td><td>浮点数比较</td><td><span>float</span> a = <span>0.1f</span> + <span>0.2f</span>;
+<span>if</span> (a == <span>0.3f</span>) { }  <span>// 可能为假! 浮点精度问题</span>
+<span>if</span> (<span>fabs</span>(a - <span>0.3f</span>) &lt; <span>1e-6f</span>) { }  <span>// 正确: 容差比较</span></td><td>C89</td></tr>
+
+        <tr><td>126</td><td>realloc 返回 NULL</td><td><span>int</span>* tmp = <span>realloc</span>(p, newSize);
+<span>if</span> (tmp == <span>NULL</span>) {
+  <span>// p 仍然有效! 不要直接 p = realloc(p, newSize)</span>
+  <span>free</span>(p);
+} <span>else</span> {
+  p = tmp;
+}</td><td>C89</td></tr>
+
+        <tr><td>127</td><td>memcpy vs memmove</td><td><span>memcpy</span>(dst, src, n);   <span>// 要求区域不重叠</span>
+<span>memmove</span>(dst, src, n);  <span>// 允许重叠 (更安全, 稍慢)</span>
+<span>// 不确定是否重叠时, 用 memmove</span></td><td>C89</td></tr>
+
+        <!-- ===== 十四、编程建议与最佳实践 ===== -->
+        <tr><td colspan="4">十四、编程建议与最佳实践</td></tr>
+
+        <tr><td>128</td><td>编译警告全开</td><td><span>// GCC/Clang:</span>
+<span>// gcc -Wall -Wextra -Wpedantic -Werror main.c</span>
+<span>// MSVC:</span>
+<span>// cl /W4 /WX main.c</span>
+<span>// 把警告当错误处理, 不要忽略任何警告</span></td><td>C89</td></tr>
+
+        <tr><td>129</td><td>使用 const 修饰只读参数</td><td><span>void</span> <span>print</span>(<span>const</span> <span>char</span>* str) {
+  <span>printf</span>(<span>"%s\n"</span>, str);
+}
+<span>// 明确表达意图, 让编译器帮助检查</span></td><td>C89</td></tr>
+
+        <tr><td>130</td><td>检查所有返回值</td><td><span>FILE</span>* fp = <span>fopen</span>(<span>"file"</span>, <span>"r"</span>);
+<span>if</span> (fp == <span>NULL</span>) { <span>/* 处理错误 */</span> }
+<span>int</span>* p = <span>malloc</span>(size);
+<span>if</span> (p == <span>NULL</span>) { <span>/* 处理OOM */</span> }
+<span>// 永远不要假设操作一定成功</span></td><td>C89</td></tr>
+
+        <tr><td>131</td><td>malloc 后记得 free</td><td><span>// 谁分配谁释放</span>
+<span>// 复杂项目中建立明确的所有权模型</span>
+<span>// 考虑用 arena/池分配简化管理</span></td><td>C89</td></tr>
+
+        <tr><td>132</td><td>使用安全的字符串函数</td><td><span>// 避免: gets, strcpy, strcat, sprintf</span>
+<span>// 推荐: fgets, strncpy, strncat, snprintf</span>
+<span>// C11 Annex K: gets_s, strcpy_s 等 (非必须, 移植性差)</span></td><td>C89/C11</td></tr>
+
+        <tr><td>133</td><td>头文件中只放声明</td><td><span>// mylib.h:</span>
+<span>extern</span> <span>int</span> globalVar;           <span>// 声明</span>
+<span>void</span> <span>myFunc</span>(<span>int</span> x);              <span>// 声明</span>
+<span>// mylib.c:</span>
+<span>int</span> globalVar = <span>0</span>;               <span>// 定义</span>
+<span>void</span> <span>myFunc</span>(<span>int</span> x) { ... }      <span>// 定义</span>
+<span>// 避免在头文件中定义变量和函数</span></td><td>C89</td></tr>
+
+        <tr><td>134</td><td>合理的命名规范</td><td><span>// 变量: snake_case → int item_count;</span>
+<span>// 常量: UPPER_CASE → #define MAX_SIZE 1024</span>
+<span>// 函数: snake_case → void parse_config(void);</span>
+<span>// 结构体: PascalCase 或 snake_case</span>
+<span>// 全局变量: g_ 前缀 → int g_debug_level;</span></td><td>C89</td></tr>
+
+        <tr><td>135</td><td>单一出口原则（可选）</td><td><span>int</span> <span>func</span>(<span>void</span>) {
+  <span>int</span> result = <span>-1</span>;
+  <span>char</span>* buf = <span>malloc</span>(<span>1024</span>);
+  <span>if</span> (!buf) <span>goto</span> cleanup;
+  <span>// ... 处理 ...</span>
+  result = <span>0</span>;
+cleanup:
+  <span>free</span>(buf);
+  <span>return</span> result;
+}
+<span>// goto 用于错误处理的集中清理</span></td><td>C89</td></tr>
+
+        <tr><td>136</td><td>魔法数字避免</td><td><span>// 不好:</span>
+<span>if</span> (status == <span>3</span>) { }
+<span>// 好:</span>
+<span>#define</span> STATUS_ERROR <span>3</span>
+<span>if</span> (status == STATUS_ERROR) { }
+<span>// 或用 enum: enum Status { OK, WARN, ERROR };</span></td><td>C89</td></tr>
+
+        <tr><td>137</td><td>合理使用注释</td><td><span>// 注释解释"为什么"而非"做什么"</span>
+<span>// 好的代码自解释, 注释解释设计意图</span>
+<span>// 及时更新注释, 过时注释比没注释更糟</span></td><td>C89</td></tr>
+
+        <tr><td>138</td><td>防御性编程</td><td><span>// 1. 检查所有外部输入</span>
+<span>// 2. 检查函数参数的合法性</span>
+<span>// 3. 检查数组/缓冲区边界</span>
+<span>// 4. 检查指针是否为空</span>
+<span>// 5. 检查循环不变式</span>
+<span>// 6. 对不可能发生的情况加 assert</span></td><td>C89</td></tr>
+
+        <tr><td>139</td><td>使用版本控制</td><td><span>// 推荐 git + .gitignore</span>
+<span>// .gitignore 示例:</span>
+<span>// *.o *.out *.exe *.obj</span>
+<span>// .vscode/ .idea/</span>
+<span>// 不要提交编译产物和IDE配置</span></td><td>C89</td></tr>
+
+        <tr><td>140</td><td>测试与调试</td><td><span>// 单元测试: 为每个函数写测试用例</span>
+<span>// 断言: assert(ptr != NULL);</span>
+<span>// 调试输出: #ifdef DEBUG / fprintf(stderr, ...)</span>
+<span>// 内存检测: valgrind ./program</span>
+<span>// 地址消毒: gcc -fsanitize=address main.c</span>
+<span>// 未定义行为消毒: gcc -fsanitize=undefined main.c</span></td><td>C89</td></tr>
+
+        <tr><td>141</td><td>代码格式化</td><td><span>// 统一缩进风格 (K&amp;R / Allman / GNU)</span>
+<span>// 工具: clang-format -i *.c</span>
+<span>// 团队统一使用同一份 .clang-format 配置</span></td><td>C89</td></tr>
+
+        <tr><td>142</td><td>避免过早优化</td><td><span>// 1. 先写正确, 再求快</span>
+<span>// 2. 用 profiler 找瓶颈, 不要猜</span>
+<span>// 3. 优化算法复杂度 &gt; 微优化</span>
+<span>// 4. 编译器优化往往比手工好 (-O2, -O3)</span></td><td>C89</td></tr>
+
+        <tr><td>143</td><td>了解未定义行为 (UB)</td><td><span>// 常见UB:</span>
+<span>// - 有符号整数溢出</span>
+<span>// - 数组越界</span>
+<span>// - 空指针解引用</span>
+<span>// - 使用未初始化变量</span>
+<span>// - 多次修改同一变量无序列点 (如 i++ + i++)</span>
+<span>// - 移位超出位宽 (如 1 &lt;&lt; 33 在32位int上)</span>
+<span>// UB = 编译器可以产生任何结果, 包括"看起来正确"</span></td><td>C89</td></tr>
+
+        <tr><td>144</td><td>资源管理 RAII 思想</td><td><span>// C语言没有析构函数, 但可用以下模式:</span>
+<span>// 1. 获取资源后立即检查</span>
+<span>// 2. 所有错误路径都要释放已获取的资源</span>
+<span>// 3. 用 goto cleanup 集中释放</span>
+<span>// 4. 封装成 init/destroy 函数对</span></td><td>C89</td></tr>
+
+        <tr><td>145</td><td>数据结构设计</td><td><span>// 动态数组:</span>
+<span>typedef</span> <span>struct</span> { <span>int</span>* data; <span>size_t</span> len; <span>size_t</span> cap; } Vec;
+<span>// 链表:</span>
+<span>typedef</span> <span>struct</span> Node { <span>int</span> val; <span>struct</span> Node* next; } Node;
+<span>// 哈希表: 自行实现或用 uthash (第三方)</span></td><td>C89</td></tr>
+
+        <tr><td>146</td><td>跨平台注意事项</td><td><span>// 1. 使用标准C, 避免平台特定扩展</span>
+<span>// 2. 用 stdint.h 的可移植类型: int32_t, uint64_t</span>
+<span>// 3. 注意大小端 (网络字节序用 htonl/ntohl)</span>
+<span>// 4. 文件路径用 / (Windows也支持)</span>
+<span>// 5. 条件编译处理平台差异: #ifdef _WIN32</span></td><td>C89/C99</td></tr>
+
+        <tr><td>147</td><td>使用 stdint.h 固定宽度类型</td><td><span>#include</span> <span>&lt;stdint.h&gt;</span>
+<span>int8_t</span>   i8  = <span>-128</span>;
+<span>uint8_t</span>  u8  = <span>255</span>;
+<span>int16_t</span>  i16 = <span>-32768</span>;
+<span>uint32_t</span> u32 = <span>4294967295U</span>;
+<span>int64_t</span>  i64 = <span>INT64_MAX</span>;
+<span>// 推荐在需要确定大小的场景使用</span></td><td>C99</td></tr>
+
+        <tr><td>148</td><td>volatile 关键字</td><td><span>volatile</span> <span>int</span> flag = <span>0</span>;
+<span>// 告诉编译器该变量可能被外部修改 (硬件/信号/多线程)</span>
+<span>// 禁止编译器优化掉对该变量的读写</span>
+<span>// 注意: volatile ≠ 原子操作, 多线程同步需用 atomic</span></td><td>C89</td></tr>
+
+        <tr><td>149</td><td>register 关键字（已过时）</td><td><span>register</span> <span>int</span> counter = <span>0</span>;
+<span>// 建议编译器将变量放入寄存器</span>
+<span>// 现代编译器会自动优化, 此关键字几乎无用</span>
+<span>// C17 中仍保留但基本被忽略, C23 可能移除</span></td><td>C89</td></tr>
+
+        <tr><td>150</td><td>函数式宏 vs 内联函数</td><td><span>// 宏: 无类型检查, 有副作用风险</span>
+<span>#define</span> MAX(a,b) ((a)&gt;(b)?(a):(b))
+<span>// 内联: 类型安全, 编译器可优化</span>
+<span>static</span> <span>inline</span> <span>int</span> <span>max</span>(<span>int</span> a, <span>int</span> b) { <span>return</span> a&gt;b ? a : b; }
+<span>// 优先使用内联函数, 除非需要泛型 (C11 _Generic 可替代)</span></td><td>C99</td></tr>
+
+        <!-- ===== 十五、C标准版本差异 ===== -->
+        <tr><td colspan="4">十五、C标准版本关键差异</td></tr>
+
+        <tr><td>151</td><td>C89 / C90</td><td><span>// 第一个ISO标准</span>
+<span>// 不支持: //注释, VLA, long long, 声明可在块中间</span>
+<span>// 函数隐式声明返回int (极危险, C99起禁止)</span></td><td>C89</td></tr>
+
+        <tr><td>152</td><td>C99 新增</td><td><span>// - // 单行注释</span>
+<span>// - 变量可在块内任意位置声明</span>
+<span>// - 变长数组 VLA</span>
+<span>// - long long 类型</span>
+<span>// - bool (stdbool.h)</span>
+<span>// - complex (complex.h)</span>
+<span>// - restrict 指针</span>
+<span>// - inline 函数</span>
+<span>// - 指定初始化器</span>
+<span>// - 柔性数组成员</span>
+<span>// - snprintf</span>
+<span>// - stdint.h, inttypes.h</span></td><td>C99</td></tr>
+
+        <tr><td>153</td><td>C11 新增</td><td><span>// - _Generic 泛型选择</span>
+<span>// - _Atomic 原子类型 (stdatomic.h)</span>
+<span>// - _Thread_local 线程本地存储</span>
+<span>// - _Alignas / _Alignof</span>
+<span>// - _Noreturn</span>
+<span>// - _Static_assert 静态断言</span>
+<span>// - gets() 被移除</span>
+<span>// - VLA 改为可选特性</span>
+<span>// - 多线程支持 (threads.h, 可选)</span></td><td>C11</td></tr>
+
+        <tr><td>154</td><td>C17 / C18</td><td><span>// 主要是缺陷修正, 无新特性</span>
+<span>// 修正 C11 的一些问题</span>
+<span>// __STDC_VERSION__ = 201710L</span></td><td>C17</td></tr>
+
+        <tr><td>155</td><td>C23 新增</td><td><span>// - nullptr 关键字</span>
+<span>// - bool/true/false 成为关键字 (不再需要 stdbool.h)</span>
+<span>// - typeof / typeof_unqual</span>
+<span>// - constexpr</span>
+<span>// - auto 类型推断</span>
+<span>// - #embed 二进制嵌入</span>
+<span>// - #elifdef / #elifndef</span>
+<span>// - 十进制浮点数 (DecimalN)</span></td><td>C23</td></tr>
+
+      </tbody>
+    </table>
+  </div>
+
+
+
+</body></html>
