@@ -395,7 +395,7 @@
     }
     .conflict-body {
       display: grid;
-      grid-template-columns: 1fr auto 1fr;
+      grid-template-columns: 1fr 1fr;
       gap: 0;
       overflow: hidden;
       min-height: 0;
@@ -1867,6 +1867,7 @@
         var leftEditor = document.getElementById('conflictLeftEditor');
         var rightEditor = document.getElementById('conflictRightEditor');
         var diffCol = document.getElementById('conflictDiffCol');
+        var conflictBody = document.querySelector('.conflict-body');
         if (!leftEditor || !rightEditor || !diffCol) return;
 
         var leftText = (leftEditor.textContent || '').trim();
@@ -1877,6 +1878,8 @@
         conflictDiffRanges = computeTextDiffs(leftText, rightText);
         if (conflictDiffRanges.length === 0) { diffCol.style.display = 'none'; return; }
 
+        // Switch to three-column layout for diff navigation
+        if (conflictBody) conflictBody.style.gridTemplateColumns = '1fr auto 1fr';
         conflictDiffIndex = 0;
         diffCol.style.display = 'flex';
         document.getElementById('conflictDiffCounter').textContent = '1/' + conflictDiffRanges.length;
