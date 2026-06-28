@@ -146,7 +146,6 @@ body.sidebar-collapsed .sidebar { transform: translateX(calc(-1 * var(--sidebar-
 body.sidebar-collapsed.sidebar-peek .sidebar { transform: translateX(0); position: fixed; top: var(--header-height); bottom: 48px; left: 0; box-shadow: 20px 0 40px rgba(31,41,55,.12); }
 @media (max-width: 768px) {
   :root { --header-height: 64px; }
-  .header-right { display: none; }
   .brand em { display: none; }
   .layout { grid-template-columns: 1fr; }
   .sidebar { position: fixed; top: var(--header-height); left: 0; bottom: 0; transform: translateX(calc(-1 * var(--sidebar-width))); box-shadow: 20px 0 40px rgba(31,41,55,.12); }
@@ -199,13 +198,13 @@ h1, h2, h3, p, a, strong, span { overflow-wrap: break-word; }
   }
   .desktop-status { display: none; }
   .hard-refresh-btn {
-    width: 44px;
-    height: 44px;
     min-height: 44px;
-    padding: 0;
+    height: 44px;
+    padding: 0 14px;
     border-radius: 14px;
+    font-size: 14px;
   }
-  .hard-refresh-btn .refresh-text { display: none; }
+  .hard-refresh-btn .refresh-text { display: inline; }
 
   .header-left { min-width: 0; gap: 10px; }
   .sidebar-toggle {
