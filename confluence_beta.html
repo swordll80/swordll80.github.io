@@ -571,7 +571,8 @@
       .tool-group { width: 100%; }
       .toolbar select { max-width: 100%; flex: 1 1 120px; }
 
-      /* Mobile: hide tree action buttons by default */
+      /* Mobile: hide pane head and tree action buttons by default */
+      .pane-head { display: none; }
       .tree-actions { display: none; }
 
       /* Show toolbar toggle button on mobile */
@@ -1194,7 +1195,14 @@
           var content = doc.querySelector('[data-confluence-content]');
           loadedUsesConfluenceContent = !!content;
           if (content) return content.innerHTML;
-          return doc.body ? doc.body.innerHTML : fullHtml;
+          // For standalone pages (e.g., c.html), only extract the main .container content
+          // so the editor doesn't show the page's own topbar/scripts
+          if (doc.body) {
+            var container = doc.body.querySelector('.container');
+            if (container) return container.innerHTML;
+            return doc.body.innerHTML;
+          }
+          return fullHtml;
         } catch (e) {
           loadedUsesConfluenceContent = false;
           return fullHtml || '';
@@ -1277,20 +1285,42 @@
       function sanitizeHtml(html) {
         var box = document.createElement('div');
         box.innerHTML = String(html || '');
-        var banned = box.querySelectorAll('script, style, iframe, object, embed, link, meta, base, form, input, button, textarea, select');
+        var banned = box.querySelectorAll('script, style, iframe, object, embed, link, meta, base, form, input, textarea, select');
         Array.prototype.forEach.call(banned, function (el) { el.remove(); });
         var nodes = box.querySelectorAll('*');
         Array.prototype.forEach.call(nodes, function (el) {
           Array.prototype.slice.call(el.attributes).forEach(function (attr) {
             var name = attr.name.toLowerCase();
             var value = attr.value;
-            if (name.indexOf('on') === 0 || name === 'id') {
+            if (name.indexOf('on') === 0) {
+              // Preserve onclick on .section-head buttons for standalone pages (e.g., c.html)
+              // They use safe inline handlers like: this.parentElement.classList.toggle('open')
+              if (name === 'onclick' && el.classList.contains('section-head')) {
+                return;
+              }
               el.removeAttribute(attr.name);
+              return;
+            }
+            if (name === 'id') {
+              // Preserve id for anchor navigation (e.g., c.html sections and cards)
+              if (!/^(?:toc-h-|sect-|card-)\d[\d-]*$/.test(value)) {
+                el.removeAttribute(attr.name);
+              }
               return;
             }
             if (name === 'class') {
               var allowedClasses = String(value || '').split(/\s+/).filter(function (cls) {
-                return ['callout', 'task-line', 'task-box', 'task-text', 'done'].indexOf(cls) >= 0;
+                return [
+                  'callout', 'task-line', 'task-box', 'task-text', 'done',
+                  // c.html reference-style classes
+                  'section', 'section-head', 'section-body', 'open',
+                  'card', 'card-head', 'card-num', 'card-title', 'card-ver', 'card-code', 'hidden',
+                  'kw', 'cm', 'st', 'nu', 'fn',
+                  'container', 'topbar', 'search-wrap', 'search-clear', 'visible',
+                  'icon', 'title', 'count', 'arrow', 'no-result', 'back-top', 'result-count',
+                  // Confluence common
+                  'confluence-embedded-file', 'code'
+                ].indexOf(cls) >= 0;
               });
               if (allowedClasses.length) el.setAttribute('class', allowedClasses.join(' '));
               else el.removeAttribute(attr.name);
@@ -1306,7 +1336,7 @@
               else el.removeAttribute('style');
               return;
             }
-            if (['href', 'src', 'alt', 'title', 'target', 'rel', 'colspan', 'rowspan', 'style'].indexOf(name) < 0) {
+            if (['href', 'src', 'alt', 'title', 'target', 'rel', 'colspan', 'rowspan', 'style', 'data-keywords'].indexOf(name) < 0) {
               el.removeAttribute(attr.name);
             }
           });
@@ -2196,6 +2226,15 @@
             }
           }
           if (doc.body) {
+            // For standalone pages (e.g., c.html), try to only replace the main content area
+            // preserving the page's own header (topbar), scripts, and other structural elements.
+            var container = doc.body.querySelector('.container');
+            if (container) {
+              // Replace only the .container content while keeping topbar + scripts intact
+              container.innerHTML = body;
+              return '<!doctype html>\n' + doc.documentElement.outerHTML + '\n';
+            }
+            // Fallback: no .container found, replace whole body
             doc.body.innerHTML = body;
             return '<!doctype html>\n' + doc.documentElement.outerHTML + '\n';
           }
@@ -2943,20 +2982,57 @@
         mobileTocOverlay.addEventListener('click', closeMobileToc);
 
         function buildMobileTOC() {
+          var items = [];
+
+          // Strategy 1: h1-h6 headings
           var headings = editor.querySelectorAll('h1, h2, h3, h4, h5, h6');
+          if (headings.length > 0) {
+            headings.forEach(function (h, idx) {
+              var id = h.id || ('toc-h-' + idx);
+              if (!h.id) h.id = id;
+              items.push({ id: id, text: h.textContent.trim() || '(空标题)', level: h.tagName.toLowerCase() });
+            });
+          }
+
+          // Strategy 2: c.html style .section-head .title
+          if (items.length === 0) {
+            var sections = editor.querySelectorAll('.section-head .title');
+            sections.forEach(function (titleEl, idx) {
+              var section = titleEl.closest('.section');
+              var id = section ? section.id : null;
+              if (!id) {
+                id = 'sect-' + idx;
+                if (section) section.id = id;
+              }
+              items.push({ id: id, text: titleEl.textContent.trim() || '(空标题)', level: 'h2' });
+            });
+          }
+
+          // Strategy 3: .card-head .card-title inside sections
+          if (items.length === 0) {
+            var cardTitles = editor.querySelectorAll('.card-head .card-title');
+            cardTitles.forEach(function (titleEl, idx) {
+              var card = titleEl.closest('.card');
+              var id = card ? card.id : null;
+              if (!id) {
+                id = 'card-' + idx;
+                if (card) card.id = id;
+              }
+              items.push({ id: id, text: titleEl.textContent.trim() || '(空标题)', level: 'h3' });
+            });
+          }
+
           mobileTocList.innerHTML = '';
-          if (headings.length === 0) {
+          if (items.length === 0) {
             mobileTocList.innerHTML = '<div class="mobile-toc-empty">当前页面无标题</div>';
             return;
           }
-          headings.forEach(function (h, idx) {
-            var id = h.id || ('toc-h-' + idx);
-            if (!h.id) h.id = id;
+          items.forEach(function (item) {
             var btn = document.createElement('button');
-            btn.className = 'mobile-toc-item toc-' + h.tagName.toLowerCase();
-            btn.textContent = h.textContent.trim() || '(空标题)';
+            btn.className = 'mobile-toc-item toc-' + item.level;
+            btn.textContent = item.text;
             btn.addEventListener('click', function () {
-              var target = document.getElementById(id);
+              var target = document.getElementById(item.id);
               if (target) {
                 target.scrollIntoView({ behavior: 'smooth', block: 'start' });
               }
