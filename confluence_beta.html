@@ -612,6 +612,22 @@
 
       /* Hide page title and filename inputs on mobile */
       .page-meta { display: none; }
+
+      /* Hide save button on mobile */
+      #saveBtn { display: none !important; }
+
+      /* Return home & online: icon only, no text on mobile */
+      #homeBtn, .top-actions > a.btn { font-size: 0; gap: 0; }
+      #homeBtn svg, .top-actions > a.btn svg { width: 20px; height: 20px; }
+
+      /* Hide tree node file names on mobile */
+      .tree-row .file { display: none; }
+
+      /* Hide status bar ("已读取..." etc.) on mobile */
+      .status { display: none; }
+
+      /* Hide browser support note on mobile */
+      .support-note { display: none; }
     }
 
     /* ---- Mobile TOC Panel ---- */
