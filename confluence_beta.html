@@ -364,10 +364,21 @@
       color: #92400e;
       flex-shrink: 0;
     }
-    .conflict-title-value {
-      color: #b45309;
+    .conflict-title-input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid #fed7aa;
+      border-radius: 6px;
+      padding: 4px 8px;
+      font-size: 13px;
       font-weight: 600;
-      word-break: break-all;
+      color: #b45309;
+      background: #fff;
+      outline: none;
+    }
+    .conflict-title-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(47,111,237,.12);
     }
     .conflict-pane-actions {
       padding: 10px 14px;
@@ -384,7 +395,7 @@
     }
     .conflict-body {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr auto 1fr;
       gap: 0;
       overflow: hidden;
       min-height: 0;
@@ -460,10 +471,61 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 16px;
       padding: 14px 20px;
       border-top: 1px solid var(--line);
       background: var(--panel-soft);
+    }
+    .conflict-diff-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 0 10px;
+      background: var(--panel-soft);
+      border-left: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      min-width: 56px;
+    }
+    .diff-nav-btn {
+      width: 32px; height: 32px;
+      padding: 0;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #344054;
+      cursor: pointer;
+    }
+    .diff-nav-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+    .diff-nav-btn:disabled { opacity: .35; cursor: default; }
+    .diff-nav-btn:disabled:hover { border-color: var(--line); color: #344054; background: #fff; }
+    .diff-nav-btn svg { width: 16px; height: 16px; }
+    .diff-nav-counter {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      min-width: 48px;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: .02em;
+      white-space: nowrap;
+    }
+    /* Diff highlight markers inside conflict editors */
+    .conflict-editor mark.conflict-diff-mark {
+      background: #fde68a;
+      color: inherit;
+      border-radius: 3px;
+      padding: 1px 2px;
+    }
+    .conflict-editor mark.conflict-diff-mark.current {
+      background: #f59e0b;
+      color: #fff;
+      outline: 2px solid #d97706;
+      outline-offset: 1px;
     }
     .conflict-actions .btn-group { display: flex; gap: 8px; flex-wrap: wrap; }
     .conflict-actions .btn { min-height: 38px; padding: 8px 16px; font-size: 13px; font-weight: 650; }
@@ -474,8 +536,9 @@
     .conflict-actions .toggle-label { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
     .conflict-actions .toggle-label input { cursor: pointer; }
     @media (max-width: 900px) {
-      .conflict-body { grid-template-columns: 1fr; grid-template-rows: 1fr 1fr; }
+      .conflict-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr 1fr; }
       .conflict-pane:first-child { border-right: 0; border-bottom: 1px solid var(--line); }
+      .conflict-diff-col { flex-direction: row; padding: 8px 10px; border-left: 0; border-right: 0; border-bottom: 1px solid var(--line); min-width: auto; }
     }
 
     @media (max-width: 900px) {
@@ -663,15 +726,15 @@
           <button class="btn-close" id="conflictCloseBtn" type="button" title="关闭">✕</button>
         </div>
       </div>
-      <!-- Title row: always visible, left=disk title, right=editing title -->
+      <!-- Title row: always visible, left=disk title, right=editing title, both editable -->
       <div class="conflict-title-row" id="conflictTitleRow">
         <div class="conflict-title-cell">
           <span class="conflict-title-label">☁️ 磁盘标题</span>
-          <span class="conflict-title-value" id="conflictDiskTitleVal">—</span>
+          <input class="conflict-title-input" id="conflictDiskTitleVal" value="—" />
         </div>
         <div class="conflict-title-cell">
           <span class="conflict-title-label">📄 编辑标题</span>
-          <span class="conflict-title-value" id="conflictMyTitleVal">—</span>
+          <input class="conflict-title-input" id="conflictMyTitleVal" value="—" />
         </div>
       </div>
       <div class="conflict-body">
@@ -687,6 +750,15 @@
           <div class="conflict-pane-actions">
             <button class="btn outline" id="conflictUseLeftBtn" type="button">◀ 使用磁盘版本</button>
           </div>
+        </div>
+        <div class="conflict-diff-col" id="conflictDiffCol" style="display:none;">
+          <button class="btn icon diff-nav-btn" id="conflictDiffPrev" type="button" title="上一处差异">
+            <svg viewBox="0 0 24 24"><polyline points="18 15 12 9 6 15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <span class="diff-nav-counter" id="conflictDiffCounter">0/0</span>
+          <button class="btn icon diff-nav-btn" id="conflictDiffNext" type="button" title="下一处差异">
+            <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         </div>
         <div class="conflict-pane" id="conflictRightPane">
           <div class="conflict-pane-head" id="conflictRightHead">
@@ -1527,20 +1599,31 @@
         var diskTitleVal = document.getElementById('conflictDiskTitleVal');
         var myTitleVal = document.getElementById('conflictMyTitleVal');
 
-        // Check if both sides are identical or file was deleted
+        // --- Build conflict type description ---
+        var titleConflictExists = !!(titleConflict && titleConflict.diskTitle !== titleConflict.myTitle);
+        // Compare body content: extract editable body from both full HTML docs
+        var diskBody = extractEditableHtml(diskHtml || '');
+        var myBody = extractEditableHtml(myHtml);
+        var bodyConflictExists = (diskBody !== myBody);
+        // Determine title text with colored HTML spans
+        var conflictDescHtml;
         if (deleted) {
-          titleH3.textContent = '⚠ 同步冲突 --磁盘文件已被删除';
-        } else if (myHtml === diskHtml) {
-          titleH3.textContent = '⚠ 同步冲突 --完全相同';
+          conflictDescHtml = '<span style="color:var(--danger)">磁盘文件已被删除</span>';
+        } else if (!titleConflictExists && !bodyConflictExists) {
+          conflictDescHtml = '<span style="color:var(--primary)">完全相同（无冲突）</span>';
         } else {
-          titleH3.textContent = '⚠ 同步冲突';
+          var parts = [];
+          parts.push('<span style="color:' + (titleConflictExists ? 'var(--danger)' : 'var(--primary)') + '">' + (titleConflictExists ? '标题冲突' : '标题一致') + '</span>');
+          parts.push('<span style="color:' + (bodyConflictExists ? 'var(--danger)' : 'var(--primary)') + '">' + (bodyConflictExists ? '内容冲突' : '内容一致') + '</span>');
+          conflictDescHtml = parts.join('，');
         }
+        titleH3.innerHTML = '⚠ 同步冲突 — ' + conflictDescHtml;
 
-        // Title row: left = disk title, right = editing title (always visible)
+        // Title row: left = disk title, right = editing title (both editable)
         var diskTitle = (titleConflict && titleConflict.diskTitle) ? titleConflict.diskTitle : title;
         var myTitleShow = (titleConflict && titleConflict.myTitle) ? titleConflict.myTitle : title;
-        diskTitleVal.textContent = diskTitle;
-        myTitleVal.textContent = myTitleShow;
+        diskTitleVal.value = diskTitle;
+        myTitleVal.value = myTitleShow;
 
         // Left = disk version, Right = editing version
         leftEditor.setAttribute('data-html', diskHtml || '');
@@ -1550,10 +1633,10 @@
           leftEditor.innerHTML = '<p style="color:var(--danger);font-style:italic;padding:16px;">磁盘上的文件已被删除。</p>';
           leftSourceEditor.value = '';
         } else {
-          leftEditor.innerHTML = diskHtml;
+          leftEditor.innerHTML = diskBody;
           leftSourceEditor.value = prettyHtml(diskHtml);
         }
-        rightEditor.innerHTML = myHtml;
+        rightEditor.innerHTML = myBody;
         rightSourceEditor.value = prettyHtml(myHtml);
 
         fileSpan.textContent = fileName;
@@ -1574,6 +1657,9 @@
           leftTag.textContent = '磁盘 · ' + new Date(diskTime).toLocaleTimeString() + (isDiskNewer ? ' (新)' : ' (旧)');
           rightTag.textContent = '本地 · ' + new Date(myTime).toLocaleTimeString() + (isDiskNewer ? ' (旧)' : ' (新)');
         }
+
+        // Initialize diff comparison after editors are populated
+        setTimeout(initConflictDiff, 100);
       }
 
       function updateConflictView() {
@@ -1605,6 +1691,206 @@
           conflictState = null;
           st.reject(new Error('Conflict dialog closed by user'));
         }
+      }
+
+      // --- Diff comparison for conflict editors ---
+      var conflictDiffRanges = [];
+      var conflictDiffIndex = -1;
+
+      // Compute text diffs between two strings at word granularity.
+      // Returns array of { leftStart, leftEnd, rightStart, rightEnd, leftText, rightText } for differing segments.
+      // Positions are character offsets in the ORIGINAL strings, suitable for TreeWalker seek.
+      function computeTextDiffs(textA, textB) {
+        var result = [];
+        // Split original strings into word+whitespace tokens, preserving original positions
+        var tokensA = tokenizeWithPositions(textA);
+        var tokensB = tokenizeWithPositions(textB);
+
+        var i = 0, j = 0;
+        var lastMatchEndA = 0, lastMatchEndB = 0;
+
+        while (i < tokensA.length || j < tokensB.length) {
+          // Try to match current tokens (case-sensitive, exact word match)
+          if (i < tokensA.length && j < tokensB.length && tokensA[i].text === tokensB[j].text) {
+            // Match: advance both
+            lastMatchEndA = tokensA[i].end;
+            lastMatchEndB = tokensB[j].end;
+            i++; j++;
+          } else {
+            // We have a difference. Find how far until the next match.
+            // Look ahead up to 30 tokens for a resync point.
+            var bestSkipA = -1, bestSkipB = -1, bestScore = Infinity;
+            for (var lookA = 1; lookA <= 30 && (i + lookA) <= tokensA.length; lookA++) {
+              for (var lookB = 1; lookB <= 30 && (j + lookB) <= tokensB.length; lookB++) {
+                if (tokensA[i + lookA - 1].text === tokensB[j + lookB - 1].text) {
+                  var score = lookA + lookB; // prefer fewer skipped tokens
+                  if (score < bestScore) {
+                    bestScore = score;
+                    bestSkipA = lookA;
+                    bestSkipB = lookB;
+                  }
+                  break;
+                }
+              }
+            }
+
+            if (bestSkipA > 0 && bestSkipB > 0) {
+              // Found a resync point: the diff spans [lastMatchEnd, resyncStart)
+              var diffEndA = tokensA[i + bestSkipA - 1].start; // start of the matched token
+              var diffEndB = tokensB[j + bestSkipB - 1].start;
+              result.push({
+                leftStart: lastMatchEndA, leftEnd: diffEndA,
+                rightStart: lastMatchEndB, rightEnd: diffEndB,
+                leftText: textA.substring(lastMatchEndA, diffEndA),
+                rightText: textB.substring(lastMatchEndB, diffEndB)
+              });
+              // Advance to the matched token
+              i += bestSkipA;
+              j += bestSkipB;
+              lastMatchEndA = tokensA[i - 1].end;
+              lastMatchEndB = tokensB[j - 1].end;
+            } else {
+              // No resync found: everything remaining is different
+              var tailEndA = i < tokensA.length ? tokensA[tokensA.length - 1].end : lastMatchEndA;
+              var tailEndB = j < tokensB.length ? tokensB[tokensB.length - 1].end : lastMatchEndB;
+              if (tailEndA > lastMatchEndA || tailEndB > lastMatchEndB) {
+                result.push({
+                  leftStart: lastMatchEndA, leftEnd: tailEndA,
+                  rightStart: lastMatchEndB, rightEnd: tailEndB,
+                  leftText: textA.substring(lastMatchEndA, tailEndA),
+                  rightText: textB.substring(lastMatchEndB, tailEndB)
+                });
+              }
+              break;
+            }
+          }
+        }
+        return result;
+      }
+
+      // Tokenize a string into { text, start, end } chunks (words and whitespace separately)
+      function tokenizeWithPositions(str) {
+        var tokens = [];
+        var re = /(\S+|\s+)/g;
+        var m;
+        while ((m = re.exec(str))) {
+          tokens.push({ text: m[1], start: m.index, end: m.index + m[1].length });
+        }
+        return tokens;
+      }
+
+      // Find the text node at a given character offset within an element's textContent
+      function findTextNodeAtOffset(root, offset) {
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        var currentOffset = 0;
+        var node;
+        while ((node = walker.nextNode())) {
+          var len = node.textContent.length;
+          if (currentOffset + len > offset) {
+            return { node: node, offset: offset - currentOffset };
+          }
+          currentOffset += len;
+        }
+        // Fallback: return last text node
+        return { node: node, offset: node ? node.textContent.length : 0 };
+      }
+
+      // Clear all existing diff highlights in both editors
+      function clearDiffHighlights() {
+        var leftEditor = document.getElementById('conflictLeftEditor');
+        var rightEditor = document.getElementById('conflictRightEditor');
+        [leftEditor, rightEditor].forEach(function (editor) {
+          if (!editor) return;
+          var marks = editor.querySelectorAll('mark.conflict-diff-mark');
+          for (var m = 0; m < marks.length; m++) {
+            var parent = marks[m].parentNode;
+            while (marks[m].firstChild) {
+              parent.insertBefore(marks[m].firstChild, marks[m]);
+            }
+            parent.removeChild(marks[m]);
+            parent.normalize();
+          }
+        });
+      }
+
+      // Highlight the diff at given index in both editors, scroll into view
+      function highlightDiff(index) {
+        if (index < 0 || index >= conflictDiffRanges.length) return;
+
+        clearDiffHighlights();
+        var diff = conflictDiffRanges[index];
+        var leftEditor = document.getElementById('conflictLeftEditor');
+        var rightEditor = document.getElementById('conflictRightEditor');
+
+        // Highlight left side
+        if (leftEditor && diff.leftStart < diff.leftEnd) {
+          var leftInfo = findTextNodeAtOffset(leftEditor, diff.leftStart);
+          var leftEndInfo = findTextNodeAtOffset(leftEditor, diff.leftEnd);
+          if (leftInfo.node && leftEndInfo.node) {
+            try {
+              var leftRange = document.createRange();
+              leftRange.setStart(leftInfo.node, leftInfo.offset);
+              leftRange.setEnd(leftEndInfo.node, leftEndInfo.offset);
+              var leftMark = document.createElement('mark');
+              leftMark.className = 'conflict-diff-mark current';
+              leftRange.surroundContents(leftMark);
+              leftMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } catch (e) { /* ignore range errors */ }
+          }
+        }
+
+        // Highlight right side
+        if (rightEditor && diff.rightStart < diff.rightEnd) {
+          var rightInfo = findTextNodeAtOffset(rightEditor, diff.rightStart);
+          var rightEndInfo = findTextNodeAtOffset(rightEditor, diff.rightEnd);
+          if (rightInfo.node && rightEndInfo.node) {
+            try {
+              var rightRange = document.createRange();
+              rightRange.setStart(rightInfo.node, rightInfo.offset);
+              rightRange.setEnd(rightEndInfo.node, rightEndInfo.offset);
+              var rightMark = document.createElement('mark');
+              rightMark.className = 'conflict-diff-mark current';
+              rightRange.surroundContents(rightMark);
+              rightMark.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } catch (e) { /* ignore range errors */ }
+          }
+        }
+
+        // Update counter display
+        document.getElementById('conflictDiffCounter').textContent = (index + 1) + '/' + conflictDiffRanges.length;
+      }
+
+      // Initialize diff comparison for the current conflict
+      function initConflictDiff() {
+        conflictDiffRanges = [];
+        conflictDiffIndex = -1;
+        var leftEditor = document.getElementById('conflictLeftEditor');
+        var rightEditor = document.getElementById('conflictRightEditor');
+        var diffCol = document.getElementById('conflictDiffCol');
+        if (!leftEditor || !rightEditor || !diffCol) return;
+
+        var leftText = (leftEditor.textContent || '').trim();
+        var rightText = (rightEditor.textContent || '').trim();
+        if (!leftText && !rightText) { diffCol.style.display = 'none'; return; }
+        if (leftText === rightText) { diffCol.style.display = 'none'; return; }
+
+        conflictDiffRanges = computeTextDiffs(leftText, rightText);
+        if (conflictDiffRanges.length === 0) { diffCol.style.display = 'none'; return; }
+
+        conflictDiffIndex = 0;
+        diffCol.style.display = 'flex';
+        document.getElementById('conflictDiffCounter').textContent = '1/' + conflictDiffRanges.length;
+        highlightDiff(0);
+      }
+
+      // Navigate to previous/next diff
+      function navigateDiff(delta) {
+        if (conflictDiffRanges.length === 0) return;
+        var newIndex = conflictDiffIndex + delta;
+        if (newIndex < 0) newIndex = conflictDiffRanges.length - 1;
+        if (newIndex >= conflictDiffRanges.length) newIndex = 0;
+        conflictDiffIndex = newIndex;
+        highlightDiff(newIndex);
       }
 
       // Returns a promise: resolves with { html, title } object, or rejects if user cancels
@@ -1697,17 +1983,23 @@
             var diskTime = htmlConflict.diskTime || (titleConflict ? titleConflict.diskTime : Date.now());
             try {
               var result = await resolveConflict(myFile, myTitle, myHtml, diskHtml, diskTime, loadedFileLastModified, titleConflict, htmlConflict.deleted);
-              if (result && result.html) {
+              if (result != null) {
+                console.log('[CONFLICT] 保存路径收到结果: title=' + result.title + ' htmlLen=' + (result.html ? result.html.length : 0) + ' htmlEmpty=' + (!result.html));
                 // Resolve title conflict: update node title and write tree.json
                 var resolvedTitle = result.title || myTitle;
+                console.log('[CONFLICT] 保存路径写入tree: nodeId=' + hit.node.id + ' oldTitle=' + hit.node.title + ' newTitle=' + resolvedTitle);
                 hit.node.title = resolvedTitle;
                 hit.node.file = myFile;
                 await writeTreeFile();
+                console.log('[CONFLICT] 保存路径tree写入完成, 验证title=' + hit.node.title);
                 loadedTreeLastModified = Date.now();
                 renderTree();
 
                 // Merge the resolved title into the HTML
-                var finalHtml = mergeIntoLoadedHtml(resolvedTitle, extractEditableHtml(result.html));
+                var extractedBody = extractEditableHtml(result.html);
+                console.log('[CONFLICT] 提取body长度=' + (extractedBody ? extractedBody.length : 0) + ' loadedUsesConfluenceContent=' + loadedUsesConfluenceContent);
+                var finalHtml = mergeIntoLoadedHtml(resolvedTitle, extractedBody);
+                console.log('[CONFLICT] 最终HTML长度=' + (finalHtml ? finalHtml.length : 0));
 
                 // Write the HTML file
                 var fileHandle = await confluenceHandle.getFileHandle(myFile, { create: true });
@@ -1937,35 +2229,65 @@
         // Conflict modal events
         document.getElementById('conflictCloseBtn').addEventListener('click', closeConflictDialog);
         document.getElementById('conflictShowHtml').addEventListener('change', updateConflictView);
-        // Helper: build resolution result { html, title }
-        function makeConflictResult(html) {
-          var title = conflictState.resolvedTitle || conflictState.title;
-          return { html: html, title: title };
-        }
-        // Helper: get current HTML from either editor (respects source view toggle)
-        function getConflictEditorHtml(side) {
-          var editor = document.getElementById(side === 'left' ? 'conflictLeftEditor' : 'conflictRightEditor');
-          var sourceEditor = document.getElementById(side === 'left' ? 'conflictLeftSourceEditor' : 'conflictRightSourceEditor');
-          var showHtml = document.getElementById('conflictShowHtml').checked;
-          return showHtml ? sourceEditor.value : editor.innerHTML;
+        document.getElementById('conflictDiffPrev').addEventListener('click', function () { navigateDiff(-1); });
+        document.getElementById('conflictDiffNext').addEventListener('click', function () { navigateDiff(1); });
+        // Helper: extract <title> text from a full HTML string
+        function extractTitleFromHtml(html) {
+          try {
+            var m = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+            return m ? m[1].trim() : '';
+          } catch (e) { return ''; }
         }
 
-        // Left button: use disk version (left editor, possibly user-edited)
+        // Helper: merge an edited body (from contenteditable) back into a full HTML template.
+        // The template (fullHtml) provides <!doctype>, <html>, <head> structure.
+        // The editedBody is the new innerHTML for the body (or [data-confluence-content] element).
+        function mergeEditedBodyIntoHtml(fullHtml, editedBody) {
+          try {
+            var doc = new DOMParser().parseFromString(fullHtml, 'text/html');
+            var content = doc.querySelector('[data-confluence-content]');
+            if (content) {
+              content.innerHTML = editedBody;
+            } else if (doc.body) {
+              doc.body.innerHTML = editedBody;
+            }
+            return '<!doctype html>\n' + doc.documentElement.outerHTML + '\n';
+          } catch (e) {
+            // Fallback: return edited body as-is (caller will handle via extractEditableHtml)
+            return fullHtml;
+          }
+        }
+
+        // Left button: use disk version (user can edit disk title and left content)
         document.getElementById('conflictUseLeftBtn').addEventListener('click', function () {
           if (conflictState) {
-            var html = getConflictEditorHtml('left');
-            var result = makeConflictResult(html);
-            conflictState.resolve(result);
+            // Read current editor content (user may have edited the left pane)
+            var leftEditor = document.getElementById('conflictLeftEditor');
+            var editedBody = leftEditor.innerHTML;
+            // Merge edited body into the disk HTML template
+            var html = mergeEditedBodyIntoHtml(conflictState.diskHtml, editedBody);
+            // Read title from the editable input (user may have modified it)
+            var diskTitle = document.getElementById('conflictDiskTitleVal').value.trim();
+            if (!diskTitle) diskTitle = conflictState.title;
+            console.log('[CONFLICT] 使用磁盘版本: title=' + diskTitle + ' htmlLen=' + (html ? html.length : 0) + ' titleConflict=' + !!conflictState.titleConflict);
+            conflictState.resolve({ html: html, title: diskTitle });
             conflictState = null;
             document.getElementById('conflictOverlay').classList.remove('show');
           }
         });
-        // Right button: use editing version (right editor, possibly user-edited)
+        // Right button: use editing version (user can edit my title and right content)
         document.getElementById('conflictUseRightBtn').addEventListener('click', function () {
           if (conflictState) {
-            var html = getConflictEditorHtml('right');
-            var result = makeConflictResult(html);
-            conflictState.resolve(result);
+            // Read current editor content (user may have edited the right pane)
+            var rightEditor = document.getElementById('conflictRightEditor');
+            var editedBody = rightEditor.innerHTML;
+            // Merge edited body into the editing HTML template
+            var html = mergeEditedBodyIntoHtml(conflictState.myHtml, editedBody);
+            // Read title from the editable input (user may have modified it)
+            var myTitle = document.getElementById('conflictMyTitleVal').value.trim();
+            if (!myTitle) myTitle = conflictState.title;
+            console.log('[CONFLICT] 使用编辑版本: title=' + myTitle + ' htmlLen=' + (html ? html.length : 0) + ' titleConflict=' + !!conflictState.titleConflict);
+            conflictState.resolve({ html: html, title: myTitle });
             conflictState = null;
             document.getElementById('conflictOverlay').classList.remove('show');
           }
@@ -2163,14 +2485,27 @@
 
           try {
             var resolved = await resolveConflict(fileName, myTitle, myHtml, diskHtml, diskTime, loadedFileLastModified, treeConflict, htmlConflict.deleted);
-            if (resolved && resolved.html) {
+            if (resolved != null) {
+              console.log('[CONFLICT] 唤醒路径收到结果: title=' + resolved.title + ' htmlLen=' + (resolved.html ? resolved.html.length : 0) + ' htmlEmpty=' + (!resolved.html));
               var resolvedTitle = resolved.title || myTitle;
+              console.log('[CONFLICT] 唤醒路径写入tree: nodeId=' + hit.node.id + ' oldTitle=' + hit.node.title + ' newTitle=' + resolvedTitle);
               hit.node.title = resolvedTitle;
               hit.node.file = fileName;
               await writeTreeFile();
+              console.log('[CONFLICT] 唤醒路径tree写入完成, 验证title=' + hit.node.title);
               loadedTreeLastModified = Date.now();
               renderTree();
-              var finalHtml = mergeIntoLoadedHtml(resolvedTitle, extractEditableHtml(resolved.html));
+              var extractedBody = extractEditableHtml(resolved.html);
+              console.log('[CONFLICT] 唤醒提取body长度=' + (extractedBody ? extractedBody.length : 0) + ' loadedUsesConfluenceContent=' + loadedUsesConfluenceContent);
+              var finalHtml = mergeIntoLoadedHtml(resolvedTitle, extractedBody);
+              console.log('[CONFLICT] 唤醒最终HTML长度=' + (finalHtml ? finalHtml.length : 0));
+
+              // Write the resolved HTML back to disk
+              var fileHandle = await confluenceHandle.getFileHandle(fileName, { create: true });
+              var writable = await fileHandle.createWritable();
+              await writable.write(finalHtml);
+              await writable.close();
+
               loadedHtml = finalHtml;
               setEditorHtml(extractEditableHtml(finalHtml));
               pageTitle.value = resolvedTitle;
