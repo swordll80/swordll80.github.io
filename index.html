@@ -51,9 +51,9 @@
             <h3>YFxGeoStudio</h3>
             <p>KML 轨迹文件合并、查看和编辑工具。</p>
             <div class="card-actions">
-              <a class="button primary" href="outdoors/YFxGeoStudio/YFxGeoStudio.html">YFxGeoStudio</a>
-              <a class="button" href="outdoors/YFxGeoStudio/YFxGeoStudio_beta.html">内测版</a>
-              <a class="button" href="outdoors/YFxGeoStudio/YFxGeoStudioHelp.html">帮助文档</a>
+              <a class="button primary" href="outdoors/YFxGeoStudio/YFxGeoStudio.html" data-cache-bust-link>YFxGeoStudio</a>
+              <a class="button" href="outdoors/YFxGeoStudio/YFxGeoStudio_beta.html" data-cache-bust-link>内测版</a>
+              <a class="button" href="outdoors/YFxGeoStudio/YFxGeoStudioHelp.html" data-cache-bust-link>帮助文档</a>
             </div>
           </div>
         </section>
@@ -66,5 +66,57 @@
     </footer>
   </div>
   <script src="script.js"></script>
+
+  <script>
+    (function(){
+      function withFreshParam(url){
+        var u;
+        try{
+          u = new URL(url, window.location.href);
+          u.searchParams.set('v', Date.now().toString());
+          return u.href;
+        }catch(e){
+          var sep = url.indexOf('?') >= 0 ? '&' : '?';
+          return url + sep + 'v=' + Date.now();
+        }
+      }
+
+      function clearLocalSiteCache(){
+        try{
+          if(window.caches && caches.keys){
+            caches.keys().then(function(keys){
+              keys.forEach(function(k){ caches.delete(k); });
+            });
+          }
+        }catch(e){}
+        try{
+          if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
+            navigator.serviceWorker.getRegistrations().then(function(regs){
+              regs.forEach(function(reg){ reg.unregister(); });
+            });
+          }
+        }catch(e){}
+      }
+
+      document.addEventListener('DOMContentLoaded', function(){
+        var links = document.querySelectorAll('[data-cache-bust-link]');
+        links.forEach(function(a){
+          a.addEventListener('click', function(ev){
+            ev.preventDefault();
+            window.location.href = withFreshParam(a.getAttribute('href') || a.href);
+          });
+        });
+
+        var refreshBtn = document.getElementById('hardRefreshBtn');
+        if(refreshBtn){
+          refreshBtn.addEventListener('click', function(ev){
+            ev.preventDefault();
+            clearLocalSiteCache();
+            window.location.replace(withFreshParam(window.location.pathname));
+          }, true);
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
