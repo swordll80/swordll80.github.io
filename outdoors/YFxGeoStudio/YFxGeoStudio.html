@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>KML合并工具byYF v0.80</title>
+  <title>KML合并工具byYF v0.82</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
       href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
@@ -1002,12 +1002,13 @@
     });
 
     var ICON_PINS={redPin:'pin-red',bluePin:'pin-blue',greenPin:'pin-green',orangePin:'pin-orange',purplePin:'pin-purple',yellowPin:'pin-yellow'};
-    var I18N={zh:{appTitle:'KML合并工具byYF v0.80',trackListLabel:'🛤️...🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.80',helpText:'<b>功能</b>：经典轨迹切换；KML文件编辑。<br><br><b>手绘轨迹</b>：点 ✏️ 后，单击地图添加点；再次点击 ✏️ 结束并保存。只有 1 个点时保存为标记点；2 个及以上点保存为轨迹。<br><b>查看/编辑</b>：单击标记点或轨迹线查看信息；右键或双击标记点/轨迹线可打开编辑框。<br><b>KML图例</b>：📍 标记点；🛰 GPS点；🛤️ 轨迹；↔ 距离；↑ 累计上升；↓ 累计下降；⛰ 海拔范围；🕒 耗时，hh:mm 为小时:分钟；└────┘ 比例尺；🗺️ 地图。<br><b>编辑图例</b>：👁 浏览状态；✏️ 手绘/编辑；🏃 1km/s；🏃🏃 2km/s；🗑️ 删除；× 取消/关闭；✓ 保存；🌐 在线帮助；🏠 主页；🔒 锁定地图触控；🔓 解锁地图触控；🏷️ 名称；📝 备注；🎨 颜色；⛰ 海拔；🕒 时间。<br><b>反馈问题或定制联系</b>：7189334@qq.com',mapLayer:'🗺️',mapModeOutdoor:'户外',mapModeCity:'城市',mapModeSwitch:'切换户外/城市模式',gaode:'高德地形',google:'Google 地形',gaodeOutdoor:'高德地形',googleOutdoor:'Google 地形',gaodeCity:'高德地图',googleCity:'Google 地图',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',confirmDeleteMarker:'确定删除此标记点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图',classicKml:'经典轨迹',classicKmlLoading:'正在读取经典轨迹列表...',classicKmlLoadFailed:'经典轨迹列表读取失败',classicKmlEmpty:'经典轨迹列表为空',classicKmlConfirm:'切换经典轨迹会清空当前数据，是否继续？',classicKmlImported:'经典轨迹已载入',classicKmlTitle:'经典轨迹目录',classicKmlChoose:'选择一个 KML 文件载入。',classicKmlRefresh:'刷新',classicKmlRoot:'参考线路',classicKmlNoKml:'没有找到 KML 文件'},en:{appTitle:'KML Merge Tool by YF v0.80',trackListLabel:'🛤️...🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.80',helpText:'<b>Features</b>: Classic track switching; KML file editing.<br><br><b>Draw track</b>: Click ✏️, click the map to add points, then click ✏️ again to finish and save. One point is saved as a marker; two or more points are saved as a track.<br><b>View/Edit</b>: Click markers or track lines to view information; right-click or double-click markers/track lines to open the edit dialog.<br><b>KML legend</b>: 📍 marker; 🛰 GPS point; 🛤️ track; ↔ distance; ↑ cumulative ascent; ↓ cumulative descent; ⛰ elevation range; 🕒 duration, hh:mm means hours:minutes; └────┘ scale; 🗺️ map.<br><b>Edit legend</b>: 👁 browse status; ✏️ draw/edit; 🏃 1km/s; 🏃🏃 2km/s; 🗑️ delete; × cancel/close; ✓ save; 🌐 online help; 🏠 home; 🔒 lock map touch; 🔓 unlock map touch; 🏷️ name; 📝 comment; 🎨 color; ⛰ elevation; 🕒 time.<br><b>Feedback/custom work</b>: 7189334@qq.com',mapLayer:'🗺️',mapModeOutdoor:'Outdoor',mapModeCity:'City',mapModeSwitch:'Switch outdoor/city mode',gaode:'Amap Terrain',google:'Google Terrain',gaodeOutdoor:'Amap Terrain',googleOutdoor:'Google Terrain',gaodeCity:'Amap Map',googleCity:'Google Map',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',confirmDeleteMarker:'Delete this marker?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart',classicKml:'Classic KML',classicKmlLoading:'Loading classic KML list...',classicKmlLoadFailed:'Failed to load classic KML list',classicKmlEmpty:'Classic KML list is empty',classicKmlConfirm:'Switching to a classic KML will clear current data. Continue?',classicKmlImported:'Classic KML loaded',classicKmlTitle:'Classic KML Directory',classicKmlChoose:'Choose a KML file to load.',classicKmlRefresh:'Refresh',classicKmlRoot:'Reference Routes',classicKmlNoKml:'No KML files found'}};
+    var I18N={zh:{appTitle:'KML合并工具byYF v0.82',trackListLabel:'🛤️...🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.82',helpText:'<b>功能</b>：经典轨迹切换；KML文件编辑。<br><br><b>手绘轨迹</b>：点 ✏️ 后，单击地图添加点；再次点击 ✏️ 结束并保存。只有 1 个点时保存为标记点；2 个及以上点保存为轨迹。<br><b>查看/编辑</b>：单击标记点或轨迹线查看信息；右键或双击标记点/轨迹线可打开编辑框。<br><b>KML图例</b>：📍 标记点；🛰 GPS点；🛤️ 轨迹；↔ 距离；↑ 累计上升；↓ 累计下降；⛰ 海拔范围；🕒 耗时，hh:mm 为小时:分钟；└────┘ 比例尺；🗺️ 地图。<br><b>编辑图例</b>：👁 浏览状态；✏️ 手绘/编辑；🏃 1km/s；🏃🏃 2km/s；🗑️ 删除；× 取消/关闭；✓ 保存；🌐 在线帮助；🏠 主页；🔒 锁定地图触控；🔓 解锁地图触控；🏷️ 名称；📝 备注；🎨 颜色；⛰ 海拔；🕒 时间。<br><b>反馈问题或定制联系</b>：7189334@qq.com',mapLayer:'🗺️',mapModeOutdoor:'户外',mapModeCity:'城市',mapModeSwitch:'切换户外/城市模式',gaode:'高德地形',google:'Google 地形',gaodeOutdoor:'高德地形',googleOutdoor:'Google 地形',gaodeCity:'高德地图',googleCity:'Google 地图',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',confirmDeleteMarker:'确定删除此标记点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图',classicKml:'经典轨迹',classicKmlLoading:'正在读取经典轨迹列表...',classicKmlLoadFailed:'经典轨迹列表读取失败',classicKmlEmpty:'经典轨迹列表为空',classicKmlConfirm:'切换经典轨迹会清空当前数据，是否继续？',classicKmlImported:'经典轨迹已载入',classicKmlTitle:'经典轨迹目录',classicKmlChoose:'选择一个 KML 文件载入。',classicKmlRefresh:'刷新',classicKmlRoot:'参考线路',classicKmlNoKml:'没有找到 KML 文件'},en:{appTitle:'KML Merge Tool by YF v0.82',trackListLabel:'🛤️...🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.82',helpText:'<b>Features</b>: Classic track switching; KML file editing.<br><br><b>Draw track</b>: Click ✏️, click the map to add points, then click ✏️ again to finish and save. One point is saved as a marker; two or more points are saved as a track.<br><b>View/Edit</b>: Click markers or track lines to view information; right-click or double-click markers/track lines to open the edit dialog.<br><b>KML legend</b>: 📍 marker; 🛰 GPS point; 🛤️ track; ↔ distance; ↑ cumulative ascent; ↓ cumulative descent; ⛰ elevation range; 🕒 duration, hh:mm means hours:minutes; └────┘ scale; 🗺️ map.<br><b>Edit legend</b>: 👁 browse status; ✏️ draw/edit; 🏃 1km/s; 🏃🏃 2km/s; 🗑️ delete; × cancel/close; ✓ save; 🌐 online help; 🏠 home; 🔒 lock map touch; 🔓 unlock map touch; 🏷️ name; 📝 comment; 🎨 color; ⛰ elevation; 🕒 time.<br><b>Feedback/custom work</b>: 7189334@qq.com',mapLayer:'🗺️',mapModeOutdoor:'Outdoor',mapModeCity:'City',mapModeSwitch:'Switch outdoor/city mode',gaode:'Amap Terrain',google:'Google Terrain',gaodeOutdoor:'Amap Terrain',googleOutdoor:'Google Terrain',gaodeCity:'Amap Map',googleCity:'Google Map',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',confirmDeleteMarker:'Delete this marker?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart',classicKml:'Classic KML',classicKmlLoading:'Loading classic KML list...',classicKmlLoadFailed:'Failed to load classic KML list',classicKmlEmpty:'Classic KML list is empty',classicKmlConfirm:'Switching to a classic KML will clear current data. Continue?',classicKmlImported:'Classic KML loaded',classicKmlTitle:'Classic KML Directory',classicKmlChoose:'Choose a KML file to load.',classicKmlRefresh:'Refresh',classicKmlRoot:'Reference Routes',classicKmlNoKml:'No KML files found'}};
     var lang=localStorage.getItem('yfx_lang')||'zh',mode='view',objects=[],lines=[],undoStack=[],redoStack=[],dialogTarget=null,suppressHistory=false,drawingLine=[],trackPolyline=null,selectedLines=new Set(),dlgSelectedIcon='redPin',clickTimer=null,dlgLineTarget=null,dlgLineColor='#ffd23f',dlgLineStartIcon='',dlgLineEndIcon='';
     var editModeEnabled=localStorage.getItem('yfx_edit_mode')==='1';
     var lineInfoDialogLastPos=null; // 记录单轨迹信息窗口上一次显示/拖拽后的位置，切换轨迹时复用。
     var lineInfoDialogUserMoved=false; // 用户拖动过轨迹信息框后，后续切换轨迹继续沿用该位置。
     var runnerMarker=null,runnerAnimFrame=0,runnerActiveLine=null,runnerStartTime=0,runnerDurationMs=6000,runnerFollowMap=false,runnerLastPanTime=0,runnerSpeedMps=1000;
+    var elevationHoverMarker=null,elevationHoverLine=null,elevationHoverRawIdx=null;
     var markerInfoDialogLastPos=null; // 记录标记点信息窗口上一次显示/拖拽后的位置，切换标记点时复用。
     var helpDialogLastPos=null; // 记录帮助窗口拖拽后的位置。
     var spiderfyActive=null,spiderfyTimeout=null,spiderfySaved=[],spiderfyLines=[];
@@ -1022,6 +1023,9 @@
     if(mapDisplayMode!=='city'&&mapDisplayMode!=='outdoor')mapDisplayMode='outdoor';
     var activeLayerKey=localStorage.getItem('yfx_layer_key')||'gaode';
     if(activeLayerKey!=='gaode'&&activeLayerKey!=='google')activeLayerKey='gaode';
+    // 中国大陆地图瓦片常用 GCJ-02；内部 KML/GPS 数据仍按 WGS84 保存，显示时按设置临时纠偏。
+    var coordFixMode=localStorage.getItem('yfx_coord_fix_mode')||'auto';
+    if(coordFixMode!=='auto'&&coordFixMode!=='off'&&coordFixMode!=='force')coordFixMode='auto';
     var layerSets={outdoor:{gaode:[gaodeBase,gaodeTerrain],google:[googleTerrain]},city:{gaode:[gaodeCity],google:[googleCity]}};
     var map=L.map('map',{center:[29.351132,114.565086],zoom:15,zoomControl:false,doubleClickZoom:false,layers:layerSets[mapDisplayMode][activeLayerKey]}),itemLayer=L.featureGroup().addTo(map),lineLayer=L.featureGroup().addTo(map),drawLayer=L.featureGroup().addTo(map);
 // ===== v0.74 heading support =====
@@ -1202,9 +1206,59 @@ var yfxOriginalViewportContent = null;
     function tr(k){return(I18N[lang]&&I18N[lang][k])||I18N.zh[k]||k;}
     function fmtCoordDisplay(v){var n=Number(v);if(!isFinite(n))return '-';return n.toFixed(5).replace(/0+$/,'').replace(/\.$/,'');}
     function fmtLatLngDisplay(lat,lng){return fmtCoordDisplay(lat)+', '+fmtCoordDisplay(lng);}
+
+    // -- 中国地图坐标纠偏：内部数据保持 WGS84，显示到高德/中国区城市地图时临时转 GCJ-02。 --
+    var GCJ_PI=3.1415926535897932384626,GCJ_A=6378245.0,GCJ_EE=0.00669342162296594323;
+    function isPointInMainlandChina(lat,lng){
+      lat=Number(lat);lng=Number(lng);
+      if(!isFinite(lat)||!isFinite(lng))return false;
+      if(lng<73.0||lng>136.5||lat<3.0||lat>54.5)return false;
+      // 香港、澳门、台湾不按大陆 GCJ-02 处理。
+      if(lng>=113.45&&lng<=114.55&&lat>=22.05&&lat<=22.60)return false;
+      if(lng>=113.30&&lng<=113.70&&lat>=22.05&&lat<=22.30)return false;
+      if(lng>=119.0&&lng<=123.0&&lat>=21.5&&lat<=25.8)return false;
+      return true;
+    }
+    function gcjTransformLat(x,y){var ret=-100.0+2.0*x+3.0*y+0.2*y*y+0.1*x*y+0.2*Math.sqrt(Math.abs(x));ret+=(20.0*Math.sin(6.0*x*GCJ_PI)+20.0*Math.sin(2.0*x*GCJ_PI))*2.0/3.0;ret+=(20.0*Math.sin(y*GCJ_PI)+40.0*Math.sin(y/3.0*GCJ_PI))*2.0/3.0;ret+=(160.0*Math.sin(y/12.0*GCJ_PI)+320*Math.sin(y*GCJ_PI/30.0))*2.0/3.0;return ret;}
+    function gcjTransformLng(x,y){var ret=300.0+x+2.0*y+0.1*x*x+0.1*x*y+0.1*Math.sqrt(Math.abs(x));ret+=(20.0*Math.sin(6.0*x*GCJ_PI)+20.0*Math.sin(2.0*x*GCJ_PI))*2.0/3.0;ret+=(20.0*Math.sin(x*GCJ_PI)+40.0*Math.sin(x/3.0*GCJ_PI))*2.0/3.0;ret+=(150.0*Math.sin(x/12.0*GCJ_PI)+300.0*Math.sin(x/30.0*GCJ_PI))*2.0/3.0;return ret;}
+    function wgs84ToGcj02(lat,lng){lat=Number(lat);lng=Number(lng);if(!isPointInMainlandChina(lat,lng))return{lat:lat,lng:lng};var dLat=gcjTransformLat(lng-105.0,lat-35.0);var dLng=gcjTransformLng(lng-105.0,lat-35.0);var radLat=lat/180.0*GCJ_PI;var magic=Math.sin(radLat);magic=1-GCJ_EE*magic*magic;var sqrtMagic=Math.sqrt(magic);dLat=(dLat*180.0)/((GCJ_A*(1-GCJ_EE))/(magic*sqrtMagic)*GCJ_PI);dLng=(dLng*180.0)/(GCJ_A/sqrtMagic*Math.cos(radLat)*GCJ_PI);return{lat:lat+dLat,lng:lng+dLng};}
+    function gcj02ToWgs84(lat,lng){lat=Number(lat);lng=Number(lng);if(!isPointInMainlandChina(lat,lng))return{lat:lat,lng:lng};var g=wgs84ToGcj02(lat,lng);return{lat:lat*2-g.lat,lng:lng*2-g.lng};}
+    function coordFixLabel(){return lang==='en'?'China map coordinate correction':'中国地图坐标纠偏';}
+    function coordFixOptionText(v){if(lang==='en'){return v==='off'?'Off':(v==='force'?'Force GCJ-02':'Auto');}return v==='off'?'关闭':(v==='force'?'强制':'自动');}
+    function shouldUseGcjForDataPoint(lat,lng){
+      if(coordFixMode==='off')return false;
+      if(!isPointInMainlandChina(lat,lng))return false;
+      if(coordFixMode==='force')return true;
+      return activeLayerKey==='gaode'||(activeLayerKey==='google'&&mapDisplayMode==='city');
+    }
+    function dataLatLngToMap(latlng){if(!latlng)return latlng;var lat=Number(latlng.lat),lng=Number(latlng.lng);if(!isFinite(lat)||!isFinite(lng))return latlng;if(shouldUseGcjForDataPoint(lat,lng)){var g=wgs84ToGcj02(lat,lng);return L.latLng(g.lat,g.lng);}return L.latLng(lat,lng);}
+    function mapLatLngToData(latlng){if(!latlng)return latlng;var lat=Number(latlng.lat),lng=Number(latlng.lng);if(!isFinite(lat)||!isFinite(lng))return latlng;if(shouldUseGcjForDataPoint(lat,lng)){var w=gcj02ToWgs84(lat,lng);return L.latLng(w.lat,w.lng);}return L.latLng(lat,lng);}
+    function dataPointToMapPoint(pt){var ll=dataLatLngToMap(pt);var out={lat:ll.lat,lng:ll.lng};if(pt&&pt.alt!=null)out.alt=pt.alt;if(pt&&pt.ptype)out.ptype=pt.ptype;if(pt&&pt.comment)out.comment=pt.comment;if(pt&&pt.time!=null)out.time=pt.time;return out;}
+    function linePointsToMapLatLngs(points){var arr=[];for(var i=0;i<(points||[]).length;i++)arr.push(dataPointToMapPoint(points[i]));return arr;}
+    function getObjectDataLatLng(o){if(!o)return null;if(isFinite(Number(o.lat))&&isFinite(Number(o.lng)))return L.latLng(Number(o.lat),Number(o.lng));if(o.marker&&o.marker.getLatLng){var ll=o.marker.getLatLng();var data=mapLatLngToData(ll);return L.latLng(data.lat,data.lng);}return null;}
+    function setObjectDataLatLng(o,latlng){if(!o||!latlng)return;var lat=Number(latlng.lat),lng=Number(latlng.lng);if(!isFinite(lat)||!isFinite(lng))return;o.lat=lat;o.lng=lng;if(o.marker)o.marker.setLatLng(dataLatLngToMap({lat:lat,lng:lng}));}
+    function refreshUserLocationDisplay(){var marker=window._userMarker||userLocationMarker;if(marker&&userLocationPos&&userLocationPos.length>=2){marker.setLatLng(dataLatLngToMap({lat:userLocationPos[0],lng:userLocationPos[1]}));}}
+    function refreshCoordinateDisplayLayers(){
+      try{if(typeof stopRunner==='function')stopRunner();}catch(e){}
+      try{if(typeof unspiderfyMarkers==='function')unspiderfyMarkers(true);}catch(e){}
+      for(var i=0;i<objects.length;i++){var o=objects[i];if(o&&o.marker){var p=getObjectDataLatLng(o);if(p)o.marker.setLatLng(dataLatLngToMap(p));updatePopup(o);updateMarkerLabel(o);}}
+      for(var j=0;j<lines.length;j++){var line=lines[j];if(!line)continue;var mapPts=linePointsToMapLatLngs(line.points);if(line.polyline)line.polyline.setLatLngs(mapPts);if(line.hitPolyline)line.hitPolyline.setLatLngs(mapPts);updateLineStartEndMarkers(line);}
+      redrawDrawingLine();refreshUserLocationDisplay();refreshElevationHoverMarkerDisplay();updateAllMarkerLabels();setScaleStatus();
+    }
+    function setCoordFixMode(v){
+      if(v!=='auto'&&v!=='off'&&v!=='force')v='auto';
+      var oldCenterData=(map&&map.getCenter)?mapLatLngToData(map.getCenter()):null;
+      coordFixMode=v;
+      localStorage.setItem('yfx_coord_fix_mode',coordFixMode);
+      refreshCoordinateDisplayLayers();
+      var sel=document.getElementById('helpCoordFixSelect');if(sel)sel.value=coordFixMode;
+      if(oldCenterData&&map&&map.setView)map.setView(dataLatLngToMap(oldCenterData),map.getZoom(),{animate:false});
+      toast((lang==='en'?'Coordinate correction: ':'坐标纠偏：')+coordFixOptionText(coordFixMode));
+    }
+
     function modeStatusText(){return mode==='track'?'✏️':('👁'+(mapTouchLocked?' 🔒':''));}
     function setModeStatus(){var el=document.getElementById('modeText');if(el)el.textContent=modeStatusText();}
-    function setCoordStatus(latlng){var el=document.getElementById('coordText');if(!el)return;el.textContent=latlng?('📍 '+fmtLatLngDisplay(latlng.lat,latlng.lng)):'📍 -';}
+    function setCoordStatus(latlng){var el=document.getElementById('coordText');if(!el)return;if(!latlng){el.textContent='📍 -';return;}var p=mapLatLngToData(latlng);el.textContent='📍 '+fmtLatLngDisplay(p.lat,p.lng);}
     function setZoomStatus(){var el=document.getElementById('zoomText');if(el)el.textContent='🔍 '+(map&&map.getZoom?map.getZoom():'-');setScaleStatus();}
     function formatScaleDistance(m){
       if(!isFinite(m)||m<=0)return '-';
@@ -1275,6 +1329,8 @@ var yfxOriginalViewportContent = null;
       refreshExportBtnLabel();
       updateMapTouchLockButton();
       updateEditModeUI();
+      var cf=document.getElementById('helpCoordFixSelect');
+      if(cf){cf.value=coordFixMode;var cfl=document.getElementById('helpCoordFixLabel');if(cfl)cfl.textContent=coordFixLabel();var opts=cf.options;for(var oi=0;oi<opts.length;oi++)opts[oi].textContent=coordFixOptionText(opts[oi].value);}
       var logLabels = lang==='en' ? ['Log Output','Copy','Save','Clear','Hide'] : ['日志输出','复制','保存','清空','隐藏'];
       var ids = ['logTitle','btnCopyLog','btnSaveLog','btnClearLog','btnHideLog'];
       for(var li=0; li<ids.length; li++){ var el=document.getElementById(ids[li]); if(el) el.textContent=logLabels[li]; }
@@ -1338,6 +1394,8 @@ var yfxOriginalViewportContent = null;
 
       var helpToggle=document.getElementById('helpEditModeToggle');
       if(helpToggle)helpToggle.checked=visible;
+      var coordFixSelect=document.getElementById('helpCoordFixSelect');
+      if(coordFixSelect)coordFixSelect.value=coordFixMode;
 
       updateHistoryButtons();
     }
@@ -1775,7 +1833,7 @@ var yfxOriginalViewportContent = null;
     setTimeout(yfxRefreshFixedMobileLayout,1200);
 
     // -- history --
-    function snapshot(){var os=[],ls=[];for(var i=0;i<objects.length;i++){var o=objects[i],p=o.marker.getLatLng();os.push({id:o.id,kind:o.kind,name:o.name,icon:o.icon,description:o.description,sources:o.sources||[],lat:p.lat,lng:p.lng,alt:o.alt,ptype:o.ptype,comment:o.comment,time:o.time,sourceType:o.sourceType,lineId:o.lineId,draggable:o.draggable,pointIndex:o.pointIndex});}for(var j=0;j<lines.length;j++)ls.push({id:lines[j].id,name:lines[j].name,color:lines[j].color,startIcon:lines[j].startIcon,endIcon:lines[j].endIcon,autoLineName:lines[j].autoLineName||false,autoSegmentNo:lines[j].autoSegmentNo||0,sampleNameKey:lines[j].sampleNameKey||'',embeddedExampleLine:!!lines[j].embeddedExampleLine,_importedFile:lines[j]._importedFile||'',points:copyPoints(lines[j].points)});return{objects:os,lines:ls,file:document.getElementById('fileText').textContent,importedFilePaths:importedFilePaths.slice()};}
+    function snapshot(){var os=[],ls=[];for(var i=0;i<objects.length;i++){var o=objects[i],p=getObjectDataLatLng(o);if(!p)continue;os.push({id:o.id,kind:o.kind,name:o.name,icon:o.icon,description:o.description,sources:o.sources||[],lat:p.lat,lng:p.lng,alt:o.alt,ptype:o.ptype,comment:o.comment,time:o.time,sourceType:o.sourceType,lineId:o.lineId,draggable:o.draggable,pointIndex:o.pointIndex});}for(var j=0;j<lines.length;j++)ls.push({id:lines[j].id,name:lines[j].name,color:lines[j].color,startIcon:lines[j].startIcon,endIcon:lines[j].endIcon,autoLineName:lines[j].autoLineName||false,autoSegmentNo:lines[j].autoSegmentNo||0,sampleNameKey:lines[j].sampleNameKey||'',embeddedExampleLine:!!lines[j].embeddedExampleLine,_importedFile:lines[j]._importedFile||'',points:copyPoints(lines[j].points)});return{objects:os,lines:ls,file:document.getElementById('fileText').textContent,importedFilePaths:importedFilePaths.slice()};}
     function pushHistory(){if(suppressHistory)return;undoStack.push(snapshot());if(undoStack.length>80)undoStack.shift();redoStack=[];updateHistoryButtons();}
     function undo(){if(!editModeEnabled)return;finishAndExitTrackMode(true);if(!undoStack.length)return;redoStack.push(snapshot());restoreState(undoStack.pop());updateHistoryButtons();}
     function redo(){if(!editModeEnabled)return;finishAndExitTrackMode(true);if(!redoStack.length)return;undoStack.push(snapshot());restoreState(redoStack.pop());updateHistoryButtons();}
@@ -1853,7 +1911,8 @@ var yfxOriginalViewportContent = null;
         modeBtn.title=tr('mapModeSwitch');
       }
     }
-    function switchLayer(key){
+    function switchLayer(key,preserveDataCenter){
+      var oldCenterData=preserveDataCenter||(map&&map.getCenter?mapLatLngToData(map.getCenter()):null);
       if(key!=='gaode'&&key!=='google')key='gaode';
       activeLayerKey=key;
       localStorage.setItem('yfx_layer_key',activeLayerKey);
@@ -1861,12 +1920,15 @@ var yfxOriginalViewportContent = null;
       var next=(layerSets[mapDisplayMode]&&layerSets[mapDisplayMode][activeLayerKey])||layerSets.outdoor.gaode;
       for(var j=0;j<next.length;j++)next[j].addTo(map);
       updateLayerUI();
+      refreshCoordinateDisplayLayers();
+      if(oldCenterData&&map&&map.setView)map.setView(dataLatLngToMap(oldCenterData),map.getZoom(),{animate:false});
     }
     function setMapDisplayMode(modeKey){
+      var oldCenterData=(map&&map.getCenter)?mapLatLngToData(map.getCenter()):null;
       if(modeKey!=='city'&&modeKey!=='outdoor')modeKey='outdoor';
       mapDisplayMode=modeKey;
       localStorage.setItem('yfx_map_display_mode',mapDisplayMode);
-      switchLayer(activeLayerKey);
+      switchLayer(activeLayerKey,oldCenterData);
     }
     function toggleMapDisplayMode(e){
       if(e){e.preventDefault();e.stopPropagation();}
@@ -2019,25 +2081,26 @@ function locateMe(){
 
     var lat = pos.coords.latitude;
     var lng = pos.coords.longitude;
-    userLocationPos = [lat, lng];
+    userLocationPos = [lat, lng]; // 浏览器定位标准坐标，按 WGS84 保存。
+    var displayLl = dataLatLngToMap({lat:lat,lng:lng});
 
     var heading = currentLocateHeading(pos.coords.heading);
 
     if(!window._userMarker){
-      window._userMarker = L.marker([lat,lng],{
+      window._userMarker = L.marker(displayLl,{
         icon: userArrowIcon(heading),
         interactive:false,
         zIndexOffset:2000
       }).addTo(map);
       userLocationMarker = window._userMarker;
     }else{
-      window._userMarker.setLatLng([lat,lng]);
+      window._userMarker.setLatLng(displayLl);
       window._userMarker.setIcon(userArrowIcon(heading));
       userLocationMarker = window._userMarker;
     }
 
     if(firstFix){
-      map.setView([lat,lng]);
+      map.setView(displayLl);
       firstFix = false;
     }
 
@@ -2157,18 +2220,30 @@ function setMapTouchLocked(locked){
         editOpt.style.marginTop='12px';
         editOpt.style.paddingTop='10px';
         editOpt.style.borderTop='1px solid rgba(255,255,255,.12)';
-        editOpt.innerHTML='<label style="display:flex;align-items:center;gap:8px;cursor:pointer;">'
+        editOpt.innerHTML='<div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">'
+          +'<label style="display:flex;align-items:center;gap:8px;cursor:pointer;white-space:nowrap;">'
           +'<input id="helpEditModeToggle" type="checkbox" style="width:16px;height:16px;">'
           +'<span>'+(lang==='en'?'Enable editing mode':'开启编辑模式')+'</span>'
           +'</label>'
-          +'<div style="margin-top:4px;color:#99a9b6;">'
-          +(lang==='en'?'When disabled, drawing, clear, undo and redo buttons are hidden.':'关闭时隐藏手绘轨迹、清空数据、撤销、重做按钮。')
+          +'<label style="display:flex;align-items:center;gap:8px;white-space:nowrap;">'
+          +'<span id="helpCoordFixLabel">'+coordFixLabel()+'</span>'
+          +'<select id="helpCoordFixSelect" style="height:28px;padding:2px 8px;border-radius:6px;border:1px solid rgba(255,255,255,.18);background:#1a242f;color:#eef3f7;">'
+          +'<option value="auto">'+coordFixOptionText('auto')+'</option>'
+          +'<option value="off">'+coordFixOptionText('off')+'</option>'
+          +'<option value="force">'+coordFixOptionText('force')+'</option>'
+          +'</select>'
+          +'</label>'
           +'</div>';
         helpContent.parentNode.insertBefore(editOpt,helpContent.nextSibling);
         var editToggle=document.getElementById('helpEditModeToggle');
         if(editToggle){
           editToggle.checked=!!editModeEnabled;
           editToggle.onchange=function(){setEditModeEnabled(this.checked);};
+        }
+        var coordFixSelect=document.getElementById('helpCoordFixSelect');
+        if(coordFixSelect){
+          coordFixSelect.value=coordFixMode;
+          coordFixSelect.onchange=function(){setCoordFixMode(this.value);};
         }
       }
       dlg.style.width='620px';
@@ -2276,7 +2351,7 @@ function setMapTouchLocked(locked){
       if(mode==='track'){
         L.DomEvent.preventDefault(e.originalEvent);
         if(clickTimer)clearTimeout(clickTimer);
-        clickTimer=setTimeout(function(){clickTimer=null;if(drawingLine.length===0)pushHistory();drawingLine.push({lat:e.latlng.lat,lng:e.latlng.lng});redrawDrawingLine();},280);
+        clickTimer=setTimeout(function(){clickTimer=null;if(drawingLine.length===0)pushHistory();var dp=mapLatLngToData(e.latlng);drawingLine.push({lat:dp.lat,lng:dp.lng});redrawDrawingLine();},280);
         return;
       }
       deselectLine();
@@ -2285,7 +2360,7 @@ function setMapTouchLocked(locked){
     map.on('contextmenu',function(e){if(mode==='track'){L.DomEvent.preventDefault(e.originalEvent);if(clickTimer){clearTimeout(clickTimer);clickTimer=null;}finishAndExitTrackMode(true);}});
 
     // -- hand-draw track --
-    function redrawDrawingLine(){drawLayer.clearLayers();for(var i=0;i<drawingLine.length;i++){L.circleMarker([drawingLine[i].lat,drawingLine[i].lng],{radius:8,color:'#111',weight:2,fillColor:'#ff3b30',fillOpacity:.96}).addTo(drawLayer);L.circleMarker([drawingLine[i].lat,drawingLine[i].lng],{radius:4,color:'#fff',weight:1,fillColor:'#fff',fillOpacity:.9}).addTo(drawLayer);}if(drawingLine.length>1)L.polyline(drawingLine,{color:'#ff3b30',weight:6,opacity:1,dashArray:'8 6'}).addTo(drawLayer);}
+    function redrawDrawingLine(){drawLayer.clearLayers();var mapPts=linePointsToMapLatLngs(drawingLine);for(var i=0;i<mapPts.length;i++){L.circleMarker([mapPts[i].lat,mapPts[i].lng],{radius:8,color:'#111',weight:2,fillColor:'#ff3b30',fillOpacity:.96}).addTo(drawLayer);L.circleMarker([mapPts[i].lat,mapPts[i].lng],{radius:4,color:'#fff',weight:1,fillColor:'#fff',fillOpacity:.9}).addTo(drawLayer);}if(mapPts.length>1)L.polyline(mapPts,{color:'#ff3b30',weight:6,opacity:1,dashArray:'8 6'}).addTo(drawLayer);}
     function resetDrawingLine(){if(clickTimer){clearTimeout(clickTimer);clickTimer=null;}drawingLine=[];drawLayer.clearLayers();}
     function finishDrawingLine(){
       if(drawingLine.length<1){resetDrawingLine();return;}
@@ -2310,14 +2385,14 @@ function setMapTouchLocked(locked){
     function lineNameExists(n){for(var i=0;i<lines.length;i++)if(lines[i].name===n)return true;return false;}
 
     // -- objects (track points) --
-    function addObject(d,silent){var iconKey=d.icon||'redPin',cssClass=ICON_PINS[iconKey]||'pin-red';var o={id:d.id||('o'+Date.now()+'_'+Math.floor(Math.random()*100000)),kind:'track',name:d.name||nextName('track'),icon:iconKey,description:d.description||'',sources:d.sources||(d.source?[d.source]:[]),marker:null,alt:d.alt!=null?+d.alt:null,ptype:d.ptype||'',comment:d.comment||'',time:d.time!=null?+d.time:null,sourceType:d.sourceType||'manual',lineId:d.lineId||null,draggable:!!d.draggable,pointIndex:d.pointIndex!=null?d.pointIndex:null};o.marker=L.marker([d.lat,d.lng],{icon:pinIcon(cssClass),draggable:(!!d.draggable&&!!editModeEnabled),bubblingMouseEvents:false});o.marker._yfx=o;o.marker.bindPopup('');o.marker.on('click',function(e){if(o.marker._yfxSuppressClickUntil&&Date.now()<o.marker._yfxSuppressClickUntil){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}return;}if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);}if(editModeEnabled&&isDoubleTapTarget('marker:'+o.id)){openDialog(o);return;}closeMarkerNavMenu();updatePopup(o);o.marker.openPopup();});o.marker.on('dblclick',function(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}if(editModeEnabled){openDialog(o);}else{updatePopup(o);o.marker.openPopup();}});o.marker.on('contextmenu',function(e){if(e&&e.originalEvent){L.DomEvent.preventDefault(e.originalEvent);L.DomEvent.stop(e.originalEvent);}if(editModeEnabled){openDialog(o);}else if(isCoarsePointerDevice()){showMarkerNavMenu(o,e);}});o.marker.on('mouseover',function(){if(spiderfyActive)return;handleMarkerHover(o.marker);});o.marker.on('mouseout',function(){handleMarkerOut();});if(o.draggable){o.marker.on('dragstart',function(){pushHistory();});o.marker.on('drag',function(){onTrackMarkerDrag(o);});o.marker.on('dragend',function(){onTrackMarkerDragEnd(o);});}itemLayer.addLayer(o.marker);bindMarkerLongPressForNav(o);objects.push(o);updateMarkerLabel(o);if(!silent){updatePopup(o);updateStats();}return o;}
+    function addObject(d,silent){var iconKey=d.icon||'redPin',cssClass=ICON_PINS[iconKey]||'pin-red';var dataLat=Number(d.lat),dataLng=Number(d.lng);var mapLl=dataLatLngToMap({lat:dataLat,lng:dataLng});var o={id:d.id||('o'+Date.now()+'_'+Math.floor(Math.random()*100000)),kind:'track',name:d.name||nextName('track'),icon:iconKey,description:d.description||'',sources:d.sources||(d.source?[d.source]:[]),marker:null,lat:dataLat,lng:dataLng,alt:d.alt!=null?+d.alt:null,ptype:d.ptype||'',comment:d.comment||'',time:d.time!=null?+d.time:null,sourceType:d.sourceType||'manual',lineId:d.lineId||null,draggable:!!d.draggable,pointIndex:d.pointIndex!=null?d.pointIndex:null};o.marker=L.marker(mapLl,{icon:pinIcon(cssClass),draggable:(!!d.draggable&&!!editModeEnabled),bubblingMouseEvents:false});o.marker._yfx=o;o.marker.bindPopup('');o.marker.on('click',function(e){if(o.marker._yfxSuppressClickUntil&&Date.now()<o.marker._yfxSuppressClickUntil){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}return;}if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);}if(editModeEnabled&&isDoubleTapTarget('marker:'+o.id)){openDialog(o);return;}closeMarkerNavMenu();updatePopup(o);o.marker.openPopup();});o.marker.on('dblclick',function(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}if(editModeEnabled){openDialog(o);}else{updatePopup(o);o.marker.openPopup();}});o.marker.on('contextmenu',function(e){if(e&&e.originalEvent){L.DomEvent.preventDefault(e.originalEvent);L.DomEvent.stop(e.originalEvent);}if(editModeEnabled){openDialog(o);}else if(isCoarsePointerDevice()){showMarkerNavMenu(o,e);}});o.marker.on('mouseover',function(){if(spiderfyActive)return;handleMarkerHover(o.marker);});o.marker.on('mouseout',function(){handleMarkerOut();});if(o.draggable){o.marker.on('dragstart',function(){pushHistory();});o.marker.on('drag',function(){onTrackMarkerDrag(o);});o.marker.on('dragend',function(){onTrackMarkerDragEnd(o);});}itemLayer.addLayer(o.marker);bindMarkerLongPressForNav(o);objects.push(o);updateMarkerLabel(o);if(!silent){updatePopup(o);updateStats();}return o;}
     // 构造节点弹窗。
     // 设计原则：
     //   1. 轨迹采样点已经在 description/comment 中有经纬度/海拔/时间时，不再重复显示顶部坐标、海拔、时间；
     //   2. 已用耗时和总耗时合并到一行，便于阅读；
     //   3. 普通手工标记点仍保留名称、坐标、备注等信息。
     function updatePopup(o){
-      var p=o.marker.getLatLng();
+      var p=getObjectDataLatLng(o)||o.marker.getLatLng();
       var ld=findLineForObject(o);
       var linesHtml=[];
 
@@ -2710,7 +2785,7 @@ function setMapTouchLocked(locked){
       var z=function(n){return n<10?'0'+n:''+n;};
       return d.getFullYear()+'-'+z(d.getMonth()+1)+'-'+z(d.getDate())+' '+z(d.getHours())+':'+z(d.getMinutes())+':'+z(d.getSeconds());
     }
-    function findLineForObject(o){if(o.lineId){for(var i=0;i<lines.length;i++){if(lines[i].id===o.lineId)return lines[i];}}var p=o.marker.getLatLng();for(var i=0;i<lines.length;i++){var pts=lines[i].points;for(var j=0;j<pts.length;j++){if(Math.abs(p.lat-pts[j].lat)<.00001&&Math.abs(p.lng-pts[j].lng)<.00001)return lines[i];}}return null;}
+    function findLineForObject(o){if(o.lineId){for(var i=0;i<lines.length;i++){if(lines[i].id===o.lineId)return lines[i];}}var p=getObjectDataLatLng(o);for(var i=0;i<lines.length;i++){var pts=lines[i].points;for(var j=0;j<pts.length;j++){if(p&&Math.abs(p.lat-pts[j].lat)<.00001&&Math.abs(p.lng-pts[j].lng)<.00001)return lines[i];}}return null;}
     // 多个标记点非常接近时，鼠标悬停后临时散开。
     // 原半径 44px 偏大，V7 按“半个图标尺寸”改为 14px，既能露出可点击区域，又不会明显偏离真实位置。
     var SPIDERFY_RADIUS_PX=14;
@@ -2721,7 +2796,7 @@ function setMapTouchLocked(locked){
     function handleMarkerHover(marker){if(mode==='track')return;spiderfyMarkers(marker);}
     function handleMarkerOut(){/* do nothing; collapse driven by map mousemove + keep radius */}
     function updateMarkerIcon(o){var cssClass=ICON_PINS[o.icon]||'pin-red';o.marker.setIcon(pinIcon(cssClass));}
-    function onTrackMarkerDrag(o){if(o.lineId==null||o.pointIndex==null)return;var line=null;for(var i=0;i<lines.length;i++){if(lines[i].id===o.lineId){line=lines[i];break;}}if(!line)return;var ll=o.marker.getLatLng();line.points[o.pointIndex].lat=ll.lat;line.points[o.pointIndex].lng=ll.lng;line.polyline.setLatLngs(line.points);if(line.hitPolyline)line.hitPolyline.setLatLngs(line.points);if(o.pointIndex===0||o.pointIndex===line.points.length-1)updateLineStartEndMarkers(line);}
+    function onTrackMarkerDrag(o){if(o.lineId==null||o.pointIndex==null)return;var line=null;for(var i=0;i<lines.length;i++){if(lines[i].id===o.lineId){line=lines[i];break;}}if(!line)return;var ll=mapLatLngToData(o.marker.getLatLng());setObjectDataLatLng(o,ll);line.points[o.pointIndex].lat=ll.lat;line.points[o.pointIndex].lng=ll.lng;var mapPts=linePointsToMapLatLngs(line.points);line.polyline.setLatLngs(mapPts);if(line.hitPolyline)line.hitPolyline.setLatLngs(mapPts);if(o.pointIndex===0||o.pointIndex===line.points.length-1)updateLineStartEndMarkers(line);}
     function onTrackMarkerDragEnd(o){if(o.lineId==null||o.pointIndex==null)return;updatePopup(o);updateStats();var selLine=null;selectedLines.forEach(function(sl){if(sl.id===o.lineId)selLine=sl;});if(selLine){bindLinePopup(selLine);}}
 
 
@@ -2750,7 +2825,7 @@ function setMapTouchLocked(locked){
       return palette[idx%palette.length];
     }
     function hasSpecificLineColor(d){return !!(d&&typeof d.color==='string'&&d.color.trim());}
-    function addLine(d,silent){var lineColor=hasSpecificLineColor(d)?d.color:nextDefaultLineColor();var line={id:d.id||('l'+Date.now()+'_'+Math.floor(Math.random()*100000)),name:d.name||nextName('line'),color:lineColor,points:copyPoints(d.points||[]),polyline:null,hitPolyline:null,startIcon:d.startIcon||'',endIcon:d.endIcon||'',startMarker:null,endMarker:null,autoLineName:!!d.autoLineName,autoSegmentNo:d.autoSegmentNo||0,sampleNameKey:d.sampleNameKey||'',embeddedExampleLine:!!d.embeddedExampleLine};line.polyline=L.polyline(line.points,{color:line.color,weight:4,opacity:.9,className:'track-line'}).addTo(lineLayer);line.polyline._yfxLine=line;line.hitPolyline=L.polyline(line.points,{color:'#000',weight:22,opacity:0,className:'track-hit-line',interactive:true}).addTo(lineLayer);line.hitPolyline._yfxLine=line;function onLineClick(e){
+    function addLine(d,silent){var lineColor=hasSpecificLineColor(d)?d.color:nextDefaultLineColor();var line={id:d.id||('l'+Date.now()+'_'+Math.floor(Math.random()*100000)),name:d.name||nextName('line'),color:lineColor,points:copyPoints(d.points||[]),polyline:null,hitPolyline:null,startIcon:d.startIcon||'',endIcon:d.endIcon||'',startMarker:null,endMarker:null,autoLineName:!!d.autoLineName,autoSegmentNo:d.autoSegmentNo||0,sampleNameKey:d.sampleNameKey||'',embeddedExampleLine:!!d.embeddedExampleLine};var mapPts=linePointsToMapLatLngs(line.points);line.polyline=L.polyline(mapPts,{color:line.color,weight:4,opacity:.9,className:'track-line'}).addTo(lineLayer);line.polyline._yfxLine=line;line.hitPolyline=L.polyline(mapPts,{color:'#000',weight:22,opacity:0,className:'track-hit-line',interactive:true}).addTo(lineLayer);line.hitPolyline._yfxLine=line;function onLineClick(e){
         if(mode==='track')return;
         // 防止同一次鼠标事件继续冒泡到 map.click，导致刚选中的轨迹又被 deselectLine 清掉。
         if(e&&e.originalEvent){
@@ -2761,8 +2836,8 @@ function setMapTouchLocked(locked){
         if(editModeEnabled&&isDoubleTapTarget('line:'+line.id)){openLineDialog(line);return;}
         selectLine(line,e&&e.latlng?e.latlng:null,false,'map');
       }function onLineContext(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);if(e&&e.originalEvent)L.DomEvent.stop(e.originalEvent);if(editModeEnabled)openLineDialog(line);}function onLineDblClick(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}if(editModeEnabled)openLineDialog(line);else selectLine(line,e&&e.latlng?e.latlng:null,false,'map');}line.polyline.on('click',onLineClick);line.hitPolyline.on('click',onLineClick);line.polyline.on('dblclick',onLineDblClick);line.hitPolyline.on('dblclick',onLineDblClick);line.polyline.on('contextmenu',onLineContext);line.hitPolyline.on('contextmenu',onLineContext);lines.push(line);updateLineStartEndMarkers(line);updateStats();return line;}
-    function removeLine(line){if(runnerActiveLine===line)stopRunner();selectedLines.delete(line);if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}clearLineDirectionArrows(line);if(line.polyline)lineLayer.removeLayer(line.polyline);if(line.hitPolyline)lineLayer.removeLayer(line.hitPolyline);for(var i=lines.length-1;i>=0;i--)if(lines[i]===line)lines.splice(i,1);var removedFileName=line._importedFile||null;for(var k=objects.length-1;k>=0;k--){var oo=objects[k];if(oo.lineId===line.id){if(oo.marker)itemLayer.removeLayer(oo.marker);if(!removedFileName&&oo.sources&&oo.sources.length)removedFileName=oo.sources[0];objects.splice(k,1);}}for(var fn=importedFilePaths.length-1;fn>=0;fn--){var fname=importedFilePaths[fn];var stillUsed=false;for(var oi=0;oi<objects.length;oi++){var sArr=objects[oi].sources||[];if(sArr.indexOf(fname)>=0){stillUsed=true;break;}}if(!stillUsed){for(var li=0;li<lines.length;li++){if(lines[li]._importedFile===fname){stillUsed=true;break;}}if(!stillUsed)importedFilePaths.splice(fn,1);}}var txt=document.getElementById('fileText');if(txt&&removedFileName){var cur=getFileStatusText();if(cur.indexOf(removedFileName)>=0){var parts=cur.split(',').map(function(s){return s.trim();}).filter(function(s){return s&&s!==removedFileName;});setFileStatusText(parts.length?parts.join(', '):tr('none'));}}updateStats();}
-    function updateLineStartEndMarkers(line){if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}if(line.points.length>0&&line.startIcon){line.startMarker=L.marker(line.points[0],{icon:pinIcon(ICON_PINS[line.startIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}if(line.points.length>0&&line.endIcon){line.endMarker=L.marker(line.points[line.points.length-1],{icon:pinIcon(ICON_PINS[line.endIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}}
+    function removeLine(line){if(runnerActiveLine===line)stopRunner();if(elevationHoverLine===line)hideElevationHoverMarker();selectedLines.delete(line);if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}clearLineDirectionArrows(line);if(line.polyline)lineLayer.removeLayer(line.polyline);if(line.hitPolyline)lineLayer.removeLayer(line.hitPolyline);for(var i=lines.length-1;i>=0;i--)if(lines[i]===line)lines.splice(i,1);var removedFileName=line._importedFile||null;for(var k=objects.length-1;k>=0;k--){var oo=objects[k];if(oo.lineId===line.id){if(oo.marker)itemLayer.removeLayer(oo.marker);if(!removedFileName&&oo.sources&&oo.sources.length)removedFileName=oo.sources[0];objects.splice(k,1);}}for(var fn=importedFilePaths.length-1;fn>=0;fn--){var fname=importedFilePaths[fn];var stillUsed=false;for(var oi=0;oi<objects.length;oi++){var sArr=objects[oi].sources||[];if(sArr.indexOf(fname)>=0){stillUsed=true;break;}}if(!stillUsed){for(var li=0;li<lines.length;li++){if(lines[li]._importedFile===fname){stillUsed=true;break;}}if(!stillUsed)importedFilePaths.splice(fn,1);}}var txt=document.getElementById('fileText');if(txt&&removedFileName){var cur=getFileStatusText();if(cur.indexOf(removedFileName)>=0){var parts=cur.split(',').map(function(s){return s.trim();}).filter(function(s){return s&&s!==removedFileName;});setFileStatusText(parts.length?parts.join(', '):tr('none'));}}updateStats();}
+    function updateLineStartEndMarkers(line){if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}if(line.points.length>0&&line.startIcon){line.startMarker=L.marker(dataLatLngToMap(line.points[0]),{icon:pinIcon(ICON_PINS[line.startIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}if(line.points.length>0&&line.endIcon){line.endMarker=L.marker(dataLatLngToMap(line.points[line.points.length-1]),{icon:pinIcon(ICON_PINS[line.endIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}}
     function lineStats(line){var dist=0,up=0,down=0,elapsed=0,gpsPts=line.points.length;for(var i=1;i<line.points.length;i++){dist+=distanceMeters(line.points[i-1].lat,line.points[i-1].lng,line.points[i].lat,line.points[i].lng);var dh=(line.points[i].alt||0)-(line.points[i-1].alt||0);if(dh>0)up+=dh;else down-=dh;}var tm=lineTimeRange(line);if(tm.min!=null&&tm.max!=null&&tm.max>tm.min)elapsed=(tm.max-tm.min)/1000;return{distance:dist,ascent:up,descent:down,elapsed:elapsed,gpsPoints:gpsPts};}
     function countMarkPoints(line){var n=0;for(var i=0;i<objects.length;i++){if(objects[i].lineId===line.id)n++;}return n;}
     function lineTimeRange(line){
@@ -2794,7 +2869,7 @@ function setMapTouchLocked(locked){
       return{min:minT<Infinity?minT:null,max:maxT>-Infinity?maxT:null};
     }
     function getLineObjects(line){var arr=[];for(var i=0;i<objects.length;i++){if(objects[i].lineId===line.id)arr.push(objects[i]);}return arr;}
-    function normalizeLinePointTypes(line,objStartIdx){var lineObjs=[];objStartIdx=objStartIdx||0;for(var i=objStartIdx;i<objects.length;i++){var o=objects[i];if(o.lineId!=null&&o.lineId!==line.id)continue;var p=o.marker.getLatLng();for(var j=0;j<line.points.length;j++){if(Math.abs(p.lat-line.points[j].lat)<.00001&&Math.abs(p.lng-line.points[j].lng)<.00001){lineObjs.push(o);break;}}}if(lineObjs.length===0)return;for(var x=0;x<lineObjs.length;x++)lineObjs[x].lineId=line.id;var minObj=null,maxObj=null;for(var k=0;k<lineObjs.length;k++){var ok=lineObjs[k];if(ok.time==null)continue;if(minObj==null||ok.time<minObj.time)minObj=ok;if(maxObj==null||ok.time>maxObj.time)maxObj=ok;}if(minObj==null||maxObj==null)return;var minT=minObj.time,maxT=maxObj.time,changed=false;for(var m=0;m<lineObjs.length;m++){var om=lineObjs[m],nt;if(om===minObj)nt='ptStart';else if(om===maxObj)nt='ptEnd';else{nt='ptMiddle';if(om.time!=null&&(om.time<minT||om.time>maxT)){om.time=null;changed=true;}}if(om.ptype!==nt){om.ptype=nt;changed=true;}}if(changed){for(var n=0;n<lineObjs.length;n++){updatePopup(lineObjs[n]);updateMarkerLabel(lineObjs[n]);}updateStats();}}
+    function normalizeLinePointTypes(line,objStartIdx){var lineObjs=[];objStartIdx=objStartIdx||0;for(var i=objStartIdx;i<objects.length;i++){var o=objects[i];if(o.lineId!=null&&o.lineId!==line.id)continue;var p=getObjectDataLatLng(o);for(var j=0;j<line.points.length;j++){if(p&&Math.abs(p.lat-line.points[j].lat)<.00001&&Math.abs(p.lng-line.points[j].lng)<.00001){lineObjs.push(o);break;}}}if(lineObjs.length===0)return;for(var x=0;x<lineObjs.length;x++)lineObjs[x].lineId=line.id;var minObj=null,maxObj=null;for(var k=0;k<lineObjs.length;k++){var ok=lineObjs[k];if(ok.time==null)continue;if(minObj==null||ok.time<minObj.time)minObj=ok;if(maxObj==null||ok.time>maxObj.time)maxObj=ok;}if(minObj==null||maxObj==null)return;var minT=minObj.time,maxT=maxObj.time,changed=false;for(var m=0;m<lineObjs.length;m++){var om=lineObjs[m],nt;if(om===minObj)nt='ptStart';else if(om===maxObj)nt='ptEnd';else{nt='ptMiddle';if(om.time!=null&&(om.time<minT||om.time>maxT)){om.time=null;changed=true;}}if(om.ptype!==nt){om.ptype=nt;changed=true;}}if(changed){for(var n=0;n<lineObjs.length;n++){updatePopup(lineObjs[n]);updateMarkerLabel(lineObjs[n]);}updateStats();}}
     function fmtDuration(sec){return fmtDurationHHMM(sec);}
     function fmtDurationHHMM(sec){if(sec<=0)return'-';var h=Math.floor(sec/3600),m=Math.floor(sec/60)%60;function z(n){return n<10?'0'+n:String(n);}return z(h)+':'+z(m);}
 
@@ -2873,7 +2948,7 @@ function setMapTouchLocked(locked){
       var pts=(line&&line.points)||[];
       if(pts.length>0){
         var mid=pts[Math.floor(pts.length/2)];
-        if(mid&&isFinite(+mid.lat)&&isFinite(+mid.lng))return L.latLng(+mid.lat,+mid.lng);
+        if(mid&&isFinite(+mid.lat)&&isFinite(+mid.lng))return dataLatLngToMap({lat:+mid.lat,lng:+mid.lng});
       }
       try{
         var b=line.polyline.getBounds();
@@ -3204,6 +3279,7 @@ function setMapTouchLocked(locked){
 
     function closeLineInfoDialog(){
       stopRunner();
+      hideElevationHoverMarker();
       var mask=document.getElementById('dialogMask');
       var dlg=document.getElementById('dialog');
       if(dlg._orig)dlg.innerHTML=dlg._orig;
@@ -3251,6 +3327,56 @@ function setMapTouchLocked(locked){
         iconAnchor: [Math.round(size[0] / 2), 24],
         html: '<div class="runner-icon">' + escapeHtml(text) + '</div>'
       });
+    }
+
+
+    function hideElevationHoverMarker(){
+      if(elevationHoverMarker){
+        try{ map.removeLayer(elevationHoverMarker); }catch(e){}
+        elevationHoverMarker=null;
+      }
+      elevationHoverLine=null;
+      elevationHoverRawIdx=null;
+    }
+
+    function pointOnLineIndex(line,rawIdx){
+      if(!line||!line.points||!line.points.length)return null;
+      rawIdx=Number(rawIdx);
+      if(!isFinite(rawIdx))return null;
+      var pts=line.points;
+      if(rawIdx<=1)return L.latLng(Number(pts[0].lat),Number(pts[0].lng));
+      if(rawIdx>=pts.length)return L.latLng(Number(pts[pts.length-1].lat),Number(pts[pts.length-1].lng));
+      var zero=rawIdx-1;
+      var i0=Math.floor(zero),i1=Math.ceil(zero);
+      if(i0<0)i0=0;
+      if(i1>=pts.length)i1=pts.length-1;
+      var a=pts[i0],b=pts[i1];
+      if(!a||!b)return null;
+      var alat=Number(a.lat),alng=Number(a.lng),blat=Number(b.lat),blng=Number(b.lng);
+      if(!isFinite(alat)||!isFinite(alng))return null;
+      if(!isFinite(blat)||!isFinite(blng))return L.latLng(alat,alng);
+      var t=i1===i0?0:(zero-i0)/(i1-i0);
+      return L.latLng(alat+(blat-alat)*t,alng+(blng-alng)*t);
+    }
+
+    function showElevationHoverMarker(line,hover){
+      if(!map||!line||!hover||!isFinite(Number(hover.idx))){hideElevationHoverMarker();return;}
+      var pos=pointOnLineIndex(line,hover.idx);
+      if(!pos){hideElevationHoverMarker();return;}
+      var displayPos=dataLatLngToMap(pos);
+      if(!elevationHoverMarker){
+        elevationHoverMarker=L.marker(displayPos,{icon:runnerIcon('🚶'),interactive:false,zIndexOffset:1350,opacity:.96}).addTo(map);
+      }else{
+        elevationHoverMarker.setLatLng(displayPos);
+      }
+      elevationHoverLine=line;
+      elevationHoverRawIdx=Number(hover.idx);
+    }
+
+    function refreshElevationHoverMarkerDisplay(){
+      if(elevationHoverMarker&&elevationHoverLine&&elevationHoverRawIdx!=null){
+        showElevationHoverMarker(elevationHoverLine,{idx:elevationHoverRawIdx});
+      }
     }
 
     function buildLineDistanceTable(line){
@@ -3312,7 +3438,7 @@ function setMapTouchLocked(locked){
     function getDistanceTableBounds(pts){
       if(!pts||!pts.length)return null;
       var arr=[];
-      for(var i=0;i<pts.length;i++)arr.push([pts[i].lat,pts[i].lng]);
+      for(var i=0;i<pts.length;i++){var mp=dataLatLngToMap(pts[i]);arr.push([mp.lat,mp.lng]);}
       try{return L.latLngBounds(arr);}catch(e){return null;}
     }
 
@@ -3358,9 +3484,10 @@ function setMapTouchLocked(locked){
       runnerActiveLine=line;
       runnerFollowMap=shouldRunnerFollowLine(pts);
       runnerLastPanTime=0;
-      runnerMarker=L.marker([pts[0].lat,pts[0].lng],{icon:runnerIcon(label||'🏃'),interactive:false,zIndexOffset:1200}).addTo(map);
+      var runnerStartDisplay=dataLatLngToMap({lat:pts[0].lat,lng:pts[0].lng});
+      runnerMarker=L.marker(runnerStartDisplay,{icon:runnerIcon(label||'🏃'),interactive:false,zIndexOffset:1200}).addTo(map);
       runnerStartTime=performance&&performance.now?performance.now():Date.now();
-      if(runnerFollowMap)followRunnerPosition(L.latLng(pts[0].lat,pts[0].lng),true);
+      if(runnerFollowMap)followRunnerPosition(runnerStartDisplay,true);
       function step(now){
         if(runnerActiveLine!==line||!runnerMarker)return;
         now=now||(performance&&performance.now?performance.now():Date.now());
@@ -3369,8 +3496,9 @@ function setMapTouchLocked(locked){
         if(ratio>1)ratio=1;
         var pos=pointOnDistanceTable(pts,total*ratio);
         if(pos){
-          runnerMarker.setLatLng(pos);
-          followRunnerPosition(pos,ratio>=1);
+          var displayPos=dataLatLngToMap(pos);
+          runnerMarker.setLatLng(displayPos);
+          followRunnerPosition(displayPos,ratio>=1);
         }
         if(ratio<1){
           runnerAnimFrame=requestAnimationFrame(step);
@@ -3516,6 +3644,7 @@ function setMapTouchLocked(locked){
       ctx.fillText('X: '+tr('linePts')+' / Y: '+tr('altitude'),left,12);
       var hint=document.getElementById('elevationHint');
       if(hint)hint.textContent=hover?Math.round(hover.alt)+' m':'';
+      if(hover)showElevationHoverMarker(chart.line,hover);else hideElevationHoverMarker();
     }
 
     function drawElevationChart(line){
@@ -3541,6 +3670,7 @@ function setMapTouchLocked(locked){
         ctx.font='14px Consolas, Microsoft YaHei, sans-serif';
         ctx.fillText(tr('notEnoughAltitude'),24,42);
         if(hint)hint.textContent='';
+        hideElevationHoverMarker();
         return;
       }
 
@@ -3551,7 +3681,7 @@ function setMapTouchLocked(locked){
       var pad=(maxAlt-minAlt)*0.08;
       minAlt-=pad;maxAlt+=pad;
       var minIdx=1,maxIdx=line.points.length;
-      canvas._elevationChart={pts:pts,w:w,h:h,left:left,right:right,top:top,bottom:bottom,minAlt:minAlt,maxAlt:maxAlt,minIdx:minIdx,maxIdx:maxIdx};
+      canvas._elevationChart={line:line,pts:pts,w:w,h:h,left:left,right:right,top:top,bottom:bottom,minAlt:minAlt,maxAlt:maxAlt,minIdx:minIdx,maxIdx:maxIdx};
       setupElevationCanvasInteraction(canvas);
       renderElevationChart(canvas,null);
     }
@@ -3569,7 +3699,7 @@ function setMapTouchLocked(locked){
       var dlg=restoreEditDialogTemplate();
       var mask=document.getElementById('dialogMask');
       if(!dlg||!mask){logError('打开标记点编辑对话框失败：dialog/dialogMask 不存在');return;}
-      dialogTarget=o;dlgSelectedIcon=o.icon||'redPin';var p=o.marker.getLatLng();
+      dialogTarget=o;dlgSelectedIcon=o.icon||'redPin';var p=getObjectDataLatLng(o)||o.marker.getLatLng();
       var titleEl=document.getElementById('dlgTitle'),nameEl=document.getElementById('dlgName'),commentEl=document.getElementById('dlgComment'),latEl=document.getElementById('dlgLat'),lngEl=document.getElementById('dlgLng');
       var altEl=document.getElementById('dlgAlt'),timeEl=document.getElementById('dlgTime');
       if(!titleEl||!nameEl||!commentEl||!latEl||!lngEl||!altEl||!timeEl){logError('打开标记点编辑对话框失败：编辑控件不完整');return;}
@@ -3633,7 +3763,7 @@ function setMapTouchLocked(locked){
       document.getElementById('dialogMask').style.pointerEvents='auto';
     }
     function closeLineDialog(){var dlg=document.getElementById('dialog');if(dlg._orig)dlg.innerHTML=dlg._orig;dlgLineTarget=null;document.getElementById('dialogMask').style.display='none';}
-    function saveLineDialog(){if(!editModeEnabled)return;if(!dlgLineTarget)return;pushHistory();var newLineName=document.getElementById('dlgLineName').value.trim()||dlgLineTarget.name;dlgLineTarget.name=newLineName;dlgLineTarget.autoLineName=false;dlgLineTarget.autoSegmentNo=0;dlgLineTarget.sampleNameKey='';dlgLineTarget.embeddedExampleLine=false;dlgLineTarget.color=dlgLineColor;dlgLineTarget.startIcon=dlgLineStartIcon;dlgLineTarget.endIcon=dlgLineEndIcon;dlgLineTarget.polyline.setStyle({color:dlgLineTarget.color,weight:4,opacity:.9,className:'track-line'});if(dlgLineTarget.hitPolyline)dlgLineTarget.hitPolyline.setLatLngs(dlgLineTarget.points);updateLineStartEndMarkers(dlgLineTarget);updateStats();closeLineDialog();}
+    function saveLineDialog(){if(!editModeEnabled)return;if(!dlgLineTarget)return;pushHistory();var newLineName=document.getElementById('dlgLineName').value.trim()||dlgLineTarget.name;dlgLineTarget.name=newLineName;dlgLineTarget.autoLineName=false;dlgLineTarget.autoSegmentNo=0;dlgLineTarget.sampleNameKey='';dlgLineTarget.embeddedExampleLine=false;dlgLineTarget.color=dlgLineColor;dlgLineTarget.startIcon=dlgLineStartIcon;dlgLineTarget.endIcon=dlgLineEndIcon;dlgLineTarget.polyline.setStyle({color:dlgLineTarget.color,weight:4,opacity:.9,className:'track-line'});var mapPts=linePointsToMapLatLngs(dlgLineTarget.points);dlgLineTarget.polyline.setLatLngs(mapPts);if(dlgLineTarget.hitPolyline)dlgLineTarget.hitPolyline.setLatLngs(mapPts);updateLineStartEndMarkers(dlgLineTarget);updateStats();closeLineDialog();}
     function deleteLineDialog(){if(!editModeEnabled)return;if(!dlgLineTarget)return;if(!confirm(tr('confirmDeleteLine')||'确定删除此线路及其所有关联点？'))return;pushHistory();removeLine(dlgLineTarget);closeLineDialog();}
     function renderLineColorPicker(){var s=document.getElementById('dlgLineColorSwatches');if(!s)return;var h='';for(var i=0;i<LINE_COLORS.length;i++){var c=LINE_COLORS[i],sel=c===dlgLineColor?' selected':'';h+='<div style="width:24px;height:24px;border-radius:4px;background:'+c+';cursor:pointer;border:2px solid '+(sel?'#fff':'transparent')+';transition:border-color .15s" onclick="dlgLineColor=\''+c+'\';renderLineColorPicker()" title="'+c+'"></div>';}s.innerHTML=h;}
     function renderLineIconPicker(cid,selKey,type){var s=document.getElementById(cid);if(!s)return;var keys=Object.keys(ICON_PINS),h='';
@@ -4321,9 +4451,9 @@ function downloadClassicKml(idx){
       return {name:(ptype==='ptStart'?tr('ptStart'):tr('ptEnd'))+'-'+(line.name||tr('line')),lat:pt.lat,lng:pt.lng,alt:pt.alt,time:pt.time,comment:'',ptype:ptype,marker:{getLatLng:function(){return {lat:pt.lat,lng:pt.lng};}}};
     }
     function objectMatchesPoint(o,pt){
-      if(!o||!o.marker||!pt)return false;
-      var ll=o.marker.getLatLng();
-      return Math.abs(Number(ll.lat)-Number(pt.lat))<0.00001&&Math.abs(Number(ll.lng)-Number(pt.lng))<0.00001;
+      if(!o||!pt)return false;
+      var ll=getObjectDataLatLng(o);
+      return ll&&Math.abs(Number(ll.lat)-Number(pt.lat))<0.00001&&Math.abs(Number(ll.lng)-Number(pt.lng))<0.00001;
     }
     function hasEndpointObjectForPoint(pt,lineIdSet){
       for(var i=0;i<objects.length;i++){
@@ -4383,8 +4513,8 @@ function downloadClassicKml(idx){
     }
 
     function safeLatLngFromObject(o) {
-      if (!o || !o.marker || typeof o.marker.getLatLng !== 'function') return null;
-      var ll = o.marker.getLatLng();
+      if (!o) return null;
+      var ll = getObjectDataLatLng(o);
       var lat = finiteNumber(ll && ll.lat, NaN);
       var lng = finiteNumber(ll && ll.lng, NaN);
       if (!isFinite(lat) || !isFinite(lng)) return null;
@@ -4866,7 +4996,7 @@ function cleanImportedSegmentName(name) {
     function showLineRowMenu(e,lineId){e.preventDefault();e.stopPropagation();var menu=document.getElementById('rowMenu');var line=null;for(var i=0;i<lines.length;i++){if(lines[i].id===lineId){line=lines[i];break;}}if(!line)return;if(!selectedLines.has(line)){selectLine(line,null,false,'list');}var selCount=selectedLines.size;var exportLabel=selCount>1?tr('exportMergedKml'):tr('exportKml');menu.innerHTML='<div class="row-menu-item" data-act="export">'+exportLabel+'</div><div class="row-menu-item danger" data-act="delete">'+tr('delete')+'</div>';var rect=menu.getBoundingClientRect();menu.style.left=Math.min(e.clientX,window.innerWidth-160)+'px';menu.style.top=Math.min(e.clientY,window.innerHeight-rect.height-8)+'px';menu.style.display='block';menu._lineId=lineId;var onClick=function(ev){var t=ev.target;if(!t||!t.classList.contains('row-menu-item'))return;var act=t.getAttribute('data-act');hideLineRowMenu();if(act==='export'){exportSelectedKml();}else if(act==='delete'){var toDel=Array.from(selectedLines);if(!toDel.length)toDel=[line];if(!confirm(tr('confirmDeleteLine')||'确定删除此线路？'))return;pushHistory();for(var di=toDel.length-1;di>=0;di--)removeLine(toDel[di]);}};menu.onclick=onClick;var onDoc=function(ev){if(menu.contains(ev.target))return;hideLineRowMenu();};setTimeout(function(){document.addEventListener('mousedown',onDoc,{once:true});},0);}
     function hideLineRowMenu(){var menu=document.getElementById('rowMenu');if(menu)menu.style.display='none';menu.onclick=null;menu._lineId=null;}
     function highlightSelectedRows(){var t=document.querySelectorAll('#stats tr');for(var i=0;i<t.length;i++){var lid=t[i].getAttribute('data-lid');var hit=false;selectedLines.forEach(function(sl){if(sl.id===lid)hit=true;});t[i].classList.toggle('active',hit);}}
-    function distToPointOnLine(o,line){var p=o.marker.getLatLng(),closestIdx=-1,closestDist=1e99,sum=0;if(!line||!line.points||!line.points.length)return{lineDist:0,ptDist:0};for(var i=1;i<line.points.length;i++)sum+=distanceMeters(line.points[i-1].lat,line.points[i-1].lng,line.points[i].lat,line.points[i].lng);if(o.pointIndex!=null&&line.points[o.pointIndex]){closestIdx=o.pointIndex;}else{for(var k=0;k<line.points.length;k++){var d=Math.abs(p.lat-line.points[k].lat)+Math.abs(p.lng-line.points[k].lng);if(d<closestDist){closestDist=d;closestIdx=k;}}}if(closestIdx<=0)return{lineDist:sum,ptDist:0};var ptDist=0;for(var j=1;j<=closestIdx;j++)ptDist+=distanceMeters(line.points[j-1].lat,line.points[j-1].lng,line.points[j].lat,line.points[j].lng);return{lineDist:sum,ptDist:ptDist};}
+    function distToPointOnLine(o,line){var p=getObjectDataLatLng(o),closestIdx=-1,closestDist=1e99,sum=0;if(!line||!line.points||!line.points.length||!p)return{lineDist:0,ptDist:0};for(var i=1;i<line.points.length;i++)sum+=distanceMeters(line.points[i-1].lat,line.points[i-1].lng,line.points[i].lat,line.points[i].lng);if(o.pointIndex!=null&&line.points[o.pointIndex]){closestIdx=o.pointIndex;}else{for(var k=0;k<line.points.length;k++){var d=Math.abs(p.lat-line.points[k].lat)+Math.abs(p.lng-line.points[k].lng);if(d<closestDist){closestDist=d;closestIdx=k;}}}if(closestIdx<=0)return{lineDist:sum,ptDist:0};var ptDist=0;for(var j=1;j<=closestIdx;j++)ptDist+=distanceMeters(line.points[j-1].lat,line.points[j-1].lng,line.points[j].lat,line.points[j].lng);return{lineDist:sum,ptDist:ptDist};}
     function distanceMeters(a,b,c,d){var r=6371008.8,p1=a*Math.PI/180,p2=c*Math.PI/180,dp=(c-a)*Math.PI/180,dl=(d-b)*Math.PI/180,x=Math.sin(dp/2)*Math.sin(dp/2)+Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)*Math.sin(dl/2);return r*2*Math.atan2(Math.sqrt(x),Math.sqrt(1-x));}
     function downloadText(text,name,type){var blob=new Blob([text],{type:type||'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);document.body.removeChild(a);},0);}
     function toast(msg,ms){
