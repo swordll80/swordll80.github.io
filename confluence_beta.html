@@ -603,8 +603,8 @@
       .pane-head { display: none; }
       .tree-actions { display: none; }
 
-      /* Show toolbar toggle button on mobile */
-      .toolbar-toggle-btn { display: inline-flex; }
+      /* Mobile: completely disable editing — hide all edit tools */
+      .toolbar-toggle-btn { display: none !important; }
 
       /* When toolbar is toggled visible on mobile */
       body.toolbar-visible .toolbar.ribbon { display: flex; }
@@ -2993,6 +2993,13 @@
 
       function initEvents() {
         authGateBtn.addEventListener('click', chooseRoot);
+
+        // Mobile: completely disable editing — set editor to read-only
+        var isMobile = window.matchMedia('(max-width: 900px)').matches;
+        if (isMobile) {
+          editor.contentEditable = 'false';
+          sourceEditor.disabled = true;
+        }
 
         // Mobile toolbar toggle
         document.getElementById('toolbarToggleBtn').addEventListener('click', function () {
