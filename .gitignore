@@ -1,3 +1,6 @@
 *.zip
 .backup
 confluence/git.bat
+.codebuddy
+.playwright-cli
+.workbuddy
