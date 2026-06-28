@@ -1,0 +1,831 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSON速查</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12px; line-height:1.65; white-space:pre-wrap; word-break:break-all; overflow-x:auto; color:#2d3436; }
+    .card-code span { color:#8b3fc7; }
+    .card-code .keyword { color:#8b3fc7; }
+    .card-code .comment { color:#7d8599; font-style:italic; }
+    .card-code .string { color:#1b8c3c; }
+    .card-code .num { color:#c7640a; }
+    .card-code .func { color:#356ae6; }
+    .card-code .tag { color:#f26522; }
+    .card-code .attr { color:#356ae6; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:11px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>JSON 知识手册</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">45 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、JSON 基础语法</span>
+        <span class="count">6 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="JSON 定义 // JSON = JavaScript Object Notation // 轻量级数据交换格式, 语言无关 // 基于两个结构: 键值对集合 + 有序值列表">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">JSON 定义</span>
+            <span class="card-ver">RFC 4627</span>
+          </div>
+          <div class="card-code"><span class="comment">// JSON = JavaScript Object Notation</span>
+<span class="comment">// 轻量级数据交换格式, 语言无关</span>
+<span class="comment">// 基于两个结构: 键值对集合 + 有序值列表</span></div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="基本示例 { &quot;name&quot; : &quot;Alice&quot; , &quot;age&quot; : 25 , &quot;isStudent&quot; : false , &quot;hobbies&quot; : [ &quot;reading&quot; , &quot;coding&quot; ], &quot;address&quot; : { &quot;city&quot; : &quot;Beijing&quot; , &quot;zip&quot; : &quot;100000&quot; } }">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">基本示例</span>
+            <span class="card-ver">RFC 4627</span>
+          </div>
+          <div class="card-code">{
+  <span class="string">"name"</span>: <span class="string">"Alice"</span>,
+  <span class="string">"age"</span>: <span class="num">25</span>,
+  <span class="string">"isStudent"</span>: <span class="keyword">false</span>,
+  <span class="string">"hobbies"</span>: [<span class="string">"reading"</span>, <span class="string">"coding"</span>],
+  <span class="string">"address"</span>: {
+    <span class="string">"city"</span>: <span class="string">"Beijing"</span>,
+    <span class="string">"zip"</span>: <span class="string">"100000"</span>
+  }
+}</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="JSON 数据类型 // 1. string → &quot;hello&quot; // 2. number → 42, 3.14, -10, 1.5e10 // 3. boolean → true / false // 4. null → null // 5. object → { &quot;key&quot;: &quot;value&quot; } // 6. array → [1, 2, 3]">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">JSON 数据类型</span>
+            <span class="card-ver">RFC 4627</span>
+          </div>
+          <div class="card-code"><span class="comment">// 1. string   → "hello"</span>
+<span class="comment">// 2. number   → 42, 3.14, -10, 1.5e10</span>
+<span class="comment">// 3. boolean  → true / false</span>
+<span class="comment">// 4. null     → null</span>
+<span class="comment">// 5. object   → { "key": "value" }</span>
+<span class="comment">// 6. array    → [1, 2, 3]</span></div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="字符串规则 // 必须用双引号 (不能用单引号) // 转义: \&quot; \\ \/ \b \f \n \r \t \uXXXX { &quot;message&quot; : &quot;He said \&quot;Hello\&quot;\nNew line&quot; }">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">字符串规则</span>
+            <span class="card-ver">RFC 4627</span>
+          </div>
+          <div class="card-code"><span class="comment">// 必须用双引号 (不能用单引号)</span>
+<span class="comment">// 转义: \" \\ \/ \b \f \n \r \t \uXXXX</span>
+{ <span class="string">"message"</span>: <span class="string">"He said \"Hello\"\nNew line"</span> }</div>
+        </div>
+        <div class="card" id="card-1-5" data-keywords="数字规则 // 整数: 无前导零 (不能 0123) // 小数: 必须有数字在小数点前后 // 指数: e 或 E, 后可跟 + 或 - // 不支持: NaN, Infinity, undefined // 不支持: 八进制, 十六进制">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">数字规则</span>
+            <span class="card-ver">RFC 4627</span>
+          </div>
+          <div class="card-code"><span class="comment">// 整数: 无前导零 (不能 0123)</span>
+<span class="comment">// 小数: 必须有数字在小数点前后</span>
+<span class="comment">// 指数: e 或 E, 后可跟 + 或 -</span>
+<span class="comment">// 不支持: NaN, Infinity, undefined</span>
+<span class="comment">// 不支持: 八进制, 十六进制</span></div>
+        </div>
+        <div class="card" id="card-1-6" data-keywords="JSON 格式规则 // 1. 最外层可以是 {} 或 [] (RFC 7159+) // 2. 键必须是字符串 (双引号) // 3. 不能有尾随逗号 // 4. 不支持注释 // 5. 空白(空格/制表/换行)被忽略">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">JSON 格式规则</span>
+            <span class="card-ver">RFC 7159</span>
+          </div>
+          <div class="card-code"><span class="comment">// 1. 最外层可以是 {} 或 [] (RFC 7159+)</span>
+<span class="comment">// 2. 键必须是字符串 (双引号)</span>
+<span class="comment">// 3. 不能有尾随逗号</span>
+<span class="comment">// 4. 不支持注释</span>
+<span class="comment">// 5. 空白(空格/制表/换行)被忽略</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、JSON Schema</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-7" data-keywords="Schema 基础 { &quot;$schema&quot; : &quot;https://json-schema.org/draft/2020-12/schema&quot; , &quot;$id&quot; : &quot;https://example.com/person.schema.json&quot; , &quot;title&quot; : &quot;Person&quot; , &quot;type&quot; : &quot;object&quot; , &quot;properties&quot; : { &quot;name&quot; : { &quot;type&quot; : &quot;string&quot; }, &quot;age&quot; : { &quot;type&quot; : &quot;integer&quot; , &quot;minimum&quot; : 0 } }, &quot;required&quot; : [ &quot;name&quot; ] }">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">Schema 基础</span>
+            <span class="card-ver">JSON Schema</span>
+          </div>
+          <div class="card-code">{
+  <span class="string">"$schema"</span>: <span class="string">"https://json-schema.org/draft/2020-12/schema"</span>,
+  <span class="string">"$id"</span>: <span class="string">"https://example.com/person.schema.json"</span>,
+  <span class="string">"title"</span>: <span class="string">"Person"</span>,
+  <span class="string">"type"</span>: <span class="string">"object"</span>,
+  <span class="string">"properties"</span>: {
+    <span class="string">"name"</span>: { <span class="string">"type"</span>: <span class="string">"string"</span> },
+    <span class="string">"age"</span>: { <span class="string">"type"</span>: <span class="string">"integer"</span>, <span class="string">"minimum"</span>: <span class="num">0</span> }
+  },
+  <span class="string">"required"</span>: [<span class="string">"name"</span>]
+}</div>
+        </div>
+        <div class="card" id="card-2-8" data-keywords="类型约束 // &quot;type&quot;: &quot;string&quot; / &quot;number&quot; / &quot;integer&quot; // &quot;type&quot;: &quot;object&quot; / &quot;array&quot; / &quot;boolean&quot; / &quot;null&quot; // 可多类型: &quot;type&quot;: [&quot;string&quot;, &quot;null&quot;] // 字符串: &quot;minLength&quot;, &quot;maxLength&quot;, &quot;pattern&quot; (正则) // 数值: &quot;minimum&quot;, &quot;maximum&quot;, &quot;multipleOf&quot; // 数组: &quot;minItems&quot;, &quot;maxItems&quot;, &quot;uniqueItems&quot; // 对象: &quot;minProperties&quot;, &quot;maxProperties&quot;">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">类型约束</span>
+            <span class="card-ver">JSON Schema</span>
+          </div>
+          <div class="card-code"><span class="comment">// "type": "string" / "number" / "integer"</span>
+<span class="comment">// "type": "object" / "array" / "boolean" / "null"</span>
+<span class="comment">// 可多类型: "type": ["string", "null"]</span>
+<span class="comment">// 字符串: "minLength", "maxLength", "pattern" (正则)</span>
+<span class="comment">// 数值: "minimum", "maximum", "multipleOf"</span>
+<span class="comment">// 数组: "minItems", "maxItems", "uniqueItems"</span>
+<span class="comment">// 对象: "minProperties", "maxProperties"</span></div>
+        </div>
+        <div class="card" id="card-2-9" data-keywords="枚举与常量 { &quot;color&quot; : { &quot;enum&quot; : [ &quot;red&quot; , &quot;green&quot; , &quot;blue&quot; ] }, &quot;version&quot; : { &quot;const&quot; : &quot;1.0&quot; } }">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">枚举与常量</span>
+            <span class="card-ver">JSON Schema</span>
+          </div>
+          <div class="card-code">{
+  <span class="string">"color"</span>: { <span class="string">"enum"</span>: [<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>] },
+  <span class="string">"version"</span>: { <span class="string">"const"</span>: <span class="string">"1.0"</span> }
+}</div>
+        </div>
+        <div class="card" id="card-2-10" data-keywords="组合约束 { &quot;allOf&quot; : [{...}, {...}], // 全部满足 &quot;anyOf&quot; : [{...}, {...}], // 任一满足 &quot;oneOf&quot; : [{...}, {...}], // 恰好一个满足 &quot;not&quot; : {...} // 不满足 }">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">组合约束</span>
+            <span class="card-ver">JSON Schema</span>
+          </div>
+          <div class="card-code">{
+  <span class="string">"allOf"</span>: [{...}, {...}],   <span class="comment">// 全部满足</span>
+  <span class="string">"anyOf"</span>: [{...}, {...}],   <span class="comment">// 任一满足</span>
+  <span class="string">"oneOf"</span>: [{...}, {...}],   <span class="comment">// 恰好一个满足</span>
+  <span class="string">"not"</span>: {...}               <span class="comment">// 不满足</span>
+}</div>
+        </div>
+        <div class="card" id="card-2-11" data-keywords="引用 ($ref) { &quot;definitions&quot; : { &quot;address&quot; : { &quot;type&quot; : &quot;object&quot; , &quot;properties&quot; : {...} } }, &quot;properties&quot; : { &quot;home&quot; : { &quot;$ref&quot; : &quot;#/definitions/address&quot; }, &quot;work&quot; : { &quot;$ref&quot; : &quot;#/definitions/address&quot; } } }">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">引用 ($ref)</span>
+            <span class="card-ver">JSON Schema</span>
+          </div>
+          <div class="card-code">{
+  <span class="string">"definitions"</span>: {
+    <span class="string">"address"</span>: { <span class="string">"type"</span>: <span class="string">"object"</span>, <span class="string">"properties"</span>: {...} }
+  },
+  <span class="string">"properties"</span>: {
+    <span class="string">"home"</span>: { <span class="string">"$ref"</span>: <span class="string">"#/definitions/address"</span> },
+    <span class="string">"work"</span>: { <span class="string">"$ref"</span>: <span class="string">"#/definitions/address"</span> }
+  }
+}</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、JSONPath</span>
+        <span class="count">1 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-12" data-keywords="JSONPath 表达式 // $ → 根元素 // $.store.book[0] → 第一本书 // $.store.book[*] → 所有书 // $..author → 所有 author (递归) // $.store.book[?(@.price &amp;lt; 10)] → 筛选 // $.store.book[0,1] → 前两本 // $.store.book[-1] → 最后一本 // $.store.book[:2] → 前两本(切片) // $.store.book[?(@.isbn)] → 有 isbn 的书">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">JSONPath 表达式</span>
+            <span class="card-ver">JSONPath</span>
+          </div>
+          <div class="card-code"><span class="comment">// $                 → 根元素</span>
+<span class="comment">// $.store.book[0]   → 第一本书</span>
+<span class="comment">// $.store.book[*]   → 所有书</span>
+<span class="comment">// $..author         → 所有 author (递归)</span>
+<span class="comment">// $.store.book[?(@.price &lt; 10)] → 筛选</span>
+<span class="comment">// $.store.book[0,1] → 前两本</span>
+<span class="comment">// $.store.book[-1]  → 最后一本</span>
+<span class="comment">// $.store.book[:2]  → 前两本(切片)</span>
+<span class="comment">// $.store.book[?(@.isbn)] → 有 isbn 的书</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、JavaScript 中的 JSON</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-13" data-keywords="JSON.stringify const obj = { name: &quot;Alice&quot; , age: 25 }; const json = JSON .stringify(obj); // '{&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:25}' const pretty = JSON .stringify(obj, null , 2 ); // 第二个参数: 过滤/转换函数或属性数组 // 第三个参数: 缩进空格数">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">JSON.stringify</span>
+            <span class="card-ver">ES5</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> obj = { name: <span class="string">"Alice"</span>, age: <span class="num">25</span> };
+<span class="keyword">const</span> json = <span class="func">JSON</span>.stringify(obj);  <span class="comment">// '{"name":"Alice","age":25}'</span>
+<span class="keyword">const</span> pretty = <span class="func">JSON</span>.stringify(obj, <span class="keyword">null</span>, <span class="num">2</span>);
+<span class="comment">// 第二个参数: 过滤/转换函数或属性数组</span>
+<span class="comment">// 第三个参数: 缩进空格数</span></div>
+        </div>
+        <div class="card" id="card-4-14" data-keywords="JSON.parse const obj = JSON .parse( '{&quot;name&quot;:&quot;Alice&quot;,&quot;age&quot;:25}' ); const obj2 = JSON .parse(json, (key, value) =&amp;gt; { // 第二个参数: reviver 函数, 转换解析后的值 if (key === 'date' ) return new Date (value); return value; });">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">JSON.parse</span>
+            <span class="card-ver">ES5</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> obj = <span class="func">JSON</span>.parse(<span class="string">'{"name":"Alice","age":25}'</span>);
+<span class="keyword">const</span> obj2 = <span class="func">JSON</span>.parse(json, (key, value) =&gt; {
+  <span class="comment">// 第二个参数: reviver 函数, 转换解析后的值</span>
+  <span class="keyword">if</span> (key === <span class="string">'date'</span>) <span class="keyword">return</span> <span class="keyword">new</span> <span class="func">Date</span>(value);
+  <span class="keyword">return</span> value;
+});</div>
+        </div>
+        <div class="card" id="card-4-15" data-keywords="JSON 不支持的类型 // JSON.stringify 会忽略/转换以下值: // undefined → 忽略 (对象属性) 或 null (数组) // Symbol → 忽略 // Function → 忽略 // NaN / Infinity → null // Date → .toISOString() 字符串 // 循环引用 → 抛 TypeError">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">JSON 不支持的类型</span>
+            <span class="card-ver">ES5</span>
+          </div>
+          <div class="card-code"><span class="comment">// JSON.stringify 会忽略/转换以下值:</span>
+<span class="comment">// undefined → 忽略 (对象属性) 或 null (数组)</span>
+<span class="comment">// Symbol → 忽略</span>
+<span class="comment">// Function → 忽略</span>
+<span class="comment">// NaN / Infinity → null</span>
+<span class="comment">// Date → .toISOString() 字符串</span>
+<span class="comment">// 循环引用 → 抛 TypeError</span></div>
+        </div>
+        <div class="card" id="card-4-16" data-keywords="toJSON 方法 const obj = { date: new Date (), toJSON() { return { custom: 'format' }; } }; // JSON.stringify 会调用对象的 toJSON()">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">toJSON 方法</span>
+            <span class="card-ver">ES5</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> obj = {
+  date: <span class="keyword">new</span> <span class="func">Date</span>(),
+  toJSON() { <span class="keyword">return</span> { custom: <span class="string">'format'</span> }; }
+};
+<span class="comment">// JSON.stringify 会调用对象的 toJSON()</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、Python 中的 JSON</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-17" data-keywords="json.dumps / json.loads import json s = json.dumps({ 'name' : 'Alice' , 'age' : 25 }, indent= 2 ) data = json.loads(s)">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">json.dumps / json.loads</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> json
+s = json.dumps({<span class="string">'name'</span>: <span class="string">'Alice'</span>, <span class="string">'age'</span>: <span class="num">25</span>}, indent=<span class="num">2</span>)
+data = json.loads(s)</div>
+        </div>
+        <div class="card" id="card-5-18" data-keywords="json.dump / json.load with open ( 'data.json' , 'w' ) as f: json.dump(data, f, indent= 2 , ensure_ascii= False ) with open ( 'data.json' , 'r' ) as f: data = json.load(f)">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">json.dump / json.load</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">with</span> <span class="func">open</span>(<span class="string">'data.json'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:
+    json.dump(data, f, indent=<span class="num">2</span>, ensure_ascii=<span class="keyword">False</span>)
+<span class="keyword">with</span> <span class="func">open</span>(<span class="string">'data.json'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:
+    data = json.load(f)</div>
+        </div>
+        <div class="card" id="card-5-19" data-keywords="Python-JSON 类型映射 # dict → object, list/tuple → array # str → string, int/float → number # True/False → true/false, None → null # datetime 等自定义类型需手动转换 class MyEncoder (json.JSONEncoder): def default ( self , obj): if isinstance (obj, datetime): return obj.isoformat() return super ().default(obj)">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">Python-JSON 类型映射</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># dict → object, list/tuple → array</span>
+<span class="comment"># str → string, int/float → number</span>
+<span class="comment"># True/False → true/false, None → null</span>
+<span class="comment"># datetime 等自定义类型需手动转换</span>
+<span class="keyword">class</span> <span class="func">MyEncoder</span>(json.JSONEncoder):
+    <span class="keyword">def</span> <span class="func">default</span>(<span class="keyword">self</span>, obj):
+        <span class="keyword">if</span> <span class="func">isinstance</span>(obj, datetime):
+            <span class="keyword">return</span> obj.isoformat()
+        <span class="keyword">return</span> <span class="keyword">super</span>().default(obj)</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、其他语言 JSON 操作</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-20" data-keywords="C++ (nlohmann/json) // 最流行的 C++ JSON 库 #include &amp;lt;nlohmann/json.hpp&amp;gt; using json = nlohmann::json; json j = json::parse( &quot;{\&quot;name\&quot;:\&quot;Alice\&quot;}&quot; ); std::string name = j[ &quot;name&quot; ]; std::string s = j.dump( 2 );">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">C++ (nlohmann/json)</span>
+            <span class="card-ver">C++11</span>
+          </div>
+          <div class="card-code"><span class="comment">// 最流行的 C++ JSON 库</span>
+<span class="keyword">#include</span> <span class="string">&lt;nlohmann/json.hpp&gt;</span>
+<span class="keyword">using</span> json = nlohmann::json;
+json j = json::parse(<span class="string">"{\"name\":\"Alice\"}"</span>);
+std::string name = j[<span class="string">"name"</span>];
+std::string s = j.dump(<span class="num">2</span>);</div>
+        </div>
+        <div class="card" id="card-6-21" data-keywords="Java (Jackson / Gson) // Jackson: ObjectMapper mapper = new ObjectMapper(); MyClass obj = mapper.readValue(jsonStr, MyClass. class ); String json = mapper.writeValueAsString(obj); // Gson: Gson gson = new Gson(); MyClass obj = gson.fromJson(jsonStr, MyClass. class ); String json = gson.toJson(obj);">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title">Java (Jackson / Gson)</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// Jackson:</span>
+ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();
+MyClass obj = mapper.readValue(jsonStr, MyClass.<span class="keyword">class</span>);
+String json = mapper.writeValueAsString(obj);
+
+<span class="comment">// Gson:</span>
+Gson gson = <span class="keyword">new</span> Gson();
+MyClass obj = gson.fromJson(jsonStr, MyClass.<span class="keyword">class</span>);
+String json = gson.toJson(obj);</div>
+        </div>
+        <div class="card" id="card-6-22" data-keywords="Go (encoding/json) import &quot;encoding/json&quot; type Person struct { Name string `json:&quot;name&quot;` Age int `json:&quot;age,omitempty&quot;` } json.Unmarshal(data, &amp;amp;p) json.MarshalIndent(p, &quot;&quot; , &quot; &quot; )">
+          <div class="card-head">
+            <span class="card-num">22</span>
+            <span class="card-title">Go (encoding/json)</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> <span class="string">"encoding/json"</span>
+
+<span class="keyword">type</span> Person <span class="keyword">struct</span> {
+    Name <span class="keyword">string</span> <span class="string">`json:"name"`</span>
+    Age  <span class="keyword">int</span>    <span class="string">`json:"age,omitempty"`</span>
+}
+json.Unmarshal(data, &amp;p)
+json.MarshalIndent(p, <span class="string">""</span>, <span class="string">"  "</span>)</div>
+        </div>
+        <div class="card" id="card-6-23" data-keywords="C# (Newtonsoft.Json) // Json.NET (Newtonsoft) var obj = JsonConvert.DeserializeObject&amp;lt;Person&amp;gt;(json); var json = JsonConvert.SerializeObject(obj, Formatting.Indented); // System.Text.Json (内置, .NET Core 3+) var obj = JsonSerializer.Deserialize&amp;lt;Person&amp;gt;(json);">
+          <div class="card-head">
+            <span class="card-num">23</span>
+            <span class="card-title">C# (Newtonsoft.Json)</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// Json.NET (Newtonsoft)</span>
+<span class="keyword">var</span> obj = JsonConvert.DeserializeObject&lt;Person&gt;(json);
+<span class="keyword">var</span> json = JsonConvert.SerializeObject(obj, Formatting.Indented);
+
+<span class="comment">// System.Text.Json (内置, .NET Core 3+)</span>
+<span class="keyword">var</span> obj = JsonSerializer.Deserialize&lt;Person&gt;(json);</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-7">
+      <button class="section-head">
+        <span class="icon">7</span>
+        <span class="title">七、JSON 相关格式</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-7-24" data-keywords="JSON5 // JSON 的超集, 更宽松的语法: // - 支持注释 (// 和 /* */) // - 键可不加引号 // - 字符串可用单引号 // - 支持尾随逗号 // - 支持十六进制数字">
+          <div class="card-head">
+            <span class="card-num">24</span>
+            <span class="card-title">JSON5</span>
+            <span class="card-ver">JSON5</span>
+          </div>
+          <div class="card-code"><span class="comment">// JSON 的超集, 更宽松的语法:</span>
+<span class="comment">// - 支持注释 (// 和 /* */)</span>
+<span class="comment">// - 键可不加引号</span>
+<span class="comment">// - 字符串可用单引号</span>
+<span class="comment">// - 支持尾随逗号</span>
+<span class="comment">// - 支持十六进制数字</span></div>
+        </div>
+        <div class="card" id="card-7-25" data-keywords="JSONC (JSON with Comments) // VS Code 等编辑器支持的格式 // JSON + // 和 /**/ 注释 // 用于 tsconfig.json, settings.json 等">
+          <div class="card-head">
+            <span class="card-num">25</span>
+            <span class="card-title">JSONC (JSON with Comments)</span>
+            <span class="card-ver">JSONC</span>
+          </div>
+          <div class="card-code"><span class="comment">// VS Code 等编辑器支持的格式</span>
+<span class="comment">// JSON + // 和 /**/ 注释</span>
+<span class="comment">// 用于 tsconfig.json, settings.json 等</span></div>
+        </div>
+        <div class="card" id="card-7-26" data-keywords="JSON Lines (NDJSON) { &quot;id&quot; : 1 , &quot;name&quot; : &quot;Alice&quot; } { &quot;id&quot; : 2 , &quot;name&quot; : &quot;Bob&quot; } // 每行一个独立的 JSON 对象 // 适合流式处理, 日志场景">
+          <div class="card-head">
+            <span class="card-num">26</span>
+            <span class="card-title">JSON Lines (NDJSON)</span>
+            <span class="card-ver">NDJSON</span>
+          </div>
+          <div class="card-code">{<span class="string">"id"</span>: <span class="num">1</span>, <span class="string">"name"</span>: <span class="string">"Alice"</span>}
+{<span class="string">"id"</span>: <span class="num">2</span>, <span class="string">"name"</span>: <span class="string">"Bob"</span>}
+<span class="comment">// 每行一个独立的 JSON 对象</span>
+<span class="comment">// 适合流式处理, 日志场景</span></div>
+        </div>
+        <div class="card" id="card-7-27" data-keywords="BSON // Binary JSON, MongoDB 使用的二进制格式 // 支持更多类型: Date, ObjectId, Binary data // 解析更快, 但更占空间">
+          <div class="card-head">
+            <span class="card-num">27</span>
+            <span class="card-title">BSON</span>
+            <span class="card-ver">BSON</span>
+          </div>
+          <div class="card-code"><span class="comment">// Binary JSON, MongoDB 使用的二进制格式</span>
+<span class="comment">// 支持更多类型: Date, ObjectId, Binary data</span>
+<span class="comment">// 解析更快, 但更占空间</span></div>
+        </div>
+        <div class="card" id="card-7-28" data-keywords="MessagePack // 二进制序列化格式, 比 JSON 更紧凑 // 兼容 JSON 类型, 但体积更小">
+          <div class="card-head">
+            <span class="card-num">28</span>
+            <span class="card-title">MessagePack</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 二进制序列化格式, 比 JSON 更紧凑</span>
+<span class="comment">// 兼容 JSON 类型, 但体积更小</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-8">
+      <button class="section-head">
+        <span class="icon">8</span>
+        <span class="title">八、JSON 应用场景</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-8-29" data-keywords="Web API // RESTful API 的标准数据格式 // Content-Type: application/json // 请求体和响应体通常都是 JSON">
+          <div class="card-head">
+            <span class="card-num">29</span>
+            <span class="card-title">Web API</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// RESTful API 的标准数据格式</span>
+<span class="comment">// Content-Type: application/json</span>
+<span class="comment">// 请求体和响应体通常都是 JSON</span></div>
+        </div>
+        <div class="card" id="card-8-30" data-keywords="配置文件 // package.json (npm), composer.json (PHP) // tsconfig.json, .prettierrc, .eslintrc // 现代项目的主流配置格式">
+          <div class="card-head">
+            <span class="card-num">30</span>
+            <span class="card-title">配置文件</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// package.json (npm), composer.json (PHP)</span>
+<span class="comment">// tsconfig.json, .prettierrc, .eslintrc</span>
+<span class="comment">// 现代项目的主流配置格式</span></div>
+        </div>
+        <div class="card" id="card-8-31" data-keywords="数据存储 // NoSQL 数据库: MongoDB, CouchDB, Firebase // 浏览器: localStorage, sessionStorage // 移动端: SharedPreferences, NSUserDefaults">
+          <div class="card-head">
+            <span class="card-num">31</span>
+            <span class="card-title">数据存储</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// NoSQL 数据库: MongoDB, CouchDB, Firebase</span>
+<span class="comment">// 浏览器: localStorage, sessionStorage</span>
+<span class="comment">// 移动端: SharedPreferences, NSUserDefaults</span></div>
+        </div>
+        <div class="card" id="card-8-32" data-keywords="序列化与通信 // 微服务间通信, 消息队列 (Kafka, RabbitMQ) // WebSocket 消息, RPC 调用 // 日志格式 (结构化日志)">
+          <div class="card-head">
+            <span class="card-num">32</span>
+            <span class="card-title">序列化与通信</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 微服务间通信, 消息队列 (Kafka, RabbitMQ)</span>
+<span class="comment">// WebSocket 消息, RPC 调用</span>
+<span class="comment">// 日志格式 (结构化日志)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-9">
+      <button class="section-head">
+        <span class="icon">9</span>
+        <span class="title">九、常见Bug与陷阱</span>
+        <span class="count">7 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-9-33" data-keywords="尾随逗号 // 错误: {&quot;a&quot;: 1, &quot;b&quot;: 2,} → 解析失败! // JSON 标准不允许尾随逗号 // JavaScript 对象允许, 但 JSON 不允许">
+          <div class="card-head">
+            <span class="card-num">33</span>
+            <span class="card-title">尾随逗号</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 错误: {"a": 1, "b": 2,}  → 解析失败!</span>
+<span class="comment">// JSON 标准不允许尾随逗号</span>
+<span class="comment">// JavaScript 对象允许, 但 JSON 不允许</span></div>
+        </div>
+        <div class="card" id="card-9-34" data-keywords="单引号字符串 // 错误: {'key': 'value'} → 解析失败! // JSON 必须使用双引号">
+          <div class="card-head">
+            <span class="card-num">34</span>
+            <span class="card-title">单引号字符串</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 错误: {'key': 'value'}  → 解析失败!</span>
+<span class="comment">// JSON 必须使用双引号</span></div>
+        </div>
+        <div class="card" id="card-9-35" data-keywords="数字前导零 // 错误: {&quot;zip&quot;: 01234} → 解析失败! // 正确: {&quot;zip&quot;: &quot;01234&quot;} (用字符串)">
+          <div class="card-head">
+            <span class="card-num">35</span>
+            <span class="card-title">数字前导零</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 错误: {"zip": 01234}  → 解析失败!</span>
+<span class="comment">// 正确: {"zip": "01234"} (用字符串)</span></div>
+        </div>
+        <div class="card" id="card-9-36" data-keywords="特殊值处理 // NaN, Infinity, undefined → 无法序列化 // 需替换为 null 或字符串 // 日期需转为 ISO 8601 字符串">
+          <div class="card-head">
+            <span class="card-num">36</span>
+            <span class="card-title">特殊值处理</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// NaN, Infinity, undefined → 无法序列化</span>
+<span class="comment">// 需替换为 null 或字符串</span>
+<span class="comment">// 日期需转为 ISO 8601 字符串</span></div>
+        </div>
+        <div class="card" id="card-9-37" data-keywords="循环引用 // const a = {}; const b = {a}; a.b = b; // JSON.stringify(a) → TypeError // 解决: 用 toJSON 或 flatted 库">
+          <div class="card-head">
+            <span class="card-num">37</span>
+            <span class="card-title">循环引用</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// const a = {}; const b = {a}; a.b = b;</span>
+<span class="comment">// JSON.stringify(a) → TypeError</span>
+<span class="comment">// 解决: 用 toJSON 或 flatted 库</span></div>
+        </div>
+        <div class="card" id="card-9-38" data-keywords="大数精度丢失 // JSON.parse('{&quot;id&quot;: 9007199254740993}') // id 变为 9007199254740992 (JS Number 精度问题) // 解决: 用字符串传大数, 或 json-bigint 库">
+          <div class="card-head">
+            <span class="card-num">38</span>
+            <span class="card-title">大数精度丢失</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// JSON.parse('{"id": 9007199254740993}')</span>
+<span class="comment">// id 变为 9007199254740992 (JS Number 精度问题)</span>
+<span class="comment">// 解决: 用字符串传大数, 或 json-bigint 库</span></div>
+        </div>
+        <div class="card" id="card-9-39" data-keywords="编码问题 // JSON 标准要求 UTF-8 编码 // 确保文件保存为 UTF-8 without BOM // Python: json.dumps(data, ensure_ascii=False)">
+          <div class="card-head">
+            <span class="card-num">39</span>
+            <span class="card-title">编码问题</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// JSON 标准要求 UTF-8 编码</span>
+<span class="comment">// 确保文件保存为 UTF-8 without BOM</span>
+<span class="comment">// Python: json.dumps(data, ensure_ascii=False)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-10">
+      <button class="section-head">
+        <span class="icon">10</span>
+        <span class="title">十、编程建议与最佳实践</span>
+        <span class="count">6 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-10-40" data-keywords="使用 JSON Schema 验证 // 确保 API 输入输出符合预期结构 // 工具: ajv (JS), jsonschema (Python)">
+          <div class="card-head">
+            <span class="card-num">40</span>
+            <span class="card-title">使用 JSON Schema 验证</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 确保 API 输入输出符合预期结构</span>
+<span class="comment">// 工具: ajv (JS), jsonschema (Python)</span></div>
+        </div>
+        <div class="card" id="card-10-41" data-keywords="不要信任输入 JSON // 始终做 try-catch 处理 parse 异常 // 验证必要字段存在且类型正确">
+          <div class="card-head">
+            <span class="card-num">41</span>
+            <span class="card-title">不要信任输入 JSON</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 始终做 try-catch 处理 parse 异常</span>
+<span class="comment">// 验证必要字段存在且类型正确</span></div>
+        </div>
+        <div class="card" id="card-10-42" data-keywords="美化输出用 indent // 生产环境压缩, 开发环境带缩进 // JSON.stringify(obj, null, 2)">
+          <div class="card-head">
+            <span class="card-num">42</span>
+            <span class="card-title">美化输出用 indent</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 生产环境压缩, 开发环境带缩进</span>
+<span class="comment">// JSON.stringify(obj, null, 2)</span></div>
+        </div>
+        <div class="card" id="card-10-43" data-keywords="大 JSON 用流式处理 // 不要一次性 parse 大文件 // 用流式解析器: JSONStream, ijson // 或用 JSON Lines 格式">
+          <div class="card-head">
+            <span class="card-num">43</span>
+            <span class="card-title">大 JSON 用流式处理</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 不要一次性 parse 大文件</span>
+<span class="comment">// 用流式解析器: JSONStream, ijson</span>
+<span class="comment">// 或用 JSON Lines 格式</span></div>
+        </div>
+        <div class="card" id="card-10-44" data-keywords="属性命名规范 // 推荐 camelCase: &quot;firstName&quot; // 或 snake_case: &quot;first_name&quot; // 团队统一一种风格 // API 字段不要随意改名(破坏兼容性)">
+          <div class="card-head">
+            <span class="card-num">44</span>
+            <span class="card-title">属性命名规范</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// 推荐 camelCase: "firstName"</span>
+<span class="comment">// 或 snake_case: "first_name"</span>
+<span class="comment">// 团队统一一种风格</span>
+<span class="comment">// API 字段不要随意改名(破坏兼容性)</span></div>
+        </div>
+        <div class="card" id="card-10-45" data-keywords="JSON vs XML // JSON: 更轻量, 更易读, Web 标准 // XML: 支持 Schema/DTD, 命名空间, XSLT // JSON 适合数据交换, XML 适合文档标记">
+          <div class="card-head">
+            <span class="card-num">45</span>
+            <span class="card-title">JSON vs XML</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// JSON: 更轻量, 更易读, Web 标准</span>
+<span class="comment">// XML: 支持 Schema/DTD, 命名空间, XSLT</span>
+<span class="comment">// JSON 适合数据交换, XML 适合文档标记</span></div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) {
+      searchClear.classList.add('visible');
+    } else {
+      searchClear.classList.remove('visible');
+    }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) {
+        section.classList.remove('open');
+      } else if (q) {
+        section.classList.add('open');
+      } else {
+        if (section === firstSection) section.classList.add('open');
+        else section.classList.remove('open');
+      }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+
+</body></html>

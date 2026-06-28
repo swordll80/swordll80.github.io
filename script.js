@@ -6,7 +6,8 @@
   var navData = [
     { title: '工具', target: 'tools-overview' },
     { title: 'Confluence', href: 'confluence.html' },
-    { title: 'Confluence 内测', href: 'confluence_beta.html' }
+    { title: 'Confluence 内测', href: 'confluence_beta.html' },
+    { title: '手册速查', href: 'confluence/read.html' }
   ];
 
   var navTree = document.getElementById('navTree');

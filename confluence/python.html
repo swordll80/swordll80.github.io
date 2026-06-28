@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Python速查</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12px; line-height:1.65; white-space:pre-wrap; word-break:break-all; overflow-x:auto; color:#2d3436; }
+    .card-code span { color:#8b3fc7; }
+    .card-code .keyword { color:#8b3fc7; }
+    .card-code .comment { color:#7d8599; font-style:italic; }
+    .card-code .string { color:#1b8c3c; }
+    .card-code .num { color:#c7640a; }
+    .card-code .func { color:#356ae6; }
+    .card-code .tag { color:#f26522; }
+    .card-code .attr { color:#356ae6; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:11px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>Python 知识手册</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">80 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、基础语法</span>
+        <span class="count">9 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="Hello World print ( &quot;Hello, World!&quot; ) # Python 3: print 是函数">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">Hello World</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="func">print</span>(<span class="string">"Hello, World!"</span>)
+<span class="comment"># Python 3: print 是函数</span></div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="注释 # 单行注释 &quot;&quot;&quot; 多行注释 (文档字符串) &quot;&quot;&quot;">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">注释</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 单行注释</span>
+<span class="string">"""
+多行注释 (文档字符串)
+"""</span></div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="变量与类型 x = 42 # int y = 3.14 # float name = &quot;Alice&quot; # str flag = True # bool # 动态类型, 无需声明">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">变量与类型</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">x = <span class="num">42</span>           <span class="comment"># int</span>
+y = <span class="num">3.14</span>         <span class="comment"># float</span>
+name = <span class="string">"Alice"</span>   <span class="comment"># str</span>
+flag = <span class="keyword">True</span>       <span class="comment"># bool</span>
+<span class="comment"># 动态类型, 无需声明</span></div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="类型检查与转换 type (x) # &amp;lt;class 'int'&amp;gt; isinstance (x, int ) # True int ( &quot;42&quot; ) # 42 float ( &quot;3.14&quot; ) # 3.14 str ( 100 ) # &quot;100&quot; bool ( 1 ) # True">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">类型检查与转换</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="func">type</span>(x)           <span class="comment"># &lt;class 'int'&gt;</span>
+<span class="func">isinstance</span>(x, <span class="keyword">int</span>) <span class="comment"># True</span>
+<span class="func">int</span>(<span class="string">"42"</span>)         <span class="comment"># 42</span>
+<span class="func">float</span>(<span class="string">"3.14"</span>)     <span class="comment"># 3.14</span>
+<span class="func">str</span>(<span class="num">100</span>)          <span class="comment"># "100"</span>
+<span class="func">bool</span>(<span class="num">1</span>)           <span class="comment"># True</span></div>
+        </div>
+        <div class="card" id="card-1-5" data-keywords="基本运算 # + - * / // % ** a = 5 + 3 # 8 b = 7 / 2 # 3.5 (浮点除法) c = 7 // 2 # 3 (整除) d = 7 % 2 # 1 (取模) e = 2 ** 10 # 1024 (幂)">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">基本运算</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># + - * / // % **</span>
+a = <span class="num">5</span> + <span class="num">3</span>       <span class="comment"># 8</span>
+b = <span class="num">7</span> / <span class="num">2</span>       <span class="comment"># 3.5 (浮点除法)</span>
+c = <span class="num">7</span> // <span class="num">2</span>      <span class="comment"># 3 (整除)</span>
+d = <span class="num">7</span> % <span class="num">2</span>       <span class="comment"># 1 (取模)</span>
+e = <span class="num">2</span> ** <span class="num">10</span>     <span class="comment"># 1024 (幂)</span></div>
+        </div>
+        <div class="card" id="card-1-6" data-keywords="比较与逻辑 # == != &amp;gt; &amp;lt; &amp;gt;= &amp;lt;= # and or not if a &amp;gt; 0 and b &amp;lt; 10 : print ( &quot;OK&quot; ) # 链式比较: 1 &amp;lt; x &amp;lt; 10">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">比较与逻辑</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># == != &gt; &lt; &gt;= &lt;=</span>
+<span class="comment"># and or not</span>
+<span class="keyword">if</span> a &gt; <span class="num">0</span> <span class="keyword">and</span> b &lt; <span class="num">10</span>:
+    <span class="func">print</span>(<span class="string">"OK"</span>)
+<span class="comment"># 链式比较: 1 &lt; x &lt; 10</span></div>
+        </div>
+        <div class="card" id="card-1-7" data-keywords="字符串 s = &quot;hello&quot; s2 = 'world' multi = &quot;&quot;&quot;多行&quot;&quot;&quot; s = f&quot;Hello {name}&quot; # f-string (3.6+) s = &quot;{} + {}&quot; .format(a, b) s = &quot;ab&quot; * 3 # &quot;ababab&quot;">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">字符串</span>
+            <span class="card-ver">3.6+</span>
+          </div>
+          <div class="card-code">s = <span class="string">"hello"</span>
+s2 = <span class="string">'world'</span>
+multi = <span class="string">"""多行"""</span>
+s = <span class="string">f"Hello {name}"</span>    <span class="comment"># f-string (3.6+)</span>
+s = <span class="string">"{} + {}"</span>.format(a, b)
+s = <span class="string">"ab"</span> * <span class="num">3</span>            <span class="comment"># "ababab"</span></div>
+        </div>
+        <div class="card" id="card-1-8" data-keywords="字符串方法 s.upper(), s.lower(), s.title() s.strip(), s.lstrip(), s.rstrip() s.split( ',' ), s.splitlines() ',' .join([ 'a' , 'b' ]) s.replace( 'old' , 'new' ) s.find( 'sub' ), s.startswith( 'he' ) s.isdigit(), s.isalpha()">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">字符串方法</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">s.upper(), s.lower(), s.title()
+s.strip(), s.lstrip(), s.rstrip()
+s.split(<span class="string">','</span>), s.splitlines()
+<span class="string">','</span>.join([<span class="string">'a'</span>,<span class="string">'b'</span>])
+s.replace(<span class="string">'old'</span>, <span class="string">'new'</span>)
+s.find(<span class="string">'sub'</span>), s.startswith(<span class="string">'he'</span>)
+s.isdigit(), s.isalpha()</div>
+        </div>
+        <div class="card" id="card-1-9" data-keywords="输入输出 name = input ( &quot;姓名: &quot; ) # 返回字符串 age = int ( input ( &quot;年龄: &quot; )) print (name, age, sep= ' | ' , end= '\n' )">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">输入输出</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">name = <span class="func">input</span>(<span class="string">"姓名: "</span>)   <span class="comment"># 返回字符串</span>
+age = <span class="func">int</span>(<span class="func">input</span>(<span class="string">"年龄: "</span>))
+<span class="func">print</span>(name, age, sep=<span class="string">' | '</span>, end=<span class="string">'\n'</span>)</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、控制流</span>
+        <span class="count">7 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-10" data-keywords="if / elif / else if score &amp;gt;= 90 : grade = 'A' elif score &amp;gt;= 80 : grade = 'B' else : grade = 'C' # 注意冒号和缩进">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">if / elif / else</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">if</span> score &gt;= <span class="num">90</span>:
+    grade = <span class="string">'A'</span>
+<span class="keyword">elif</span> score &gt;= <span class="num">80</span>:
+    grade = <span class="string">'B'</span>
+<span class="keyword">else</span>:
+    grade = <span class="string">'C'</span>
+<span class="comment"># 注意冒号和缩进</span></div>
+        </div>
+        <div class="card" id="card-2-11" data-keywords="match-case (3.10+) match code: case 200 : msg = &quot;OK&quot; case 404 : msg = &quot;Not Found&quot; case _: msg = &quot;Unknown&quot;">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">match-case (3.10+)</span>
+            <span class="card-ver">3.10+</span>
+          </div>
+          <div class="card-code"><span class="keyword">match</span> code:
+    <span class="keyword">case</span> <span class="num">200</span>:
+        msg = <span class="string">"OK"</span>
+    <span class="keyword">case</span> <span class="num">404</span>:
+        msg = <span class="string">"Not Found"</span>
+    <span class="keyword">case</span> _:
+        msg = <span class="string">"Unknown"</span></div>
+        </div>
+        <div class="card" id="card-2-12" data-keywords="for 循环 for i in range ( 5 ): # 0,1,2,3,4 print (i) for i in range ( 2 , 6 ): # 2,3,4,5 for i in range ( 0 , 10 , 2 ): # 0,2,4,6,8 for item in lst: print (item)">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">for 循环</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="func">range</span>(<span class="num">5</span>):    <span class="comment"># 0,1,2,3,4</span>
+    <span class="func">print</span>(i)
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="func">range</span>(<span class="num">2</span>, <span class="num">6</span>): <span class="comment"># 2,3,4,5</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> <span class="func">range</span>(<span class="num">0</span>, <span class="num">10</span>, <span class="num">2</span>): <span class="comment"># 0,2,4,6,8</span>
+<span class="keyword">for</span> item <span class="keyword">in</span> lst:
+    <span class="func">print</span>(item)</div>
+        </div>
+        <div class="card" id="card-2-13" data-keywords="while 循环 i = 0 while i &amp;lt; 5 : print (i) i += 1">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">while 循环</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">i = <span class="num">0</span>
+<span class="keyword">while</span> i &lt; <span class="num">5</span>:
+    <span class="func">print</span>(i)
+    i += <span class="num">1</span></div>
+        </div>
+        <div class="card" id="card-2-14" data-keywords="break / continue / else for x in data: if x &amp;lt; 0 : continue if x == 0 : break else : print ( &quot;循环正常结束 (没被 break)&quot; )">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">break / continue / else</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">for</span> x <span class="keyword">in</span> data:
+    <span class="keyword">if</span> x &lt; <span class="num">0</span>: <span class="keyword">continue</span>
+    <span class="keyword">if</span> x == <span class="num">0</span>: <span class="keyword">break</span>
+<span class="keyword">else</span>:
+    <span class="func">print</span>(<span class="string">"循环正常结束 (没被 break)"</span>)</div>
+        </div>
+        <div class="card" id="card-2-15" data-keywords="三元表达式 result = &quot;偶数&quot; if x % 2 == 0 else &quot;奇数&quot;">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">三元表达式</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">result = <span class="string">"偶数"</span> <span class="keyword">if</span> x % <span class="num">2</span> == <span class="num">0</span> <span class="keyword">else</span> <span class="string">"奇数"</span></div>
+        </div>
+        <div class="card" id="card-2-16" data-keywords="海象运算符 if (n := len (data)) &amp;gt; 10 : print ( f&quot;长度{n} &amp;gt; 10&quot; )">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">海象运算符</span>
+            <span class="card-ver">3.8+</span>
+          </div>
+          <div class="card-code"><span class="keyword">if</span> (n := <span class="func">len</span>(data)) &gt; <span class="num">10</span>:
+    <span class="func">print</span>(<span class="string">f"长度{n} &gt; 10"</span>)</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、数据结构</span>
+        <span class="count">7 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-17" data-keywords="列表 (list) lst = [ 1 , 2 , 3 , 4 ] lst.append( 5 ) lst.insert( 0 , 0 ) lst.pop(), lst.pop( 0 ) lst.remove( 3 ) lst.sort(), lst.reverse() # 切片: lst[1:3], lst[::-1], lst[::2]">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">列表 (list)</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">lst = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>]
+lst.append(<span class="num">5</span>)
+lst.insert(<span class="num">0</span>, <span class="num">0</span>)
+lst.pop(), lst.pop(<span class="num">0</span>)
+lst.remove(<span class="num">3</span>)
+lst.sort(), lst.reverse()
+<span class="comment"># 切片: lst[1:3], lst[::-1], lst[::2]</span></div>
+        </div>
+        <div class="card" id="card-3-18" data-keywords="列表推导式 squares = [x** 2 for x in range ( 10 )] evens = [x for x in range ( 20 ) if x% 2 == 0 ] pairs = [(x,y) for x in range ( 3 ) for y in range ( 3 )]">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">列表推导式</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">squares = [x**<span class="num">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="func">range</span>(<span class="num">10</span>)]
+evens = [x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="func">range</span>(<span class="num">20</span>) <span class="keyword">if</span> x%<span class="num">2</span>==<span class="num">0</span>]
+pairs = [(x,y) <span class="keyword">for</span> x <span class="keyword">in</span> <span class="func">range</span>(<span class="num">3</span>) <span class="keyword">for</span> y <span class="keyword">in</span> <span class="func">range</span>(<span class="num">3</span>)]</div>
+        </div>
+        <div class="card" id="card-3-19" data-keywords="元组 (tuple) t = ( 1 , 2 , 3 ) single = ( 1 ,) # 单元素元组需要逗号 a, b, c = t # 解包 a, *rest = t # 扩展解包 # 不可变, 可作为字典键">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">元组 (tuple)</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">t = (<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>)
+single = (<span class="num">1</span>,)          <span class="comment"># 单元素元组需要逗号</span>
+a, b, c = t               <span class="comment"># 解包</span>
+a, *rest = t               <span class="comment"># 扩展解包</span>
+<span class="comment"># 不可变, 可作为字典键</span></div>
+        </div>
+        <div class="card" id="card-3-20" data-keywords="字典 (dict) d = { &quot;name&quot; : &quot;Alice&quot; , &quot;age&quot; : 25 } d[ &quot;city&quot; ] = &quot;Beijing&quot; d.get( &quot;key&quot; , &quot;默认值&quot; ) d.keys(), d.values(), d.items() for k, v in d.items(): print ( f&quot;{k}: {v}&quot; )">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">字典 (dict)</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">d = {<span class="string">"name"</span>: <span class="string">"Alice"</span>, <span class="string">"age"</span>: <span class="num">25</span>}
+d[<span class="string">"city"</span>] = <span class="string">"Beijing"</span>
+d.get(<span class="string">"key"</span>, <span class="string">"默认值"</span>)
+d.keys(), d.values(), d.items()
+<span class="keyword">for</span> k, v <span class="keyword">in</span> d.items():
+    <span class="func">print</span>(<span class="string">f"{k}: {v}"</span>)</div>
+        </div>
+        <div class="card" id="card-3-21" data-keywords="字典推导式 d = {x: x** 2 for x in range ( 5 )} # {0:0,1:1,2:4...} d2 = {v: k for k, v in orig.items()}">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title">字典推导式</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">d = {x: x**<span class="num">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="func">range</span>(<span class="num">5</span>)}  <span class="comment"># {0:0,1:1,2:4...}</span>
+d2 = {v: k <span class="keyword">for</span> k, v <span class="keyword">in</span> orig.items()}</div>
+        </div>
+        <div class="card" id="card-3-22" data-keywords="集合 (set) s = { 1 , 2 , 3 } s2 = set ([ 1 , 2 , 2 , 3 ]) # {1,2,3} s.add( 4 ) s | s2, s &amp;amp; s2, s - s2 # 并/交/差 s ^ s2 # 对称差 # 元素唯一, 无序, 可变">
+          <div class="card-head">
+            <span class="card-num">22</span>
+            <span class="card-title">集合 (set)</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">s = {<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>}
+s2 = <span class="func">set</span>([<span class="num">1</span>,<span class="num">2</span>,<span class="num">2</span>,<span class="num">3</span>])   <span class="comment"># {1,2,3}</span>
+s.add(<span class="num">4</span>)
+s | s2, s &amp; s2, s - s2   <span class="comment"># 并/交/差</span>
+s ^ s2                   <span class="comment"># 对称差</span>
+<span class="comment"># 元素唯一, 无序, 可变</span></div>
+        </div>
+        <div class="card" id="card-3-23" data-keywords="切片操作 lst = [ 0 , 1 , 2 , 3 , 4 , 5 ] lst[ 2 : 5 ] # [2,3,4] lst[: 3 ] # [0,1,2] lst[ 3 :] # [3,4,5] lst[::- 1 ] # [5,4,3,2,1,0] (反转) lst[:: 2 ] # [0,2,4] (步长)">
+          <div class="card-head">
+            <span class="card-num">23</span>
+            <span class="card-title">切片操作</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">lst = [<span class="num">0</span>,<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>,<span class="num">4</span>,<span class="num">5</span>]
+lst[<span class="num">2</span>:<span class="num">5</span>]    <span class="comment"># [2,3,4]</span>
+lst[:<span class="num">3</span>]     <span class="comment"># [0,1,2]</span>
+lst[<span class="num">3</span>:]     <span class="comment"># [3,4,5]</span>
+lst[::-<span class="num">1</span>]   <span class="comment"># [5,4,3,2,1,0] (反转)</span>
+lst[::<span class="num">2</span>]    <span class="comment"># [0,2,4] (步长)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、函数</span>
+        <span class="count">7 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-24" data-keywords="函数定义 def add (a, b): &quot;&quot;&quot;两数相加&quot;&quot;&quot; return a + b">
+          <div class="card-head">
+            <span class="card-num">24</span>
+            <span class="card-title">函数定义</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">def</span> <span class="func">add</span>(a, b):
+    <span class="string">"""两数相加"""</span>
+    <span class="keyword">return</span> a + b</div>
+        </div>
+        <div class="card" id="card-4-25" data-keywords="参数类型 # 位置参数 def f (a, b): pass # 默认参数 def f (a, b= 10 ): pass # *args (可变位置) def f (*args): pass # **kwargs (可变关键字) def f (**kwargs): pass # 仅限关键字参数 def f (a, *, b): pass">
+          <div class="card-head">
+            <span class="card-num">25</span>
+            <span class="card-title">参数类型</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 位置参数</span>
+<span class="keyword">def</span> <span class="func">f</span>(a, b): <span class="keyword">pass</span>
+<span class="comment"># 默认参数</span>
+<span class="keyword">def</span> <span class="func">f</span>(a, b=<span class="num">10</span>): <span class="keyword">pass</span>
+<span class="comment"># *args (可变位置)</span>
+<span class="keyword">def</span> <span class="func">f</span>(*args): <span class="keyword">pass</span>
+<span class="comment"># **kwargs (可变关键字)</span>
+<span class="keyword">def</span> <span class="func">f</span>(**kwargs): <span class="keyword">pass</span>
+<span class="comment"># 仅限关键字参数</span>
+<span class="keyword">def</span> <span class="func">f</span>(a, *, b): <span class="keyword">pass</span></div>
+        </div>
+        <div class="card" id="card-4-26" data-keywords="lambda 表达式 square = lambda x: x ** 2 add = lambda a, b: a + b sorted(lst, key= lambda x: x[ 1 ])">
+          <div class="card-head">
+            <span class="card-num">26</span>
+            <span class="card-title">lambda 表达式</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">square = <span class="keyword">lambda</span> x: x ** <span class="num">2</span>
+add = <span class="keyword">lambda</span> a, b: a + b
+sorted(lst, key=<span class="keyword">lambda</span> x: x[<span class="num">1</span>])</div>
+        </div>
+        <div class="card" id="card-4-27" data-keywords="类型注解 def greet (name: str ) -&amp;gt; str : return f&quot;Hello {name}&quot; # 仅提示, 不强制检查 # 工具: mypy 做静态检查">
+          <div class="card-head">
+            <span class="card-num">27</span>
+            <span class="card-title">类型注解</span>
+            <span class="card-ver">3.5+</span>
+          </div>
+          <div class="card-code"><span class="keyword">def</span> <span class="func">greet</span>(name: <span class="keyword">str</span>) -&gt; <span class="keyword">str</span>:
+    <span class="keyword">return</span> <span class="string">f"Hello {name}"</span>
+<span class="comment"># 仅提示, 不强制检查</span>
+<span class="comment"># 工具: mypy 做静态检查</span></div>
+        </div>
+        <div class="card" id="card-4-28" data-keywords="装饰器 def timer (func): def wrapper (*args, **kwargs): start = time.time() result = func(*args, **kwargs) print ( f&quot;耗时 {time.time()-start}s&quot; ) return result return wrapper @timer def slow (): pass">
+          <div class="card-head">
+            <span class="card-num">28</span>
+            <span class="card-title">装饰器</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">def</span> <span class="func">timer</span>(func):
+    <span class="keyword">def</span> <span class="func">wrapper</span>(*args, **kwargs):
+        start = time.time()
+        result = func(*args, **kwargs)
+        <span class="func">print</span>(<span class="string">f"耗时 {time.time()-start}s"</span>)
+        <span class="keyword">return</span> result
+    <span class="keyword">return</span> wrapper
+
+<span class="keyword">@timer</span>
+<span class="keyword">def</span> <span class="func">slow</span>(): <span class="keyword">pass</span></div>
+        </div>
+        <div class="card" id="card-4-29" data-keywords="生成器 def count (n): i = 0 while i &amp;lt; n: yield i i += 1 # 惰性求值, 节省内存 # 生成器表达式: (x*x for x in range(10))">
+          <div class="card-head">
+            <span class="card-num">29</span>
+            <span class="card-title">生成器</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">def</span> <span class="func">count</span>(n):
+    i = <span class="num">0</span>
+    <span class="keyword">while</span> i &lt; n:
+        <span class="keyword">yield</span> i
+        i += <span class="num">1</span>
+<span class="comment"># 惰性求值, 节省内存</span>
+<span class="comment"># 生成器表达式: (x*x for x in range(10))</span></div>
+        </div>
+        <div class="card" id="card-4-30" data-keywords="递归与尾递归 def fact (n): if n &amp;lt;= 1 : return 1 return n * fact(n - 1 ) # Python 默认递归深度约 1000 # sys.setrecursionlimit(n) 可修改">
+          <div class="card-head">
+            <span class="card-num">30</span>
+            <span class="card-title">递归与尾递归</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">def</span> <span class="func">fact</span>(n):
+    <span class="keyword">if</span> n &lt;= <span class="num">1</span>: <span class="keyword">return</span> <span class="num">1</span>
+    <span class="keyword">return</span> n * fact(n - <span class="num">1</span>)
+<span class="comment"># Python 默认递归深度约 1000</span>
+<span class="comment"># sys.setrecursionlimit(n) 可修改</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、面向对象</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-31" data-keywords="类定义 class Dog : def __init__ ( self , name, age): self .name = name self .age = age def bark ( self ): return f&quot;{self.name}: 汪!&quot;">
+          <div class="card-head">
+            <span class="card-num">31</span>
+            <span class="card-title">类定义</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">class</span> <span class="func">Dog</span>:
+    <span class="keyword">def</span> <span class="func">__init__</span>(<span class="keyword">self</span>, name, age):
+        <span class="keyword">self</span>.name = name
+        <span class="keyword">self</span>.age = age
+
+    <span class="keyword">def</span> <span class="func">bark</span>(<span class="keyword">self</span>):
+        <span class="keyword">return</span> <span class="string">f"{self.name}: 汪!"</span></div>
+        </div>
+        <div class="card" id="card-5-32" data-keywords="继承 class Animal : def speak ( self ): return &quot;...&quot; class Cat (Animal): def speak ( self ): return &quot;喵&quot; def purr ( self ): super ().speak() # 调用父类方法">
+          <div class="card-head">
+            <span class="card-num">32</span>
+            <span class="card-title">继承</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">class</span> <span class="func">Animal</span>:
+    <span class="keyword">def</span> <span class="func">speak</span>(<span class="keyword">self</span>): <span class="keyword">return</span> <span class="string">"..."</span>
+
+<span class="keyword">class</span> <span class="func">Cat</span>(Animal):
+    <span class="keyword">def</span> <span class="func">speak</span>(<span class="keyword">self</span>): <span class="keyword">return</span> <span class="string">"喵"</span>
+    <span class="keyword">def</span> <span class="func">purr</span>(<span class="keyword">self</span>):
+        <span class="keyword">super</span>().speak()  <span class="comment"># 调用父类方法</span></div>
+        </div>
+        <div class="card" id="card-5-33" data-keywords="魔术方法 class Vec : def __init__ ( self , x, y): self .x, self .y = x, y def __add__ ( self , o): return Vec( self .x+o.x, self .y+o.y) def __str__ ( self ): return f&quot;({self.x},{self.y})&quot; def __repr__ ( self ): return f&quot;Vec({self.x},{self.y})&quot; def __eq__ ( self , o): return self .x==o.x and self .y==o.y">
+          <div class="card-head">
+            <span class="card-num">33</span>
+            <span class="card-title">魔术方法</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">class</span> <span class="func">Vec</span>:
+    <span class="keyword">def</span> <span class="func">__init__</span>(<span class="keyword">self</span>, x, y): <span class="keyword">self</span>.x, <span class="keyword">self</span>.y = x, y
+    <span class="keyword">def</span> <span class="func">__add__</span>(<span class="keyword">self</span>, o): <span class="keyword">return</span> Vec(<span class="keyword">self</span>.x+o.x, <span class="keyword">self</span>.y+o.y)
+    <span class="keyword">def</span> <span class="func">__str__</span>(<span class="keyword">self</span>): <span class="keyword">return</span> <span class="string">f"({self.x},{self.y})"</span>
+    <span class="keyword">def</span> <span class="func">__repr__</span>(<span class="keyword">self</span>): <span class="keyword">return</span> <span class="string">f"Vec({self.x},{self.y})"</span>
+    <span class="keyword">def</span> <span class="func">__eq__</span>(<span class="keyword">self</span>, o): <span class="keyword">return</span> <span class="keyword">self</span>.x==o.x <span class="keyword">and</span> <span class="keyword">self</span>.y==o.y</div>
+        </div>
+        <div class="card" id="card-5-34" data-keywords="property class Circle : def __init__ ( self , r): self ._r = r @property def area ( self ): return 3.14 * self ._r ** 2 @property def radius ( self ): return self ._r @radius.setter def radius ( self , v): if v &amp;lt; 0 : raise ValueError ( &quot;半径不能为负&quot; ) self ._r = v">
+          <div class="card-head">
+            <span class="card-num">34</span>
+            <span class="card-title">property</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">class</span> <span class="func">Circle</span>:
+    <span class="keyword">def</span> <span class="func">__init__</span>(<span class="keyword">self</span>, r): <span class="keyword">self</span>._r = r
+    <span class="keyword">@property</span>
+    <span class="keyword">def</span> <span class="func">area</span>(<span class="keyword">self</span>): <span class="keyword">return</span> <span class="num">3.14</span> * <span class="keyword">self</span>._r ** <span class="num">2</span>
+    <span class="keyword">@property</span>
+    <span class="keyword">def</span> <span class="func">radius</span>(<span class="keyword">self</span>): <span class="keyword">return</span> <span class="keyword">self</span>._r
+    <span class="keyword">@radius.setter</span>
+    <span class="keyword">def</span> <span class="func">radius</span>(<span class="keyword">self</span>, v):
+        <span class="keyword">if</span> v &lt; <span class="num">0</span>: <span class="keyword">raise</span> <span class="func">ValueError</span>(<span class="string">"半径不能为负"</span>)
+        <span class="keyword">self</span>._r = v</div>
+        </div>
+        <div class="card" id="card-5-35" data-keywords="dataclass from dataclasses import dataclass @dataclass class Point : x: float y: float # 自动生成 __init__, __repr__, __eq__ 等">
+          <div class="card-head">
+            <span class="card-num">35</span>
+            <span class="card-title">dataclass</span>
+            <span class="card-ver">3.7+</span>
+          </div>
+          <div class="card-code"><span class="keyword">from</span> dataclasses <span class="keyword">import</span> dataclass
+
+<span class="keyword">@dataclass</span>
+<span class="keyword">class</span> <span class="func">Point</span>:
+    x: <span class="keyword">float</span>
+    y: <span class="keyword">float</span>
+<span class="comment"># 自动生成 __init__, __repr__, __eq__ 等</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、异常处理</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-36" data-keywords="try-except-finally try : result = a / b except ZeroDivisionError : print ( &quot;除零错误!&quot; ) except ( TypeError , ValueError ) as e: print ( f&quot;错误: {e}&quot; ) except Exception : print ( &quot;其他错误&quot; ) else : print ( &quot;无异常时执行&quot; ) finally : print ( &quot;始终执行&quot; )">
+          <div class="card-head">
+            <span class="card-num">36</span>
+            <span class="card-title">try-except-finally</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">try</span>:
+    result = a / b
+<span class="keyword">except</span> <span class="func">ZeroDivisionError</span>:
+    <span class="func">print</span>(<span class="string">"除零错误!"</span>)
+<span class="keyword">except</span> (<span class="func">TypeError</span>, <span class="func">ValueError</span>) <span class="keyword">as</span> e:
+    <span class="func">print</span>(<span class="string">f"错误: {e}"</span>)
+<span class="keyword">except</span> <span class="func">Exception</span>:
+    <span class="func">print</span>(<span class="string">"其他错误"</span>)
+<span class="keyword">else</span>:
+    <span class="func">print</span>(<span class="string">"无异常时执行"</span>)
+<span class="keyword">finally</span>:
+    <span class="func">print</span>(<span class="string">"始终执行"</span>)</div>
+        </div>
+        <div class="card" id="card-6-37" data-keywords="with 上下文管理器 with open ( 'file.txt' ) as f: content = f.read() # 自动关闭文件, 即使发生异常 # 自定义: 实现 __enter__ / __exit__">
+          <div class="card-head">
+            <span class="card-num">37</span>
+            <span class="card-title">with 上下文管理器</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">with</span> <span class="func">open</span>(<span class="string">'file.txt'</span>) <span class="keyword">as</span> f:
+    content = f.read()
+<span class="comment"># 自动关闭文件, 即使发生异常</span>
+<span class="comment"># 自定义: 实现 __enter__ / __exit__</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-7">
+      <button class="section-head">
+        <span class="icon">7</span>
+        <span class="title">七、文件IO</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-7-38" data-keywords="文件读写 with open ( 'file.txt' , 'r' , encoding= 'utf-8' ) as f: content = f.read() # 全部 lines = f.readlines() # 行列表 for line in f: # 逐行迭代 print (line.strip()) with open ( 'out.txt' , 'w' ) as f: f.write( &quot;Hello\n&quot; )">
+          <div class="card-head">
+            <span class="card-num">38</span>
+            <span class="card-title">文件读写</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">with</span> <span class="func">open</span>(<span class="string">'file.txt'</span>, <span class="string">'r'</span>, encoding=<span class="string">'utf-8'</span>) <span class="keyword">as</span> f:
+    content = f.read()        <span class="comment"># 全部</span>
+    lines = f.readlines()     <span class="comment"># 行列表</span>
+    <span class="keyword">for</span> line <span class="keyword">in</span> f:          <span class="comment"># 逐行迭代</span>
+        <span class="func">print</span>(line.strip())
+
+<span class="keyword">with</span> <span class="func">open</span>(<span class="string">'out.txt'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:
+    f.write(<span class="string">"Hello\n"</span>)</div>
+        </div>
+        <div class="card" id="card-7-39" data-keywords="文件模式 # 'r' 只读, 'w' 只写(覆盖), 'a' 追加 # 'r+' 读写, 'b' 二进制, 't' 文本(默认) # 'rb', 'wb', 'ab' → 二进制模式">
+          <div class="card-head">
+            <span class="card-num">39</span>
+            <span class="card-title">文件模式</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 'r' 只读, 'w' 只写(覆盖), 'a' 追加</span>
+<span class="comment"># 'r+' 读写, 'b' 二进制, 't' 文本(默认)</span>
+<span class="comment"># 'rb', 'wb', 'ab' → 二进制模式</span></div>
+        </div>
+        <div class="card" id="card-7-40" data-keywords="JSON 操作 import json data = { &quot;name&quot; : &quot;Alice&quot; , &quot;age&quot; : 25 } s = json.dumps(data, indent= 2 ) d = json.loads(s) with open ( 'data.json' , 'w' ) as f: json.dump(data, f)">
+          <div class="card-head">
+            <span class="card-num">40</span>
+            <span class="card-title">JSON 操作</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> json
+data = {<span class="string">"name"</span>: <span class="string">"Alice"</span>, <span class="string">"age"</span>: <span class="num">25</span>}
+s = json.dumps(data, indent=<span class="num">2</span>)
+d = json.loads(s)
+<span class="keyword">with</span> <span class="func">open</span>(<span class="string">'data.json'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:
+    json.dump(data, f)</div>
+        </div>
+        <div class="card" id="card-7-41" data-keywords="CSV 操作 import csv with open ( 'data.csv' ) as f: reader = csv.reader(f) for row in reader: print (row) # DictReader/DictWriter 按列名读写">
+          <div class="card-head">
+            <span class="card-num">41</span>
+            <span class="card-title">CSV 操作</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> csv
+<span class="keyword">with</span> <span class="func">open</span>(<span class="string">'data.csv'</span>) <span class="keyword">as</span> f:
+    reader = csv.reader(f)
+    <span class="keyword">for</span> row <span class="keyword">in</span> reader:
+        <span class="func">print</span>(row)
+<span class="comment"># DictReader/DictWriter 按列名读写</span></div>
+        </div>
+        <div class="card" id="card-7-42" data-keywords="pathlib (面向对象路径) from pathlib import Path p = Path( &quot;dir/file.txt&quot; ) p.exists(), p.is_file(), p.is_dir() p.name, p.stem, p.suffix p.read_text(), p.write_text( &quot;hello&quot; ) for f in p.parent.glob( &quot;*.txt&quot; ): print (f)">
+          <div class="card-head">
+            <span class="card-num">42</span>
+            <span class="card-title">pathlib (面向对象路径)</span>
+            <span class="card-ver">3.4+</span>
+          </div>
+          <div class="card-code"><span class="keyword">from</span> pathlib <span class="keyword">import</span> Path
+p = Path(<span class="string">"dir/file.txt"</span>)
+p.exists(), p.is_file(), p.is_dir()
+p.name, p.stem, p.suffix
+p.read_text(), p.write_text(<span class="string">"hello"</span>)
+<span class="keyword">for</span> f <span class="keyword">in</span> p.parent.glob(<span class="string">"*.txt"</span>):
+    <span class="func">print</span>(f)</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-8">
+      <button class="section-head">
+        <span class="icon">8</span>
+        <span class="title">八、模块与包</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-8-43" data-keywords="导入模块 import math import numpy as np from math import sqrt, pi from os.path import join as pjoin from module import * # 不推荐">
+          <div class="card-head">
+            <span class="card-num">43</span>
+            <span class="card-title">导入模块</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> math
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> math <span class="keyword">import</span> sqrt, pi
+<span class="keyword">from</span> os.path <span class="keyword">import</span> join <span class="keyword">as</span> pjoin
+<span class="keyword">from</span> module <span class="keyword">import</span> *  <span class="comment"># 不推荐</span></div>
+        </div>
+        <div class="card" id="card-8-44" data-keywords="包结构 # mypackage/ # __init__.py # module1.py # subpkg/ # __init__.py # module2.py # __init__.py 可为空, 或定义 __all__">
+          <div class="card-head">
+            <span class="card-num">44</span>
+            <span class="card-title">包结构</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># mypackage/</span>
+<span class="comment">#   __init__.py</span>
+<span class="comment">#   module1.py</span>
+<span class="comment">#   subpkg/</span>
+<span class="comment">#     __init__.py</span>
+<span class="comment">#     module2.py</span>
+<span class="comment"># __init__.py 可为空, 或定义 __all__</span></div>
+        </div>
+        <div class="card" id="card-8-45" data-keywords="if __name__ == '__main__' if __name__ == '__main__' : main () # 作为脚本直接运行才执行 # import 时不会执行">
+          <div class="card-head">
+            <span class="card-num">45</span>
+            <span class="card-title">if __name__ == '__main__'</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:
+    <span class="func">main</span>()
+<span class="comment"># 作为脚本直接运行才执行</span>
+<span class="comment"># import 时不会执行</span></div>
+        </div>
+        <div class="card" id="card-8-46" data-keywords="常用内置模块 # os, sys, math, random, datetime, # collections, itertools, functools, # re, json, csv, logging, argparse, # subprocess, threading, asyncio, # urllib, http, socket">
+          <div class="card-head">
+            <span class="card-num">46</span>
+            <span class="card-title">常用内置模块</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># os, sys, math, random, datetime,</span>
+<span class="comment"># collections, itertools, functools,</span>
+<span class="comment"># re, json, csv, logging, argparse,</span>
+<span class="comment"># subprocess, threading, asyncio,</span>
+<span class="comment"># urllib, http, socket</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-9">
+      <button class="section-head">
+        <span class="icon">9</span>
+        <span class="title">九、常用标准库</span>
+        <span class="count">8 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-9-47" data-keywords="collections from collections import Counter, defaultdict, deque, namedtuple, OrderedDict Counter( 'abracadabra' ).most_common( 3 ) defaultdict( list ) # 默认值工厂 deque([ 1 , 2 ], maxlen= 10 )">
+          <div class="card-head">
+            <span class="card-num">47</span>
+            <span class="card-title">collections</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">from</span> collections <span class="keyword">import</span> Counter, defaultdict, deque, namedtuple, OrderedDict
+Counter(<span class="string">'abracadabra'</span>).most_common(<span class="num">3</span>)
+defaultdict(<span class="keyword">list</span>)  <span class="comment"># 默认值工厂</span>
+deque([<span class="num">1</span>,<span class="num">2</span>], maxlen=<span class="num">10</span>)</div>
+        </div>
+        <div class="card" id="card-9-48" data-keywords="itertools from itertools import chain, product, permutations, combinations, groupby chain(a, b) # 串联迭代器 product( 'AB' , '12' ) # 笛卡尔积 permutations( 'ABC' , 2 ) # 排列 combinations( 'ABC' , 2 ) # 组合">
+          <div class="card-head">
+            <span class="card-num">48</span>
+            <span class="card-title">itertools</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain, product, permutations, combinations, groupby
+chain(a, b)             <span class="comment"># 串联迭代器</span>
+product(<span class="string">'AB'</span>, <span class="string">'12'</span>)   <span class="comment"># 笛卡尔积</span>
+permutations(<span class="string">'ABC'</span>, <span class="num">2</span>) <span class="comment"># 排列</span>
+combinations(<span class="string">'ABC'</span>, <span class="num">2</span>) <span class="comment"># 组合</span></div>
+        </div>
+        <div class="card" id="card-9-49" data-keywords="functools from functools import lru_cache, reduce, partial, wraps @lru_cache (maxsize= 128 ) def fib (n): ... # 记忆化递归 double = partial(mul, 2 ) # 偏函数 reduce(operator.add, lst) # 累积">
+          <div class="card-head">
+            <span class="card-num">49</span>
+            <span class="card-title">functools</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">from</span> functools <span class="keyword">import</span> lru_cache, reduce, partial, wraps
+<span class="keyword">@lru_cache</span>(maxsize=<span class="num">128</span>)
+<span class="keyword">def</span> <span class="func">fib</span>(n): ...          <span class="comment"># 记忆化递归</span>
+double = partial(mul, <span class="num">2</span>) <span class="comment"># 偏函数</span>
+reduce(operator.add, lst)  <span class="comment"># 累积</span></div>
+        </div>
+        <div class="card" id="card-9-50" data-keywords="datetime from datetime import datetime, timedelta now = datetime.now() dt = datetime( 2025 , 1 , 1 ) delta = timedelta(days= 7 ) next_week = now + delta s = now.strftime( &quot;%Y-%m-%d %H:%M:%S&quot; ) dt = datetime.strptime( &quot;2025-01-01&quot; , &quot;%Y-%m-%d&quot; )">
+          <div class="card-head">
+            <span class="card-num">50</span>
+            <span class="card-title">datetime</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">from</span> datetime <span class="keyword">import</span> datetime, timedelta
+now = datetime.now()
+dt = datetime(<span class="num">2025</span>, <span class="num">1</span>, <span class="num">1</span>)
+delta = timedelta(days=<span class="num">7</span>)
+next_week = now + delta
+s = now.strftime(<span class="string">"%Y-%m-%d %H:%M:%S"</span>)
+dt = datetime.strptime(<span class="string">"2025-01-01"</span>, <span class="string">"%Y-%m-%d"</span>)</div>
+        </div>
+        <div class="card" id="card-9-51" data-keywords="re (正则表达式) import re pattern = r'\d+' if re.match(pattern, s): # 从开头匹配 if re.search(pattern, s): # 搜索全串 nums = re.findall(pattern, s) # 所有匹配 result = re.sub(pattern, '#' , s) # 替换 # 编译后复用: p = re.compile(pattern)">
+          <div class="card-head">
+            <span class="card-num">51</span>
+            <span class="card-title">re (正则表达式)</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> re
+pattern = <span class="string">r'\d+'</span>
+<span class="keyword">if</span> re.match(pattern, s):    <span class="comment"># 从开头匹配</span>
+<span class="keyword">if</span> re.search(pattern, s):   <span class="comment"># 搜索全串</span>
+nums = re.findall(pattern, s) <span class="comment"># 所有匹配</span>
+result = re.sub(pattern, <span class="string">'#'</span>, s) <span class="comment"># 替换</span>
+<span class="comment"># 编译后复用: p = re.compile(pattern)</span></div>
+        </div>
+        <div class="card" id="card-9-52" data-keywords="argparse import argparse parser = argparse.ArgumentParser() parser.add_argument( '--name' , default= 'World' ) parser.add_argument( '--verbose' , '-v' , action= 'store_true' ) args = parser.parse_args() print ( f&quot;Hello {args.name}&quot; )">
+          <div class="card-head">
+            <span class="card-num">52</span>
+            <span class="card-title">argparse</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> argparse
+parser = argparse.ArgumentParser()
+parser.add_argument(<span class="string">'--name'</span>, default=<span class="string">'World'</span>)
+parser.add_argument(<span class="string">'--verbose'</span>, <span class="string">'-v'</span>, action=<span class="string">'store_true'</span>)
+args = parser.parse_args()
+<span class="func">print</span>(<span class="string">f"Hello {args.name}"</span>)</div>
+        </div>
+        <div class="card" id="card-9-53" data-keywords="logging import logging logging.basicConfig(level=logging.INFO) logging.debug( &quot;调试&quot; ) logging.info( &quot;信息&quot; ) logging.warning( &quot;警告&quot; ) logging.error( &quot;错误&quot; ) # 级别: DEBUG &amp;lt; INFO &amp;lt; WARNING &amp;lt; ERROR &amp;lt; CRITICAL">
+          <div class="card-head">
+            <span class="card-num">53</span>
+            <span class="card-title">logging</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> logging
+logging.basicConfig(level=logging.INFO)
+logging.debug(<span class="string">"调试"</span>)
+logging.info(<span class="string">"信息"</span>)
+logging.warning(<span class="string">"警告"</span>)
+logging.error(<span class="string">"错误"</span>)
+<span class="comment"># 级别: DEBUG &lt; INFO &lt; WARNING &lt; ERROR &lt; CRITICAL</span></div>
+        </div>
+        <div class="card" id="card-9-54" data-keywords="random import random random.random() # [0,1) random.randint( 1 , 10 ) # [1,10] random.choice(lst) random.shuffle(lst) random.sample(lst, 3 ) random.seed( 42 ) # 可重现随机">
+          <div class="card-head">
+            <span class="card-num">54</span>
+            <span class="card-title">random</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> random
+random.random()       <span class="comment"># [0,1)</span>
+random.randint(<span class="num">1</span>, <span class="num">10</span>)  <span class="comment"># [1,10]</span>
+random.choice(lst)
+random.shuffle(lst)
+random.sample(lst, <span class="num">3</span>)
+random.seed(<span class="num">42</span>)      <span class="comment"># 可重现随机</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-10">
+      <button class="section-head">
+        <span class="icon">10</span>
+        <span class="title">十、函数式编程</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-10-55" data-keywords="map / filter / reduce # map: 对每个元素应用函数 list(map(str.upper, [ 'a' , 'b' ])) # filter: 筛选 list(filter( lambda x: x% 2 == 0 , range( 10 ))) # 列表推导通常更清晰">
+          <div class="card-head">
+            <span class="card-num">55</span>
+            <span class="card-title">map / filter / reduce</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># map: 对每个元素应用函数</span>
+list(map(str.upper, [<span class="string">'a'</span>,<span class="string">'b'</span>]))
+<span class="comment"># filter: 筛选</span>
+list(filter(<span class="keyword">lambda</span> x: x%<span class="num">2</span>==<span class="num">0</span>, range(<span class="num">10</span>)))
+<span class="comment"># 列表推导通常更清晰</span></div>
+        </div>
+        <div class="card" id="card-10-56" data-keywords="zip / enumerate for i, val in enumerate(lst): print ( f&quot;{i}: {val}&quot; ) for a, b in zip(list1, list2): print (a, b) # zip 以最短序列为准; zip_longest 以最长为准">
+          <div class="card-head">
+            <span class="card-num">56</span>
+            <span class="card-title">zip / enumerate</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">for</span> i, val <span class="keyword">in</span> enumerate(lst):
+    <span class="func">print</span>(<span class="string">f"{i}: {val}"</span>)
+<span class="keyword">for</span> a, b <span class="keyword">in</span> zip(list1, list2):
+    <span class="func">print</span>(a, b)
+<span class="comment"># zip 以最短序列为准; zip_longest 以最长为准</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-11">
+      <button class="section-head">
+        <span class="icon">11</span>
+        <span class="title">十一、并发编程</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-11-57" data-keywords="threading import threading def worker (): print ( &quot;线程工作中&quot; ) t = threading.Thread(target=worker) t.start() t.join() # GIL 限制, CPU密集用 multiprocessing">
+          <div class="card-head">
+            <span class="card-num">57</span>
+            <span class="card-title">threading</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> threading
+<span class="keyword">def</span> <span class="func">worker</span>():
+    <span class="func">print</span>(<span class="string">"线程工作中"</span>)
+t = threading.Thread(target=worker)
+t.start()
+t.join()
+<span class="comment"># GIL 限制, CPU密集用 multiprocessing</span></div>
+        </div>
+        <div class="card" id="card-11-58" data-keywords="multiprocessing from multiprocessing import Process, Pool p = Process(target=worker) p.start(); p.join() with Pool( 4 ) as pool: results = pool.map(func, data)">
+          <div class="card-head">
+            <span class="card-num">58</span>
+            <span class="card-title">multiprocessing</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">from</span> multiprocessing <span class="keyword">import</span> Process, Pool
+p = Process(target=worker)
+p.start(); p.join()
+<span class="keyword">with</span> Pool(<span class="num">4</span>) <span class="keyword">as</span> pool:
+    results = pool.map(func, data)</div>
+        </div>
+        <div class="card" id="card-11-59" data-keywords="asyncio import asyncio async def fetch (url): async with aiohttp.ClientSession() as s: async with s.get(url) as r: return await r.text() async def main (): tasks = [fetch(url) for url in urls] results = await asyncio.gather(*tasks) asyncio.run(main())">
+          <div class="card-head">
+            <span class="card-num">59</span>
+            <span class="card-title">asyncio</span>
+            <span class="card-ver">3.7+</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> asyncio
+
+<span class="keyword">async</span> <span class="keyword">def</span> <span class="func">fetch</span>(url):
+    <span class="keyword">async</span> <span class="keyword">with</span> aiohttp.ClientSession() <span class="keyword">as</span> s:
+        <span class="keyword">async</span> <span class="keyword">with</span> s.get(url) <span class="keyword">as</span> r:
+            <span class="keyword">return</span> <span class="keyword">await</span> r.text()
+
+<span class="keyword">async</span> <span class="keyword">def</span> <span class="func">main</span>():
+    tasks = [fetch(url) <span class="keyword">for</span> url <span class="keyword">in</span> urls]
+    results = <span class="keyword">await</span> asyncio.gather(*tasks)
+
+asyncio.run(main())</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-12">
+      <button class="section-head">
+        <span class="icon">12</span>
+        <span class="title">十二、常用第三方库</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-12-60" data-keywords="pip 与虚拟环境 # 创建虚拟环境 # python -m venv .venv # source .venv/bin/activate (Linux) # .venv\Scripts\activate (Windows) # pip install requests # pip freeze &amp;gt; requirements.txt # pip install -r requirements.txt">
+          <div class="card-head">
+            <span class="card-num">60</span>
+            <span class="card-title">pip 与虚拟环境</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 创建虚拟环境</span>
+<span class="comment"># python -m venv .venv</span>
+<span class="comment"># source .venv/bin/activate  (Linux)</span>
+<span class="comment"># .venv\Scripts\activate     (Windows)</span>
+<span class="comment"># pip install requests</span>
+<span class="comment"># pip freeze &gt; requirements.txt</span>
+<span class="comment"># pip install -r requirements.txt</span></div>
+        </div>
+        <div class="card" id="card-12-61" data-keywords="requests (HTTP) import requests r = requests.get( 'https://api.example.com' ) r.status_code, r.json(), r.text r = requests.post(url, json={ 'key' : 'val' }) r = requests.put(url, data={ 'key' : 'val' })">
+          <div class="card-head">
+            <span class="card-num">61</span>
+            <span class="card-title">requests (HTTP)</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> requests
+r = requests.get(<span class="string">'https://api.example.com'</span>)
+r.status_code, r.json(), r.text
+r = requests.post(url, json={<span class="string">'key'</span>:<span class="string">'val'</span>})
+r = requests.put(url, data={<span class="string">'key'</span>:<span class="string">'val'</span>})</div>
+        </div>
+        <div class="card" id="card-12-62" data-keywords="pandas import pandas as pd df = pd.read_csv( 'data.csv' ) df.head(), df.info(), df.describe() df[ 'col' ], df.loc[ 0 ], df.iloc[ 0 ] df.groupby( 'col' ).mean() df.to_excel( 'out.xlsx' )">
+          <div class="card-head">
+            <span class="card-num">62</span>
+            <span class="card-title">pandas</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd
+df = pd.read_csv(<span class="string">'data.csv'</span>)
+df.head(), df.info(), df.describe()
+df[<span class="string">'col'</span>], df.loc[<span class="num">0</span>], df.iloc[<span class="num">0</span>]
+df.groupby(<span class="string">'col'</span>).mean()
+df.to_excel(<span class="string">'out.xlsx'</span>)</div>
+        </div>
+        <div class="card" id="card-12-63" data-keywords="numpy import numpy as np arr = np.array([ 1 , 2 , 3 ]) np.zeros(( 3 , 4 )), np.ones(( 2 , 3 )) np.arange( 10 ), np.linspace( 0 , 1 , 100 ) arr.reshape(( 2 , 3 )), arr.T np.dot(a, b), a @ b">
+          <div class="card-head">
+            <span class="card-num">63</span>
+            <span class="card-title">numpy</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> numpy <span class="keyword">as</span> np
+arr = np.array([<span class="num">1</span>,<span class="num">2</span>,<span class="num">3</span>])
+np.zeros((<span class="num">3</span>,<span class="num">4</span>)), np.ones((<span class="num">2</span>,<span class="num">3</span>))
+np.arange(<span class="num">10</span>), np.linspace(<span class="num">0</span>,<span class="num">1</span>,<span class="num">100</span>)
+arr.reshape((<span class="num">2</span>,<span class="num">3</span>)), arr.T
+np.dot(a, b), a @ b</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-13">
+      <button class="section-head">
+        <span class="icon">13</span>
+        <span class="title">十三、常见Bug与陷阱</span>
+        <span class="count">8 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-13-64" data-keywords="可变默认参数 # 错误: def f (lst=[]): lst.append( 1 ); return lst # 正确: def f (lst= None ): if lst is None : lst = [] lst.append( 1 ); return lst">
+          <div class="card-head">
+            <span class="card-num">64</span>
+            <span class="card-title">可变默认参数</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 错误:</span>
+<span class="keyword">def</span> <span class="func">f</span>(lst=[]): lst.append(<span class="num">1</span>); <span class="keyword">return</span> lst
+<span class="comment"># 正确:</span>
+<span class="keyword">def</span> <span class="func">f</span>(lst=<span class="keyword">None</span>):
+    <span class="keyword">if</span> lst <span class="keyword">is</span> <span class="keyword">None</span>: lst = []
+    lst.append(<span class="num">1</span>); <span class="keyword">return</span> lst</div>
+        </div>
+        <div class="card" id="card-13-65" data-keywords="浅拷贝 vs 深拷贝 import copy b = a.copy() # 浅拷贝 b = a[:] # 浅拷贝 b = copy.deepcopy(a) # 深拷贝">
+          <div class="card-head">
+            <span class="card-num">65</span>
+            <span class="card-title">浅拷贝 vs 深拷贝</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">import</span> copy
+b = a.copy()       <span class="comment"># 浅拷贝</span>
+b = a[:]           <span class="comment"># 浅拷贝</span>
+b = copy.deepcopy(a) <span class="comment"># 深拷贝</span></div>
+        </div>
+        <div class="card" id="card-13-66" data-keywords="闭包中的变量绑定 # 错误: 所有 lambda 捕获最后的 i funcs = [ lambda : i for i in range( 3 )] # 正确: 用默认参数固定 funcs = [ lambda i=i: i for i in range( 3 )]">
+          <div class="card-head">
+            <span class="card-num">66</span>
+            <span class="card-title">闭包中的变量绑定</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 错误: 所有 lambda 捕获最后的 i</span>
+funcs = [<span class="keyword">lambda</span>: i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="num">3</span>)]
+<span class="comment"># 正确: 用默认参数固定</span>
+funcs = [<span class="keyword">lambda</span> i=i: i <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="num">3</span>)]</div>
+        </div>
+        <div class="card" id="card-13-67" data-keywords="is vs == a == b # 值相等 a is b # 同一对象 # None 判断用 is: if x is None">
+          <div class="card-head">
+            <span class="card-num">67</span>
+            <span class="card-title">is vs ==</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code">a == b   <span class="comment"># 值相等</span>
+a <span class="keyword">is</span> b   <span class="comment"># 同一对象</span>
+<span class="comment"># None 判断用 is: if x is None</span></div>
+        </div>
+        <div class="card" id="card-13-68" data-keywords="列表迭代时修改 # 错误: 迭代时删除元素会跳过元素 # 正确: 创建新列表或倒序删除 lst = [x for x in lst if condition(x)] # 或: for x in lst[:]: 遍历副本">
+          <div class="card-head">
+            <span class="card-num">68</span>
+            <span class="card-title">列表迭代时修改</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 错误: 迭代时删除元素会跳过元素</span>
+<span class="comment"># 正确: 创建新列表或倒序删除</span>
+lst = [x <span class="keyword">for</span> x <span class="keyword">in</span> lst <span class="keyword">if</span> condition(x)]
+<span class="comment"># 或: for x in lst[:]: 遍历副本</span></div>
+        </div>
+        <div class="card" id="card-13-69" data-keywords="浮点数精度 0.1 + 0.2 == 0.3 # False! # 用 math.isclose() 或 Decimal math.isclose( 0.1 + 0.2 , 0.3 )">
+          <div class="card-head">
+            <span class="card-num">69</span>
+            <span class="card-title">浮点数精度</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="num">0.1</span> + <span class="num">0.2</span> == <span class="num">0.3</span>  <span class="comment"># False!</span>
+<span class="comment"># 用 math.isclose() 或 Decimal</span>
+math.isclose(<span class="num">0.1</span>+<span class="num">0.2</span>, <span class="num">0.3</span>)</div>
+        </div>
+        <div class="card" id="card-13-70" data-keywords="Unicode 编码 # 文件读写始终指定 encoding='utf-8' # Windows 控制台可能用 GBK # sys.stdout.encoding 查看当前编码">
+          <div class="card-head">
+            <span class="card-num">70</span>
+            <span class="card-title">Unicode 编码</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 文件读写始终指定 encoding='utf-8'</span>
+<span class="comment"># Windows 控制台可能用 GBK</span>
+<span class="comment"># sys.stdout.encoding 查看当前编码</span></div>
+        </div>
+        <div class="card" id="card-13-71" data-keywords="GIL 全局解释器锁 # CPython 同一时刻只有一个线程执行 Python 字节码 # IO 密集型: 用 threading # CPU 密集型: 用 multiprocessing 或 C 扩展">
+          <div class="card-head">
+            <span class="card-num">71</span>
+            <span class="card-title">GIL 全局解释器锁</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># CPython 同一时刻只有一个线程执行 Python 字节码</span>
+<span class="comment"># IO 密集型: 用 threading</span>
+<span class="comment"># CPU 密集型: 用 multiprocessing 或 C 扩展</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-14">
+      <button class="section-head">
+        <span class="icon">14</span>
+        <span class="title">十四、编程建议与最佳实践</span>
+        <span class="count">9 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-14-72" data-keywords="PEP 8 代码风格 # 4空格缩进, 每行不超过79字符 # 类名 PascalCase, 函数/变量 snake_case # 常量 UPPER_CASE, 私有 _leading_underscore # 工具: black, flake8, pylint">
+          <div class="card-head">
+            <span class="card-num">72</span>
+            <span class="card-title">PEP 8 代码风格</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 4空格缩进, 每行不超过79字符</span>
+<span class="comment"># 类名 PascalCase, 函数/变量 snake_case</span>
+<span class="comment"># 常量 UPPER_CASE, 私有 _leading_underscore</span>
+<span class="comment"># 工具: black, flake8, pylint</span></div>
+        </div>
+        <div class="card" id="card-14-73" data-keywords="类型注解 # 推荐使用类型注解提高可读性 # mypy 做静态检查 # from typing import List, Dict, Optional, Union">
+          <div class="card-head">
+            <span class="card-num">73</span>
+            <span class="card-title">类型注解</span>
+            <span class="card-ver">3.5+</span>
+          </div>
+          <div class="card-code"><span class="comment"># 推荐使用类型注解提高可读性</span>
+<span class="comment"># mypy 做静态检查</span>
+<span class="comment"># from typing import List, Dict, Optional, Union</span></div>
+        </div>
+        <div class="card" id="card-14-74" data-keywords="列表推导优先 # 列表推导比 map/filter 更 Pythonic # 但复杂逻辑用普通循环更清晰">
+          <div class="card-head">
+            <span class="card-num">74</span>
+            <span class="card-title">列表推导优先</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 列表推导比 map/filter 更 Pythonic</span>
+<span class="comment"># 但复杂逻辑用普通循环更清晰</span></div>
+        </div>
+        <div class="card" id="card-14-75" data-keywords="EAFP 而非 LBYL # EAFP: Easier to Ask Forgiveness than Permission # 先尝试, 出错了再处理 (try/except) # 而非: 先检查条件再执行">
+          <div class="card-head">
+            <span class="card-num">75</span>
+            <span class="card-title">EAFP 而非 LBYL</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># EAFP: Easier to Ask Forgiveness than Permission</span>
+<span class="comment"># 先尝试, 出错了再处理 (try/except)</span>
+<span class="comment"># 而非: 先检查条件再执行</span></div>
+        </div>
+        <div class="card" id="card-14-76" data-keywords="使用 f-string # f&quot;{name} is {age} years old&quot; # 比 % 格式化 和 .format() 更清晰高效">
+          <div class="card-head">
+            <span class="card-num">76</span>
+            <span class="card-title">使用 f-string</span>
+            <span class="card-ver">3.6+</span>
+          </div>
+          <div class="card-code"><span class="comment"># f"{name} is {age} years old"</span>
+<span class="comment"># 比 % 格式化 和 .format() 更清晰高效</span></div>
+        </div>
+        <div class="card" id="card-14-77" data-keywords="docstring 文档 def add (a: int , b: int ) -&amp;gt; int : &quot;&quot;&quot;两数相加. Args: a: 第一个数 b: 第二个数 Returns: 两数之和 &quot;&quot;&quot; return a + b">
+          <div class="card-head">
+            <span class="card-num">77</span>
+            <span class="card-title">docstring 文档</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="keyword">def</span> <span class="func">add</span>(a: <span class="keyword">int</span>, b: <span class="keyword">int</span>) -&gt; <span class="keyword">int</span>:
+    <span class="string">"""两数相加.
+
+    Args:
+        a: 第一个数
+        b: 第二个数
+
+    Returns:
+        两数之和
+    """</span>
+    <span class="keyword">return</span> a + b</div>
+        </div>
+        <div class="card" id="card-14-78" data-keywords="使用 enumerate 而非 range(len) # 不推荐: for i in range(len(lst)): print (i, lst[i]) # 推荐: for i, val in enumerate(lst): print (i, val)">
+          <div class="card-head">
+            <span class="card-num">78</span>
+            <span class="card-title">使用 enumerate 而非 range(len)</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 不推荐:</span>
+<span class="keyword">for</span> i <span class="keyword">in</span> range(len(lst)):
+    <span class="func">print</span>(i, lst[i])
+<span class="comment"># 推荐:</span>
+<span class="keyword">for</span> i, val <span class="keyword">in</span> enumerate(lst):
+    <span class="func">print</span>(i, val)</div>
+        </div>
+        <div class="card" id="card-14-79" data-keywords="虚拟环境管理 # 每个项目独立虚拟环境 # 工具: venv, poetry, pipenv, uv # 不要在全局安装项目依赖">
+          <div class="card-head">
+            <span class="card-num">79</span>
+            <span class="card-title">虚拟环境管理</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># 每个项目独立虚拟环境</span>
+<span class="comment"># 工具: venv, poetry, pipenv, uv</span>
+<span class="comment"># 不要在全局安装项目依赖</span></div>
+        </div>
+        <div class="card" id="card-14-80" data-keywords="测试 # unittest (内置), pytest (推荐) # python -m pytest tests/ # 覆盖率: pytest --cov=src">
+          <div class="card-head">
+            <span class="card-num">80</span>
+            <span class="card-title">测试</span>
+            <span class="card-ver">3.x</span>
+          </div>
+          <div class="card-code"><span class="comment"># unittest (内置), pytest (推荐)</span>
+<span class="comment"># python -m pytest tests/</span>
+<span class="comment"># 覆盖率: pytest --cov=src</span></div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) {
+      searchClear.classList.add('visible');
+    } else {
+      searchClear.classList.remove('visible');
+    }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) {
+        section.classList.remove('open');
+      } else if (q) {
+        section.classList.add('open');
+      } else {
+        if (section === firstSection) section.classList.add('open');
+        else section.classList.remove('open');
+      }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+
+</body></html>

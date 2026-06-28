@@ -1,8 +1,9 @@
 <!doctype html>
-<html lang="zh-CN"><head>
+<html lang="zh-CN">
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>C语言笔记</title>
+  <title>C语言速查手册</title>
   <style>
     :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -64,17 +65,17 @@
   <h1>C语言速查手册</h1>
   <div class="search-wrap">
     <input type="text" id="searchInput" placeholder="搜索知识点...">
-    <button class="search-clear" id="searchClear" title="清除">✕</button>
+    <button class="search-clear" id="searchClear" title="清除">&#10005;</button>
   </div>
   <span class="result-count" id="resultCount">155 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="section open" id="sect-1">
-      <button class="section-head">
+    <div class="section" id="sect-1">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">1</span>
         <span class="title">一、基础语法</span>
         <span class="count">18 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-1-1" data-keywords="Hello World  #include   &amp;lt;stdio.h&amp;gt; 
@@ -103,7 +104,7 @@
           <div class="card-code"><span>// 单行注释 (C99+)</span>
 <span>/* 多行注释 */</span></div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="基本数据类型  char  c =  'A' ;            // 1字节 
+        <div class="card" id="card-1-3" data-keywords="基本数据类型  char  c =  &#x27;A&#x27; ;            // 1字节 
  int  i =  42 ;                // 通常4字节 
  float  f =  3.14f ;           // 4字节 
  double  d =  3.1415926535 ;  // 8字节 ">
@@ -356,11 +357,11 @@ a &lt;&lt;= b; a &gt;&gt;= b;</div>
       </div>
     </div>
     <div class="section" id="sect-2">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">2</span>
         <span class="title">二、控制流</span>
         <span class="count">7 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-2-19" data-keywords="if / else if / else  if  (x &amp;gt;  0 ) {
@@ -384,8 +385,8 @@ a &lt;&lt;= b; a &gt;&gt;= b;</div>
 }</div>
         </div>
         <div class="card" id="card-2-20" data-keywords="switch / case  switch  (ch) {
-   case   'A' :  /* 注意 fall-through */ 
-   case   'a' :  printf ( &quot;元音\n&quot; );  break ;
+   case   &#x27;A&#x27; :  /* 注意 fall-through */ 
+   case   &#x27;a&#x27; :  printf ( &quot;元音\n&quot; );  break ;
    default :  printf ( &quot;其他\n&quot; );
 }">
           <div class="card-head">
@@ -470,11 +471,11 @@ loop:
       </div>
     </div>
     <div class="section" id="sect-3">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">3</span>
         <span class="title">三、数组与字符串</span>
         <span class="count">7 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-3-26" data-keywords="一维数组  int  arr[ 5 ] = { 1 ,  2 ,  3 ,  4 ,  5 };
@@ -526,7 +527,7 @@ mat[<span>0</span>][<span>1</span>] = <span>99</span>;</div>
         <div class="card" id="card-3-29" data-keywords="C风格字符串  char  s1[] =  &quot;hello&quot; ;                  // 自动添加 \0, 长度6 
  char  s2[ 20 ] =  &quot;hello&quot; ;
  const   char * s3 =  &quot;hello&quot; ;           // 指向字符串字面量（只读） 
- // 字符串以 '\0' (NUL) 结尾 ">
+ // 字符串以 &#x27;\0&#x27; (NUL) 结尾 ">
           <div class="card-head">
             <span class="card-num">29</span>
             <span class="card-title">C风格字符串</span>
@@ -604,11 +605,11 @@ mat[<span>0</span>][<span>1</span>] = <span>99</span>;</div>
       </div>
     </div>
     <div class="section" id="sect-4">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">4</span>
         <span class="title">四、指针</span>
         <span class="count">10 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-4-33" data-keywords="指针基本概念  int  a =  42 ;
@@ -768,11 +769,11 @@ arrPtr = mat;        <span>// 指向第一行</span>
       </div>
     </div>
     <div class="section" id="sect-5">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">5</span>
         <span class="title">五、函数</span>
         <span class="count">10 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-5-43" data-keywords="函数定义  // 返回值类型 函数名(参数列表) { 函数体 } 
@@ -924,11 +925,11 @@ arrPtr = mat;        <span>// 指向第一行</span>
       </div>
     </div>
     <div class="section" id="sect-6">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">6</span>
         <span class="title">六、动态内存管理</span>
         <span class="count">6 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-6-53" data-keywords="malloc  #include   &amp;lt;stdlib.h&amp;gt; 
@@ -1034,11 +1035,11 @@ arr = <span>NULL</span>;     <span>// 防止悬垂指针</span>
       </div>
     </div>
     <div class="section" id="sect-7">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">7</span>
         <span class="title">七、结构体、联合体、枚举</span>
         <span class="count">11 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-7-59" data-keywords="结构体定义  struct  Point {
@@ -1214,11 +1215,11 @@ v.i = <span>42</span>;
       </div>
     </div>
     <div class="section" id="sect-8">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">8</span>
         <span class="title">八、预处理器</span>
         <span class="count">8 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-8-70" data-keywords="#include  #include   &amp;lt;stdio.h&amp;gt;         // 系统头文件 
@@ -1354,11 +1355,11 @@ v.i = <span>42</span>;
       </div>
     </div>
     <div class="section" id="sect-9">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">9</span>
         <span class="title">九、文件 I/O</span>
         <span class="count">10 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-9-78" data-keywords="文件打开与关闭  FILE * fp =  fopen ( &quot;data.txt&quot; ,  &quot;r&quot; );
@@ -1403,7 +1404,7 @@ v.i = <span>42</span>;
  while  ((ch =  fgetc (fp)) !=  EOF ) {
    putchar (ch);
 }
- fputc ( 'A' , fp);    // 写一个字符 
+ fputc ( &#x27;A&#x27; , fp);    // 写一个字符 
  // fgetc 返回 int, 不是 char! 因为 EOF 通常是 -1 ">
           <div class="card-head">
             <span class="card-num">80</span>
@@ -1530,11 +1531,11 @@ v.i = <span>42</span>;
       </div>
     </div>
     <div class="section" id="sect-10">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">10</span>
         <span class="title">十、常用标准库函数</span>
         <span class="count">8 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-10-88" data-keywords="stdlib.h 常用函数  atoi ,  atof ,  strtol ,  strtod    // 字符串转换 
@@ -1699,11 +1700,11 @@ v.i = <span>42</span>;
       </div>
     </div>
     <div class="section" id="sect-11">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">11</span>
         <span class="title">十一、多文件编程与链接</span>
         <span class="count">4 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-11-96" data-keywords="extern 关键字  // file1.c 
@@ -1765,11 +1766,11 @@ v.i = <span>42</span>;
       </div>
     </div>
     <div class="section" id="sect-12">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">12</span>
         <span class="title">十二、高级特性</span>
         <span class="count">7 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-12-100" data-keywords="_Bool 类型  #include   &amp;lt;stdbool.h&amp;gt;    // C99 
@@ -1875,11 +1876,11 @@ v.i = <span>42</span>;
       </div>
     </div>
     <div class="section" id="sect-13">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">13</span>
         <span class="title">十三、常见Bug与陷阱</span>
         <span class="count">21 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-13-107" data-keywords="= 与 == 混淆  if  (a =  5 ) { }    // BUG! 赋值而非比较 
@@ -2054,8 +2055,8 @@ b++;  <span>// 未定义行为!</span>
         </div>
         <div class="card" id="card-13-119" data-keywords="fgets 保留换行符  char  line[ 256 ];
  fgets (line,  sizeof (line), stdin);
- // line 末尾包含 '\n', 需要手动去除: 
-line[ strcspn (line,  &quot;\n&quot; )] =  '\0' ;">
+ // line 末尾包含 &#x27;\n&#x27;, 需要手动去除: 
+line[ strcspn (line,  &quot;\n&quot; )] =  &#x27;\0&#x27; ;">
           <div class="card-head">
             <span class="card-num">119</span>
             <span class="card-title">fgets 保留换行符</span>
@@ -2068,7 +2069,7 @@ line[<span>strcspn</span>(line, <span>"\n"</span>)] = <span>'\0'</span>;</div>
         </div>
         <div class="card" id="card-13-120" data-keywords="strncpy 不追加 \0  char  dst[ 10 ];
  strncpy (dst,  &quot;hello world&quot; ,  sizeof (dst));
-dst[ sizeof (dst)- 1 ] =  '\0' ;   // 手动保证以 \0 结尾 
+dst[ sizeof (dst)- 1 ] =  &#x27;\0&#x27; ;   // 手动保证以 \0 结尾 
  // 更安全: snprintf(dst, sizeof(dst), &quot;%s&quot;, src); ">
           <div class="card-head">
             <span class="card-num">120</span>
@@ -2179,11 +2180,11 @@ u &gt;&gt;= <span>1</span>;          <span>// 逻辑右移, 高位补0</span></d
       </div>
     </div>
     <div class="section" id="sect-14">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">14</span>
         <span class="title">十四、编程建议与最佳实践</span>
         <span class="count">23 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-14-128" data-keywords="编译警告全开  // GCC/Clang: 
@@ -2564,11 +2565,11 @@ cleanup:
       </div>
     </div>
     <div class="section" id="sect-15">
-      <button class="section-head">
+      <button class="section-head" onclick="this.parentElement.classList.toggle('open')">
         <span class="icon">15</span>
         <span class="title">十五、C标准版本关键差异</span>
         <span class="count">5 条</span>
-        <span class="arrow">▼</span>
+        <span class="arrow">&#9660;</span>
       </button>
       <div class="section-body">
         <div class="card" id="card-15-151" data-keywords="C89 / C90  // 第一个ISO标准 
@@ -2673,7 +2674,7 @@ cleanup:
       </div>
     </div>
 </div>
-<button class="back-top" id="backTop" title="回到顶部">▲</button>
+<button class="back-top" id="backTop" title="回到顶部">&#9650;</button>
 <script>
 (function(){
   var searchInput = document.getElementById('searchInput');
@@ -2787,7 +2788,5 @@ cleanup:
   });
 })();
 </script>
-
-
-
-</body></html>
+</body>
+</html>

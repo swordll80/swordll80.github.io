@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JavaScript 知识表 · swordll80</title>
+  <style>
+    :root { --bg: #f5f6fa; --accent: #356ae6; --muted: #7d8599; --line: #e2e5ee; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:#fff; color:#1a1a2e; line-height:1.7; padding:24px; }
+    h1 { font-size:22px; margin-bottom:6px; color:#1a1a2e; }
+    .subtitle { color:var(--muted); font-size:13px; margin-bottom:20px; }
+    .table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,.04); }
+    table { width:100%; border-collapse:collapse; font-size:13px; min-width:900px; }
+    thead { background:linear-gradient(135deg,#f7df1e,#f0db4f); color:#323330; position:sticky; top:0; z-index:2; }
+    thead th { padding:12px 14px; text-align:left; font-weight:650; font-size:13px; letter-spacing:.03em; white-space:nowrap; }
+    tbody td { padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+    tbody tr:nth-child(even) { background:#fafbfc; }
+    tbody tr:hover { background:#fffef0; }
+    td:first-child { text-align:center; color:var(--muted); font-weight:600; white-space:nowrap; min-width:52px; }
+    td:nth-child(2) { font-weight:600; min-width:170px; }
+    td:nth-child(3) { font-family:"Cascadia Code","Fira Code","Consolas",monospace; font-size:12px; white-space:pre-wrap; word-break:break-all; min-width:280px; max-width:520px; background:#f8f9fc; }
+    td:nth-child(4) { text-align:center; color:var(--muted); white-space:nowrap; min-width:70px; }
+    .section-row td { background:#eef1f8!important; font-weight:750; color:#1a1a2e; font-size:14px; padding:10px 14px; border-bottom:2px solid var(--line); }
+    .section-row td:first-child { color:var(--accent); }
+    code { background:#eef1f8; padding:1px 5px; border-radius:3px; font-family:"Cascadia Code","Fira Code","Consolas",monospace; font-size:12px; }
+    .keyword { color:#8b3fc7; } .comment { color:#7d8599; } .string { color:#1b8c3c; } .num { color:#c7640a; } .func { color:#356ae6; }
+    @media (max-width:768px) { body { padding:12px; } table { font-size:12px; min-width:750px; } thead th,tbody td { padding:8px 10px; } td:nth-child(3) { font-size:11px; min-width:220px; max-width:350px; } }
+  </style>
+</head>
+<body>
+  <h1>JavaScript 知识速查表</h1>
+  <p class="subtitle">涵盖基础语法、DOM、异步、ES6+、常见Bug与编程建议 · 共 130+ 条目</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>序号</th><th>知识点</th><th>代码示例 / 说明</th><th>版本</th></tr></thead>
+    <tbody>
+
+<tr class="section-row"><td colspan="4">一、基础语法</td></tr>
+
+<tr><td>1</td><td>变量声明</td><td><span class="keyword">var</span> x = <span class="num">1</span>;            <span class="comment">// 函数作用域, 可重复声明, 有提升</span>
+<span class="keyword">let</span> y = <span class="num">2</span>;            <span class="comment">// 块作用域, 不可重复声明</span>
+<span class="keyword">const</span> z = <span class="num">3</span>;          <span class="comment">// 常量, 块作用域, 必须初始化</span>
+<span class="comment">// const 对象属性可修改: const obj = {}; obj.x = 1;</span></td><td>ES6</td></tr>
+
+<tr><td>2</td><td>数据类型</td><td><span class="comment">// 基本类型: number, string, boolean, null, undefined, symbol, bigint</span>
+<span class="comment">// 引用类型: object, array, function, date, regexp</span>
+<span class="keyword">typeof</span> <span class="num">42</span>        <span class="comment">// "number"</span>
+<span class="keyword">typeof</span> <span class="string">"hi"</span>     <span class="comment">// "string"</span>
+<span class="keyword">typeof</span> <span class="keyword">null</span>     <span class="comment">// "object" (历史Bug)</span>
+<span class="keyword">typeof</span> <span class="keyword">undefined</span> <span class="comment">// "undefined"</span></td><td>ES1</td></tr>
+
+<tr><td>3</td><td>字符串</td><td><span class="keyword">let</span> s = <span class="string">"hello"</span>;
+<span class="keyword">let</span> t = <span class="string">`模板 ${name}`</span>;  <span class="comment">// ES6 模板字面量</span>
+s.length, s.toUpperCase(), s.toLowerCase()
+s.trim(), s.slice(<span class="num">1</span>,<span class="num">3</span>), s.substring(<span class="num">1</span>,<span class="num">3</span>)
+s.indexOf(<span class="string">'e'</span>), s.includes(<span class="string">'ll'</span>)
+s.split(<span class="string">','</span>), s.replace(<span class="string">'h'</span>, <span class="string">'H'</span>)
+s.startsWith(<span class="string">'he'</span>), s.endsWith(<span class="string">'lo'</span>)</td><td>ES6</td></tr>
+
+<tr><td>4</td><td>数字</td><td><span class="keyword">let</span> n = <span class="num">42</span>;
+<span class="keyword">let</span> pi = <span class="num">3.14159</span>;
+<span class="keyword">let</span> big = <span class="num">9007199254740991n</span>;  <span class="comment">// BigInt (ES2020)</span>
+<span class="func">isNaN</span>(<span class="string">"abc"</span>), <span class="func">isFinite</span>(<span class="num">100</span>)
+<span class="func">parseInt</span>(<span class="string">"42"</span>), <span class="func">parseFloat</span>(<span class="string">"3.14"</span>)
+<span class="func">Math</span>.round(<span class="num">3.6</span>), <span class="func">Math</span>.floor(<span class="num">3.6</span>), <span class="func">Math</span>.ceil(<span class="num">3.1</span>)
+<span class="func">Math</span>.random(), <span class="func">Math</span>.max(<span class="num">1</span>,<span class="num">5</span>,<span class="num">3</span>), <span class="func">Math</span>.sqrt(<span class="num">16</span>)</td><td>ES1/ES2020</td></tr>
+
+<tr><td>5</td><td>运算符</td><td><span class="comment">// 算术: + - * / % **</span>
+<span class="comment">// 比较: == != === !== &gt; &lt; &gt;= &lt;=</span>
+<span class="comment">// 逻辑: &amp;&amp; || !</span>
+<span class="comment">// 位运算: &amp; | ^ ~ &lt;&lt; &gt;&gt; &gt;&gt;&gt;</span>
+<span class="comment">// === 严格相等 (类型+值), == 会类型转换</span>
+<span class="comment">// 可选链: obj?.prop?.sub   (ES2020)</span>
+<span class="comment">// 空值合并: a ?? b  (null/undefined 时取 b, ES2020)</span></td><td>ES1/ES2020</td></tr>
+
+<tr><td>6</td><td>条件语句</td><td><span class="keyword">if</span> (x &gt; <span class="num">0</span>) {
+  console.log(<span class="string">"正数"</span>);
+} <span class="keyword">else</span> <span class="keyword">if</span> (x === <span class="num">0</span>) {
+  console.log(<span class="string">"零"</span>);
+} <span class="keyword">else</span> {
+  console.log(<span class="string">"负数"</span>);
+}
+<span class="comment">// 三元: let r = x &gt; 0 ? "正" : "负";</span>
+<span class="comment">// switch 和 C 类似, 但可用字符串</span></td><td>ES1</td></tr>
+
+<tr><td>7</td><td>循环</td><td><span class="keyword">for</span> (<span class="keyword">let</span> i=<span class="num">0</span>; i&lt;<span class="num">5</span>; i++) { }
+<span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> arr) { }       <span class="comment">// 值迭代</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> obj) { }        <span class="comment">// 键迭代(含原型)</span>
+<span class="keyword">while</span> (condition) { }
+<span class="keyword">do</span> { } <span class="keyword">while</span> (condition);
+arr.forEach(item =&gt; console.log(item));</td><td>ES1/ES6</td></tr>
+
+<tr class="section-row"><td colspan="4">二、数组</td></tr>
+
+<tr><td>8</td><td>数组操作</td><td><span class="keyword">let</span> arr = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+arr.push(<span class="num">4</span>), arr.pop()
+arr.unshift(<span class="num">0</span>), arr.shift()
+arr.splice(<span class="num">1</span>, <span class="num">2</span>, <span class="string">'a'</span>, <span class="string">'b'</span>) <span class="comment">// 删除并插入</span>
+arr.slice(<span class="num">1</span>, <span class="num">3</span>)               <span class="comment">// 浅拷贝子数组</span>
+arr.indexOf(<span class="num">2</span>), arr.includes(<span class="num">2</span>)
+arr.reverse(), arr.sort((a,b) =&gt; a-b)</td><td>ES1/ES6</td></tr>
+
+<tr><td>9</td><td>数组迭代方法</td><td>arr.map(x =&gt; x * <span class="num">2</span>)               <span class="comment">// 映射</span>
+arr.filter(x =&gt; x &gt; <span class="num">1</span>)               <span class="comment">// 筛选</span>
+arr.reduce((acc, x) =&gt; acc + x, <span class="num">0</span>) <span class="comment">// 归约</span>
+arr.find(x =&gt; x &gt; <span class="num">2</span>)                <span class="comment">// 查找第一个</span>
+arr.findIndex(x =&gt; x &gt; <span class="num">2</span>)
+arr.some(x =&gt; x &gt; <span class="num">2</span>), arr.every(x =&gt; x &gt; <span class="num">0</span>)
+arr.flat(<span class="num">2</span>), arr.flatMap(x =&gt; [x, x*<span class="num">2</span>])</td><td>ES5/ES6</td></tr>
+
+<tr><td>10</td><td>解构赋值</td><td><span class="keyword">let</span> [a, b, ...rest] = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>];
+<span class="keyword">let</span> {name, age} = {name: <span class="string">"Alice"</span>, age: <span class="num">25</span>};
+<span class="keyword">let</span> {name: n, age: a = <span class="num">18</span>} = obj;  <span class="comment">// 重命名+默认值</span></td><td>ES6</td></tr>
+
+<tr><td>11</td><td>展开运算符</td><td><span class="keyword">let</span> arr = [...arr1, ...arr2];
+<span class="keyword">let</span> obj = {...obj1, ...obj2, newProp: <span class="string">'val'</span>};
+<span class="func">Math</span>.max(...numbers);
+<span class="comment">// 浅拷贝: let copy = [...arr];</span></td><td>ES6/ES2018</td></tr>
+
+<tr class="section-row"><td colspan="4">三、对象</td></tr>
+
+<tr><td>12</td><td>对象字面量</td><td><span class="keyword">let</span> obj = {
+  name: <span class="string">"Alice"</span>,
+  age: <span class="num">25</span>,
+  greet() { <span class="keyword">return</span> <span class="string">`Hi, ${this.name}`</span>; }
+};
+obj.name, obj[<span class="string">"name"</span>]
+obj.newProp = <span class="string">"val"</span>;
+<span class="keyword">delete</span> obj.age;
+<span class="string">"name"</span> <span class="keyword">in</span> obj, obj.hasOwnProperty(<span class="string">"name"</span>)</td><td>ES1/ES6</td></tr>
+
+<tr><td>13</td><td>对象方法</td><td><span class="func">Object</span>.keys(obj)       <span class="comment">// 自有可枚举键</span>
+<span class="func">Object</span>.values(obj)     <span class="comment">// 自有可枚举值</span>
+<span class="func">Object</span>.entries(obj)    <span class="comment">// [[k,v],...]</span>
+<span class="func">Object</span>.assign(target, src)  <span class="comment">// 浅合并</span>
+<span class="func">Object</span>.freeze(obj), <span class="func">Object</span>.seal(obj)</td><td>ES5/ES2017</td></tr>
+
+<tr><td>14</td><td>this 关键字</td><td><span class="comment">// 全局: window/global</span>
+<span class="comment">// 对象方法: 调用者</span>
+<span class="comment">// 构造函数: 新实例</span>
+<span class="comment">// 箭头函数: 词法作用域 (定义时外层 this)</span>
+<span class="comment">// call/apply/bind: 显式绑定</span>
+obj.method.call(ctx, a, b);
+obj.method.apply(ctx, [a, b]);
+<span class="keyword">let</span> bound = obj.method.bind(ctx);</td><td>ES1/ES6</td></tr>
+
+<tr class="section-row"><td colspan="4">四、函数</td></tr>
+
+<tr><td>15</td><td>函数定义</td><td><span class="comment">// 函数声明 (提升)</span>
+<span class="keyword">function</span> <span class="func">add</span>(a, b) { <span class="keyword">return</span> a + b; }
+<span class="comment">// 函数表达式</span>
+<span class="keyword">const</span> add = <span class="keyword">function</span>(a, b) { <span class="keyword">return</span> a + b; };
+<span class="comment">// 箭头函数</span>
+<span class="keyword">const</span> add = (a, b) =&gt; a + b;</td><td>ES1/ES6</td></tr>
+
+<tr><td>16</td><td>参数处理</td><td><span class="keyword">function</span> <span class="func">f</span>(a, b = <span class="num">10</span>, ...rest) { }  <span class="comment">// 默认+剩余</span>
+f(...arr);  <span class="comment">// 展开参数</span>
+<span class="comment">// arguments (类数组, 箭头函数没有)</span></td><td>ES6</td></tr>
+
+<tr><td>17</td><td>闭包</td><td><span class="keyword">function</span> <span class="func">counter</span>() {
+  <span class="keyword">let</span> count = <span class="num">0</span>;
+  <span class="keyword">return</span> <span class="keyword">function</span>() { <span class="keyword">return</span> ++count; };
+}
+<span class="comment">// 内部函数持有外部作用域变量的引用</span></td><td>ES1</td></tr>
+
+<tr><td>18</td><td>箭头函数 vs 普通函数</td><td><span class="comment">// 箭头: 无自己的 this/arguments, 不能 new</span>
+<span class="comment">// 箭头: 无 prototype, 简洁语法</span>
+<span class="keyword">const</span> double = x =&gt; x * <span class="num">2</span>;
+<span class="keyword">const</span> greet = name =&gt; ({ name });  <span class="comment">// 返回对象需括号</span></td><td>ES6</td></tr>
+
+<tr class="section-row"><td colspan="4">五、异步编程</td></tr>
+
+<tr><td>19</td><td>回调函数</td><td>fs.readFile(<span class="string">'file.txt'</span>, (err, data) =&gt; {
+  <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;
+  console.log(data);
+});
+<span class="comment">// 回调地狱: 多层嵌套, 难以维护</span></td><td>ES1</td></tr>
+
+<tr><td>20</td><td>Promise</td><td><span class="keyword">new</span> <span class="func">Promise</span>((resolve, reject) =&gt; {
+  setTimeout(() =&gt; resolve(<span class="string">'done'</span>), <span class="num">1000</span>);
+})
+.then(result =&gt; console.log(result))
+.catch(err =&gt; console.error(err))
+.finally(() =&gt; console.log(<span class="string">'end'</span>));
+
+<span class="comment">// Promise 静态方法:</span>
+<span class="func">Promise</span>.all([p1, p2])       <span class="comment">// 全部成功</span>
+<span class="func">Promise</span>.allSettled([p1, p2]) <span class="comment">// 全部完成</span>
+<span class="func">Promise</span>.race([p1, p2])      <span class="comment">// 最快一个</span>
+<span class="func">Promise</span>.any([p1, p2])       <span class="comment">// 第一个成功</span>
+<span class="func">Promise</span>.resolve(val), <span class="func">Promise</span>.reject(err)</td><td>ES6/ES2020</td></tr>
+
+<tr><td>21</td><td>async / await</td><td><span class="keyword">async</span> <span class="keyword">function</span> <span class="func">fetchData</span>() {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(url);
+    <span class="keyword">const</span> data = <span class="keyword">await</span> response.json();
+    <span class="keyword">return</span> data;
+  } <span class="keyword">catch</span> (err) {
+    console.error(err);
+  }
+}
+<span class="comment">// async 函数返回 Promise</span></td><td>ES2017</td></tr>
+
+<tr><td>22</td><td>setTimeout / setInterval</td><td><span class="keyword">let</span> id = setTimeout(() =&gt; {}, <span class="num">1000</span>);
+clearTimeout(id);
+
+<span class="keyword">let</span> id2 = setInterval(() =&gt; {}, <span class="num">1000</span>);
+clearInterval(id2);
+
+<span class="comment">// 异步: setTimeout(fn, 0) 在调用栈清空后执行</span></td><td>ES1</td></tr>
+
+<tr><td>23</td><td>事件循环</td><td><span class="comment">// 调用栈 → 微任务队列 → 宏任务队列</span>
+<span class="comment">// 微任务: Promise.then, MutationObserver</span>
+<span class="comment">// 宏任务: setTimeout, setInterval, I/O</span>
+<span class="comment">// 每轮: 清空微任务 → 取一个宏任务</span></td><td>ES6</td></tr>
+
+<tr class="section-row"><td colspan="4">六、DOM 操作</td></tr>
+
+<tr><td>24</td><td>元素选择</td><td><span class="keyword">const</span> el = document.getElementById(<span class="string">'id'</span>);
+<span class="keyword">const</span> els = document.getElementsByClassName(<span class="string">'cls'</span>);
+<span class="keyword">const</span> els2 = document.getElementsByTagName(<span class="string">'div'</span>);
+<span class="keyword">const</span> el2 = document.querySelector(<span class="string">'.cls'</span>);
+<span class="keyword">const</span> all = document.querySelectorAll(<span class="string">'div &gt; p'</span>);
+<span class="comment">// querySelectorAll 返回 NodeList (静态)</span></td><td>ES1/ES5</td></tr>
+
+<tr><td>25</td><td>DOM 操作</td><td><span class="keyword">const</span> div = document.createElement(<span class="string">'div'</span>);
+div.textContent = <span class="string">'Hello'</span>;
+div.innerHTML = <span class="string">'&lt;span&gt;Hi&lt;/span&gt;'</span>;  <span class="comment">// 注意 XSS</span>
+parent.appendChild(div);
+parent.removeChild(child);
+parent.replaceChild(newEl, oldEl);
+parent.insertBefore(newEl, refEl);
+el.cloneNode(<span class="keyword">true</span>);  <span class="comment">// 深克隆</span></td><td>ES1</td></tr>
+
+<tr><td>26</td><td>属性与样式</td><td>el.getAttribute(<span class="string">'href'</span>), el.setAttribute(<span class="string">'href'</span>, url)
+el.dataset.userId           <span class="comment">// data-user-id</span>
+el.classList.add(<span class="string">'active'</span>), el.classList.toggle(<span class="string">'dark'</span>)
+el.style.color = <span class="string">'red'</span>;
+el.style.cssText = <span class="string">'color: red; font-size: 16px'</span>;
+<span class="keyword">const</span> style = getComputedStyle(el);</td><td>ES5/ES6</td></tr>
+
+<tr><td>27</td><td>事件处理</td><td>el.addEventListener(<span class="string">'click'</span>, handler);
+el.addEventListener(<span class="string">'click'</span>, e =&gt; {
+  e.preventDefault();   <span class="comment">// 阻止默认行为</span>
+  e.stopPropagation();  <span class="comment">// 阻止冒泡</span>
+  console.log(e.target); <span class="comment">// 触发元素</span>
+});
+el.removeEventListener(<span class="string">'click'</span>, handler);
+<span class="comment">// 事件委托: parent.addEventListener('click', e =&gt; { ... })</span></td><td>ES1</td></tr>
+
+<tr><td>28</td><td>常用事件类型</td><td><span class="comment">// 鼠标: click, dblclick, mousedown, mouseup, mousemove, mouseenter, mouseleave</span>
+<span class="comment">// 键盘: keydown, keyup, keypress</span>
+<span class="comment">// 表单: submit, change, input, focus, blur</span>
+<span class="comment">// 文档: DOMContentLoaded, load, scroll, resize</span>
+<span class="comment">// 触摸: touchstart, touchmove, touchend</span></td><td>ES1</td></tr>
+
+<tr class="section-row"><td colspan="4">七、ES6+ 重要特性</td></tr>
+
+<tr><td>29</td><td>类 (class)</td><td><span class="keyword">class</span> Animal {
+  constructor(name) { <span class="keyword">this</span>.name = name; }
+  speak() { <span class="keyword">return</span> <span class="string">`${this.name} ...`</span>; }
+  <span class="keyword">static</span> create() { <span class="keyword">return</span> <span class="keyword">new</span> <span class="func">Animal</span>(<span class="string">'default'</span>); }
+}
+<span class="keyword">class</span> Dog <span class="keyword">extends</span> Animal {
+  constructor(name) { <span class="keyword">super</span>(name); }
+  speak() { <span class="keyword">return</span> <span class="string">`${this.name} 汪!`</span>; }
+}
+<span class="comment">// class 本质是 prototype 的语法糖</span></td><td>ES6</td></tr>
+
+<tr><td>30</td><td>模块 (import/export)</td><td><span class="comment">// a.js:</span>
+<span class="keyword">export</span> <span class="keyword">const</span> PI = <span class="num">3.14</span>;
+<span class="keyword">export</span> <span class="keyword">function</span> <span class="func">add</span>(a,b) { <span class="keyword">return</span> a+b; }
+<span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> MyClass { }
+
+<span class="comment">// b.js:</span>
+<span class="keyword">import</span> MyClass, { PI, add <span class="keyword">as</span> myAdd } <span class="keyword">from</span> <span class="string">'./a.js'</span>;
+<span class="keyword">import</span> * <span class="keyword">as</span> utils <span class="keyword">from</span> <span class="string">'./a.js'</span>;
+<span class="comment">// 动态导入: const m = await import('./a.js');</span></td><td>ES6/ES2020</td></tr>
+
+<tr><td>31</td><td>Map / Set / WeakMap / WeakSet</td><td><span class="keyword">let</span> map = <span class="keyword">new</span> <span class="func">Map</span>();
+map.set(<span class="string">'key'</span>, <span class="string">'value'</span>);
+map.has(<span class="string">'key'</span>), map.get(<span class="string">'key'</span>), map.delete(<span class="string">'key'</span>)
+
+<span class="keyword">let</span> set = <span class="keyword">new</span> <span class="func">Set</span>([<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>]); <span class="comment">// {1,2,3}</span>
+set.add(<span class="num">4</span>), set.has(<span class="num">2</span>), set.delete(<span class="num">3</span>)
+<span class="comment">// WeakMap/WeakSet: 键/值弱引用, 不可迭代</span></td><td>ES6</td></tr>
+
+<tr><td>32</td><td>Symbol</td><td><span class="keyword">const</span> id = <span class="func">Symbol</span>(<span class="string">'id'</span>);
+<span class="keyword">const</span> id2 = <span class="func">Symbol</span>(<span class="string">'id'</span>);
+id !== id2  <span class="comment">// 每次创建唯一</span>
+<span class="keyword">const</span> GLOBAL = <span class="func">Symbol</span>.for(<span class="string">'key'</span>); <span class="comment">// 全局符号</span>
+<span class="comment">// 用作对象唯一属性键, 避免冲突</span></td><td>ES6</td></tr>
+
+<tr><td>33</td><td>Proxy / Reflect</td><td><span class="keyword">const</span> handler = {
+  get(target, prop) {
+    <span class="keyword">return</span> prop <span class="keyword">in</span> target ? target[prop] : <span class="string">'N/A'</span>;
+  },
+  set(target, prop, val) {
+    target[prop] = val; <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+};
+<span class="keyword">const</span> proxy = <span class="keyword">new</span> <span class="func">Proxy</span>({}, handler);</td><td>ES6</td></tr>
+
+<tr><td>34</td><td>迭代器与生成器</td><td><span class="keyword">function</span>* <span class="func">gen</span>() {
+  <span class="keyword">yield</span> <span class="num">1</span>;
+  <span class="keyword">yield</span> <span class="num">2</span>;
+  <span class="keyword">yield</span> <span class="num">3</span>;
+}
+<span class="keyword">const</span> g = gen();
+g.next();  <span class="comment">// {value:1, done:false}</span>
+<span class="comment">// 自定义迭代: obj[Symbol.iterator] = function*() {}</span></td><td>ES6</td></tr>
+
+<tr class="section-row"><td colspan="4">八、原型与继承</td></tr>
+
+<tr><td>35</td><td>原型链</td><td><span class="comment">// 每个对象有 [[Prototype]] (__proto__)</span>
+<span class="comment">// 每个函数有 prototype 属性</span>
+obj.__proto__ === <span class="func">Object</span>.getPrototypeOf(obj)
+<span class="func">Object</span>.setPrototypeOf(child, parent)
+<span class="comment">// 属性查找沿原型链向上, 直到 null</span></td><td>ES1</td></tr>
+
+<tr><td>36</td><td>构造函数与 new</td><td><span class="keyword">function</span> <span class="func">Person</span>(name) {
+  <span class="keyword">this</span>.name = name;
+}
+Person.prototype.sayHi = <span class="keyword">function</span>() {
+  <span class="keyword">return</span> <span class="string">`Hi, ${this.name}`</span>;
+};
+<span class="keyword">const</span> p = <span class="keyword">new</span> <span class="func">Person</span>(<span class="string">'Alice'</span>);
+<span class="comment">// new 做了: 创建对象, 绑定原型, 绑定this, 返回对象</span></td><td>ES1</td></tr>
+
+<tr><td>37</td><td>Object.create</td><td><span class="keyword">const</span> parent = { hello() { <span class="keyword">return</span> <span class="string">'Hi'</span>; } };
+<span class="keyword">const</span> child = <span class="func">Object</span>.create(parent);
+child.hello();  <span class="comment">// "Hi" (原型继承)</span></td><td>ES5</td></tr>
+
+<tr class="section-row"><td colspan="4">九、存储与网络</td></tr>
+
+<tr><td>38</td><td>localStorage / sessionStorage</td><td>localStorage.setItem(<span class="string">'key'</span>, <span class="string">'value'</span>);
+localStorage.getItem(<span class="string">'key'</span>);
+localStorage.removeItem(<span class="string">'key'</span>);
+localStorage.clear();
+<span class="comment">// sessionStorage: 会话级别, 关标签页即清除</span>
+<span class="comment">// 只能存字符串, 对象用 JSON.stringify</span></td><td>ES5</td></tr>
+
+<tr><td>39</td><td>fetch API</td><td><span class="keyword">const</span> response = <span class="keyword">await</span> fetch(url, {
+  method: <span class="string">'POST'</span>,
+  headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+  body: <span class="func">JSON</span>.stringify({ key: <span class="string">'val'</span> })
+});
+<span class="keyword">if</span> (!response.ok) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="func">Error</span>(<span class="string">`HTTP ${response.status}`</span>);
+<span class="keyword">const</span> data = <span class="keyword">await</span> response.json();</td><td>ES6</td></tr>
+
+<tr><td>40</td><td>JSON</td><td><span class="keyword">const</span> s = <span class="func">JSON</span>.stringify(obj, <span class="keyword">null</span>, <span class="num">2</span>);
+<span class="keyword">const</span> obj = <span class="func">JSON</span>.parse(s);
+<span class="comment">// JSON 不支持: undefined, Symbol, 函数, 循环引用</span></td><td>ES5</td></tr>
+
+<tr class="section-row"><td colspan="4">十、错误处理与调试</td></tr>
+
+<tr><td>41</td><td>try-catch</td><td><span class="keyword">try</span> {
+  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="func">Error</span>(<span class="string">'出错了'</span>);
+} <span class="keyword">catch</span> (err) {
+  console.error(err.message, err.stack);
+} <span class="keyword">finally</span> {
+  <span class="comment">// 始终执行</span>
+}</td><td>ES1</td></tr>
+
+<tr><td>42</td><td>console 方法</td><td>console.log(), console.info(), console.warn()
+console.error(), console.debug()
+console.table(data), console.group(<span class="string">'label'</span>)
+console.time(<span class="string">'timer'</span>); <span class="comment">/* ... */</span> console.timeEnd(<span class="string">'timer'</span>)
+console.assert(condition, msg)</td><td>ES1</td></tr>
+
+<tr class="section-row"><td colspan="4">十一、常见Bug与陷阱</td></tr>
+
+<tr><td>43</td><td>var 变量提升</td><td>console.log(x); <span class="comment">// undefined, 不报错!</span>
+<span class="keyword">var</span> x = <span class="num">5</span>;
+<span class="comment">// let/const 有暂时性死区, 提升但不可访问</span></td><td>ES1</td></tr>
+
+<tr><td>44</td><td>this 丢失</td><td><span class="keyword">const</span> obj = {
+  name: <span class="string">'obj'</span>,
+  greet() { console.log(<span class="keyword">this</span>.name); }
+};
+<span class="keyword">const</span> fn = obj.greet;
+fn(); <span class="comment">// undefined! this 指向全局</span>
+<span class="comment">// 解决: fn = obj.greet.bind(obj) 或箭头函数</span></td><td>ES1</td></tr>
+
+<tr><td>45</td><td>类型强制转换</td><td>[] + {}       <span class="comment">// "[object Object]"</span>
+{} + []       <span class="comment">// 0 ({} 被当作空块)</span>
+<span class="string">'5'</span> - <span class="num">3</span>      <span class="comment">// 2</span>
+<span class="string">'5'</span> + <span class="num">3</span>      <span class="comment">// "53"</span>
+<span class="keyword">null</span> &gt;= <span class="num">0</span>     <span class="comment">// true</span>
+<span class="keyword">null</span> == <span class="keyword">undefined</span>  <span class="comment">// true</span>
+<span class="keyword">null</span> === <span class="keyword">undefined</span> <span class="comment">// false</span>
+<span class="comment">// 始终使用 === 而非 ==</span></td><td>ES1</td></tr>
+
+<tr><td>46</td><td>异步陷阱</td><td><span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="num">0</span>; i&lt;<span class="num">3</span>; i++) {
+  setTimeout(() =&gt; console.log(i), <span class="num">100</span>);
+}
+<span class="comment">// 输出 3,3,3 (不是 0,1,2)</span>
+<span class="comment">// 解决: 用 let 代替 var</span></td><td>ES1/ES6</td></tr>
+
+<tr><td>47</td><td>NaN 判断</td><td><span class="func">isNaN</span>(<span class="string">'abc'</span>)     <span class="comment">// true</span>
+<span class="func">Number</span>.isNaN(<span class="string">'abc'</span>) <span class="comment">// false (更严格)</span>
+NaN === NaN           <span class="comment">// false!</span>
+<span class="comment">// 用 Number.isNaN() 或 Object.is(x, NaN)</span></td><td>ES6</td></tr>
+
+<tr><td>48</td><td>浮点数精度</td><td><span class="num">0.1</span> + <span class="num">0.2</span> === <span class="num">0.3</span>  <span class="comment">// false</span>
+<span class="comment">// 解决: Math.abs(a-b) &lt; Number.EPSILON</span></td><td>ES1</td></tr>
+
+<tr><td>49</td><td>数组长度陷阱</td><td><span class="keyword">let</span> arr = [];
+arr[<span class="num">100</span>] = <span class="num">1</span>;
+arr.length;  <span class="comment">// 101 (不是 1)</span>
+arr.length = <span class="num">0</span>;  <span class="comment">// 清空数组</span></td><td>ES1</td></tr>
+
+<tr><td>50</td><td>sort 默认行为</td><td>[<span class="num">1</span>, <span class="num">2</span>, <span class="num">10</span>].sort();  <span class="comment">// [1,10,2] (字典序!)</span>
+[<span class="num">1</span>, <span class="num">2</span>, <span class="num">10</span>].sort((a,b)=&gt;a-b);  <span class="comment">// [1,2,10] (数值序)</span></td><td>ES1</td></tr>
+
+<tr class="section-row"><td colspan="4">十二、编程建议与最佳实践</td></tr>
+
+<tr><td>51</td><td>使用严格模式</td><td><span class="string">'use strict'</span>;
+<span class="comment">// 禁止意外全局变量, 静默错误变为抛出</span>
+<span class="comment">// ES6 模块默认严格模式</span></td><td>ES5</td></tr>
+
+<tr><td>52</td><td>const &gt; let &gt; var</td><td><span class="comment">// 默认用 const, 需要修改时用 let, 不用 var</span></td><td>ES6</td></tr>
+
+<tr><td>53</td><td>=== 而非 ==</td><td><span class="comment">// 避免隐式类型转换带来的意外</span></td><td>ES1</td></tr>
+
+<tr><td>54</td><td>箭头函数用于回调</td><td><span class="comment">// 简洁且不会丢失 this</span>
+arr.map(x =&gt; x * <span class="num">2</span>);</td><td>ES6</td></tr>
+
+<tr><td>55</td><td>解构与展开</td><td><span class="comment">// 代替 Object.assign 和手动取值</span></td><td>ES6</td></tr>
+
+<tr><td>56</td><td>async/await 优于 Promise.then</td><td><span class="comment">// 代码更易读, 错误处理更自然</span></td><td>ES2017</td></tr>
+
+<tr><td>57</td><td>避免全局变量</td><td><span class="comment">// 使用模块封装, 减少全局污染</span></td><td>ES6</td></tr>
+
+<tr><td>58</td><td>事件委托</td><td><span class="comment">// 父元素统一处理, 减少事件绑定数</span></td><td>ES1</td></tr>
+
+<tr><td>59</td><td>防抖与节流</td><td><span class="keyword">function</span> <span class="func">debounce</span>(fn, delay) {
+  <span class="keyword">let</span> timer;
+  <span class="keyword">return</span> <span class="keyword">function</span>(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() =&gt; fn.apply(<span class="keyword">this</span>, args), delay);
+  };
+}
+<span class="keyword">function</span> <span class="func">throttle</span>(fn, delay) {
+  <span class="keyword">let</span> last = <span class="num">0</span>;
+  <span class="keyword">return</span> <span class="keyword">function</span>(...args) {
+    <span class="keyword">const</span> now = <span class="func">Date</span>.now();
+    <span class="keyword">if</span> (now - last &gt;= delay) { fn.apply(<span class="keyword">this</span>, args); last = now; }
+  };
+}</td><td>ES1</td></tr>
+
+<tr><td>60</td><td>命名规范</td><td><span class="comment">// 变量/函数: camelCase</span>
+<span class="comment">// 类/构造函数: PascalCase</span>
+<span class="comment">// 常量: UPPER_SNAKE_CASE</span>
+<span class="comment">// 私有: _privateMethod (约定)</span></td><td>ES1</td></tr>
+
+<tr><td>61</td><td>代码质量工具</td><td><span class="comment">// ESLint: 代码检查</span>
+<span class="comment">// Prettier: 代码格式化</span>
+<span class="comment">// TypeScript: 类型安全</span>
+<span class="comment">// Jest/Vitest: 单元测试</span></td><td>-</td></tr>
+
+    </tbody>
+  </table></div>
+</body>
+</html>

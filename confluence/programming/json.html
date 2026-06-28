@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JSON 知识表 · swordll80</title>
+  <style>
+    :root { --bg: #f5f6fa; --accent: #356ae6; --muted: #7d8599; --line: #e2e5ee; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:#fff; color:#1a1a2e; line-height:1.7; padding:24px; }
+    h1 { font-size:22px; margin-bottom:6px; color:#1a1a2e; }
+    .subtitle { color:var(--muted); font-size:13px; margin-bottom:20px; }
+    .table-wrap { overflow-x:auto; border:1px solid var(--line); border-radius:10px; box-shadow:0 2px 12px rgba(0,0,0,.04); }
+    table { width:100%; border-collapse:collapse; font-size:13px; min-width:900px; }
+    thead { background:linear-gradient(135deg,#6c63ff,#5a4de0); color:#fff; position:sticky; top:0; z-index:2; }
+    thead th { padding:12px 14px; text-align:left; font-weight:650; font-size:13px; letter-spacing:.03em; white-space:nowrap; }
+    tbody td { padding:10px 14px; border-bottom:1px solid var(--line); vertical-align:top; }
+    tbody tr:nth-child(even) { background:#fafbfc; }
+    tbody tr:hover { background:#f3f0ff; }
+    td:first-child { text-align:center; color:var(--muted); font-weight:600; white-space:nowrap; min-width:52px; }
+    td:nth-child(2) { font-weight:600; min-width:170px; }
+    td:nth-child(3) { font-family:"Cascadia Code","Fira Code","Consolas",monospace; font-size:12px; white-space:pre-wrap; word-break:break-all; min-width:280px; max-width:520px; background:#f8f9fc; }
+    td:nth-child(4) { text-align:center; color:var(--muted); white-space:nowrap; min-width:70px; }
+    .section-row td { background:#eef1f8!important; font-weight:750; color:#1a1a2e; font-size:14px; padding:10px 14px; border-bottom:2px solid var(--line); }
+    .section-row td:first-child { color:var(--accent); }
+    code { background:#eef1f8; padding:1px 5px; border-radius:3px; font-family:"Cascadia Code","Fira Code","Consolas",monospace; font-size:12px; }
+    .keyword { color:#8b3fc7; } .comment { color:#7d8599; } .string { color:#1b8c3c; } .num { color:#c7640a; } .func { color:#356ae6; }
+    @media (max-width:768px) { body { padding:12px; } table { font-size:12px; min-width:750px; } thead th,tbody td { padding:8px 10px; } td:nth-child(3) { font-size:11px; min-width:220px; max-width:350px; } }
+  </style>
+</head>
+<body>
+  <h1>JSON 知识速查表</h1>
+  <p class="subtitle">涵盖语法规则、数据类型、Schema验证、JSONPath、各语言操作与常见Bug · 共 100+ 条目</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>序号</th><th>知识点</th><th>代码示例 / 说明</th><th>版本</th></tr></thead>
+    <tbody>
+
+<tr class="section-row"><td colspan="4">一、JSON 基础语法</td></tr>
+
+<tr><td>1</td><td>JSON 定义</td><td><span class="comment">// JSON = JavaScript Object Notation</span>
+<span class="comment">// 轻量级数据交换格式, 语言无关</span>
+<span class="comment">// 基于两个结构: 键值对集合 + 有序值列表</span></td><td>RFC 4627</td></tr>
+
+<tr><td>2</td><td>基本示例</td><td>{
+  <span class="string">"name"</span>: <span class="string">"Alice"</span>,
+  <span class="string">"age"</span>: <span class="num">25</span>,
+  <span class="string">"isStudent"</span>: <span class="keyword">false</span>,
+  <span class="string">"hobbies"</span>: [<span class="string">"reading"</span>, <span class="string">"coding"</span>],
+  <span class="string">"address"</span>: {
+    <span class="string">"city"</span>: <span class="string">"Beijing"</span>,
+    <span class="string">"zip"</span>: <span class="string">"100000"</span>
+  }
+}</td><td>RFC 4627</td></tr>
+
+<tr><td>3</td><td>JSON 数据类型</td><td><span class="comment">// 1. string   → "hello"</span>
+<span class="comment">// 2. number   → 42, 3.14, -10, 1.5e10</span>
+<span class="comment">// 3. boolean  → true / false</span>
+<span class="comment">// 4. null     → null</span>
+<span class="comment">// 5. object   → { "key": "value" }</span>
+<span class="comment">// 6. array    → [1, 2, 3]</span></td><td>RFC 4627</td></tr>
+
+<tr><td>4</td><td>字符串规则</td><td><span class="comment">// 必须用双引号 (不能用单引号)</span>
+<span class="comment">// 转义: \" \\ \/ \b \f \n \r \t \uXXXX</span>
+{ <span class="string">"message"</span>: <span class="string">"He said \"Hello\"\nNew line"</span> }</td><td>RFC 4627</td></tr>
+
+<tr><td>5</td><td>数字规则</td><td><span class="comment">// 整数: 无前导零 (不能 0123)</span>
+<span class="comment">// 小数: 必须有数字在小数点前后</span>
+<span class="comment">// 指数: e 或 E, 后可跟 + 或 -</span>
+<span class="comment">// 不支持: NaN, Infinity, undefined</span>
+<span class="comment">// 不支持: 八进制, 十六进制</span></td><td>RFC 4627</td></tr>
+
+<tr><td>6</td><td>JSON 格式规则</td><td><span class="comment">// 1. 最外层可以是 {} 或 [] (RFC 7159+)</span>
+<span class="comment">// 2. 键必须是字符串 (双引号)</span>
+<span class="comment">// 3. 不能有尾随逗号</span>
+<span class="comment">// 4. 不支持注释</span>
+<span class="comment">// 5. 空白(空格/制表/换行)被忽略</span></td><td>RFC 7159</td></tr>
+
+<tr class="section-row"><td colspan="4">二、JSON Schema</td></tr>
+
+<tr><td>7</td><td>Schema 基础</td><td>{
+  <span class="string">"$schema"</span>: <span class="string">"https://json-schema.org/draft/2020-12/schema"</span>,
+  <span class="string">"$id"</span>: <span class="string">"https://example.com/person.schema.json"</span>,
+  <span class="string">"title"</span>: <span class="string">"Person"</span>,
+  <span class="string">"type"</span>: <span class="string">"object"</span>,
+  <span class="string">"properties"</span>: {
+    <span class="string">"name"</span>: { <span class="string">"type"</span>: <span class="string">"string"</span> },
+    <span class="string">"age"</span>: { <span class="string">"type"</span>: <span class="string">"integer"</span>, <span class="string">"minimum"</span>: <span class="num">0</span> }
+  },
+  <span class="string">"required"</span>: [<span class="string">"name"</span>]
+}</td><td>JSON Schema</td></tr>
+
+<tr><td>8</td><td>类型约束</td><td><span class="comment">// "type": "string" / "number" / "integer"</span>
+<span class="comment">// "type": "object" / "array" / "boolean" / "null"</span>
+<span class="comment">// 可多类型: "type": ["string", "null"]</span>
+<span class="comment">// 字符串: "minLength", "maxLength", "pattern" (正则)</span>
+<span class="comment">// 数值: "minimum", "maximum", "multipleOf"</span>
+<span class="comment">// 数组: "minItems", "maxItems", "uniqueItems"</span>
+<span class="comment">// 对象: "minProperties", "maxProperties"</span></td><td>JSON Schema</td></tr>
+
+<tr><td>9</td><td>枚举与常量</td><td>{
+  <span class="string">"color"</span>: { <span class="string">"enum"</span>: [<span class="string">"red"</span>, <span class="string">"green"</span>, <span class="string">"blue"</span>] },
+  <span class="string">"version"</span>: { <span class="string">"const"</span>: <span class="string">"1.0"</span> }
+}</td><td>JSON Schema</td></tr>
+
+<tr><td>10</td><td>组合约束</td><td>{
+  <span class="string">"allOf"</span>: [{...}, {...}],   <span class="comment">// 全部满足</span>
+  <span class="string">"anyOf"</span>: [{...}, {...}],   <span class="comment">// 任一满足</span>
+  <span class="string">"oneOf"</span>: [{...}, {...}],   <span class="comment">// 恰好一个满足</span>
+  <span class="string">"not"</span>: {...}               <span class="comment">// 不满足</span>
+}</td><td>JSON Schema</td></tr>
+
+<tr><td>11</td><td>引用 ($ref)</td><td>{
+  <span class="string">"definitions"</span>: {
+    <span class="string">"address"</span>: { <span class="string">"type"</span>: <span class="string">"object"</span>, <span class="string">"properties"</span>: {...} }
+  },
+  <span class="string">"properties"</span>: {
+    <span class="string">"home"</span>: { <span class="string">"$ref"</span>: <span class="string">"#/definitions/address"</span> },
+    <span class="string">"work"</span>: { <span class="string">"$ref"</span>: <span class="string">"#/definitions/address"</span> }
+  }
+}</td><td>JSON Schema</td></tr>
+
+<tr class="section-row"><td colspan="4">三、JSONPath</td></tr>
+
+<tr><td>12</td><td>JSONPath 表达式</td><td><span class="comment">// $                 → 根元素</span>
+<span class="comment">// $.store.book[0]   → 第一本书</span>
+<span class="comment">// $.store.book[*]   → 所有书</span>
+<span class="comment">// $..author         → 所有 author (递归)</span>
+<span class="comment">// $.store.book[?(@.price &lt; 10)] → 筛选</span>
+<span class="comment">// $.store.book[0,1] → 前两本</span>
+<span class="comment">// $.store.book[-1]  → 最后一本</span>
+<span class="comment">// $.store.book[:2]  → 前两本(切片)</span>
+<span class="comment">// $.store.book[?(@.isbn)] → 有 isbn 的书</span></td><td>JSONPath</td></tr>
+
+<tr class="section-row"><td colspan="4">四、JavaScript 中的 JSON</td></tr>
+
+<tr><td>13</td><td>JSON.stringify</td><td><span class="keyword">const</span> obj = { name: <span class="string">"Alice"</span>, age: <span class="num">25</span> };
+<span class="keyword">const</span> json = <span class="func">JSON</span>.stringify(obj);  <span class="comment">// '{"name":"Alice","age":25}'</span>
+<span class="keyword">const</span> pretty = <span class="func">JSON</span>.stringify(obj, <span class="keyword">null</span>, <span class="num">2</span>);
+<span class="comment">// 第二个参数: 过滤/转换函数或属性数组</span>
+<span class="comment">// 第三个参数: 缩进空格数</span></td><td>ES5</td></tr>
+
+<tr><td>14</td><td>JSON.parse</td><td><span class="keyword">const</span> obj = <span class="func">JSON</span>.parse(<span class="string">'{"name":"Alice","age":25}'</span>);
+<span class="keyword">const</span> obj2 = <span class="func">JSON</span>.parse(json, (key, value) =&gt; {
+  <span class="comment">// 第二个参数: reviver 函数, 转换解析后的值</span>
+  <span class="keyword">if</span> (key === <span class="string">'date'</span>) <span class="keyword">return</span> <span class="keyword">new</span> <span class="func">Date</span>(value);
+  <span class="keyword">return</span> value;
+});</td><td>ES5</td></tr>
+
+<tr><td>15</td><td>JSON 不支持的类型</td><td><span class="comment">// JSON.stringify 会忽略/转换以下值:</span>
+<span class="comment">// undefined → 忽略 (对象属性) 或 null (数组)</span>
+<span class="comment">// Symbol → 忽略</span>
+<span class="comment">// Function → 忽略</span>
+<span class="comment">// NaN / Infinity → null</span>
+<span class="comment">// Date → .toISOString() 字符串</span>
+<span class="comment">// 循环引用 → 抛 TypeError</span></td><td>ES5</td></tr>
+
+<tr><td>16</td><td>toJSON 方法</td><td><span class="keyword">const</span> obj = {
+  date: <span class="keyword">new</span> <span class="func">Date</span>(),
+  toJSON() { <span class="keyword">return</span> { custom: <span class="string">'format'</span> }; }
+};
+<span class="comment">// JSON.stringify 会调用对象的 toJSON()</span></td><td>ES5</td></tr>
+
+<tr class="section-row"><td colspan="4">五、Python 中的 JSON</td></tr>
+
+<tr><td>17</td><td>json.dumps / json.loads</td><td><span class="keyword">import</span> json
+s = json.dumps({<span class="string">'name'</span>: <span class="string">'Alice'</span>, <span class="string">'age'</span>: <span class="num">25</span>}, indent=<span class="num">2</span>)
+data = json.loads(s)</td><td>3.x</td></tr>
+
+<tr><td>18</td><td>json.dump / json.load</td><td><span class="keyword">with</span> <span class="func">open</span>(<span class="string">'data.json'</span>, <span class="string">'w'</span>) <span class="keyword">as</span> f:
+    json.dump(data, f, indent=<span class="num">2</span>, ensure_ascii=<span class="keyword">False</span>)
+<span class="keyword">with</span> <span class="func">open</span>(<span class="string">'data.json'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:
+    data = json.load(f)</td><td>3.x</td></tr>
+
+<tr><td>19</td><td>Python-JSON 类型映射</td><td><span class="comment"># dict → object, list/tuple → array</span>
+<span class="comment"># str → string, int/float → number</span>
+<span class="comment"># True/False → true/false, None → null</span>
+<span class="comment"># datetime 等自定义类型需手动转换</span>
+<span class="keyword">class</span> <span class="func">MyEncoder</span>(json.JSONEncoder):
+    <span class="keyword">def</span> <span class="func">default</span>(<span class="keyword">self</span>, obj):
+        <span class="keyword">if</span> <span class="func">isinstance</span>(obj, datetime):
+            <span class="keyword">return</span> obj.isoformat()
+        <span class="keyword">return</span> <span class="keyword">super</span>().default(obj)</td><td>3.x</td></tr>
+
+<tr class="section-row"><td colspan="4">六、其他语言 JSON 操作</td></tr>
+
+<tr><td>20</td><td>C++ (nlohmann/json)</td><td><span class="comment">// 最流行的 C++ JSON 库</span>
+<span class="keyword">#include</span> <span class="string">&lt;nlohmann/json.hpp&gt;</span>
+<span class="keyword">using</span> json = nlohmann::json;
+json j = json::parse(<span class="string">"{\"name\":\"Alice\"}"</span>);
+std::string name = j[<span class="string">"name"</span>];
+std::string s = j.dump(<span class="num">2</span>);</td><td>C++11</td></tr>
+
+<tr><td>21</td><td>Java (Jackson / Gson)</td><td><span class="comment">// Jackson:</span>
+ObjectMapper mapper = <span class="keyword">new</span> ObjectMapper();
+MyClass obj = mapper.readValue(jsonStr, MyClass.<span class="keyword">class</span>);
+String json = mapper.writeValueAsString(obj);
+
+<span class="comment">// Gson:</span>
+Gson gson = <span class="keyword">new</span> Gson();
+MyClass obj = gson.fromJson(jsonStr, MyClass.<span class="keyword">class</span>);
+String json = gson.toJson(obj);</td><td>-</td></tr>
+
+<tr><td>22</td><td>Go (encoding/json)</td><td><span class="keyword">import</span> <span class="string">"encoding/json"</span>
+
+<span class="keyword">type</span> Person <span class="keyword">struct</span> {
+    Name <span class="keyword">string</span> <span class="string">`json:"name"`</span>
+    Age  <span class="keyword">int</span>    <span class="string">`json:"age,omitempty"`</span>
+}
+json.Unmarshal(data, &amp;p)
+json.MarshalIndent(p, <span class="string">""</span>, <span class="string">"  "</span>)</td><td>-</td></tr>
+
+<tr><td>23</td><td>C# (Newtonsoft.Json)</td><td><span class="comment">// Json.NET (Newtonsoft)</span>
+<span class="keyword">var</span> obj = JsonConvert.DeserializeObject&lt;Person&gt;(json);
+<span class="keyword">var</span> json = JsonConvert.SerializeObject(obj, Formatting.Indented);
+
+<span class="comment">// System.Text.Json (内置, .NET Core 3+)</span>
+<span class="keyword">var</span> obj = JsonSerializer.Deserialize&lt;Person&gt;(json);</td><td>-</td></tr>
+
+<tr class="section-row"><td colspan="4">七、JSON 相关格式</td></tr>
+
+<tr><td>24</td><td>JSON5</td><td><span class="comment">// JSON 的超集, 更宽松的语法:</span>
+<span class="comment">// - 支持注释 (// 和 /* */)</span>
+<span class="comment">// - 键可不加引号</span>
+<span class="comment">// - 字符串可用单引号</span>
+<span class="comment">// - 支持尾随逗号</span>
+<span class="comment">// - 支持十六进制数字</span></td><td>JSON5</td></tr>
+
+<tr><td>25</td><td>JSONC (JSON with Comments)</td><td><span class="comment">// VS Code 等编辑器支持的格式</span>
+<span class="comment">// JSON + // 和 /**/ 注释</span>
+<span class="comment">// 用于 tsconfig.json, settings.json 等</span></td><td>JSONC</td></tr>
+
+<tr><td>26</td><td>JSON Lines (NDJSON)</td><td>{<span class="string">"id"</span>: <span class="num">1</span>, <span class="string">"name"</span>: <span class="string">"Alice"</span>}
+{<span class="string">"id"</span>: <span class="num">2</span>, <span class="string">"name"</span>: <span class="string">"Bob"</span>}
+<span class="comment">// 每行一个独立的 JSON 对象</span>
+<span class="comment">// 适合流式处理, 日志场景</span></td><td>NDJSON</td></tr>
+
+<tr><td>27</td><td>BSON</td><td><span class="comment">// Binary JSON, MongoDB 使用的二进制格式</span>
+<span class="comment">// 支持更多类型: Date, ObjectId, Binary data</span>
+<span class="comment">// 解析更快, 但更占空间</span></td><td>BSON</td></tr>
+
+<tr><td>28</td><td>MessagePack</td><td><span class="comment">// 二进制序列化格式, 比 JSON 更紧凑</span>
+<span class="comment">// 兼容 JSON 类型, 但体积更小</span></td><td>-</td></tr>
+
+<tr class="section-row"><td colspan="4">八、JSON 应用场景</td></tr>
+
+<tr><td>29</td><td>Web API</td><td><span class="comment">// RESTful API 的标准数据格式</span>
+<span class="comment">// Content-Type: application/json</span>
+<span class="comment">// 请求体和响应体通常都是 JSON</span></td><td>-</td></tr>
+
+<tr><td>30</td><td>配置文件</td><td><span class="comment">// package.json (npm), composer.json (PHP)</span>
+<span class="comment">// tsconfig.json, .prettierrc, .eslintrc</span>
+<span class="comment">// 现代项目的主流配置格式</span></td><td>-</td></tr>
+
+<tr><td>31</td><td>数据存储</td><td><span class="comment">// NoSQL 数据库: MongoDB, CouchDB, Firebase</span>
+<span class="comment">// 浏览器: localStorage, sessionStorage</span>
+<span class="comment">// 移动端: SharedPreferences, NSUserDefaults</span></td><td>-</td></tr>
+
+<tr><td>32</td><td>序列化与通信</td><td><span class="comment">// 微服务间通信, 消息队列 (Kafka, RabbitMQ)</span>
+<span class="comment">// WebSocket 消息, RPC 调用</span>
+<span class="comment">// 日志格式 (结构化日志)</span></td><td>-</td></tr>
+
+<tr class="section-row"><td colspan="4">九、常见Bug与陷阱</td></tr>
+
+<tr><td>33</td><td>尾随逗号</td><td><span class="comment">// 错误: {"a": 1, "b": 2,}  → 解析失败!</span>
+<span class="comment">// JSON 标准不允许尾随逗号</span>
+<span class="comment">// JavaScript 对象允许, 但 JSON 不允许</span></td><td>-</td></tr>
+
+<tr><td>34</td><td>单引号字符串</td><td><span class="comment">// 错误: {'key': 'value'}  → 解析失败!</span>
+<span class="comment">// JSON 必须使用双引号</span></td><td>-</td></tr>
+
+<tr><td>35</td><td>数字前导零</td><td><span class="comment">// 错误: {"zip": 01234}  → 解析失败!</span>
+<span class="comment">// 正确: {"zip": "01234"} (用字符串)</span></td><td>-</td></tr>
+
+<tr><td>36</td><td>特殊值处理</td><td><span class="comment">// NaN, Infinity, undefined → 无法序列化</span>
+<span class="comment">// 需替换为 null 或字符串</span>
+<span class="comment">// 日期需转为 ISO 8601 字符串</span></td><td>-</td></tr>
+
+<tr><td>37</td><td>循环引用</td><td><span class="comment">// const a = {}; const b = {a}; a.b = b;</span>
+<span class="comment">// JSON.stringify(a) → TypeError</span>
+<span class="comment">// 解决: 用 toJSON 或 flatted 库</span></td><td>-</td></tr>
+
+<tr><td>38</td><td>大数精度丢失</td><td><span class="comment">// JSON.parse('{"id": 9007199254740993}')</span>
+<span class="comment">// id 变为 9007199254740992 (JS Number 精度问题)</span>
+<span class="comment">// 解决: 用字符串传大数, 或 json-bigint 库</span></td><td>-</td></tr>
+
+<tr><td>39</td><td>编码问题</td><td><span class="comment">// JSON 标准要求 UTF-8 编码</span>
+<span class="comment">// 确保文件保存为 UTF-8 without BOM</span>
+<span class="comment">// Python: json.dumps(data, ensure_ascii=False)</span></td><td>-</td></tr>
+
+<tr class="section-row"><td colspan="4">十、编程建议与最佳实践</td></tr>
+
+<tr><td>40</td><td>使用 JSON Schema 验证</td><td><span class="comment">// 确保 API 输入输出符合预期结构</span>
+<span class="comment">// 工具: ajv (JS), jsonschema (Python)</span></td><td>-</td></tr>
+
+<tr><td>41</td><td>不要信任输入 JSON</td><td><span class="comment">// 始终做 try-catch 处理 parse 异常</span>
+<span class="comment">// 验证必要字段存在且类型正确</span></td><td>-</td></tr>
+
+<tr><td>42</td><td>美化输出用 indent</td><td><span class="comment">// 生产环境压缩, 开发环境带缩进</span>
+<span class="comment">// JSON.stringify(obj, null, 2)</span></td><td>-</td></tr>
+
+<tr><td>43</td><td>大 JSON 用流式处理</td><td><span class="comment">// 不要一次性 parse 大文件</span>
+<span class="comment">// 用流式解析器: JSONStream, ijson</span>
+<span class="comment">// 或用 JSON Lines 格式</span></td><td>-</td></tr>
+
+<tr><td>44</td><td>属性命名规范</td><td><span class="comment">// 推荐 camelCase: "firstName"</span>
+<span class="comment">// 或 snake_case: "first_name"</span>
+<span class="comment">// 团队统一一种风格</span>
+<span class="comment">// API 字段不要随意改名(破坏兼容性)</span></td><td>-</td></tr>
+
+<tr><td>45</td><td>JSON vs XML</td><td><span class="comment">// JSON: 更轻量, 更易读, Web 标准</span>
+<span class="comment">// XML: 支持 Schema/DTD, 命名空间, XSLT</span>
+<span class="comment">// JSON 适合数据交换, XML 适合文档标记</span></td><td>-</td></tr>
+
+    </tbody>
+  </table></div>
+</body>
+</html>

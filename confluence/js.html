@@ -1,0 +1,1091 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>JavaScript速查</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12px; line-height:1.65; white-space:pre-wrap; word-break:break-all; overflow-x:auto; color:#2d3436; }
+    .card-code span { color:#8b3fc7; }
+    .card-code .keyword { color:#8b3fc7; }
+    .card-code .comment { color:#7d8599; font-style:italic; }
+    .card-code .string { color:#1b8c3c; }
+    .card-code .num { color:#c7640a; }
+    .card-code .func { color:#356ae6; }
+    .card-code .tag { color:#f26522; }
+    .card-code .attr { color:#356ae6; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:11px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>JavaScript 知识手册</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">61 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、基础语法</span>
+        <span class="count">7 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="变量声明 var x = 1 ; // 函数作用域, 可重复声明, 有提升 let y = 2 ; // 块作用域, 不可重复声明 const z = 3 ; // 常量, 块作用域, 必须初始化 // const 对象属性可修改: const obj = {}; obj.x = 1;">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">变量声明</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">var</span> x = <span class="num">1</span>;            <span class="comment">// 函数作用域, 可重复声明, 有提升</span>
+<span class="keyword">let</span> y = <span class="num">2</span>;            <span class="comment">// 块作用域, 不可重复声明</span>
+<span class="keyword">const</span> z = <span class="num">3</span>;          <span class="comment">// 常量, 块作用域, 必须初始化</span>
+<span class="comment">// const 对象属性可修改: const obj = {}; obj.x = 1;</span></div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="数据类型 // 基本类型: number, string, boolean, null, undefined, symbol, bigint // 引用类型: object, array, function, date, regexp typeof 42 // &quot;number&quot; typeof &quot;hi&quot; // &quot;string&quot; typeof null // &quot;object&quot; (历史Bug) typeof undefined // &quot;undefined&quot;">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">数据类型</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="comment">// 基本类型: number, string, boolean, null, undefined, symbol, bigint</span>
+<span class="comment">// 引用类型: object, array, function, date, regexp</span>
+<span class="keyword">typeof</span> <span class="num">42</span>        <span class="comment">// "number"</span>
+<span class="keyword">typeof</span> <span class="string">"hi"</span>     <span class="comment">// "string"</span>
+<span class="keyword">typeof</span> <span class="keyword">null</span>     <span class="comment">// "object" (历史Bug)</span>
+<span class="keyword">typeof</span> <span class="keyword">undefined</span> <span class="comment">// "undefined"</span></div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="字符串 let s = &quot;hello&quot; ; let t = `模板 ${name}` ; // ES6 模板字面量 s.length, s.toUpperCase(), s.toLowerCase() s.trim(), s.slice( 1 , 3 ), s.substring( 1 , 3 ) s.indexOf( 'e' ), s.includes( 'll' ) s.split( ',' ), s.replace( 'h' , 'H' ) s.startsWith( 'he' ), s.endsWith( 'lo' )">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">字符串</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">let</span> s = <span class="string">"hello"</span>;
+<span class="keyword">let</span> t = <span class="string">`模板 ${name}`</span>;  <span class="comment">// ES6 模板字面量</span>
+s.length, s.toUpperCase(), s.toLowerCase()
+s.trim(), s.slice(<span class="num">1</span>,<span class="num">3</span>), s.substring(<span class="num">1</span>,<span class="num">3</span>)
+s.indexOf(<span class="string">'e'</span>), s.includes(<span class="string">'ll'</span>)
+s.split(<span class="string">','</span>), s.replace(<span class="string">'h'</span>, <span class="string">'H'</span>)
+s.startsWith(<span class="string">'he'</span>), s.endsWith(<span class="string">'lo'</span>)</div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="数字 let n = 42 ; let pi = 3.14159 ; let big = 9007199254740991n ; // BigInt (ES2020) isNaN ( &quot;abc&quot; ), isFinite ( 100 ) parseInt ( &quot;42&quot; ), parseFloat ( &quot;3.14&quot; ) Math .round( 3.6 ), Math .floor( 3.6 ), Math .ceil( 3.1 ) Math .random(), Math .max( 1 , 5 , 3 ), Math .sqrt( 16 )">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">数字</span>
+            <span class="card-ver">ES1/ES2020</span>
+          </div>
+          <div class="card-code"><span class="keyword">let</span> n = <span class="num">42</span>;
+<span class="keyword">let</span> pi = <span class="num">3.14159</span>;
+<span class="keyword">let</span> big = <span class="num">9007199254740991n</span>;  <span class="comment">// BigInt (ES2020)</span>
+<span class="func">isNaN</span>(<span class="string">"abc"</span>), <span class="func">isFinite</span>(<span class="num">100</span>)
+<span class="func">parseInt</span>(<span class="string">"42"</span>), <span class="func">parseFloat</span>(<span class="string">"3.14"</span>)
+<span class="func">Math</span>.round(<span class="num">3.6</span>), <span class="func">Math</span>.floor(<span class="num">3.6</span>), <span class="func">Math</span>.ceil(<span class="num">3.1</span>)
+<span class="func">Math</span>.random(), <span class="func">Math</span>.max(<span class="num">1</span>,<span class="num">5</span>,<span class="num">3</span>), <span class="func">Math</span>.sqrt(<span class="num">16</span>)</div>
+        </div>
+        <div class="card" id="card-1-5" data-keywords="运算符 // 算术: + - * / % ** // 比较: == != === !== &amp;gt; &amp;lt; &amp;gt;= &amp;lt;= // 逻辑: &amp;amp;&amp;amp; || ! // 位运算: &amp;amp; | ^ ~ &amp;lt;&amp;lt; &amp;gt;&amp;gt; &amp;gt;&amp;gt;&amp;gt; // === 严格相等 (类型+值), == 会类型转换 // 可选链: obj?.prop?.sub (ES2020) // 空值合并: a ?? b (null/undefined 时取 b, ES2020)">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">运算符</span>
+            <span class="card-ver">ES1/ES2020</span>
+          </div>
+          <div class="card-code"><span class="comment">// 算术: + - * / % **</span>
+<span class="comment">// 比较: == != === !== &gt; &lt; &gt;= &lt;=</span>
+<span class="comment">// 逻辑: &amp;&amp; || !</span>
+<span class="comment">// 位运算: &amp; | ^ ~ &lt;&lt; &gt;&gt; &gt;&gt;&gt;</span>
+<span class="comment">// === 严格相等 (类型+值), == 会类型转换</span>
+<span class="comment">// 可选链: obj?.prop?.sub   (ES2020)</span>
+<span class="comment">// 空值合并: a ?? b  (null/undefined 时取 b, ES2020)</span></div>
+        </div>
+        <div class="card" id="card-1-6" data-keywords="条件语句 if (x &amp;gt; 0 ) { console.log( &quot;正数&quot; ); } else if (x === 0 ) { console.log( &quot;零&quot; ); } else { console.log( &quot;负数&quot; ); } // 三元: let r = x &amp;gt; 0 ? &quot;正&quot; : &quot;负&quot;; // switch 和 C 类似, 但可用字符串">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">条件语句</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="keyword">if</span> (x &gt; <span class="num">0</span>) {
+  console.log(<span class="string">"正数"</span>);
+} <span class="keyword">else</span> <span class="keyword">if</span> (x === <span class="num">0</span>) {
+  console.log(<span class="string">"零"</span>);
+} <span class="keyword">else</span> {
+  console.log(<span class="string">"负数"</span>);
+}
+<span class="comment">// 三元: let r = x &gt; 0 ? "正" : "负";</span>
+<span class="comment">// switch 和 C 类似, 但可用字符串</span></div>
+        </div>
+        <div class="card" id="card-1-7" data-keywords="循环 for ( let i= 0 ; i&amp;lt; 5 ; i++) { } for ( let item of arr) { } // 值迭代 for ( let key in obj) { } // 键迭代(含原型) while (condition) { } do { } while (condition); arr.forEach(item =&amp;gt; console.log(item));">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">循环</span>
+            <span class="card-ver">ES1/ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">for</span> (<span class="keyword">let</span> i=<span class="num">0</span>; i&lt;<span class="num">5</span>; i++) { }
+<span class="keyword">for</span> (<span class="keyword">let</span> item <span class="keyword">of</span> arr) { }       <span class="comment">// 值迭代</span>
+<span class="keyword">for</span> (<span class="keyword">let</span> key <span class="keyword">in</span> obj) { }        <span class="comment">// 键迭代(含原型)</span>
+<span class="keyword">while</span> (condition) { }
+<span class="keyword">do</span> { } <span class="keyword">while</span> (condition);
+arr.forEach(item =&gt; console.log(item));</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、数组</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-8" data-keywords="数组操作 let arr = [ 1 , 2 , 3 ]; arr.push( 4 ), arr.pop() arr.unshift( 0 ), arr.shift() arr.splice( 1 , 2 , 'a' , 'b' ) // 删除并插入 arr.slice( 1 , 3 ) // 浅拷贝子数组 arr.indexOf( 2 ), arr.includes( 2 ) arr.reverse(), arr.sort((a,b) =&amp;gt; a-b)">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">数组操作</span>
+            <span class="card-ver">ES1/ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">let</span> arr = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>];
+arr.push(<span class="num">4</span>), arr.pop()
+arr.unshift(<span class="num">0</span>), arr.shift()
+arr.splice(<span class="num">1</span>, <span class="num">2</span>, <span class="string">'a'</span>, <span class="string">'b'</span>) <span class="comment">// 删除并插入</span>
+arr.slice(<span class="num">1</span>, <span class="num">3</span>)               <span class="comment">// 浅拷贝子数组</span>
+arr.indexOf(<span class="num">2</span>), arr.includes(<span class="num">2</span>)
+arr.reverse(), arr.sort((a,b) =&gt; a-b)</div>
+        </div>
+        <div class="card" id="card-2-9" data-keywords="数组迭代方法 arr.map(x =&amp;gt; x * 2 ) // 映射 arr.filter(x =&amp;gt; x &amp;gt; 1 ) // 筛选 arr.reduce((acc, x) =&amp;gt; acc + x, 0 ) // 归约 arr.find(x =&amp;gt; x &amp;gt; 2 ) // 查找第一个 arr.findIndex(x =&amp;gt; x &amp;gt; 2 ) arr.some(x =&amp;gt; x &amp;gt; 2 ), arr.every(x =&amp;gt; x &amp;gt; 0 ) arr.flat( 2 ), arr.flatMap(x =&amp;gt; [x, x* 2 ])">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">数组迭代方法</span>
+            <span class="card-ver">ES5/ES6</span>
+          </div>
+          <div class="card-code">arr.map(x =&gt; x * <span class="num">2</span>)               <span class="comment">// 映射</span>
+arr.filter(x =&gt; x &gt; <span class="num">1</span>)               <span class="comment">// 筛选</span>
+arr.reduce((acc, x) =&gt; acc + x, <span class="num">0</span>) <span class="comment">// 归约</span>
+arr.find(x =&gt; x &gt; <span class="num">2</span>)                <span class="comment">// 查找第一个</span>
+arr.findIndex(x =&gt; x &gt; <span class="num">2</span>)
+arr.some(x =&gt; x &gt; <span class="num">2</span>), arr.every(x =&gt; x &gt; <span class="num">0</span>)
+arr.flat(<span class="num">2</span>), arr.flatMap(x =&gt; [x, x*<span class="num">2</span>])</div>
+        </div>
+        <div class="card" id="card-2-10" data-keywords="解构赋值 let [a, b, ...rest] = [ 1 , 2 , 3 , 4 ]; let {name, age} = {name: &quot;Alice&quot; , age: 25 }; let {name: n, age: a = 18 } = obj; // 重命名+默认值">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">解构赋值</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">let</span> [a, b, ...rest] = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>, <span class="num">4</span>];
+<span class="keyword">let</span> {name, age} = {name: <span class="string">"Alice"</span>, age: <span class="num">25</span>};
+<span class="keyword">let</span> {name: n, age: a = <span class="num">18</span>} = obj;  <span class="comment">// 重命名+默认值</span></div>
+        </div>
+        <div class="card" id="card-2-11" data-keywords="展开运算符 let arr = [...arr1, ...arr2]; let obj = {...obj1, ...obj2, newProp: 'val' }; Math .max(...numbers); // 浅拷贝: let copy = [...arr];">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">展开运算符</span>
+            <span class="card-ver">ES6/ES2018</span>
+          </div>
+          <div class="card-code"><span class="keyword">let</span> arr = [...arr1, ...arr2];
+<span class="keyword">let</span> obj = {...obj1, ...obj2, newProp: <span class="string">'val'</span>};
+<span class="func">Math</span>.max(...numbers);
+<span class="comment">// 浅拷贝: let copy = [...arr];</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、对象</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-12" data-keywords="对象字面量 let obj = { name: &quot;Alice&quot; , age: 25 , greet() { return `Hi, ${this.name}` ; } }; obj.name, obj[ &quot;name&quot; ] obj.newProp = &quot;val&quot; ; delete obj.age; &quot;name&quot; in obj, obj.hasOwnProperty( &quot;name&quot; )">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">对象字面量</span>
+            <span class="card-ver">ES1/ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">let</span> obj = {
+  name: <span class="string">"Alice"</span>,
+  age: <span class="num">25</span>,
+  greet() { <span class="keyword">return</span> <span class="string">`Hi, ${this.name}`</span>; }
+};
+obj.name, obj[<span class="string">"name"</span>]
+obj.newProp = <span class="string">"val"</span>;
+<span class="keyword">delete</span> obj.age;
+<span class="string">"name"</span> <span class="keyword">in</span> obj, obj.hasOwnProperty(<span class="string">"name"</span>)</div>
+        </div>
+        <div class="card" id="card-3-13" data-keywords="对象方法 Object .keys(obj) // 自有可枚举键 Object .values(obj) // 自有可枚举值 Object .entries(obj) // [[k,v],...] Object .assign(target, src) // 浅合并 Object .freeze(obj), Object .seal(obj)">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">对象方法</span>
+            <span class="card-ver">ES5/ES2017</span>
+          </div>
+          <div class="card-code"><span class="func">Object</span>.keys(obj)       <span class="comment">// 自有可枚举键</span>
+<span class="func">Object</span>.values(obj)     <span class="comment">// 自有可枚举值</span>
+<span class="func">Object</span>.entries(obj)    <span class="comment">// [[k,v],...]</span>
+<span class="func">Object</span>.assign(target, src)  <span class="comment">// 浅合并</span>
+<span class="func">Object</span>.freeze(obj), <span class="func">Object</span>.seal(obj)</div>
+        </div>
+        <div class="card" id="card-3-14" data-keywords="this 关键字 // 全局: window/global // 对象方法: 调用者 // 构造函数: 新实例 // 箭头函数: 词法作用域 (定义时外层 this) // call/apply/bind: 显式绑定 obj.method.call(ctx, a, b); obj.method.apply(ctx, [a, b]); let bound = obj.method.bind(ctx);">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">this 关键字</span>
+            <span class="card-ver">ES1/ES6</span>
+          </div>
+          <div class="card-code"><span class="comment">// 全局: window/global</span>
+<span class="comment">// 对象方法: 调用者</span>
+<span class="comment">// 构造函数: 新实例</span>
+<span class="comment">// 箭头函数: 词法作用域 (定义时外层 this)</span>
+<span class="comment">// call/apply/bind: 显式绑定</span>
+obj.method.call(ctx, a, b);
+obj.method.apply(ctx, [a, b]);
+<span class="keyword">let</span> bound = obj.method.bind(ctx);</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、函数</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-15" data-keywords="函数定义 // 函数声明 (提升) function add (a, b) { return a + b; } // 函数表达式 const add = function (a, b) { return a + b; }; // 箭头函数 const add = (a, b) =&amp;gt; a + b;">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">函数定义</span>
+            <span class="card-ver">ES1/ES6</span>
+          </div>
+          <div class="card-code"><span class="comment">// 函数声明 (提升)</span>
+<span class="keyword">function</span> <span class="func">add</span>(a, b) { <span class="keyword">return</span> a + b; }
+<span class="comment">// 函数表达式</span>
+<span class="keyword">const</span> add = <span class="keyword">function</span>(a, b) { <span class="keyword">return</span> a + b; };
+<span class="comment">// 箭头函数</span>
+<span class="keyword">const</span> add = (a, b) =&gt; a + b;</div>
+        </div>
+        <div class="card" id="card-4-16" data-keywords="参数处理 function f (a, b = 10 , ...rest) { } // 默认+剩余 f(...arr); // 展开参数 // arguments (类数组, 箭头函数没有)">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">参数处理</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">function</span> <span class="func">f</span>(a, b = <span class="num">10</span>, ...rest) { }  <span class="comment">// 默认+剩余</span>
+f(...arr);  <span class="comment">// 展开参数</span>
+<span class="comment">// arguments (类数组, 箭头函数没有)</span></div>
+        </div>
+        <div class="card" id="card-4-17" data-keywords="闭包 function counter () { let count = 0 ; return function () { return ++count; }; } // 内部函数持有外部作用域变量的引用">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">闭包</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="keyword">function</span> <span class="func">counter</span>() {
+  <span class="keyword">let</span> count = <span class="num">0</span>;
+  <span class="keyword">return</span> <span class="keyword">function</span>() { <span class="keyword">return</span> ++count; };
+}
+<span class="comment">// 内部函数持有外部作用域变量的引用</span></div>
+        </div>
+        <div class="card" id="card-4-18" data-keywords="箭头函数 vs 普通函数 // 箭头: 无自己的 this/arguments, 不能 new // 箭头: 无 prototype, 简洁语法 const double = x =&amp;gt; x * 2 ; const greet = name =&amp;gt; ({ name }); // 返回对象需括号">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">箭头函数 vs 普通函数</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="comment">// 箭头: 无自己的 this/arguments, 不能 new</span>
+<span class="comment">// 箭头: 无 prototype, 简洁语法</span>
+<span class="keyword">const</span> double = x =&gt; x * <span class="num">2</span>;
+<span class="keyword">const</span> greet = name =&gt; ({ name });  <span class="comment">// 返回对象需括号</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、异步编程</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-19" data-keywords="回调函数 fs.readFile( 'file.txt' , (err, data) =&amp;gt; { if (err) throw err; console.log(data); }); // 回调地狱: 多层嵌套, 难以维护">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">回调函数</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code">fs.readFile(<span class="string">'file.txt'</span>, (err, data) =&gt; {
+  <span class="keyword">if</span> (err) <span class="keyword">throw</span> err;
+  console.log(data);
+});
+<span class="comment">// 回调地狱: 多层嵌套, 难以维护</span></div>
+        </div>
+        <div class="card" id="card-5-20" data-keywords="Promise new Promise ((resolve, reject) =&amp;gt; { setTimeout(() =&amp;gt; resolve( 'done' ), 1000 ); }) .then(result =&amp;gt; console.log(result)) .catch(err =&amp;gt; console.error(err)) .finally(() =&amp;gt; console.log( 'end' )); // Promise 静态方法: Promise .all([p1, p2]) // 全部成功 Promise .allSettled([p1, p2]) // 全部完成 Promise .race([p1, p2]) // 最快一个 Promise .any([p1, p2]) // 第一个成功 Promise .resolve(val), Promise .reject(err)">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">Promise</span>
+            <span class="card-ver">ES6/ES2020</span>
+          </div>
+          <div class="card-code"><span class="keyword">new</span> <span class="func">Promise</span>((resolve, reject) =&gt; {
+  setTimeout(() =&gt; resolve(<span class="string">'done'</span>), <span class="num">1000</span>);
+})
+.then(result =&gt; console.log(result))
+.catch(err =&gt; console.error(err))
+.finally(() =&gt; console.log(<span class="string">'end'</span>));
+
+<span class="comment">// Promise 静态方法:</span>
+<span class="func">Promise</span>.all([p1, p2])       <span class="comment">// 全部成功</span>
+<span class="func">Promise</span>.allSettled([p1, p2]) <span class="comment">// 全部完成</span>
+<span class="func">Promise</span>.race([p1, p2])      <span class="comment">// 最快一个</span>
+<span class="func">Promise</span>.any([p1, p2])       <span class="comment">// 第一个成功</span>
+<span class="func">Promise</span>.resolve(val), <span class="func">Promise</span>.reject(err)</div>
+        </div>
+        <div class="card" id="card-5-21" data-keywords="async / await async function fetchData () { try { const response = await fetch(url); const data = await response.json(); return data; } catch (err) { console.error(err); } } // async 函数返回 Promise">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title">async / await</span>
+            <span class="card-ver">ES2017</span>
+          </div>
+          <div class="card-code"><span class="keyword">async</span> <span class="keyword">function</span> <span class="func">fetchData</span>() {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> response = <span class="keyword">await</span> fetch(url);
+    <span class="keyword">const</span> data = <span class="keyword">await</span> response.json();
+    <span class="keyword">return</span> data;
+  } <span class="keyword">catch</span> (err) {
+    console.error(err);
+  }
+}
+<span class="comment">// async 函数返回 Promise</span></div>
+        </div>
+        <div class="card" id="card-5-22" data-keywords="setTimeout / setInterval let id = setTimeout(() =&amp;gt; {}, 1000 ); clearTimeout(id); let id2 = setInterval(() =&amp;gt; {}, 1000 ); clearInterval(id2); // 异步: setTimeout(fn, 0) 在调用栈清空后执行">
+          <div class="card-head">
+            <span class="card-num">22</span>
+            <span class="card-title">setTimeout / setInterval</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="keyword">let</span> id = setTimeout(() =&gt; {}, <span class="num">1000</span>);
+clearTimeout(id);
+
+<span class="keyword">let</span> id2 = setInterval(() =&gt; {}, <span class="num">1000</span>);
+clearInterval(id2);
+
+<span class="comment">// 异步: setTimeout(fn, 0) 在调用栈清空后执行</span></div>
+        </div>
+        <div class="card" id="card-5-23" data-keywords="事件循环 // 调用栈 → 微任务队列 → 宏任务队列 // 微任务: Promise.then, MutationObserver // 宏任务: setTimeout, setInterval, I/O // 每轮: 清空微任务 → 取一个宏任务">
+          <div class="card-head">
+            <span class="card-num">23</span>
+            <span class="card-title">事件循环</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="comment">// 调用栈 → 微任务队列 → 宏任务队列</span>
+<span class="comment">// 微任务: Promise.then, MutationObserver</span>
+<span class="comment">// 宏任务: setTimeout, setInterval, I/O</span>
+<span class="comment">// 每轮: 清空微任务 → 取一个宏任务</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、DOM 操作</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-24" data-keywords="元素选择 const el = document.getElementById( 'id' ); const els = document.getElementsByClassName( 'cls' ); const els2 = document.getElementsByTagName( 'div' ); const el2 = document.querySelector( '.cls' ); const all = document.querySelectorAll( 'div &amp;gt; p' ); // querySelectorAll 返回 NodeList (静态)">
+          <div class="card-head">
+            <span class="card-num">24</span>
+            <span class="card-title">元素选择</span>
+            <span class="card-ver">ES1/ES5</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> el = document.getElementById(<span class="string">'id'</span>);
+<span class="keyword">const</span> els = document.getElementsByClassName(<span class="string">'cls'</span>);
+<span class="keyword">const</span> els2 = document.getElementsByTagName(<span class="string">'div'</span>);
+<span class="keyword">const</span> el2 = document.querySelector(<span class="string">'.cls'</span>);
+<span class="keyword">const</span> all = document.querySelectorAll(<span class="string">'div &gt; p'</span>);
+<span class="comment">// querySelectorAll 返回 NodeList (静态)</span></div>
+        </div>
+        <div class="card" id="card-6-25" data-keywords="DOM 操作 const div = document.createElement( 'div' ); div.textContent = 'Hello' ; div.innerHTML = '&amp;lt;span&amp;gt;Hi&amp;lt;/span&amp;gt;' ; // 注意 XSS parent.appendChild(div); parent.removeChild(child); parent.replaceChild(newEl, oldEl); parent.insertBefore(newEl, refEl); el.cloneNode( true ); // 深克隆">
+          <div class="card-head">
+            <span class="card-num">25</span>
+            <span class="card-title">DOM 操作</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> div = document.createElement(<span class="string">'div'</span>);
+div.textContent = <span class="string">'Hello'</span>;
+div.innerHTML = <span class="string">'&lt;span&gt;Hi&lt;/span&gt;'</span>;  <span class="comment">// 注意 XSS</span>
+parent.appendChild(div);
+parent.removeChild(child);
+parent.replaceChild(newEl, oldEl);
+parent.insertBefore(newEl, refEl);
+el.cloneNode(<span class="keyword">true</span>);  <span class="comment">// 深克隆</span></div>
+        </div>
+        <div class="card" id="card-6-26" data-keywords="属性与样式 el.getAttribute( 'href' ), el.setAttribute( 'href' , url) el.dataset.userId // data-user-id el.classList.add( 'active' ), el.classList.toggle( 'dark' ) el.style.color = 'red' ; el.style.cssText = 'color: red; font-size: 16px' ; const style = getComputedStyle(el);">
+          <div class="card-head">
+            <span class="card-num">26</span>
+            <span class="card-title">属性与样式</span>
+            <span class="card-ver">ES5/ES6</span>
+          </div>
+          <div class="card-code">el.getAttribute(<span class="string">'href'</span>), el.setAttribute(<span class="string">'href'</span>, url)
+el.dataset.userId           <span class="comment">// data-user-id</span>
+el.classList.add(<span class="string">'active'</span>), el.classList.toggle(<span class="string">'dark'</span>)
+el.style.color = <span class="string">'red'</span>;
+el.style.cssText = <span class="string">'color: red; font-size: 16px'</span>;
+<span class="keyword">const</span> style = getComputedStyle(el);</div>
+        </div>
+        <div class="card" id="card-6-27" data-keywords="事件处理 el.addEventListener( 'click' , handler); el.addEventListener( 'click' , e =&amp;gt; { e.preventDefault(); // 阻止默认行为 e.stopPropagation(); // 阻止冒泡 console.log(e.target); // 触发元素 }); el.removeEventListener( 'click' , handler); // 事件委托: parent.addEventListener('click', e =&amp;gt; { ... })">
+          <div class="card-head">
+            <span class="card-num">27</span>
+            <span class="card-title">事件处理</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code">el.addEventListener(<span class="string">'click'</span>, handler);
+el.addEventListener(<span class="string">'click'</span>, e =&gt; {
+  e.preventDefault();   <span class="comment">// 阻止默认行为</span>
+  e.stopPropagation();  <span class="comment">// 阻止冒泡</span>
+  console.log(e.target); <span class="comment">// 触发元素</span>
+});
+el.removeEventListener(<span class="string">'click'</span>, handler);
+<span class="comment">// 事件委托: parent.addEventListener('click', e =&gt; { ... })</span></div>
+        </div>
+        <div class="card" id="card-6-28" data-keywords="常用事件类型 // 鼠标: click, dblclick, mousedown, mouseup, mousemove, mouseenter, mouseleave // 键盘: keydown, keyup, keypress // 表单: submit, change, input, focus, blur // 文档: DOMContentLoaded, load, scroll, resize // 触摸: touchstart, touchmove, touchend">
+          <div class="card-head">
+            <span class="card-num">28</span>
+            <span class="card-title">常用事件类型</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="comment">// 鼠标: click, dblclick, mousedown, mouseup, mousemove, mouseenter, mouseleave</span>
+<span class="comment">// 键盘: keydown, keyup, keypress</span>
+<span class="comment">// 表单: submit, change, input, focus, blur</span>
+<span class="comment">// 文档: DOMContentLoaded, load, scroll, resize</span>
+<span class="comment">// 触摸: touchstart, touchmove, touchend</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-7">
+      <button class="section-head">
+        <span class="icon">7</span>
+        <span class="title">七、ES6+ 重要特性</span>
+        <span class="count">6 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-7-29" data-keywords="类 (class) class Animal { constructor(name) { this .name = name; } speak() { return `${this.name} ...` ; } static create() { return new Animal ( 'default' ); } } class Dog extends Animal { constructor(name) { super (name); } speak() { return `${this.name} 汪!` ; } } // class 本质是 prototype 的语法糖">
+          <div class="card-head">
+            <span class="card-num">29</span>
+            <span class="card-title">类 (class)</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">class</span> Animal {
+  constructor(name) { <span class="keyword">this</span>.name = name; }
+  speak() { <span class="keyword">return</span> <span class="string">`${this.name} ...`</span>; }
+  <span class="keyword">static</span> create() { <span class="keyword">return</span> <span class="keyword">new</span> <span class="func">Animal</span>(<span class="string">'default'</span>); }
+}
+<span class="keyword">class</span> Dog <span class="keyword">extends</span> Animal {
+  constructor(name) { <span class="keyword">super</span>(name); }
+  speak() { <span class="keyword">return</span> <span class="string">`${this.name} 汪!`</span>; }
+}
+<span class="comment">// class 本质是 prototype 的语法糖</span></div>
+        </div>
+        <div class="card" id="card-7-30" data-keywords="模块 (import/export) // a.js: export const PI = 3.14 ; export function add (a,b) { return a+b; } export default class MyClass { } // b.js: import MyClass, { PI, add as myAdd } from './a.js' ; import * as utils from './a.js' ; // 动态导入: const m = await import('./a.js');">
+          <div class="card-head">
+            <span class="card-num">30</span>
+            <span class="card-title">模块 (import/export)</span>
+            <span class="card-ver">ES6/ES2020</span>
+          </div>
+          <div class="card-code"><span class="comment">// a.js:</span>
+<span class="keyword">export</span> <span class="keyword">const</span> PI = <span class="num">3.14</span>;
+<span class="keyword">export</span> <span class="keyword">function</span> <span class="func">add</span>(a,b) { <span class="keyword">return</span> a+b; }
+<span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">class</span> MyClass { }
+
+<span class="comment">// b.js:</span>
+<span class="keyword">import</span> MyClass, { PI, add <span class="keyword">as</span> myAdd } <span class="keyword">from</span> <span class="string">'./a.js'</span>;
+<span class="keyword">import</span> * <span class="keyword">as</span> utils <span class="keyword">from</span> <span class="string">'./a.js'</span>;
+<span class="comment">// 动态导入: const m = await import('./a.js');</span></div>
+        </div>
+        <div class="card" id="card-7-31" data-keywords="Map / Set / WeakMap / WeakSet let map = new Map (); map.set( 'key' , 'value' ); map.has( 'key' ), map.get( 'key' ), map.delete( 'key' ) let set = new Set ([ 1 , 2 , 2 , 3 ]); // {1,2,3} set.add( 4 ), set.has( 2 ), set.delete( 3 ) // WeakMap/WeakSet: 键/值弱引用, 不可迭代">
+          <div class="card-head">
+            <span class="card-num">31</span>
+            <span class="card-title">Map / Set / WeakMap / WeakSet</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">let</span> map = <span class="keyword">new</span> <span class="func">Map</span>();
+map.set(<span class="string">'key'</span>, <span class="string">'value'</span>);
+map.has(<span class="string">'key'</span>), map.get(<span class="string">'key'</span>), map.delete(<span class="string">'key'</span>)
+
+<span class="keyword">let</span> set = <span class="keyword">new</span> <span class="func">Set</span>([<span class="num">1</span>, <span class="num">2</span>, <span class="num">2</span>, <span class="num">3</span>]); <span class="comment">// {1,2,3}</span>
+set.add(<span class="num">4</span>), set.has(<span class="num">2</span>), set.delete(<span class="num">3</span>)
+<span class="comment">// WeakMap/WeakSet: 键/值弱引用, 不可迭代</span></div>
+        </div>
+        <div class="card" id="card-7-32" data-keywords="Symbol const id = Symbol ( 'id' ); const id2 = Symbol ( 'id' ); id !== id2 // 每次创建唯一 const GLOBAL = Symbol .for( 'key' ); // 全局符号 // 用作对象唯一属性键, 避免冲突">
+          <div class="card-head">
+            <span class="card-num">32</span>
+            <span class="card-title">Symbol</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> id = <span class="func">Symbol</span>(<span class="string">'id'</span>);
+<span class="keyword">const</span> id2 = <span class="func">Symbol</span>(<span class="string">'id'</span>);
+id !== id2  <span class="comment">// 每次创建唯一</span>
+<span class="keyword">const</span> GLOBAL = <span class="func">Symbol</span>.for(<span class="string">'key'</span>); <span class="comment">// 全局符号</span>
+<span class="comment">// 用作对象唯一属性键, 避免冲突</span></div>
+        </div>
+        <div class="card" id="card-7-33" data-keywords="Proxy / Reflect const handler = { get(target, prop) { return prop in target ? target[prop] : 'N/A' ; }, set(target, prop, val) { target[prop] = val; return true ; } }; const proxy = new Proxy ({}, handler);">
+          <div class="card-head">
+            <span class="card-num">33</span>
+            <span class="card-title">Proxy / Reflect</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> handler = {
+  get(target, prop) {
+    <span class="keyword">return</span> prop <span class="keyword">in</span> target ? target[prop] : <span class="string">'N/A'</span>;
+  },
+  set(target, prop, val) {
+    target[prop] = val; <span class="keyword">return</span> <span class="keyword">true</span>;
+  }
+};
+<span class="keyword">const</span> proxy = <span class="keyword">new</span> <span class="func">Proxy</span>({}, handler);</div>
+        </div>
+        <div class="card" id="card-7-34" data-keywords="迭代器与生成器 function * gen () { yield 1 ; yield 2 ; yield 3 ; } const g = gen(); g.next(); // {value:1, done:false} // 自定义迭代: obj[Symbol.iterator] = function*() {}">
+          <div class="card-head">
+            <span class="card-num">34</span>
+            <span class="card-title">迭代器与生成器</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">function</span>* <span class="func">gen</span>() {
+  <span class="keyword">yield</span> <span class="num">1</span>;
+  <span class="keyword">yield</span> <span class="num">2</span>;
+  <span class="keyword">yield</span> <span class="num">3</span>;
+}
+<span class="keyword">const</span> g = gen();
+g.next();  <span class="comment">// {value:1, done:false}</span>
+<span class="comment">// 自定义迭代: obj[Symbol.iterator] = function*() {}</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-8">
+      <button class="section-head">
+        <span class="icon">8</span>
+        <span class="title">八、原型与继承</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-8-35" data-keywords="原型链 // 每个对象有 [[Prototype]] (__proto__) // 每个函数有 prototype 属性 obj.__proto__ === Object .getPrototypeOf(obj) Object .setPrototypeOf(child, parent) // 属性查找沿原型链向上, 直到 null">
+          <div class="card-head">
+            <span class="card-num">35</span>
+            <span class="card-title">原型链</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="comment">// 每个对象有 [[Prototype]] (__proto__)</span>
+<span class="comment">// 每个函数有 prototype 属性</span>
+obj.__proto__ === <span class="func">Object</span>.getPrototypeOf(obj)
+<span class="func">Object</span>.setPrototypeOf(child, parent)
+<span class="comment">// 属性查找沿原型链向上, 直到 null</span></div>
+        </div>
+        <div class="card" id="card-8-36" data-keywords="构造函数与 new function Person (name) { this .name = name; } Person.prototype.sayHi = function () { return `Hi, ${this.name}` ; }; const p = new Person ( 'Alice' ); // new 做了: 创建对象, 绑定原型, 绑定this, 返回对象">
+          <div class="card-head">
+            <span class="card-num">36</span>
+            <span class="card-title">构造函数与 new</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="keyword">function</span> <span class="func">Person</span>(name) {
+  <span class="keyword">this</span>.name = name;
+}
+Person.prototype.sayHi = <span class="keyword">function</span>() {
+  <span class="keyword">return</span> <span class="string">`Hi, ${this.name}`</span>;
+};
+<span class="keyword">const</span> p = <span class="keyword">new</span> <span class="func">Person</span>(<span class="string">'Alice'</span>);
+<span class="comment">// new 做了: 创建对象, 绑定原型, 绑定this, 返回对象</span></div>
+        </div>
+        <div class="card" id="card-8-37" data-keywords="Object.create const parent = { hello() { return 'Hi' ; } }; const child = Object .create(parent); child.hello(); // &quot;Hi&quot; (原型继承)">
+          <div class="card-head">
+            <span class="card-num">37</span>
+            <span class="card-title">Object.create</span>
+            <span class="card-ver">ES5</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> parent = { hello() { <span class="keyword">return</span> <span class="string">'Hi'</span>; } };
+<span class="keyword">const</span> child = <span class="func">Object</span>.create(parent);
+child.hello();  <span class="comment">// "Hi" (原型继承)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-9">
+      <button class="section-head">
+        <span class="icon">9</span>
+        <span class="title">九、存储与网络</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-9-38" data-keywords="localStorage / sessionStorage localStorage.setItem( 'key' , 'value' ); localStorage.getItem( 'key' ); localStorage.removeItem( 'key' ); localStorage.clear(); // sessionStorage: 会话级别, 关标签页即清除 // 只能存字符串, 对象用 JSON.stringify">
+          <div class="card-head">
+            <span class="card-num">38</span>
+            <span class="card-title">localStorage / sessionStorage</span>
+            <span class="card-ver">ES5</span>
+          </div>
+          <div class="card-code">localStorage.setItem(<span class="string">'key'</span>, <span class="string">'value'</span>);
+localStorage.getItem(<span class="string">'key'</span>);
+localStorage.removeItem(<span class="string">'key'</span>);
+localStorage.clear();
+<span class="comment">// sessionStorage: 会话级别, 关标签页即清除</span>
+<span class="comment">// 只能存字符串, 对象用 JSON.stringify</span></div>
+        </div>
+        <div class="card" id="card-9-39" data-keywords="fetch API const response = await fetch(url, { method: 'POST' , headers: { 'Content-Type' : 'application/json' }, body: JSON .stringify({ key: 'val' }) }); if (!response.ok) throw new Error ( `HTTP ${response.status}` ); const data = await response.json();">
+          <div class="card-head">
+            <span class="card-num">39</span>
+            <span class="card-title">fetch API</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> response = <span class="keyword">await</span> fetch(url, {
+  method: <span class="string">'POST'</span>,
+  headers: { <span class="string">'Content-Type'</span>: <span class="string">'application/json'</span> },
+  body: <span class="func">JSON</span>.stringify({ key: <span class="string">'val'</span> })
+});
+<span class="keyword">if</span> (!response.ok) <span class="keyword">throw</span> <span class="keyword">new</span> <span class="func">Error</span>(<span class="string">`HTTP ${response.status}`</span>);
+<span class="keyword">const</span> data = <span class="keyword">await</span> response.json();</div>
+        </div>
+        <div class="card" id="card-9-40" data-keywords="JSON const s = JSON .stringify(obj, null , 2 ); const obj = JSON .parse(s); // JSON 不支持: undefined, Symbol, 函数, 循环引用">
+          <div class="card-head">
+            <span class="card-num">40</span>
+            <span class="card-title">JSON</span>
+            <span class="card-ver">ES5</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> s = <span class="func">JSON</span>.stringify(obj, <span class="keyword">null</span>, <span class="num">2</span>);
+<span class="keyword">const</span> obj = <span class="func">JSON</span>.parse(s);
+<span class="comment">// JSON 不支持: undefined, Symbol, 函数, 循环引用</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-10">
+      <button class="section-head">
+        <span class="icon">10</span>
+        <span class="title">十、错误处理与调试</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-10-41" data-keywords="try-catch try { throw new Error ( '出错了' ); } catch (err) { console.error(err.message, err.stack); } finally { // 始终执行 }">
+          <div class="card-head">
+            <span class="card-num">41</span>
+            <span class="card-title">try-catch</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="keyword">try</span> {
+  <span class="keyword">throw</span> <span class="keyword">new</span> <span class="func">Error</span>(<span class="string">'出错了'</span>);
+} <span class="keyword">catch</span> (err) {
+  console.error(err.message, err.stack);
+} <span class="keyword">finally</span> {
+  <span class="comment">// 始终执行</span>
+}</div>
+        </div>
+        <div class="card" id="card-10-42" data-keywords="console 方法 console.log(), console.info(), console.warn() console.error(), console.debug() console.table(data), console.group( 'label' ) console.time( 'timer' ); /* ... */ console.timeEnd( 'timer' ) console.assert(condition, msg)">
+          <div class="card-head">
+            <span class="card-num">42</span>
+            <span class="card-title">console 方法</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code">console.log(), console.info(), console.warn()
+console.error(), console.debug()
+console.table(data), console.group(<span class="string">'label'</span>)
+console.time(<span class="string">'timer'</span>); <span class="comment">/* ... */</span> console.timeEnd(<span class="string">'timer'</span>)
+console.assert(condition, msg)</div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-11">
+      <button class="section-head">
+        <span class="icon">11</span>
+        <span class="title">十一、常见Bug与陷阱</span>
+        <span class="count">8 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-11-43" data-keywords="var 变量提升 console.log(x); // undefined, 不报错! var x = 5 ; // let/const 有暂时性死区, 提升但不可访问">
+          <div class="card-head">
+            <span class="card-num">43</span>
+            <span class="card-title">var 变量提升</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code">console.log(x); <span class="comment">// undefined, 不报错!</span>
+<span class="keyword">var</span> x = <span class="num">5</span>;
+<span class="comment">// let/const 有暂时性死区, 提升但不可访问</span></div>
+        </div>
+        <div class="card" id="card-11-44" data-keywords="this 丢失 const obj = { name: 'obj' , greet() { console.log( this .name); } }; const fn = obj.greet; fn(); // undefined! this 指向全局 // 解决: fn = obj.greet.bind(obj) 或箭头函数">
+          <div class="card-head">
+            <span class="card-num">44</span>
+            <span class="card-title">this 丢失</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="keyword">const</span> obj = {
+  name: <span class="string">'obj'</span>,
+  greet() { console.log(<span class="keyword">this</span>.name); }
+};
+<span class="keyword">const</span> fn = obj.greet;
+fn(); <span class="comment">// undefined! this 指向全局</span>
+<span class="comment">// 解决: fn = obj.greet.bind(obj) 或箭头函数</span></div>
+        </div>
+        <div class="card" id="card-11-45" data-keywords="类型强制转换 [] + {} // &quot;[object Object]&quot; {} + [] // 0 ({} 被当作空块) '5' - 3 // 2 '5' + 3 // &quot;53&quot; null &amp;gt;= 0 // true null == undefined // true null === undefined // false // 始终使用 === 而非 ==">
+          <div class="card-head">
+            <span class="card-num">45</span>
+            <span class="card-title">类型强制转换</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code">[] + {}       <span class="comment">// "[object Object]"</span>
+{} + []       <span class="comment">// 0 ({} 被当作空块)</span>
+<span class="string">'5'</span> - <span class="num">3</span>      <span class="comment">// 2</span>
+<span class="string">'5'</span> + <span class="num">3</span>      <span class="comment">// "53"</span>
+<span class="keyword">null</span> &gt;= <span class="num">0</span>     <span class="comment">// true</span>
+<span class="keyword">null</span> == <span class="keyword">undefined</span>  <span class="comment">// true</span>
+<span class="keyword">null</span> === <span class="keyword">undefined</span> <span class="comment">// false</span>
+<span class="comment">// 始终使用 === 而非 ==</span></div>
+        </div>
+        <div class="card" id="card-11-46" data-keywords="异步陷阱 for ( var i= 0 ; i&amp;lt; 3 ; i++) { setTimeout(() =&amp;gt; console.log(i), 100 ); } // 输出 3,3,3 (不是 0,1,2) // 解决: 用 let 代替 var">
+          <div class="card-head">
+            <span class="card-num">46</span>
+            <span class="card-title">异步陷阱</span>
+            <span class="card-ver">ES1/ES6</span>
+          </div>
+          <div class="card-code"><span class="keyword">for</span> (<span class="keyword">var</span> i=<span class="num">0</span>; i&lt;<span class="num">3</span>; i++) {
+  setTimeout(() =&gt; console.log(i), <span class="num">100</span>);
+}
+<span class="comment">// 输出 3,3,3 (不是 0,1,2)</span>
+<span class="comment">// 解决: 用 let 代替 var</span></div>
+        </div>
+        <div class="card" id="card-11-47" data-keywords="NaN 判断 isNaN ( 'abc' ) // true Number .isNaN( 'abc' ) // false (更严格) NaN === NaN // false! // 用 Number.isNaN() 或 Object.is(x, NaN)">
+          <div class="card-head">
+            <span class="card-num">47</span>
+            <span class="card-title">NaN 判断</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="func">isNaN</span>(<span class="string">'abc'</span>)     <span class="comment">// true</span>
+<span class="func">Number</span>.isNaN(<span class="string">'abc'</span>) <span class="comment">// false (更严格)</span>
+NaN === NaN           <span class="comment">// false!</span>
+<span class="comment">// 用 Number.isNaN() 或 Object.is(x, NaN)</span></div>
+        </div>
+        <div class="card" id="card-11-48" data-keywords="浮点数精度 0.1 + 0.2 === 0.3 // false // 解决: Math.abs(a-b) &amp;lt; Number.EPSILON">
+          <div class="card-head">
+            <span class="card-num">48</span>
+            <span class="card-title">浮点数精度</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="num">0.1</span> + <span class="num">0.2</span> === <span class="num">0.3</span>  <span class="comment">// false</span>
+<span class="comment">// 解决: Math.abs(a-b) &lt; Number.EPSILON</span></div>
+        </div>
+        <div class="card" id="card-11-49" data-keywords="数组长度陷阱 let arr = []; arr[ 100 ] = 1 ; arr.length; // 101 (不是 1) arr.length = 0 ; // 清空数组">
+          <div class="card-head">
+            <span class="card-num">49</span>
+            <span class="card-title">数组长度陷阱</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="keyword">let</span> arr = [];
+arr[<span class="num">100</span>] = <span class="num">1</span>;
+arr.length;  <span class="comment">// 101 (不是 1)</span>
+arr.length = <span class="num">0</span>;  <span class="comment">// 清空数组</span></div>
+        </div>
+        <div class="card" id="card-11-50" data-keywords="sort 默认行为 [ 1 , 2 , 10 ].sort(); // [1,10,2] (字典序!) [ 1 , 2 , 10 ].sort((a,b)=&amp;gt;a-b); // [1,2,10] (数值序)">
+          <div class="card-head">
+            <span class="card-num">50</span>
+            <span class="card-title">sort 默认行为</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code">[<span class="num">1</span>, <span class="num">2</span>, <span class="num">10</span>].sort();  <span class="comment">// [1,10,2] (字典序!)</span>
+[<span class="num">1</span>, <span class="num">2</span>, <span class="num">10</span>].sort((a,b)=&gt;a-b);  <span class="comment">// [1,2,10] (数值序)</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-12">
+      <button class="section-head">
+        <span class="icon">12</span>
+        <span class="title">十二、编程建议与最佳实践</span>
+        <span class="count">11 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-12-51" data-keywords="使用严格模式 'use strict' ; // 禁止意外全局变量, 静默错误变为抛出 // ES6 模块默认严格模式">
+          <div class="card-head">
+            <span class="card-num">51</span>
+            <span class="card-title">使用严格模式</span>
+            <span class="card-ver">ES5</span>
+          </div>
+          <div class="card-code"><span class="string">'use strict'</span>;
+<span class="comment">// 禁止意外全局变量, 静默错误变为抛出</span>
+<span class="comment">// ES6 模块默认严格模式</span></div>
+        </div>
+        <div class="card" id="card-12-52" data-keywords="const &amp;gt; let &amp;gt; var // 默认用 const, 需要修改时用 let, 不用 var">
+          <div class="card-head">
+            <span class="card-num">52</span>
+            <span class="card-title">const &gt; let &gt; var</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="comment">// 默认用 const, 需要修改时用 let, 不用 var</span></div>
+        </div>
+        <div class="card" id="card-12-53" data-keywords="=== 而非 == // 避免隐式类型转换带来的意外">
+          <div class="card-head">
+            <span class="card-num">53</span>
+            <span class="card-title">=== 而非 ==</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="comment">// 避免隐式类型转换带来的意外</span></div>
+        </div>
+        <div class="card" id="card-12-54" data-keywords="箭头函数用于回调 // 简洁且不会丢失 this arr.map(x =&amp;gt; x * 2 );">
+          <div class="card-head">
+            <span class="card-num">54</span>
+            <span class="card-title">箭头函数用于回调</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="comment">// 简洁且不会丢失 this</span>
+arr.map(x =&gt; x * <span class="num">2</span>);</div>
+        </div>
+        <div class="card" id="card-12-55" data-keywords="解构与展开 // 代替 Object.assign 和手动取值">
+          <div class="card-head">
+            <span class="card-num">55</span>
+            <span class="card-title">解构与展开</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="comment">// 代替 Object.assign 和手动取值</span></div>
+        </div>
+        <div class="card" id="card-12-56" data-keywords="async/await 优于 Promise.then // 代码更易读, 错误处理更自然">
+          <div class="card-head">
+            <span class="card-num">56</span>
+            <span class="card-title">async/await 优于 Promise.then</span>
+            <span class="card-ver">ES2017</span>
+          </div>
+          <div class="card-code"><span class="comment">// 代码更易读, 错误处理更自然</span></div>
+        </div>
+        <div class="card" id="card-12-57" data-keywords="避免全局变量 // 使用模块封装, 减少全局污染">
+          <div class="card-head">
+            <span class="card-num">57</span>
+            <span class="card-title">避免全局变量</span>
+            <span class="card-ver">ES6</span>
+          </div>
+          <div class="card-code"><span class="comment">// 使用模块封装, 减少全局污染</span></div>
+        </div>
+        <div class="card" id="card-12-58" data-keywords="事件委托 // 父元素统一处理, 减少事件绑定数">
+          <div class="card-head">
+            <span class="card-num">58</span>
+            <span class="card-title">事件委托</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="comment">// 父元素统一处理, 减少事件绑定数</span></div>
+        </div>
+        <div class="card" id="card-12-59" data-keywords="防抖与节流 function debounce (fn, delay) { let timer; return function (...args) { clearTimeout(timer); timer = setTimeout(() =&amp;gt; fn.apply( this , args), delay); }; } function throttle (fn, delay) { let last = 0 ; return function (...args) { const now = Date .now(); if (now - last &amp;gt;= delay) { fn.apply( this , args); last = now; } }; }">
+          <div class="card-head">
+            <span class="card-num">59</span>
+            <span class="card-title">防抖与节流</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="keyword">function</span> <span class="func">debounce</span>(fn, delay) {
+  <span class="keyword">let</span> timer;
+  <span class="keyword">return</span> <span class="keyword">function</span>(...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() =&gt; fn.apply(<span class="keyword">this</span>, args), delay);
+  };
+}
+<span class="keyword">function</span> <span class="func">throttle</span>(fn, delay) {
+  <span class="keyword">let</span> last = <span class="num">0</span>;
+  <span class="keyword">return</span> <span class="keyword">function</span>(...args) {
+    <span class="keyword">const</span> now = <span class="func">Date</span>.now();
+    <span class="keyword">if</span> (now - last &gt;= delay) { fn.apply(<span class="keyword">this</span>, args); last = now; }
+  };
+}</div>
+        </div>
+        <div class="card" id="card-12-60" data-keywords="命名规范 // 变量/函数: camelCase // 类/构造函数: PascalCase // 常量: UPPER_SNAKE_CASE // 私有: _privateMethod (约定)">
+          <div class="card-head">
+            <span class="card-num">60</span>
+            <span class="card-title">命名规范</span>
+            <span class="card-ver">ES1</span>
+          </div>
+          <div class="card-code"><span class="comment">// 变量/函数: camelCase</span>
+<span class="comment">// 类/构造函数: PascalCase</span>
+<span class="comment">// 常量: UPPER_SNAKE_CASE</span>
+<span class="comment">// 私有: _privateMethod (约定)</span></div>
+        </div>
+        <div class="card" id="card-12-61" data-keywords="代码质量工具 // ESLint: 代码检查 // Prettier: 代码格式化 // TypeScript: 类型安全 // Jest/Vitest: 单元测试">
+          <div class="card-head">
+            <span class="card-num">61</span>
+            <span class="card-title">代码质量工具</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">// ESLint: 代码检查</span>
+<span class="comment">// Prettier: 代码格式化</span>
+<span class="comment">// TypeScript: 类型安全</span>
+<span class="comment">// Jest/Vitest: 单元测试</span></div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) {
+      searchClear.classList.add('visible');
+    } else {
+      searchClear.classList.remove('visible');
+    }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) {
+        section.classList.remove('open');
+      } else if (q) {
+        section.classList.add('open');
+      } else {
+        if (section === firstSection) section.classList.add('open');
+        else section.classList.remove('open');
+      }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+
+</body></html>

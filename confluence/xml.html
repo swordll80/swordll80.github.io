@@ -1,0 +1,760 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>XML速查</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12px; line-height:1.65; white-space:pre-wrap; word-break:break-all; overflow-x:auto; color:#2d3436; }
+    .card-code span { color:#8b3fc7; }
+    .card-code .keyword { color:#8b3fc7; }
+    .card-code .comment { color:#7d8599; font-style:italic; }
+    .card-code .string { color:#1b8c3c; }
+    .card-code .num { color:#c7640a; }
+    .card-code .func { color:#356ae6; }
+    .card-code .tag { color:#f26522; }
+    .card-code .attr { color:#356ae6; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:11px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>XML 知识手册</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">44 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、XML 基础语法</span>
+        <span class="count">9 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="XML 声明 &amp;lt;?xml version = &quot;1.0&quot; encoding = &quot;UTF-8&quot; standalone = &quot;yes&quot; ?&amp;gt; &amp;lt;!-- 必须放在第一行, 之前不能有空格 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">XML 声明</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;?xml</span> <span class="attr">version</span>=<span class="string">"1.0"</span> <span class="attr">encoding</span>=<span class="string">"UTF-8"</span> <span class="attr">standalone</span>=<span class="string">"yes"</span><span class="tag">?&gt;</span>
+<span class="comment">&lt;!-- 必须放在第一行, 之前不能有空格 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="元素与标签 &amp;lt;book id = &quot;1&quot; &amp;gt; &amp;lt;title&amp;gt; XML入门 &amp;lt;/title&amp;gt; &amp;lt;price&amp;gt; 29.99 &amp;lt;/price&amp;gt; &amp;lt;/book&amp;gt; &amp;lt;!-- 标签区分大小写, 必须有闭合 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">元素与标签</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;book</span> <span class="attr">id</span>=<span class="string">"1"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;title&gt;</span>XML入门<span class="tag">&lt;/title&gt;</span>
+  <span class="tag">&lt;price&gt;</span>29.99<span class="tag">&lt;/price&gt;</span>
+<span class="tag">&lt;/book&gt;</span>
+<span class="comment">&lt;!-- 标签区分大小写, 必须有闭合 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="属性 &amp;lt;person id = &quot;p001&quot; name = &quot;Alice&quot; age = &quot;25&quot; /&amp;gt; &amp;lt;!-- 属性值必须加引号(单双均可) --&amp;gt; &amp;lt;!-- 同一元素中属性名不能重复 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">属性</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;person</span> <span class="attr">id</span>=<span class="string">"p001"</span> <span class="attr">name</span>=<span class="string">"Alice"</span> <span class="attr">age</span>=<span class="string">"25"</span><span class="tag">/&gt;</span>
+<span class="comment">&lt;!-- 属性值必须加引号(单双均可) --&gt;</span>
+<span class="comment">&lt;!-- 同一元素中属性名不能重复 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="注释 &amp;lt;!-- 这是注释 --&amp;gt; &amp;lt;!-- 注释不能嵌套, 不能出现在声明前 --&amp;gt; &amp;lt;!-- 注释内不能包含 -- --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">注释</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 这是注释 --&gt;</span>
+<span class="comment">&lt;!-- 注释不能嵌套, 不能出现在声明前 --&gt;</span>
+<span class="comment">&lt;!-- 注释内不能包含 -- --&gt;</span></div>
+        </div>
+        <div class="card" id="card-1-5" data-keywords="CDATA 节 &amp;lt;code&amp;gt; &amp;lt;![CDATA[ if (a &amp;lt; b &amp;amp;&amp;amp; c &amp;gt; d) { return true; } ]]&amp;gt; &amp;lt;/code&amp;gt; &amp;lt;!-- CDATA 内的 &amp;lt; &amp;gt; &amp;amp; 等不解析 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">CDATA 节</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;code&gt;</span><span class="keyword">&lt;![CDATA[</span>
+  if (a &lt; b &amp;&amp; c &gt; d) { return true; }
+<span class="keyword">]]&gt;</span><span class="tag">&lt;/code&gt;</span>
+<span class="comment">&lt;!-- CDATA 内的 &lt; &gt; &amp; 等不解析 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-1-6" data-keywords="实体引用 &amp;lt;text&amp;gt; 5 &amp;amp;lt; 10 &amp;amp;amp; price &amp;amp;gt; 0 &amp;lt;/text&amp;gt; &amp;lt;!-- 预定义实体: &amp;amp;lt; &amp;amp;gt; &amp;amp;amp; &amp;amp;quot; &amp;amp;apos; --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">实体引用</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;text&gt;</span>5 <span class="keyword">&amp;lt;</span> 10 <span class="keyword">&amp;amp;</span> price <span class="keyword">&amp;gt;</span> 0<span class="tag">&lt;/text&gt;</span>
+<span class="comment">&lt;!-- 预定义实体: &amp;lt; &amp;gt; &amp;amp; &amp;quot; &amp;apos; --&gt;</span></div>
+        </div>
+        <div class="card" id="card-1-7" data-keywords="处理指令 (PI) &amp;lt;?xml-stylesheet type = &quot;text/xsl&quot; href = &quot;style.xsl&quot; ?&amp;gt; &amp;lt;!-- 给应用程序传递信息的指令 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">处理指令 (PI)</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;?xml-stylesheet</span> <span class="attr">type</span>=<span class="string">"text/xsl"</span> <span class="attr">href</span>=<span class="string">"style.xsl"</span><span class="tag">?&gt;</span>
+<span class="comment">&lt;!-- 给应用程序传递信息的指令 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-1-8" data-keywords="命名空间 &amp;lt;root xmlns = &quot;http://example.com/ns&quot; xmlns:html = &quot;http://www.w3.org/1999/xhtml&quot; &amp;gt; &amp;lt;element/&amp;gt; &amp;lt;html:table&amp;gt; ... &amp;lt;/html:table&amp;gt; &amp;lt;/root&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">命名空间</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;root</span> <span class="attr">xmlns</span>=<span class="string">"http://example.com/ns"</span>
+      <span class="attr">xmlns:html</span>=<span class="string">"http://www.w3.org/1999/xhtml"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;element/&gt;</span>
+  <span class="tag">&lt;html:table&gt;</span>...<span class="tag">&lt;/html:table&gt;</span>
+<span class="tag">&lt;/root&gt;</span></div>
+        </div>
+        <div class="card" id="card-1-9" data-keywords="格式良好 (Well-formed) &amp;lt;!-- 1. 有且只有一个根元素 --&amp;gt; &amp;lt;!-- 2. 所有标签正确闭合 --&amp;gt; &amp;lt;!-- 3. 标签正确嵌套 --&amp;gt; &amp;lt;!-- 4. 属性值加引号 --&amp;gt; &amp;lt;!-- 5. 实体引用正确 --&amp;gt; &amp;lt;!-- 满足以上即为 Well-formed XML --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">格式良好 (Well-formed)</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 1. 有且只有一个根元素 --&gt;</span>
+<span class="comment">&lt;!-- 2. 所有标签正确闭合 --&gt;</span>
+<span class="comment">&lt;!-- 3. 标签正确嵌套 --&gt;</span>
+<span class="comment">&lt;!-- 4. 属性值加引号 --&gt;</span>
+<span class="comment">&lt;!-- 5. 实体引用正确 --&gt;</span>
+<span class="comment">&lt;!-- 满足以上即为 Well-formed XML --&gt;</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、DTD (文档类型定义)</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-10" data-keywords="内部 DTD &amp;lt;?xml version = &quot;1.0&quot; ?&amp;gt; &amp;lt;!DOCTYPE note [ &amp;lt;!ELEMENT note (to,from,heading,body) &amp;gt; &amp;lt;!ELEMENT to (#PCDATA) &amp;gt; &amp;lt;!ELEMENT from (#PCDATA) &amp;gt; &amp;lt;!ATTLIST note id ID #REQUIRED &amp;gt; ]&amp;gt; &amp;lt;note id = &quot;n1&quot; &amp;gt; &amp;lt;to&amp;gt; Alice &amp;lt;/to&amp;gt; ... &amp;lt;/note&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">内部 DTD</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;?xml</span> <span class="attr">version</span>=<span class="string">"1.0"</span><span class="tag">?&gt;</span>
+<span class="tag">&lt;!DOCTYPE</span> note [
+  <span class="tag">&lt;!ELEMENT</span> note (to,from,heading,body)<span class="tag">&gt;</span>
+  <span class="tag">&lt;!ELEMENT</span> to (#PCDATA)<span class="tag">&gt;</span>
+  <span class="tag">&lt;!ELEMENT</span> from (#PCDATA)<span class="tag">&gt;</span>
+  <span class="tag">&lt;!ATTLIST</span> note id ID #REQUIRED<span class="tag">&gt;</span>
+<span class="tag">]&gt;</span>
+<span class="tag">&lt;note</span> <span class="attr">id</span>=<span class="string">"n1"</span><span class="tag">&gt;</span><span class="tag">&lt;to&gt;</span>Alice<span class="tag">&lt;/to&gt;</span>...<span class="tag">&lt;/note&gt;</span></div>
+        </div>
+        <div class="card" id="card-2-11" data-keywords="外部 DTD &amp;lt;!-- 私有: --&amp;gt; &amp;lt;!DOCTYPE note SYSTEM &quot;note.dtd&quot; &amp;gt; &amp;lt;!-- 公共: --&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Strict//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd&quot; &amp;gt;">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">外部 DTD</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 私有: --&gt;</span>
+<span class="tag">&lt;!DOCTYPE</span> note <span class="tag">SYSTEM</span> <span class="string">"note.dtd"</span><span class="tag">&gt;</span>
+<span class="comment">&lt;!-- 公共: --&gt;</span>
+<span class="tag">&lt;!DOCTYPE</span> html <span class="tag">PUBLIC</span> <span class="string">"-//W3C//DTD XHTML 1.0 Strict//EN"</span>
+  <span class="string">"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"</span><span class="tag">&gt;</span></div>
+        </div>
+        <div class="card" id="card-2-12" data-keywords="DTD 元素声明 &amp;lt;!-- (#PCDATA): 可解析字符数据 --&amp;gt; &amp;lt;!ELEMENT name (#PCDATA) &amp;gt; &amp;lt;!-- EMPTY: 空元素 --&amp;gt; &amp;lt;!ELEMENT br EMPTY &amp;gt; &amp;lt;!-- ANY: 任意内容 --&amp;gt; &amp;lt;!ELEMENT data ANY &amp;gt; &amp;lt;!-- 子元素序列: --&amp;gt; &amp;lt;!ELEMENT person (name, age?, address*) &amp;gt; &amp;lt;!-- 选择: --&amp;gt; &amp;lt;!ELEMENT fruit (apple | orange | banana) &amp;gt;">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">DTD 元素声明</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- (#PCDATA): 可解析字符数据 --&gt;</span>
+<span class="tag">&lt;!ELEMENT</span> name (#PCDATA)<span class="tag">&gt;</span>
+<span class="comment">&lt;!-- EMPTY: 空元素 --&gt;</span>
+<span class="tag">&lt;!ELEMENT</span> br EMPTY<span class="tag">&gt;</span>
+<span class="comment">&lt;!-- ANY: 任意内容 --&gt;</span>
+<span class="tag">&lt;!ELEMENT</span> data ANY<span class="tag">&gt;</span>
+<span class="comment">&lt;!-- 子元素序列: --&gt;</span>
+<span class="tag">&lt;!ELEMENT</span> person (name, age?, address*)<span class="tag">&gt;</span>
+<span class="comment">&lt;!-- 选择: --&gt;</span>
+<span class="tag">&lt;!ELEMENT</span> fruit (apple | orange | banana)<span class="tag">&gt;</span></div>
+        </div>
+        <div class="card" id="card-2-13" data-keywords="DTD 出现次数指示符 &amp;lt;!-- +: 一次或多次 --&amp;gt; &amp;lt;!-- *: 零次或多次 --&amp;gt; &amp;lt;!-- ?: 零次或一次 --&amp;gt; &amp;lt;!-- 无符号: 恰好一次 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">DTD 出现次数指示符</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- +: 一次或多次 --&gt;</span>
+<span class="comment">&lt;!-- *: 零次或多次 --&gt;</span>
+<span class="comment">&lt;!-- ?: 零次或一次 --&gt;</span>
+<span class="comment">&lt;!-- 无符号: 恰好一次 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-2-14" data-keywords="DTD 属性声明 &amp;lt;!ATTLIST element attr-name attr-type default-value &amp;gt; &amp;lt;!-- 类型: CDATA, ID, IDREF, IDREFS, NMTOKEN, ENTITY --&amp;gt; &amp;lt;!-- 默认值: #REQUIRED, #IMPLIED, #FIXED &quot;val&quot;, &quot;默认值&quot; --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">DTD 属性声明</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;!ATTLIST</span> element attr-name attr-type default-value<span class="tag">&gt;</span>
+<span class="comment">&lt;!-- 类型: CDATA, ID, IDREF, IDREFS, NMTOKEN, ENTITY --&gt;</span>
+<span class="comment">&lt;!-- 默认值: #REQUIRED, #IMPLIED, #FIXED "val", "默认值" --&gt;</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、XML Schema (XSD)</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-15" data-keywords="Schema 声明 &amp;lt;xs:schema xmlns:xs = &quot;http://www.w3.org/2001/XMLSchema&quot; &amp;gt; &amp;lt;!-- 定义在此 --&amp;gt; &amp;lt;/xs:schema&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">Schema 声明</span>
+            <span class="card-ver">XSD 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;xs:schema</span> <span class="attr">xmlns:xs</span>=<span class="string">"http://www.w3.org/2001/XMLSchema"</span><span class="tag">&gt;</span>
+  <span class="comment">&lt;!-- 定义在此 --&gt;</span>
+<span class="tag">&lt;/xs:schema&gt;</span></div>
+        </div>
+        <div class="card" id="card-3-16" data-keywords="元素定义 &amp;lt;xs:element name = &quot;age&quot; type = &quot;xs:integer&quot; default = &quot;18&quot; /&amp;gt; &amp;lt;xs:element name = &quot;note&quot; &amp;gt; &amp;lt;xs:complexType&amp;gt; &amp;lt;xs:sequence&amp;gt; &amp;lt;xs:element name = &quot;to&quot; type = &quot;xs:string&quot; /&amp;gt; &amp;lt;/xs:sequence&amp;gt; &amp;lt;/xs:complexType&amp;gt; &amp;lt;/xs:element&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">元素定义</span>
+            <span class="card-ver">XSD 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;xs:element</span> <span class="attr">name</span>=<span class="string">"age"</span> <span class="attr">type</span>=<span class="string">"xs:integer"</span> <span class="attr">default</span>=<span class="string">"18"</span><span class="tag">/&gt;</span>
+<span class="tag">&lt;xs:element</span> <span class="attr">name</span>=<span class="string">"note"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;xs:complexType&gt;</span>
+    <span class="tag">&lt;xs:sequence&gt;</span>
+      <span class="tag">&lt;xs:element</span> <span class="attr">name</span>=<span class="string">"to"</span> <span class="attr">type</span>=<span class="string">"xs:string"</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;/xs:sequence&gt;</span>
+  <span class="tag">&lt;/xs:complexType&gt;</span>
+<span class="tag">&lt;/xs:element&gt;</span></div>
+        </div>
+        <div class="card" id="card-3-17" data-keywords="内置数据类型 &amp;lt;!-- 字符串: xs:string, xs:token, xs:normalizedString --&amp;gt; &amp;lt;!-- 数值: xs:integer, xs:int, xs:decimal, xs:float, xs:double --&amp;gt; &amp;lt;!-- 日期: xs:date, xs:time, xs:dateTime --&amp;gt; &amp;lt;!-- 其他: xs:boolean, xs:anyURI, xs:ID, xs:IDREF --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">内置数据类型</span>
+            <span class="card-ver">XSD 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 字符串: xs:string, xs:token, xs:normalizedString --&gt;</span>
+<span class="comment">&lt;!-- 数值: xs:integer, xs:int, xs:decimal, xs:float, xs:double --&gt;</span>
+<span class="comment">&lt;!-- 日期: xs:date, xs:time, xs:dateTime --&gt;</span>
+<span class="comment">&lt;!-- 其他: xs:boolean, xs:anyURI, xs:ID, xs:IDREF --&gt;</span></div>
+        </div>
+        <div class="card" id="card-3-18" data-keywords="约束 (restriction) &amp;lt;xs:simpleType name = &quot;ageType&quot; &amp;gt; &amp;lt;xs:restriction base = &quot;xs:integer&quot; &amp;gt; &amp;lt;xs:minInclusive value = &quot;0&quot; /&amp;gt; &amp;lt;xs:maxInclusive value = &quot;150&quot; /&amp;gt; &amp;lt;/xs:restriction&amp;gt; &amp;lt;/xs:simpleType&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">约束 (restriction)</span>
+            <span class="card-ver">XSD 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;xs:simpleType</span> <span class="attr">name</span>=<span class="string">"ageType"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;xs:restriction</span> <span class="attr">base</span>=<span class="string">"xs:integer"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;xs:minInclusive</span> <span class="attr">value</span>=<span class="string">"0"</span><span class="tag">/&gt;</span>
+    <span class="tag">&lt;xs:maxInclusive</span> <span class="attr">value</span>=<span class="string">"150"</span><span class="tag">/&gt;</span>
+  <span class="tag">&lt;/xs:restriction&gt;</span>
+<span class="tag">&lt;/xs:simpleType&gt;</span></div>
+        </div>
+        <div class="card" id="card-3-19" data-keywords="Schema vs DTD &amp;lt;!-- Schema: 支持数据类型, 命名空间, 扩展性强 --&amp;gt; &amp;lt;!-- DTD: 简单, 但不支持类型, 不支持命名空间 --&amp;gt; &amp;lt;!-- Schema 本身也是 XML, DTD 不是 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">Schema vs DTD</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- Schema: 支持数据类型, 命名空间, 扩展性强 --&gt;</span>
+<span class="comment">&lt;!-- DTD: 简单, 但不支持类型, 不支持命名空间 --&gt;</span>
+<span class="comment">&lt;!-- Schema 本身也是 XML, DTD 不是 --&gt;</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、XPath</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-20" data-keywords="路径表达式 // /bookstore/book[1] → 第一本书 // /bookstore/book[last()] → 最后一本 // /bookstore/book[price&amp;gt;35] → 价格&gt;35的书 // /bookstore/book/title | //price → 并集 // //title[@lang='en'] → 属性 lang='en' 的 title // /bookstore/book[position()&amp;lt;3] → 前两本">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">路径表达式</span>
+            <span class="card-ver">XPath 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">// /bookstore/book[1]              → 第一本书</span>
+<span class="comment">// /bookstore/book[last()]         → 最后一本</span>
+<span class="comment">// /bookstore/book[price&gt;35]       → 价格>35的书</span>
+<span class="comment">// /bookstore/book/title | //price → 并集</span>
+<span class="comment">// //title[@lang='en']             → 属性 lang='en' 的 title</span>
+<span class="comment">// /bookstore/book[position()&lt;3]   → 前两本</span></div>
+        </div>
+        <div class="card" id="card-4-21" data-keywords="XPath 轴 (Axes) // ancestor::* → 所有祖先 // child::* → 所有子元素 // descendant::* → 所有后代 // following::* → 之后的所有节点 // preceding::* → 之前的所有节点 // parent::* → 父节点 // attribute::* → 所有属性">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title">XPath 轴 (Axes)</span>
+            <span class="card-ver">XPath 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">// ancestor::*     → 所有祖先</span>
+<span class="comment">// child::*        → 所有子元素</span>
+<span class="comment">// descendant::*   → 所有后代</span>
+<span class="comment">// following::*    → 之后的所有节点</span>
+<span class="comment">// preceding::*    → 之前的所有节点</span>
+<span class="comment">// parent::*       → 父节点</span>
+<span class="comment">// attribute::*    → 所有属性</span></div>
+        </div>
+        <div class="card" id="card-4-22" data-keywords="XPath 函数 // count(//book) → 节点数 // string(/book/title) → 字符串值 // concat('a','b') → 字符串拼接 // contains(title, 'XML') → 包含判断 // starts-with(name, 'A') → 前缀判断 // substring(str, 1, 3) → 子串 // sum(//price) → 求和">
+          <div class="card-head">
+            <span class="card-num">22</span>
+            <span class="card-title">XPath 函数</span>
+            <span class="card-ver">XPath 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">// count(//book)              → 节点数</span>
+<span class="comment">// string(/book/title)        → 字符串值</span>
+<span class="comment">// concat('a','b')            → 字符串拼接</span>
+<span class="comment">// contains(title, 'XML')     → 包含判断</span>
+<span class="comment">// starts-with(name, 'A')     → 前缀判断</span>
+<span class="comment">// substring(str, 1, 3)       → 子串</span>
+<span class="comment">// sum(//price)               → 求和</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、XSLT</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-23" data-keywords="XSLT 基础模板 &amp;lt;?xml version = &quot;1.0&quot; ?&amp;gt; &amp;lt;xsl:stylesheet version = &quot;1.0&quot; xmlns:xsl = &quot;http://www.w3.org/1999/XSL/Transform&quot; &amp;gt; &amp;lt;xsl:template match = &quot;/&quot; &amp;gt; &amp;lt;html&amp;gt;&amp;lt;body&amp;gt; &amp;lt;h2&amp;gt; &amp;lt;xsl:value-of select = &quot;//title&quot; /&amp;gt; &amp;lt;/h2&amp;gt; &amp;lt;/body&amp;gt;&amp;lt;/html&amp;gt; &amp;lt;/xsl:template&amp;gt; &amp;lt;/xsl:stylesheet&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">23</span>
+            <span class="card-title">XSLT 基础模板</span>
+            <span class="card-ver">XSLT 1.0</span>
+          </div>
+          <div class="card-code"><span class="tag">&lt;?xml</span> <span class="attr">version</span>=<span class="string">"1.0"</span><span class="tag">?&gt;</span>
+<span class="tag">&lt;xsl:stylesheet</span> <span class="attr">version</span>=<span class="string">"1.0"</span>
+  <span class="attr">xmlns:xsl</span>=<span class="string">"http://www.w3.org/1999/XSL/Transform"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;xsl:template</span> <span class="attr">match</span>=<span class="string">"/"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;html&gt;&lt;body&gt;</span>
+      <span class="tag">&lt;h2&gt;</span><span class="tag">&lt;xsl:value-of</span> <span class="attr">select</span>=<span class="string">"//title"</span><span class="tag">/&gt;</span><span class="tag">&lt;/h2&gt;</span>
+    <span class="tag">&lt;/body&gt;&lt;/html&gt;</span>
+  <span class="tag">&lt;/xsl:template&gt;</span>
+<span class="tag">&lt;/xsl:stylesheet&gt;</span></div>
+        </div>
+        <div class="card" id="card-5-24" data-keywords="常用 XSLT 元素 &amp;lt;!-- xsl:value-of → 输出节点值 --&amp;gt; &amp;lt;!-- xsl:for-each → 循环 --&amp;gt; &amp;lt;!-- xsl:if → 条件 --&amp;gt; &amp;lt;!-- xsl:choose/when/otherwise → 多条件 --&amp;gt; &amp;lt;!-- xsl:sort → 排序 --&amp;gt; &amp;lt;!-- xsl:apply-templates → 应用模板 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">24</span>
+            <span class="card-title">常用 XSLT 元素</span>
+            <span class="card-ver">XSLT 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- xsl:value-of  → 输出节点值 --&gt;</span>
+<span class="comment">&lt;!-- xsl:for-each  → 循环 --&gt;</span>
+<span class="comment">&lt;!-- xsl:if        → 条件 --&gt;</span>
+<span class="comment">&lt;!-- xsl:choose/when/otherwise → 多条件 --&gt;</span>
+<span class="comment">&lt;!-- xsl:sort      → 排序 --&gt;</span>
+<span class="comment">&lt;!-- xsl:apply-templates → 应用模板 --&gt;</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、XML 解析方式</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-25" data-keywords="DOM 解析 &amp;lt;!-- 将 XML 整个加载到内存, 构建树结构 --&amp;gt; &amp;lt;!-- 优点: 可随机访问任意节点, 可修改 --&amp;gt; &amp;lt;!-- 缺点: 内存占用大, 不适合大文件 --&amp;gt; &amp;lt;!-- API: Document, Element, Node, NodeList --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">25</span>
+            <span class="card-title">DOM 解析</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 将 XML 整个加载到内存, 构建树结构 --&gt;</span>
+<span class="comment">&lt;!-- 优点: 可随机访问任意节点, 可修改 --&gt;</span>
+<span class="comment">&lt;!-- 缺点: 内存占用大, 不适合大文件 --&gt;</span>
+<span class="comment">&lt;!-- API: Document, Element, Node, NodeList --&gt;</span></div>
+        </div>
+        <div class="card" id="card-6-26" data-keywords="SAX 解析 &amp;lt;!-- 事件驱动, 顺序读取, 不建树 --&amp;gt; &amp;lt;!-- 优点: 内存占用小, 速度快 --&amp;gt; &amp;lt;!-- 缺点: 只能向前读, 不能修改 --&amp;gt; &amp;lt;!-- 回调: startElement, endElement, characters --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">26</span>
+            <span class="card-title">SAX 解析</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 事件驱动, 顺序读取, 不建树 --&gt;</span>
+<span class="comment">&lt;!-- 优点: 内存占用小, 速度快 --&gt;</span>
+<span class="comment">&lt;!-- 缺点: 只能向前读, 不能修改 --&gt;</span>
+<span class="comment">&lt;!-- 回调: startElement, endElement, characters --&gt;</span></div>
+        </div>
+        <div class="card" id="card-6-27" data-keywords="StAX (拉式解析) &amp;lt;!-- 类似 SAX 但由程序主动拉取事件 --&amp;gt; &amp;lt;!-- 优点: 比 SAX 更易控制 --&amp;gt; &amp;lt;!-- Java: XMLStreamReader, XMLEventReader --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">27</span>
+            <span class="card-title">StAX (拉式解析)</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 类似 SAX 但由程序主动拉取事件 --&gt;</span>
+<span class="comment">&lt;!-- 优点: 比 SAX 更易控制 --&gt;</span>
+<span class="comment">&lt;!-- Java: XMLStreamReader, XMLEventReader --&gt;</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-7">
+      <button class="section-head">
+        <span class="icon">7</span>
+        <span class="title">七、常见XML应用</span>
+        <span class="count">7 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-7-28" data-keywords="XHTML &amp;lt;!-- HTML 的 XML 化版本, 严格符合 XML 规则 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">28</span>
+            <span class="card-title">XHTML</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- HTML 的 XML 化版本, 严格符合 XML 规则 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-7-29" data-keywords="SVG &amp;lt;!-- 可缩放矢量图形, 基于 XML --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">29</span>
+            <span class="card-title">SVG</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 可缩放矢量图形, 基于 XML --&gt;</span></div>
+        </div>
+        <div class="card" id="card-7-30" data-keywords="RSS / Atom &amp;lt;!-- 内容聚合格式, 基于 XML --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">30</span>
+            <span class="card-title">RSS / Atom</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 内容聚合格式, 基于 XML --&gt;</span></div>
+        </div>
+        <div class="card" id="card-7-31" data-keywords="SOAP &amp;lt;!-- Web Service 协议, 基于 XML --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">31</span>
+            <span class="card-title">SOAP</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- Web Service 协议, 基于 XML --&gt;</span></div>
+        </div>
+        <div class="card" id="card-7-32" data-keywords="AndroidManifest &amp;lt;!-- Android 应用配置文件, 基于 XML --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">32</span>
+            <span class="card-title">AndroidManifest</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- Android 应用配置文件, 基于 XML --&gt;</span></div>
+        </div>
+        <div class="card" id="card-7-33" data-keywords="pom.xml (Maven) &amp;lt;!-- Java 项目构建配置, 基于 XML --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">33</span>
+            <span class="card-title">pom.xml (Maven)</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- Java 项目构建配置, 基于 XML --&gt;</span></div>
+        </div>
+        <div class="card" id="card-7-34" data-keywords="web.xml &amp;lt;!-- Java Web 应用部署描述符 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">34</span>
+            <span class="card-title">web.xml</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- Java Web 应用部署描述符 --&gt;</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-8">
+      <button class="section-head">
+        <span class="icon">8</span>
+        <span class="title">八、常见Bug与陷阱</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-8-35" data-keywords="特殊字符未转义 &amp;lt;!-- &amp;lt; 必须写成 &amp;amp;lt; --&amp;gt; &amp;lt;!-- &amp;amp; 必须写成 &amp;amp;amp; --&amp;gt; &amp;lt;!-- 或用 CDATA 包裹 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">35</span>
+            <span class="card-title">特殊字符未转义</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- &lt; 必须写成 &amp;lt; --&gt;</span>
+<span class="comment">&lt;!-- &amp; 必须写成 &amp;amp; --&gt;</span>
+<span class="comment">&lt;!-- 或用 CDATA 包裹 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-8-36" data-keywords="编码不匹配 &amp;lt;!-- 声明 UTF-8 但文件实际是 GBK → 解析错误 --&amp;gt; &amp;lt;!-- 始终用 UTF-8, 并确保声明与实际一致 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">36</span>
+            <span class="card-title">编码不匹配</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 声明 UTF-8 但文件实际是 GBK → 解析错误 --&gt;</span>
+<span class="comment">&lt;!-- 始终用 UTF-8, 并确保声明与实际一致 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-8-37" data-keywords="BOM 头问题 &amp;lt;!-- UTF-8 BOM (EF BB BF) 在声明前会导致解析失败 --&amp;gt; &amp;lt;!-- 用不带 BOM 的 UTF-8 编码 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">37</span>
+            <span class="card-title">BOM 头问题</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- UTF-8 BOM (EF BB BF) 在声明前会导致解析失败 --&gt;</span>
+<span class="comment">&lt;!-- 用不带 BOM 的 UTF-8 编码 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-8-38" data-keywords="空白敏感 &amp;lt;!-- XML 保留空白字符, 不像 HTML --&amp;gt; &amp;lt;!-- 格式化时可能引入意外的换行和空格 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">38</span>
+            <span class="card-title">空白敏感</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- XML 保留空白字符, 不像 HTML --&gt;</span>
+<span class="comment">&lt;!-- 格式化时可能引入意外的换行和空格 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-8-39" data-keywords="命名空间前缀未声明 &amp;lt;!-- 使用 ns:tag 前必须 xmlns:ns=&quot;uri&quot; --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">39</span>
+            <span class="card-title">命名空间前缀未声明</span>
+            <span class="card-ver">XML 1.0</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 使用 ns:tag 前必须 xmlns:ns="uri" --&gt;</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="section open" id="sect-9">
+      <button class="section-head">
+        <span class="icon">9</span>
+        <span class="title">九、编程建议</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-9-40" data-keywords="使用 UTF-8 编码 &amp;lt;!-- 统一编码, 避免乱码问题 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">40</span>
+            <span class="card-title">使用 UTF-8 编码</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 统一编码, 避免乱码问题 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-9-41" data-keywords="用 Schema 而非 DTD &amp;lt;!-- Schema 类型更丰富, 支持命名空间 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">41</span>
+            <span class="card-title">用 Schema 而非 DTD</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- Schema 类型更丰富, 支持命名空间 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-9-42" data-keywords="大文件用 SAX/StAX &amp;lt;!-- 避免 DOM 的内存问题 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">42</span>
+            <span class="card-title">大文件用 SAX/StAX</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 避免 DOM 的内存问题 --&gt;</span></div>
+        </div>
+        <div class="card" id="card-9-43" data-keywords="验证 XML &amp;lt;!-- 使用验证解析器确保数据正确性 --&amp;gt; &amp;lt;!-- Java: DocumentBuilder.setValidating(true) --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">43</span>
+            <span class="card-title">验证 XML</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- 使用验证解析器确保数据正确性 --&gt;</span>
+<span class="comment">&lt;!-- Java: DocumentBuilder.setValidating(true) --&gt;</span></div>
+        </div>
+        <div class="card" id="card-9-44" data-keywords="XML 安全 &amp;lt;!-- XXE (XML外部实体注入) 攻击 --&amp;gt; &amp;lt;!-- 解析时禁用外部实体和 DTD 处理 --&amp;gt; &amp;lt;!-- 防止 Billion Laughs 攻击 --&amp;gt;">
+          <div class="card-head">
+            <span class="card-num">44</span>
+            <span class="card-title">XML 安全</span>
+            <span class="card-ver">-</span>
+          </div>
+          <div class="card-code"><span class="comment">&lt;!-- XXE (XML外部实体注入) 攻击 --&gt;</span>
+<span class="comment">&lt;!-- 解析时禁用外部实体和 DTD 处理 --&gt;</span>
+<span class="comment">&lt;!-- 防止 Billion Laughs 攻击 --&gt;</span></div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) {
+      searchClear.classList.add('visible');
+    } else {
+      searchClear.classList.remove('visible');
+    }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) {
+        section.classList.remove('open');
+      } else if (q) {
+        section.classList.add('open');
+      } else {
+        if (section === firstSection) section.classList.add('open');
+        else section.classList.remove('open');
+      }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+
+</body></html>
