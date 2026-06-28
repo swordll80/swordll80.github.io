@@ -1,11 +1,5 @@
 [
   {
-    "id": "home",
-    "title": "首页",
-    "file": "index.html",
-    "children": []
-  },
-  {
     "id": "pmqxigdfjik4e8",
     "title": "编程",
     "file": "programming.html",
