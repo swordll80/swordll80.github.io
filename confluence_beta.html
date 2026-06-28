@@ -609,6 +609,9 @@
       /* When toolbar is toggled visible on mobile */
       body.toolbar-visible .toolbar.ribbon { display: flex; }
       body.toolbar-visible .tree-actions { display: grid; }
+
+      /* Hide page title and filename inputs on mobile */
+      .page-meta { display: none; }
     }
 
     /* ---- Mobile TOC Panel ---- */
@@ -1328,11 +1331,8 @@
             var name = attr.name.toLowerCase();
             var value = attr.value;
             if (name.indexOf('on') === 0) {
-              // Preserve onclick on .section-head buttons for standalone pages (e.g., c.html)
-              // They use safe inline handlers like: this.parentElement.classList.toggle('open')
-              if (name === 'onclick' && el.classList.contains('section-head')) {
-                return;
-              }
+              // Strip all inline event handlers; the editor uses event delegation
+              // (click handler on .editor) to handle .section-head toggle, etc.
               el.removeAttribute(attr.name);
               return;
             }
