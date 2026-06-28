@@ -1,0 +1,54 @@
+- generic [ref=e3]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - link "识典古籍" [ref=e7] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e8]:
+        - generic [ref=e9]:
+          - generic [ref=e10]:
+            - heading "聊斋志异" [level=1] [ref=e11]
+            - generic [ref=e159]: 精校
+            - generic [ref=e161] [cursor=pointer]: 译文
+          - generic [ref=e12]:
+            - text: 聊斋志异
+            - generic [ref=e163]: 精校
+            - generic [ref=e165] [cursor=pointer]: 译文
+        - generic [ref=e13]:
+          - generic "[清] 蒲松龄 撰" [ref=e14]
+          - img [ref=e166] [cursor=pointer]:
+            - img [ref=e167]
+    - generic [ref=e15]:
+      - generic [ref=e172]:
+        - generic [ref=e174] [cursor=pointer]: 下载APP
+        - dialog [ref=e176]:
+          - generic [ref=e180]:
+            - img [ref=e182]
+            - generic [ref=e185]: 随时随地 查阅古籍 扫码下载APP
+            - img [ref=e187] [cursor=pointer]
+          - img [ref=e190]
+      - generic [ref=e194] [cursor=pointer]: 加入书架
+      - img [ref=e198] [cursor=pointer]:
+        - img [ref=e199]
+      - img [ref=e205] [cursor=pointer]:
+        - img [ref=e206]
+      - img [ref=e212]:
+        - img [ref=e213]
+      - img [ref=e219]:
+        - img [ref=e220]
+      - img [ref=e225]:
+        - img [ref=e226]
+      - img [ref=e231] [cursor=pointer]
+      - generic [ref=e234]:
+        - img [ref=e236] [cursor=pointer]
+        - img [ref=e239] [cursor=pointer]
+      - img [ref=e244] [cursor=pointer]:
+        - img [ref=e245]
+      - link "书库" [ref=e16] [cursor=pointer]:
+        - /url: /library
+        - button "书库" [ref=e17]:
+          - generic: 书库
+      - button "登录" [ref=e250] [cursor=pointer]:
+        - generic: 登录
+  - generic [ref=e251]:
+    - img "数据异常，请刷新" [ref=e252]
+    - generic [ref=e253]: 数据异常，请刷新

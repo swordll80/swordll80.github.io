@@ -1,6 +1,5 @@
 <!doctype html>
-<html lang="zh-CN">
-<head>
+<html lang="zh-CN"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>古文</title>
@@ -47,14 +46,22 @@
 </head>
 <body>
 <div class="topbar"><h1>古文</h1><div class="search-wrap"><input type="text" id="searchInput" placeholder="搜索知识点..."><button class="search-clear" id="searchClear" title="清除">✕</button></div><span class="result-count" id="resultCount">1 条</span></div>
-<div class="container" id="cardContainer">
-<div class="section" id="sect-1"><button class="section-head" onclick="this.parentElement.classList.toggle('open')"><span class="icon">1</span><span class="title">古文</span><span class="count">1 条</span><span class="arrow">▼</span></button><div class="section-body"><div class="card" id="card-1-1" data-keywords=" # 古文
+<div class="container" id="cardContainer"><div class="section open" id="sect-1"><button class="section-head" onclick="this.parentElement.classList.toggle('open')"><span class="icon">1</span><span class="title">古文</span><span class="count">1 条</span><span class="arrow">▼</span></button><div class="section-body"><div class="card" id="card-1-1" data-keywords=" # 古文
 
-开始编写内容…"><p># 古文<br><br>开始编写内容…</p></div></div></div>
-</div>
+测试"><p># 古文<br><br>测试</p></div></div></div></div>
 <button class="back-top" id="backTop" title="回到顶部">↑</button>
 <script>
 (function(){var q=document.getElementById("searchInput"),c=document.getElementById("searchClear"),r=document.getElementById("resultCount"),cards=document.querySelectorAll(".card"),sections=document.querySelectorAll(".section"),back=document.getElementById("backTop");function search(){var v=q.value.trim().toLowerCase(),count=0;cards.forEach(function(card){if(!v){card.classList.remove("hidden");count++;return;}var kw=(card.getAttribute("data-keywords")||"").toLowerCase();var ok=kw.indexOf(v)>=0;card.classList.toggle("hidden",!ok);if(ok)count++;});r.textContent=(v?count+"/":"")+cards.length+" 条";c.classList.toggle("visible",!!v);sections.forEach(function(s){var vis=s.querySelectorAll(".card:not(.hidden)");if(v)s.classList.add("open");else s.classList.remove("open");});}q.addEventListener("input",search);c.addEventListener("click",function(){q.value="";search();q.focus();});window.addEventListener("scroll",function(){back.classList.toggle("visible",window.scrollY>300);});back.addEventListener("click",function(){window.scrollTo({top:0,behavior:"smooth"});});sections.forEach(function(s){var btn=s.querySelector(".section-head");if(btn)btn.addEventListener("click",function(){s.classList.toggle("open");});});var first=sections[0];if(first&&!q.value)first.classList.add("open");})();
 </script>
-</body>
-</html>
+
+
+
+
+
+
+
+
+
+
+
+</body></html>

@@ -48,15 +48,21 @@
     "file": "古文.html",
     "children": [
       {
-        "id": "pmqxjwjadqhufg",
+        "id": "pmqxtos0iv7ms8",
         "title": "聊斋志异",
         "file": "聊斋志异.html",
         "children": []
       },
       {
-        "id": "pmqxk7ariwmnfu",
-        "title": "子不语",
-        "file": "子不语.html",
+        "id": "pmqxtp9k4kcrz6",
+        "title": "搜神记",
+        "file": "搜神记.html",
+        "children": []
+      },
+      {
+        "id": "pmqxtpgdb6clzv",
+        "title": "太平广记",
+        "file": "太平广记.html",
         "children": []
       }
     ]

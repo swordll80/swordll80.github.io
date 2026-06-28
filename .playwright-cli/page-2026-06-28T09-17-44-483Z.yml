@@ -1,0 +1,149 @@
+- generic [ref=e3]:
+  - generic [ref=e5]:
+    - generic [ref=e6]:
+      - link "识典古籍" [ref=e7] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e8]:
+        - heading "聊斋志异" [level=1] [ref=e11]
+        - generic "[清] 蒲松龄 撰" [ref=e13]
+    - link "书库" [ref=e15] [cursor=pointer]:
+      - /url: /library
+      - button "书库" [ref=e16]:
+        - generic: 书库
+  - generic [ref=e18]:
+    - complementary:
+      - img [ref=e19]
+    - main [ref=e21]:
+      - article [ref=e22]:
+        - heading "第一卷" [level=4] [ref=e23]
+        - paragraph [ref=e24]: 考城隍
+        - paragraph [ref=e25]: 瞳人语
+        - paragraph [ref=e26]: 画壁
+        - paragraph [ref=e27]: 种梨
+        - paragraph [ref=e28]: 劳山道士
+        - paragraph [ref=e29]: 长清僧
+        - paragraph [ref=e30]: 狐嫁女
+        - paragraph [ref=e31]: 娇娜
+        - paragraph [ref=e32]: 妖术
+        - paragraph [ref=e33]: 叶生
+        - paragraph [ref=e34]: 成仙
+        - paragraph [ref=e35]: 王成
+        - paragraph [ref=e36]: 青凤
+        - paragraph [ref=e37]: 画皮
+        - paragraph [ref=e38]: 贾儿
+        - paragraph [ref=e39]: 董生
+        - paragraph [ref=e40]: 陆判
+        - button "下一篇" [ref=e42] [cursor=pointer]:
+          - link "下一篇" [ref=e43]:
+            - /url: /book/XYXLZZY/chapter/1lzu4928m1a8r
+      - button "下一篇" [ref=e51] [cursor=pointer]:
+        - link "下一篇" [ref=e52]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m1a8r
+    - complementary [ref=e68]:
+      - generic [ref=e74]:
+        - link "序" [ref=e78] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1l83hhrrps5k4
+        - generic [ref=e79] [cursor=pointer]:
+          - img [ref=e81]
+          - link "聊斋志异题词" [ref=e85]:
+            - /url: /book/XYXLZZY/chapter/1l6393cq4k4l0
+        - generic [ref=e86] [cursor=pointer]:
+          - img [ref=e88]
+          - link "聊斋志异目录" [ref=e92]:
+            - /url: /book/XYXLZZY/chapter/1l6393et3v4lc
+        - link "第一卷" [ref=e96] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m0xln
+        - link "第二卷" [ref=e100] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m1a8r
+        - link "第三卷" [ref=e104] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m1mvv
+        - link "第四卷" [ref=e108] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m1ziz
+        - link "第五卷" [ref=e112] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m2c63
+        - link "第六卷" [ref=e116] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m2ot7
+        - link "第七卷" [ref=e120] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m31gb
+        - link "第八卷" [ref=e124] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m3e3f
+        - link "第九卷" [ref=e128] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m3qqj
+        - link "第十卷" [ref=e132] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m43dn
+        - link "第十一卷" [ref=e136] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m4g0r
+        - link "第十二卷" [ref=e140] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m4snv
+        - link "第十三卷" [ref=e144] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m55az
+        - link "第十四卷" [ref=e148] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m5hy3
+        - link "第十五卷" [ref=e152] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m5ul7
+        - link "第十六卷" [ref=e156] [cursor=pointer]:
+          - /url: /book/XYXLZZY/chapter/1lzu4928m678b
+        - generic [ref=e157] [cursor=pointer]:
+          - img [ref=e159]
+          - link "聊斋志异卷一" [ref=e163]:
+            - /url: /book/XYXLZZY/chapter/1l6393j2mdyy0
+        - generic [ref=e164] [cursor=pointer]:
+          - img [ref=e166]
+          - link "聊斋志异卷二" [ref=e170]:
+            - /url: /book/XYXLZZY/chapter/1l5sijas3z6ru
+        - generic [ref=e171] [cursor=pointer]:
+          - img [ref=e173]
+          - link "聊斋志异卷三" [ref=e177]:
+            - /url: /book/XYXLZZY/chapter/1l6393v1kzlkw
+        - generic [ref=e178] [cursor=pointer]:
+          - img [ref=e180]
+          - link "聊斋志异卷四" [ref=e184]:
+            - /url: /book/XYXLZZY/chapter/1l6393zo7vaxu
+        - generic [ref=e185] [cursor=pointer]:
+          - img [ref=e187]
+          - link "聊斋志异卷五" [ref=e191]:
+            - /url: /book/XYXLZZY/chapter/1l63945trctns
+        - generic [ref=e192] [cursor=pointer]:
+          - img [ref=e194]
+          - link "聊斋志异卷六" [ref=e198]:
+            - /url: /book/XYXLZZY/chapter/1l6394asqfx9k
+        - generic [ref=e199] [cursor=pointer]:
+          - img [ref=e201]
+          - link "聊斋志异卷七" [ref=e205]:
+            - /url: /book/XYXLZZY/chapter/1l6394h00b5ds
+        - generic [ref=e206] [cursor=pointer]:
+          - img [ref=e208]
+          - link "聊斋志异卷八" [ref=e212]:
+            - /url: /book/XYXLZZY/chapter/1l6394md7jim8
+        - generic [ref=e213] [cursor=pointer]:
+          - img [ref=e215]
+          - link "聊斋志异卷九" [ref=e219]:
+            - /url: /book/XYXLZZY/chapter/1l6394stzsbhe
+        - generic [ref=e220] [cursor=pointer]:
+          - img [ref=e222]
+          - link "聊斋志异卷十" [ref=e226]:
+            - /url: /book/XYXLZZY/chapter/1l3omb1o6al9g
+        - generic [ref=e227] [cursor=pointer]:
+          - img [ref=e229]
+          - link "聊斋志异卷十一" [ref=e233]:
+            - /url: /book/XYXLZZY/chapter/1l3omb8v1o8xr
+        - generic [ref=e234] [cursor=pointer]:
+          - img [ref=e236]
+          - link "聊斋志异卷十二" [ref=e240]:
+            - /url: /book/XYXLZZY/chapter/1l3ombgkpse93
+        - generic [ref=e241] [cursor=pointer]:
+          - img [ref=e243]
+          - link "聊斋志异卷十三" [ref=e247]:
+            - /url: /book/XYXLZZY/chapter/1l3ombodsf6t2
+        - generic [ref=e248] [cursor=pointer]:
+          - img [ref=e250]
+          - link "聊斋志异卷十四" [ref=e254]:
+            - /url: /book/XYXLZZY/chapter/1l3ombvochell
+        - generic [ref=e255] [cursor=pointer]:
+          - img [ref=e257]
+          - link "聊斋志异卷十五" [ref=e261]:
+            - /url: /book/XYXLZZY/chapter/1l3omc42sac6c
+        - generic [ref=e262] [cursor=pointer]:
+          - img [ref=e264]
+          - link "聊斋志异卷十六" [ref=e268]:
+            - /url: /book/XYXLZZY/chapter/1l3omcbjcmlvj
