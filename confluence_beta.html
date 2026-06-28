@@ -226,6 +226,12 @@
   (function() {
     'use strict';
 
+    // ─── Mobile redirect ─────────────────────────
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || window.innerWidth < 768) {
+      window.location.replace('confluence/read.html');
+      return;
+    }
+
     // ─── State ──────────────────────────────────
     var STORAGE_KEY = 'localConfluence.tree.v1';
     var SELECTED_KEY = 'localConfluence.selectedId.v1';
@@ -385,6 +391,8 @@
           return { text: await f.text(), lastModified: f.lastModified||Date.now() };
         } catch(e) {}
       }
+      // Skip fetch for file:// protocol (will fail or return stale data)
+      if (window.location.protocol === 'file:') return null;
       try {
         var res = await fetch('confluence/' + encodeURIComponent(fileName).replace(/%2F/g,'/') + '?v=' + Date.now(), {cache:'no-store'});
         if (res.ok) {
@@ -398,16 +406,51 @@
 
     async function loadPageFile(node) {
       var result = await getFileText(node.file);
+      // Check localStorage cache for fallback
+      var cachedMd = null;
+      var cachedHtml = null;
+      try {
+        cachedMd = localStorage.getItem('localConfluence.cache.md.' + node.file);
+        cachedHtml = localStorage.getItem('localConfluence.cache.html.' + node.file);
+      } catch(e) {}
+
       if (!result) {
-        loadedHtml = '';
-        loadedUsesConfluenceContent = true;
-        loadedFileLastModified = 0;
-        mdEditor.value = '# ' + (node.title||'新页面') + '\n\n开始编写内容…\n';
-        currentFile.textContent = node.file;
-        setStatus('新文件：' + node.file);
+        // No file on disk — try cache first, then template
+        if (cachedMd && cachedHtml) {
+          loadedHtml = cachedHtml;
+          loadedFileLastModified = 0;
+          loadedUsesConfluenceContent = true;
+          mdEditor.value = cachedMd;
+          currentFile.textContent = node.file;
+          setStatus('📦 已从缓存加载：' + node.file + '（文件尚未写入磁盘）');
+        } else {
+          loadedHtml = '';
+          loadedUsesConfluenceContent = true;
+          loadedFileLastModified = 0;
+          mdEditor.value = '# ' + (node.title||'新页面') + '\n\n开始编写内容…\n';
+          currentFile.textContent = node.file;
+          setStatus('新文件：' + node.file);
+        }
       } else {
         loadedHtml = result.text;
         loadedFileLastModified = result.lastModified||Date.now();
+        // If cached version is newer than disk, prefer cache
+        if (cachedHtml && (!result.lastModified || (loadedFileLastModified < Date.now() - 1000))) {
+          // Disk file might be stale — check if cache has different content
+          var diskMd = htmlToMarkdown(result.text);
+          if (cachedMd && cachedMd !== diskMd && cachedMd !== '# ' + (node.title||'新页面') + '\n\n开始编写内容…\n') {
+            // Cache has different (non-template) content — use cache
+            loadedHtml = cachedHtml;
+            loadedFileLastModified = Date.now();
+            mdEditor.value = cachedMd;
+            currentFile.textContent = node.file;
+            setStatus('📦 已从缓存加载：' + node.file + '（磁盘文件可能过期）');
+            setDirty(false);
+            updateWordCount();
+            renderPreview();
+            return;
+          }
+        }
         var md = htmlToMarkdown(result.text);
         mdEditor.value = md;
         currentFile.textContent = node.file;
@@ -799,7 +842,16 @@
       setDirty(false);
       loadedFileLastModified = Date.now();
       loadedHtml = html;
-      setStatus('已下载：' + node.file);
+      // Persist MD + HTML to localStorage as fallback cache
+      try {
+        localStorage.setItem('localConfluence.cache.md.' + node.file, md);
+        localStorage.setItem('localConfluence.cache.html.' + node.file, html);
+      } catch(e) {}
+      setStatus('⬇ 已下载：' + node.file + ' — 请将文件放入 confluence/ 目录');
+      // Flash status for attention
+      statusText.style.color = '#d92d20';
+      statusText.style.fontWeight = '700';
+      setTimeout(function() { statusText.style.color = ''; statusText.style.fontWeight = ''; }, 4000);
     }
 
     async function saveCurrentPage() {
@@ -810,6 +862,9 @@
       var html = markdownToFinalHtml(md, title, loadedHtml);
 
       if (!confluenceHandle || !supportsDirectory) {
+        // Ensure tree is persisted to localStorage before download
+        node.file = node.file || uniqueFileName(title);
+        await writeTreeFile();
         downloadCurrentAsHtml();
         return true;
       }
@@ -828,11 +883,17 @@
         loadedHtml = html;
         loadedFileLastModified = Date.now();
         setDirty(false);
-        setStatus('已保存：confluence/' + node.file);
+        // Persist to localStorage cache
+        try {
+          localStorage.setItem('localConfluence.cache.md.' + node.file, md);
+          localStorage.setItem('localConfluence.cache.html.' + node.file, html);
+        } catch(e) {}
+        setStatus('✅ 已保存：confluence/' + node.file);
         currentFile.textContent = node.file;
         return true;
       } catch(e) {
-        setStatus('保存失败：' + (e.message||e));
+        console.error('saveCurrentPage error:', e);
+        setStatus('❌ 目录写入失败，已触发下载：' + node.file + ' (' + (e.message||e) + ')');
         downloadCurrentAsHtml();
         return false;
       }
@@ -1008,7 +1069,9 @@
       var node = current();
       if (node) {
         await loadPageFile(node);
-        if (!confluenceHandle && supportsDirectory) {
+        if (!confluenceHandle && !supportsDirectory) {
+          setStatus('💾 离线模式：修改内容会缓存到浏览器，请定期手动下载文件放入 confluence/ 目录');
+        } else if (!confluenceHandle && supportsDirectory) {
           setStatus('点击授权按钮或按 Ctrl+S 开始。未授权时保存会下载文件。');
         }
       } else {

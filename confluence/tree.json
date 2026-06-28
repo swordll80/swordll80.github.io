@@ -41,5 +41,24 @@
         "children": []
       }
     ]
+  },
+  {
+    "id": "pmqxjuqzqlyjf2",
+    "title": "古文",
+    "file": "古文.html",
+    "children": [
+      {
+        "id": "pmqxjwjadqhufg",
+        "title": "聊斋志异",
+        "file": "聊斋志异.html",
+        "children": []
+      },
+      {
+        "id": "pmqxk7ariwmnfu",
+        "title": "子不语",
+        "file": "子不语.html",
+        "children": []
+      }
+    ]
   }
 ]
