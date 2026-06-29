@@ -3,11 +3,18 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>KML合并工具byYF v0.103</title>
+  <title>KML合并工具byYF v0.105</title>
+  <meta name="theme-color" content="#1677d2">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="YFxGeoStudio">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icons/yfx-icon-192.png">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
 <link rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
   <style>
     * { box-sizing: border-box; }
     html, body, #map { width: 100%; height: 100%; margin: 0; padding: 0; }
@@ -1041,7 +1048,7 @@
 
 
 
-    /* v0.103: track list table shows at most 8 track rows in the visible area. */
+    /* v0.105: track list table shows at most 8 track rows in the visible area. */
     #side.side-open,
     #side:not(.side-collapsed) {
       overflow: hidden !important;
@@ -1053,7 +1060,7 @@
     }
 
 
-    /* v0.103: track list columns use content width; distance is placed at the far left. */
+    /* v0.105: track list columns use content width; distance is placed at the far left. */
     #side.side-open,
     #side:not(.side-collapsed) {
       width: max-content;
@@ -1079,7 +1086,7 @@
     }
 
 
-    /* v0.103: shrink the whole track-list panel to the table, while keeping title content clipped inside it. */
+    /* v0.105: shrink the whole track-list panel to the table, while keeping title content clipped inside it. */
     #side.side-open h1,
     #side:not(.side-collapsed) h1 {
       max-width: 100%;
@@ -1220,7 +1227,14 @@
     };
 
     // 全局 JS 错误兜底：按钮点击、KML 解析、导出等未捕获异常都会进入日志窗口。
+    // iOS/Safari 偶尔会把跨域脚本或系统级异步异常统一上报为 "Script error."，且文件为空、行列为 0。
+    // 这类信息无法定位到本工具代码，通常也不影响使用；降级为 WARN，避免手机端误弹错误日志窗口。
     window.onerror = function(msg, source, line, col, error){
+      var isOpaqueScriptError = String(msg || '') === 'Script error.' && !source && (!line || line === 0) && (!col || col === 0) && !error;
+      if(isOpaqueScriptError){
+        logWarn('浏览器报告了一个不可定位的跨域脚本错误，已忽略。若功能正常，可不用处理。');
+        return true;
+      }
       logError('JS异常：' + msg + '\n文件：' + source + '\n行：' + line + '，列：' + col + '\n' + (error && error.stack ? error.stack : ''));
       return false;
     };
@@ -1229,7 +1243,7 @@
     });
 
     var ICON_PINS={redPin:'pin-red',bluePin:'pin-blue',greenPin:'pin-green',orangePin:'pin-orange',purplePin:'pin-purple',yellowPin:'pin-yellow'};
-    var I18N={zh:{appTitle:'KML合并工具byYF v0.103',trackListLabel:'🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.103',helpText:'<b>功能说明</b>：经典轨迹检索切换；轨迹信息浏览；KML文件编辑合并导出等。<br><b>简单图例</b>：🛤️ 轨迹；└──┘ 比例尺；👁 浏览模式；✏️ 编辑模式。<br><b>联系微信</b>：13972846626 御风@户外',mapLayer:'🗺️',mapModeOutdoor:'户外',mapModeCity:'城市',mapModeSwitch:'切换户外/城市模式',gaode:'高德地形',google:'Google 地形',gaodeOutdoor:'高德地形',googleOutdoor:'Google 地形',gaodeCity:'高德地图',googleCity:'Google 地图',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',confirmDeleteMarker:'确定删除此标记点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图',classicKml:'经典轨迹',classicKmlLoading:'正在读取经典轨迹列表...',classicKmlLoadFailed:'经典轨迹列表读取失败',classicKmlEmpty:'经典轨迹列表为空',classicKmlConfirm:'切换经典轨迹会清空当前数据，是否继续？',classicKmlImported:'经典轨迹已载入',classicKmlTitle:'经典轨迹目录',classicKmlChoose:'选择一个 KML 文件载入。',classicKmlRefresh:'刷新',classicKmlRoot:'参考线路',classicKmlNoKml:'没有找到 KML 文件'},en:{appTitle:'KML Merge Tool by YF v0.103',trackListLabel:'🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.103',helpText:'<b>Features</b>: Classic track search/switching; track information browsing; KML editing, merging and export.<br><b>Simple legend</b>: 🛤️ track; └──┘ scale; 👁 browse mode; ✏️ edit mode.<br><b>WeChat</b>: 13972846626 御风@户外',mapLayer:'🗺️',mapModeOutdoor:'Outdoor',mapModeCity:'City',mapModeSwitch:'Switch outdoor/city mode',gaode:'Amap Terrain',google:'Google Terrain',gaodeOutdoor:'Amap Terrain',googleOutdoor:'Google Terrain',gaodeCity:'Amap Map',googleCity:'Google Map',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',confirmDeleteMarker:'Delete this marker?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart',classicKml:'Classic KML',classicKmlLoading:'Loading classic KML list...',classicKmlLoadFailed:'Failed to load classic KML list',classicKmlEmpty:'Classic KML list is empty',classicKmlConfirm:'Switching to a classic KML will clear current data. Continue?',classicKmlImported:'Classic KML loaded',classicKmlTitle:'Classic KML Directory',classicKmlChoose:'Choose a KML file to load.',classicKmlRefresh:'Refresh',classicKmlRoot:'Reference Routes',classicKmlNoKml:'No KML files found'}};
+    var I18N={zh:{appTitle:'KML合并工具byYF v0.105',trackListLabel:'🛤️',drawTrack:'手绘轨迹',need2:'至少需要 2 个轨迹点',undo:'撤销',redo:'重做',importKml:'导入 KML',exportKml:'导出 KML',exportMergedKml:'合并导出 KML',clear:'清空',locate:'当前位置',mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',home:'主页',help:'帮助',helpTitle:'KML合并工具byYF v0.105',helpText:'<b>功能说明</b>：经典轨迹检索切换；轨迹信息浏览；KML文件编辑合并导出等。<br><b>简单图例</b>：🛤️ 轨迹；└──┘ 比例尺；👁 浏览模式；✏️ 编辑模式。<br><b>联系微信</b>：13972846626 御风@户外',mapLayer:'🗺️',mapModeOutdoor:'户外',mapModeCity:'城市',mapModeSwitch:'切换户外/城市模式',gaode:'高德地形',google:'Google 地形',gaodeOutdoor:'高德地形',googleOutdoor:'Google 地形',gaodeCity:'高德地图',googleCity:'Google 地图',mode:'模式',coord:'坐标',zoom:'缩放',file:'文件',none:'-',tracks:'轨迹点',lines:'轨迹线路',linePts:'轨迹点',distance:'轨迹距离',ascent:'累计上升',descent:'累计下降',altitude:'海拔',time:'时间',ptStart:'起点',ptMiddle:'中间点',ptEnd:'终点',duration:'线路耗时',totalDuration:'总耗时',elapsedDuration:'已用耗时',lineTotalDist:'线路总距',distFromStart:'距起点',timeFromStart:'已用耗时',markPoints:'标记点',gpsPoints:'GPS采样点',total:'合计',name:'名称',iconStyle:'图标',delete:'删除',cancel:'取消',save:'保存',track:'轨迹点',line:'轨迹线路',added:'已添加',imported:'已导入',exported:'已导出 KML',noData:'没有可导出的数据',importFailed:'KML 解析失败',confirmClear:'确定清空当前全部数据？',edit:'编辑',lineSaved:'轨迹已保存，共',linePoint:'轨迹点',points:'个点',donate:'支持作者',donateTitle:'支持作者',donateHint:'扫码支持一下，您的鼓励是我继续开发的动力 ❤',close:'关闭',browse:'浏览',tracking:'手绘中',comment:'备注',alreadyImported:'已存在，跳过',skipped:'已跳过',duplicate:'重复导入',confirmDeleteLine:'确定删除此线路及其所有关联点？',confirmDeleteMarker:'确定删除此标记点？',altitudeRange:'海拔范围',validAltitudePoints:'有效海拔点',notEnoughAltitude:'没有足够的海拔数据，无法绘制海拔变化图',classicKml:'经典轨迹',classicKmlLoading:'正在读取经典轨迹列表...',classicKmlLoadFailed:'经典轨迹列表读取失败',classicKmlEmpty:'经典轨迹列表为空',classicKmlConfirm:'切换经典轨迹会清空当前数据，是否继续？',classicKmlImported:'经典轨迹已载入',classicKmlTitle:'经典轨迹目录',classicKmlChoose:'选择一个 KML 文件载入。',classicKmlRefresh:'刷新',classicKmlRoot:'参考线路',classicKmlNoKml:'没有找到 KML 文件'},en:{appTitle:'KML Merge Tool by YF v0.105',trackListLabel:'🛤️',drawTrack:'Draw Track',need2:'At least 2 track points are required',undo:'Undo',redo:'Redo',importKml:'Import KML',exportKml:'Export KML',exportMergedKml:'Merge Export KML',clear:'Clear',locate:'Current Position',mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',home:'Home',help:'Help',helpTitle:'KML Merge Tool by YF v0.105',helpText:'<b>Features</b>: Classic track search/switching; track information browsing; KML editing, merging and export.<br><b>Simple legend</b>: 🛤️ track; └──┘ scale; 👁 browse mode; ✏️ edit mode.<br><b>WeChat</b>: 13972846626 御风@户外',mapLayer:'🗺️',mapModeOutdoor:'Outdoor',mapModeCity:'City',mapModeSwitch:'Switch outdoor/city mode',gaode:'Amap Terrain',google:'Google Terrain',gaodeOutdoor:'Amap Terrain',googleOutdoor:'Google Terrain',gaodeCity:'Amap Map',googleCity:'Google Map',mode:'Mode',coord:'Coord',zoom:'Zoom',file:'File',none:'-',tracks:'Track points',lines:'Track lines',linePts:'Points',distance:'Distance',ascent:'Cum. Ascent',descent:'Cum. Descent',altitude:'Altitude',time:'Time',ptStart:'Start',ptMiddle:'Middle',ptEnd:'End',duration:'Duration',totalDuration:'Total Duration',elapsedDuration:'Elapsed',lineTotalDist:'Line Dist',distFromStart:'From Start',timeFromStart:'Elapsed',markPoints:'Mark Points',gpsPoints:'GPS Points',total:'Total',name:'Name',iconStyle:'Icon',delete:'Delete',cancel:'Cancel',save:'Save',track:'Track point',line:'Track line',added:'Added',imported:'Imported',exported:'KML exported',noData:'No data to export',importFailed:'KML parse failed',confirmClear:'Clear all current data?',edit:'Edit',lineSaved:'Track saved, ',linePoint:'points',points:'pts',donate:'Donate',donateTitle:'Support Author',donateHint:'Scan to support me. Your encouragement keeps me going ❤',close:'Close',browse:'Browse',tracking:'Drawing',comment:'Comment',alreadyImported:'already imported, skipped',skipped:'Skipped',duplicate:'duplicate',confirmDeleteLine:'Delete this line and all its associated points?',confirmDeleteMarker:'Delete this marker?',altitudeRange:'Elevation Range',validAltitudePoints:'Valid Elevation Points',notEnoughAltitude:'Not enough elevation data to draw the elevation chart',classicKml:'Classic KML',classicKmlLoading:'Loading classic KML list...',classicKmlLoadFailed:'Failed to load classic KML list',classicKmlEmpty:'Classic KML list is empty',classicKmlConfirm:'Switching to a classic KML will clear current data. Continue?',classicKmlImported:'Classic KML loaded',classicKmlTitle:'Classic KML Directory',classicKmlChoose:'Choose a KML file to load.',classicKmlRefresh:'Refresh',classicKmlRoot:'Reference Routes',classicKmlNoKml:'No KML files found'}};
     var lang=localStorage.getItem('yfx_lang')||'zh',mode='view',objects=[],lines=[],undoStack=[],redoStack=[],dialogTarget=null,suppressHistory=false,drawingLine=[],trackPolyline=null,selectedLines=new Set(),dlgSelectedIcon='redPin',clickTimer=null,dlgLineTarget=null,dlgLineColor='#ffd23f',dlgLineStartIcon='',dlgLineEndIcon='';
     var locateClickTimer=0,gpsRecording=false,gpsRecordWatchId=null,gpsRecordPoints=[],gpsRecordRawCount=0,gpsRecordStartTime=0,gpsRecordEndTime=0,gpsRecordPolyline=null,gpsRecordStartPoint=null,gpsRecordLastRawPoint=null,locateButtonNormalHtml='';
     var editModeEnabled=localStorage.getItem('yfx_edit_mode')==='1';
@@ -1443,7 +1457,7 @@ var yfxOriginalViewportContent = null;
         if(raw){
           var obj=JSON.parse(raw);
           for(var p in cfg){if(Object.prototype.hasOwnProperty.call(obj,p))cfg[p]=!!obj[p];}
-          // v0.103：旧版本默认只显示“名称、距离、时间”。如果用户本地仍是旧默认配置，自动迁移到新默认：名称、距离、时间、上升、下降、标记点数。
+          // v0.105：旧版本默认只显示“名称、距离、时间”。如果用户本地仍是旧默认配置，自动迁移到新默认：名称、距离、时间、上升、下降、标记点数。
           var legacyDefault = obj && obj.name===true && obj.time===true && obj.ascent===false && obj.descent===false && obj.markPoints===false && obj.gpsPoints===false;
           if(legacyDefault){
             cfg.name=true; cfg.time=true; cfg.ascent=true; cfg.descent=true; cfg.markPoints=true; cfg.gpsPoints=false;
@@ -1983,7 +1997,7 @@ var yfxOriginalViewportContent = null;
       var vh=yfxViewportHeight();
       var rowCount=lines&&lines.length?lines.length:0;
       var maxPanelH=Math.max(132,Math.floor(vh/3));
-      // v0.103：轨迹列表可见范围最多显示 8 条轨迹；超过后只让表格区滚动。
+      // v0.105：轨迹列表可见范围最多显示 8 条轨迹；超过后只让表格区滚动。
       var visibleTrackRows=Math.min(rowCount,8);
       var rowH=24;
       var tableExtraRows=rowCount?2:0; // 表头 + 合计行
@@ -1999,7 +2013,7 @@ var yfxOriginalViewportContent = null;
       if(!isMobileFixedLayout()){
         var table=statsEl?statsEl.querySelector('table'):null;
         var tableW=table?Math.ceil(table.scrollWidth):0;
-        // v0.103：面板宽度跟随可见表格宽度，不再被标题文件名撑到很宽；文件名用省略号显示。
+        // v0.105：面板宽度跟随可见表格宽度，不再被标题文件名撑到很宽；文件名用省略号显示。
         var minSideW=rowCount?236:180;
         var contentW=Math.max(tableW, minSideW-28);
         var sideW=Math.min(maxPanelW,contentW+28);
@@ -2337,21 +2351,73 @@ var yfxOriginalViewportContent = null;
     }
     function makeWorkspaceRecord(){
       var state=snapshot();
+      var isDefaultExample=workspaceLooksLikeEmbeddedExampleState(state);
       return {
         id:WORKSPACE_CURRENT_KEY,
         app:'YFxGeoStudio',
-        version:'v0.103',
+        version:'v0.105',
         schemaVersion:1,
         savedAt:new Date().toISOString(),
+        defaultEmbeddedExample:isDefaultExample,
         settings:{lang:lang,editMode:!!editModeEnabled,coordFixMode:coordFixMode,mapDisplayMode:mapDisplayMode,activeLayerKey:activeLayerKey},
         viewState:getWorkspaceViewState(),
         state:state,
-        summary:{lineCount:(state.lines||[]).length,objectCount:(state.objects||[]).length,file:getFileStatusText()}
+        summary:{lineCount:(state.lines||[]).length,objectCount:(state.objects||[]).length,file:getFileStatusText(),defaultEmbeddedExample:isDefaultExample}
       };
     }
     function workspaceRecordHasData(record){
       var st=record&&(record.state||record);
       return !!(st&&(((st.lines||[]).length>0)||((st.objects||[]).length>0)));
+    }
+    function workspaceRoundValue(v, digits){
+      var n=Number(v);
+      if(!isFinite(n))return '';
+      var m=Math.pow(10,digits||6);
+      return String(Math.round(n*m)/m);
+    }
+    function workspacePointCore(p){
+      if(!p)return '';
+      return [
+        workspaceRoundValue(p.lat,6),
+        workspaceRoundValue(p.lng,6),
+        workspaceRoundValue(p.alt,1),
+        p.time!=null?String(p.time):'',
+        p.name||'',
+        p.ptype||'',
+        p.sourceType||''
+      ].join(',');
+    }
+    function workspaceLineCore(l){
+      if(!l)return '';
+      var pts=(l.points||[]).map(function(p){return [workspaceRoundValue(p.lat,6),workspaceRoundValue(p.lng,6),workspaceRoundValue(p.alt,1),p.time!=null?String(p.time):''].join(',');}).join(';');
+      return [(l.sampleNameKey||l.name||''),(l.points||[]).length,pts].join('|');
+    }
+    function workspaceStateCoreSignature(st){
+      st=st||{};
+      var os=(st.objects||[]).map(workspacePointCore).sort();
+      var ls=(st.lines||[]).map(workspaceLineCore).sort();
+      return JSON.stringify({objects:os,lines:ls});
+    }
+    function workspaceLooksLikeEmbeddedExampleState(st){
+      st=st||{};
+      var ls=st.lines||[], os=st.objects||[];
+      if(ls.length!==3 || os.length!==33)return false;
+      var imported=st.importedFilePaths||[];
+      var file=String(st.file||'');
+      var sampleName=String(typeof EMBEDDED_EXAMPLE_NAME!=='undefined'?EMBEDDED_EXAMPLE_NAME:'TaiyangMtn3TracksEx.kml');
+      var mentionsSample=(file.indexOf(sampleName)>=0)||(imported.length===1&&String(imported[0])===sampleName);
+      if(!mentionsSample)return false;
+      var embeddedLines=0;
+      for(var i=0;i<ls.length;i++){
+        if(ls[i].embeddedExampleLine || ls[i].sampleNameKey)embeddedLines++;
+      }
+      return embeddedLines===3;
+    }
+    function workspaceRecordIsDefaultEmbeddedExample(record){
+      if(!record)return false;
+      if(record.defaultEmbeddedExample===true || (record.summary&&record.summary.defaultEmbeddedExample===true))return true;
+      var st=record.state||record;
+      return workspaceLooksLikeEmbeddedExampleState(st);
     }
     function scheduleWorkspaceAutosave(){
       if(!workspaceAutoSaveReady||!workspaceStartupDone)return;
@@ -2360,6 +2426,10 @@ var yfxOriginalViewportContent = null;
       workspaceSaveTimer=setTimeout(function(){
         var rec;
         try{rec=makeWorkspaceRecord();}catch(e){logWarn('工作区快照生成失败：'+(e&&e.message?e.message:e));return;}
+        if(workspaceRecordIsDefaultEmbeddedExample(rec)){
+          idbDeleteWorkspace().catch(function(){});
+          return;
+        }
         idbPutWorkspace(rec).catch(function(err){logWarn('本地工作区保存失败：'+(err&&err.message?err.message:err));});
       },700);
     }
@@ -2445,6 +2515,11 @@ var yfxOriginalViewportContent = null;
       workspaceAutoSaveReady=false;
       idbGetWorkspace().then(function(record){
         if(record&&workspaceRecordHasData(record)){
+          if(workspaceRecordIsDefaultEmbeddedExample(record)){
+            idbDeleteWorkspace().catch(function(){});
+            loadEmbeddedExampleData();
+            return;
+          }
           return showWorkspaceRestorePrompt(record).then(function(act){
             if(act==='restore'){
               restoreWorkspaceRecord(record);
@@ -5888,7 +5963,7 @@ function cleanImportedSegmentName(name) {
         return;
       }
       var cols=[];
-      // v0.103：列顺序固定为 名称、距离、时间、上升、下降、标记点数、GPS点数；名称隐藏时距离自动成为第一列。
+      // v0.105：列顺序固定为 名称、距离、时间、上升、下降、标记点数、GPS点数；名称隐藏时距离自动成为第一列。
       if(trackListColumns.name)cols.push({key:'name',icon:'🛤️',cls:'line-name-th',title:tr('name')});
       cols.push({key:'distance',icon:'↔',cls:'line-distance-th ico-th',title:tr('distance')});
       if(trackListColumns.time)cols.push({key:'time',icon:'🕒',cls:'num ico-th',title:trackListColumnLabel('time')});
@@ -6114,5 +6189,60 @@ function cleanImportedSegmentName(name) {
   });
 })();
 </script>
+
+<script>
+(function(){
+  function yfxRegisterPwaServiceWorker(){
+    if(!('serviceWorker' in navigator)){
+      if(typeof logWarn === 'function') logWarn('当前浏览器不支持 Service Worker，无法启用 PWA 离线启动。');
+      return;
+    }
+    if(location.protocol !== 'https:' && location.hostname !== 'localhost' && location.hostname !== '127.0.0.1'){
+      if(typeof logWarn === 'function') logWarn('Service Worker 需要 HTTPS 或 localhost，当前环境不会注册 PWA。');
+      return;
+    }
+    navigator.serviceWorker.register('./service-worker.js', {scope:'./'}).then(function(reg){
+      if(typeof logInfo === 'function') logInfo('PWA 离线缓存已注册：' + reg.scope);
+      if(reg && reg.update) setTimeout(function(){ try{ reg.update(); }catch(e){} }, 1500);
+      return navigator.serviceWorker.ready;
+    }).then(function(reg){
+      var sw = reg && reg.active;
+      if(sw && sw.postMessage){
+        sw.postMessage({
+          type:'YFX_CACHE_URLS',
+          urls:[
+            location.href,
+            './manifest.webmanifest',
+            './icons/yfx-icon-192.png',
+            './icons/yfx-icon-512.png',
+            './icons/yfx-maskable-512.png'
+          ]
+        });
+      }
+    }).catch(function(err){
+      if(typeof logWarn === 'function') logWarn('PWA 离线缓存注册失败：' + (err && err.message ? err.message : err));
+    });
+  }
+  if(document.readyState === 'complete') yfxRegisterPwaServiceWorker();
+  else window.addEventListener('load', yfxRegisterPwaServiceWorker);
+
+  window.yfxClearOfflineMapCache = function(){
+    if(!navigator.serviceWorker || !navigator.serviceWorker.controller){
+      if(typeof toast === 'function') toast('离线地图缓存尚未启用');
+      return;
+    }
+    var channel = new MessageChannel();
+    channel.port1.onmessage = function(e){
+      if(e.data && e.data.ok){
+        if(typeof toast === 'function') toast('离线地图缓存已清除');
+      }else{
+        if(typeof toast === 'function') toast('清除离线地图缓存失败');
+      }
+    };
+    navigator.serviceWorker.controller.postMessage({type:'YFX_CLEAR_TILE_CACHE'}, [channel.port2]);
+  };
+})();
+</script>
+
 </body>
 </html>
