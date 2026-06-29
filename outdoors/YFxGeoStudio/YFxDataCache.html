@@ -1,0 +1,723 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+  <title>YFxDataCache v0.2</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+  <style>
+    :root{
+      --bg:rgba(18,24,30,.88);
+      --bd:rgba(255,255,255,.16);
+      --txt:#eef3f7;
+      --muted:#aebdcc;
+      --accent:#1677d2;
+      --warn:#ffcf66;
+      --ok:#55d48b;
+      --danger:#ff6b6b;
+    }
+    *{box-sizing:border-box}
+    html,body,#map{width:100%;height:100%;min-width:320px;min-height:380px;margin:0;padding:0;overflow:hidden}
+    body{font-family:"Microsoft YaHei","Segoe UI",Arial,sans-serif;background:#101418;color:var(--txt);-webkit-text-size-adjust:100%}
+    #map{position:fixed;inset:0;background:#121820}
+    .panel{position:fixed;z-index:1000;background:var(--bg);border:1px solid var(--bd);border-radius:10px;box-shadow:0 10px 34px rgba(0,0,0,.28);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+    button{font:inherit;color:inherit;border:1px solid rgba(255,255,255,.16);border-radius:8px;background:rgba(255,255,255,.08);min-width:40px;height:38px;padding:0 10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;user-select:none}
+    button:hover{background:rgba(80,160,230,.22);border-color:rgba(90,170,240,.55)}
+    button.active{background:var(--accent);border-color:#4aa3ff;color:#fff}
+    button:disabled{opacity:.42;cursor:not-allowed}
+    #toolbar{top:calc(env(safe-area-inset-top,0px) + 8px);left:50%;transform:translateX(-50%);display:flex;gap:6px;align-items:center;padding:6px;width:max-content;max-width:calc(100vw - 12px);overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+    #toolbar::-webkit-scrollbar{display:none}
+    #toolbar button{font-size:18px;width:42px;min-width:42px;height:40px;padding:0}
+    #cacheBar{top:calc(env(safe-area-inset-top,0px) + 62px);left:50%;transform:translateX(-50%);display:none;align-items:center;gap:7px;padding:6px 8px;font-size:13px;white-space:nowrap;max-width:calc(100vw - 12px)}
+    #cacheBar .layer-label{min-width:86px;text-align:center;color:#fff;font-weight:700}
+    #cacheBar .hint{color:var(--muted);font-size:12px;max-width:42vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    #sourceBox{right:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 38px);width:100px;padding:6px;display:flex;flex-direction:column;gap:5px}
+    #sourceBox .title{font-size:12px;color:var(--muted);text-align:center;margin:0 0 2px}
+    #sourceBox button{width:100%;height:30px;min-width:0;font-size:12px;padding:0 4px}
+    #overview{left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 38px);display:none;padding:8px;width:198px}
+    #overviewTitle{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px}
+    #overviewCanvas{display:block;width:180px;height:136px;border-radius:7px;background:rgba(4,7,10,.72);border:1px solid rgba(255,255,255,.12)}
+    #overviewStats{font-size:11px;color:#c9d3dc;line-height:1.45;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    #status{left:0;right:0;bottom:0;height:28px;line-height:28px;border-radius:0;border-left:0;border-right:0;border-bottom:0;padding:0 10px;font-size:12px;color:#c5ced6;display:flex;gap:14px;align-items:center;white-space:nowrap;overflow:hidden}
+    #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 78px);transform:translateX(-50%);z-index:2000;max-width:calc(100vw - 24px);padding:9px 13px;border-radius:9px;background:rgba(10,15,20,.94);border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 26px rgba(0,0,0,.3);font-size:13px;color:#fff;display:none;line-height:1.45}
+    #fileInput{display:none}
+    .track-line{filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
+    @media(max-width:760px){
+      #toolbar{left:6px;right:6px;transform:none;width:auto;justify-content:center}
+      #toolbar button{width:44px;min-width:44px;height:42px;font-size:19px}
+      #cacheBar{top:calc(env(safe-area-inset-top,0px) + 64px);left:6px;right:6px;transform:none;justify-content:center}
+      #cacheBar .hint{display:none}
+      #sourceBox{width:92px;right:6px}
+      #overview{left:6px;width:174px;padding:7px}
+      #overviewCanvas{width:158px;height:120px}
+      #status{font-size:11px;gap:8px;padding:0 8px}
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div id="toolbar" class="panel">
+    <button id="btnLoad" title="加载轨迹 KML" aria-label="加载轨迹 KML">📂</button>
+    <button id="btnCache" title="开始缓存" aria-label="开始缓存">▶️</button>
+    <button id="btnSave" title="保存离线缓存包 .yfxcache.zip" aria-label="保存离线缓存包">💾</button>
+  </div>
+  <div id="cacheBar" class="panel">
+    <button id="btnZoomOut" title="缩小图层">−</button>
+    <span id="layerLabel" class="layer-label">Z -</span>
+    <button id="btnZoomIn" title="放大图层">＋</button>
+    <span class="hint">浏览当前图层，看到的瓦片会被缓存；可以只浏览需要的区域。</span>
+  </div>
+  <div id="sourceBox" class="panel">
+    <div class="title">地图源</div>
+    <button id="srcGaode" class="active">高德地形</button>
+    <button id="srcGoogle">Google地形</button>
+  </div>
+  <div id="overview" class="panel">
+    <div id="overviewTitle"><span>鸟瞰缓存</span><span id="overviewLayer">Z -</span></div>
+    <canvas id="overviewCanvas" width="180" height="136"></canvas>
+    <div id="overviewStats">已缓存：0 瓦片</div>
+  </div>
+  <div id="status" class="panel">
+    <span id="statusFile">未加载轨迹</span>
+    <span id="statusSource">高德地形</span>
+    <span id="statusZoom">Z -</span>
+    <span id="statusTiles">瓦片 0</span>
+  </div>
+  <input id="fileInput" type="file" accept=".kml,.KML,application/vnd.google-earth.kml+xml,application/xml,text/xml,text/plain">
+  <div id="toast"></div>
+  <script>
+  (function(){
+    'use strict';
+    if(!window.L){
+      document.body.innerHTML='<div style="padding:24px;background:#101418;color:#fff;font-family:sans-serif">Leaflet 加载失败，请检查网络。</div>';
+      return;
+    }
+
+    var APP_VERSION='0.2';
+    var GEO_TILE_CACHE_NAME='YFxGeoStudio-tile-cache-v1';
+    var MANIFEST_FORMAT='YFxGeoStudio.DataCache.v1';
+    var activeSource='gaode';
+    var activeLayers=[];
+    var cacheMode=false;
+    var currentZoom=null;
+    var fullViewZoom=null;
+    var trackName='';
+    var trackText='';
+    var trackFileMeta=null;
+    var routeLines=[];
+    var routeFeature=null;
+    var allowedBounds=null;
+    var routeBounds=null;
+    var tileRecords=new Map();
+    var cellRecords=new Map();
+    var pendingCacheUrls=new Set();
+    var toastTimer=null;
+
+    var map=L.map('map',{zoomControl:false,attributionControl:true,zoomSnap:1,zoomDelta:1,maxBoundsViscosity:1.0});
+    L.control.zoom({position:'topright'}).addTo(map);
+    map.setView([30.6,114.3],6);
+
+    var sourceDefs={
+      gaode:{
+        label:'高德地形',
+        maxZoom:18,
+        layers:[
+          {id:'amap-base',label:'高德底图',url:'https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}',opts:{subdomains:'1234',maxZoom:18,attribution:'&copy; Amap'}},
+          {id:'opentopo',label:'地形等高线',url:'https://tile.opentopomap.org/{z}/{x}/{y}.png',opts:{maxZoom:17,opacity:.56,attribution:'&copy; OpenTopoMap'}}
+        ]
+      },
+      google:{
+        label:'Google地形',
+        maxZoom:20,
+        layers:[
+          {id:'google-terrain',label:'Google地形',url:'https://mt{s}.google.com/vt/lyrs=p&hl=zh-CN&x={x}&y={y}&z={z}',opts:{subdomains:['0','1','2','3'],maxZoom:20,attribution:'&copy; Google'}}
+        ]
+      }
+    };
+
+    var el={
+      load:document.getElementById('btnLoad'),
+      cache:document.getElementById('btnCache'),
+      save:document.getElementById('btnSave'),
+      input:document.getElementById('fileInput'),
+      cacheBar:document.getElementById('cacheBar'),
+      zoomOut:document.getElementById('btnZoomOut'),
+      zoomIn:document.getElementById('btnZoomIn'),
+      layerLabel:document.getElementById('layerLabel'),
+      overview:document.getElementById('overview'),
+      overviewLayer:document.getElementById('overviewLayer'),
+      overviewStats:document.getElementById('overviewStats'),
+      canvas:document.getElementById('overviewCanvas'),
+      statusFile:document.getElementById('statusFile'),
+      statusSource:document.getElementById('statusSource'),
+      statusZoom:document.getElementById('statusZoom'),
+      statusTiles:document.getElementById('statusTiles'),
+      toast:document.getElementById('toast'),
+      srcGaode:document.getElementById('srcGaode'),
+      srcGoogle:document.getElementById('srcGoogle')
+    };
+
+    init();
+
+    function init(){
+      switchSource('gaode', true);
+      el.load.addEventListener('click', function(){ el.input.click(); });
+      el.cache.addEventListener('click', startCacheMode);
+      el.save.addEventListener('click', saveCacheManifest);
+      el.input.addEventListener('change', function(){ if(this.files&&this.files[0]) loadKmlFile(this.files[0]); this.value=''; });
+      el.zoomOut.addEventListener('click', function(){ stepZoom(-1); });
+      el.zoomIn.addEventListener('click', function(){ stepZoom(1); });
+      el.srcGaode.addEventListener('click', function(){ switchSource('gaode'); });
+      el.srcGoogle.addEventListener('click', function(){ switchSource('google'); });
+      map.on('zoomend moveend', function(){
+        if(cacheMode){ currentZoom=map.getZoom(); updateLayerUi(); updateOverview(); }
+        updateStatus();
+      });
+      window.addEventListener('resize', function(){ setTimeout(function(){map.invalidateSize(); updateOverview();},60); });
+      toast('YFxDataCache v'+APP_VERSION+'：先加载一个 KML 轨迹；保存时会导出独立 .yfxcache.zip。');
+    }
+
+    function switchSource(key, silent){
+      if(!sourceDefs[key]) key='gaode';
+      activeSource=key;
+      for(var i=0;i<activeLayers.length;i++) map.removeLayer(activeLayers[i]);
+      activeLayers=[];
+      var def=sourceDefs[key];
+      def.layers.forEach(function(ld){
+        var opts=Object.assign({}, ld.opts || {});
+        var layer=L.tileLayer(ld.url, opts);
+        layer.__providerId=ld.id;
+        layer.on('tileload', function(e){ onTileLoaded(layer.__providerId, e); });
+        layer.addTo(map);
+        activeLayers.push(layer);
+      });
+      el.srcGaode.classList.toggle('active', key==='gaode');
+      el.srcGoogle.classList.toggle('active', key==='google');
+      if(sourceDefs[key].maxZoom) map.setMaxZoom(sourceDefs[key].maxZoom);
+      if(currentZoom && currentZoom>sourceDefs[key].maxZoom) map.setZoom(sourceDefs[key].maxZoom);
+      updateStatus();
+      updateOverview();
+      if(!silent) toast('已切换：'+def.label);
+    }
+
+    function loadKmlFile(file){
+      if(!file || !/\.kml$/i.test(file.name||'')){ toast('请选择一个 .kml 文件'); return; }
+      var reader=new FileReader();
+      reader.onload=function(ev){
+        try{
+          var text=String(ev.target.result||'');
+          var parsed=parseKml(text);
+          if(!parsed.lines.length && !parsed.points.length){ toast('KML 中没有可用轨迹坐标'); return; }
+          clearCurrentTrack();
+          routeLines=parsed.lines;
+          trackText=text;
+          trackName=file.name || 'track.kml';
+          trackFileMeta={name:file.name||'',size:file.size||0,lastModified:file.lastModified||0};
+          drawTrack(parsed);
+          applyTrackBounds();
+          tileRecords.clear(); cellRecords.clear(); pendingCacheUrls.clear();
+          cacheMode=false;
+          el.cache.classList.remove('active');
+          el.cache.textContent='▶️';
+          el.cacheBar.style.display='none';
+          el.overview.style.display='none';
+          updateStatus();
+          updateOverview();
+          toast('轨迹已加载：'+trackName+'。地图已限制在允许移动范围内。');
+        }catch(err){
+          console.error(err);
+          toast('KML 解析失败：'+(err&&err.message?err.message:err));
+        }
+      };
+      reader.onerror=function(){ toast('读取文件失败'); };
+      reader.readAsText(file,'utf-8');
+    }
+
+    function clearCurrentTrack(){
+      if(routeFeature){ map.removeLayer(routeFeature); routeFeature=null; }
+      routeLines=[]; routeBounds=null; allowedBounds=null; trackName=''; trackText=''; trackFileMeta=null;
+      map.setMaxBounds(null);
+      map.setMinZoom(0);
+    }
+
+    function parseKml(text){
+      var xml=new DOMParser().parseFromString(text,'application/xml');
+      if(xml.getElementsByTagName('parsererror').length) throw new Error('XML 格式错误');
+      var lines=[];
+      var points=[];
+      var lineNodes=xml.getElementsByTagName('LineString');
+      for(var i=0;i<lineNodes.length;i++){
+        var cnode=lineNodes[i].getElementsByTagName('coordinates')[0];
+        if(!cnode) continue;
+        var pts=parseCoordText(cnode.textContent||'');
+        if(pts.length>=2) lines.push(pts);
+        else if(pts.length===1) points.push(pts[0]);
+      }
+      var pointNodes=xml.getElementsByTagName('Point');
+      for(var j=0;j<pointNodes.length;j++){
+        var pc=pointNodes[j].getElementsByTagName('coordinates')[0];
+        if(!pc) continue;
+        var p=parseCoordText(pc.textContent||'');
+        if(p.length) points.push(p[0]);
+      }
+      return {lines:lines,points:points};
+    }
+
+    function parseCoordText(s){
+      var arr=[];
+      s.trim().split(/\s+/).forEach(function(item){
+        var a=item.split(',');
+        if(a.length<2) return;
+        var lng=parseFloat(a[0]);
+        var lat=parseFloat(a[1]);
+        var alt=a.length>2?parseFloat(a[2]):null;
+        if(isFinite(lat)&&isFinite(lng)) arr.push({lat:lat,lng:lng,alt:isFinite(alt)?alt:null});
+      });
+      return arr;
+    }
+
+    function drawTrack(parsed){
+      var group=[];
+      parsed.lines.forEach(function(line){
+        var latlngs=line.map(function(p){return [p.lat,p.lng];});
+        group.push(L.polyline(latlngs,{color:'#ff4d4f',weight:4,opacity:.95,className:'track-line'}));
+      });
+      parsed.points.forEach(function(p){
+        group.push(L.circleMarker([p.lat,p.lng],{radius:5,color:'#ffcf66',weight:2,fillColor:'#ffcf66',fillOpacity:.85}));
+      });
+      routeFeature=L.featureGroup(group).addTo(map);
+      routeBounds=routeFeature.getBounds();
+    }
+
+    function applyTrackBounds(){
+      if(!routeBounds || !routeBounds.isValid()) return;
+      allowedBounds=makeAllowedBounds(routeBounds);
+      map.setMaxBounds(allowedBounds);
+      map.fitBounds(allowedBounds,{padding:[8,8],animate:false});
+      setTimeout(function(){
+        fullViewZoom=map.getZoom();
+        currentZoom=fullViewZoom;
+        map.setMinZoom(fullViewZoom);
+        updateLayerUi();
+        updateStatus();
+      },80);
+    }
+
+    function makeAllowedBounds(b){
+      var south=b.getSouth(), north=b.getNorth(), west=b.getWest(), east=b.getEast();
+      var midLat=(south+north)/2;
+      var latRange=Math.max(0, north-south);
+      var lngRange=Math.max(0, east-west);
+      var lat5=5/111.32;
+      var lng5=5/(111.32*Math.max(0.18, Math.cos(midLat*Math.PI/180)));
+      var latPad=latRange>0?Math.min(latRange*.10, lat5):Math.min(0.0045, lat5);
+      var lngPad=lngRange>0?Math.min(lngRange*.10, lng5):Math.min(0.0045, lng5);
+      return L.latLngBounds([south-latPad, west-lngPad],[north+latPad, east+lngPad]);
+    }
+
+    function startCacheMode(){
+      if(!allowedBounds){ toast('请先加载一个 KML 轨迹'); return; }
+      cacheMode=true;
+      el.cache.classList.add('active');
+      el.cache.textContent='⏺';
+      el.cacheBar.style.display='flex';
+      el.overview.style.display='block';
+      currentZoom=map.getZoom();
+      updateLayerUi();
+      updateOverview();
+      toast('缓存已开始：浏览当前图层，看到的瓦片会被缓存；可用 − / ＋ 切换图层，只浏览需要的区域即可。');
+    }
+
+    function stepZoom(delta){
+      if(!allowedBounds){ toast('请先加载 KML 轨迹'); return; }
+      var z=map.getZoom()+delta;
+      z=Math.max(map.getMinZoom(), Math.min(map.getMaxZoom(), z));
+      map.setZoom(z);
+    }
+
+    function updateLayerUi(){
+      var z=map.getZoom();
+      el.layerLabel.textContent='当前图层 Z'+z;
+      el.overviewLayer.textContent='Z '+z;
+      el.zoomOut.disabled=(z<=map.getMinZoom());
+      el.zoomIn.disabled=(z>=map.getMaxZoom());
+    }
+
+    function onTileLoaded(providerId, e){
+      if(!cacheMode || !e || !e.coords || !e.tile) return;
+      var z=e.coords.z, x=e.coords.x, y=e.coords.y;
+      if(z == null || x == null || y == null) return;
+      var url=e.tile.currentSrc || e.tile.src || '';
+      if(!url) return;
+      var provider=providerId || 'tile';
+      var key=activeSource+'|'+provider+'|'+z+'|'+x+'|'+y;
+      if(!tileRecords.has(key)){
+        tileRecords.set(key,{source:activeSource,provider:provider,z:z,x:x,y:y,url:url,cachedAt:new Date().toISOString()});
+      }
+      var cellKey=activeSource+'|'+z+'|'+x+'|'+y;
+      if(!cellRecords.has(cellKey)) cellRecords.set(cellKey,{source:activeSource,z:z,x:x,y:y});
+      saveTileToCache(url);
+      updateStatus();
+      updateOverview();
+    }
+
+    function saveTileToCache(url){
+      if(!('caches' in window) || !url || pendingCacheUrls.has(url)) return;
+      pendingCacheUrls.add(url);
+      caches.open(GEO_TILE_CACHE_NAME).then(function(cache){
+        return cache.match(url).then(function(hit){
+          if(hit) return true;
+          // 先尝试 CORS 获取，成功时后续可以导出到独立 zip；失败再退回 no-cors，保证同源 CacheStorage 可复用。
+          return fetch(url,{mode:'cors',cache:'force-cache'}).catch(function(){
+            return fetch(url,{mode:'no-cors',cache:'force-cache'});
+          }).then(function(res){
+            if(res) return cache.put(url,res.clone()).then(function(){return true;});
+            return false;
+          });
+        });
+      }).catch(function(){
+      }).finally(function(){ pendingCacheUrls.delete(url); });
+    }
+
+    async function saveCacheManifest(){
+      if(!trackName || !allowedBounds){ toast('请先加载轨迹并浏览缓存区域'); return; }
+      if(tileRecords.size===0){
+        if(!confirm('当前还没有记录到已缓存瓦片，仍然导出只含轨迹和清单的缓存包吗？')) return;
+      }
+      var saveBtn=el.save;
+      var oldText=saveBtn.textContent;
+      saveBtn.disabled=true;
+      saveBtn.textContent='⏳';
+      try{
+        toast('正在打包离线缓存包，请保持页面打开。');
+        var base=(trackName||'track').replace(/\.kml$/i,'').replace(/[\\/:*?"<>|\s]+/g,'_').slice(0,80) || 'track';
+        var savedAt=new Date().toISOString();
+        var rawTiles=Array.from(tileRecords.values());
+        var manifest={
+          format:'YFxGeoStudio.DataCacheZip.v1',
+          app:'YFxDataCache',
+          version:APP_VERSION,
+          savedAt:savedAt,
+          target:'YFxGeoStudio',
+          packageType:'independent-yfxcache-zip',
+          note:'本 zip 尽量包含轨迹 KML、缓存清单和可读取的地图瓦片文件。若地图服务跨域禁止读取，相关瓦片会记录在 missingTiles 中。',
+          source:activeSource,
+          sourceLabel:sourceDefs[activeSource].label,
+          trackFile:trackFileMeta,
+          routeBounds:boundsToObj(routeBounds),
+          allowedBounds:boundsToObj(allowedBounds),
+          fullViewZoom:fullViewZoom,
+          tileCount:rawTiles.length,
+          cellCount:cellRecords.size,
+          packagedTileCount:0,
+          missingTileCount:0,
+          files:{route:'route.kml',tilesRoot:'tiles/'},
+          tiles:[],
+          missingTiles:[]
+        };
+        var zipFiles=[];
+        zipFiles.push({name:'route.kml', data:utf8Bytes(trackText || ''), type:'application/vnd.google-earth.kml+xml'});
+        zipFiles.push({name:'README.txt', data:utf8Bytes(makePackageReadme(manifest)), type:'text/plain'});
+        var cache=('caches' in window) ? await caches.open(GEO_TILE_CACHE_NAME) : null;
+        for(var i=0;i<rawTiles.length;i++){
+          var t=rawTiles[i];
+          var progress='打包瓦片 '+(i+1)+'/'+rawTiles.length+'，已成功 '+manifest.packagedTileCount;
+          if(i%8===0) toast(progress);
+          var item=Object.assign({},t);
+          var blob=null, reason='';
+          try{
+            var res=cache ? await cache.match(t.url) : null;
+            if(!res){
+              res=await fetch(t.url,{mode:'cors',cache:'force-cache'}).catch(function(){return null;});
+            }
+            if(res){
+              var rb=await responseToBlobIfReadable(res);
+              blob=rb.blob;
+              reason=rb.reason || '';
+            }else{
+              reason='缓存中未找到瓦片，且在线读取失败';
+            }
+          }catch(err){
+            reason=(err&&err.message)?err.message:String(err);
+          }
+          if(blob && blob.size>0){
+            var ext=guessTileExt(blob.type, t.url);
+            var path='tiles/'+safePathPart(t.source)+'/'+safePathPart(t.provider)+'/'+t.z+'/'+t.x+'/'+t.y+ext;
+            var ab=await blobToArrayBuffer(blob);
+            zipFiles.push({name:path, data:new Uint8Array(ab), type:blob.type||'application/octet-stream'});
+            item.file=path;
+            item.mime=blob.type||'';
+            item.bytes=blob.size;
+            manifest.packagedTileCount++;
+            manifest.tiles.push(item);
+          }else{
+            item.reason=reason || '瓦片响应不可读取，可能是跨域 opaque 响应';
+            manifest.missingTileCount++;
+            manifest.missingTiles.push(item);
+          }
+          if(i%12===0) await idleTick();
+        }
+        manifest.tileCount=rawTiles.length;
+        // manifest 放在最后生成，确保包含打包结果统计和文件路径。
+        zipFiles.push({name:'manifest.json', data:utf8Bytes(JSON.stringify(manifest,null,2)), type:'application/json'});
+        var zipBlob=createZipBlob(zipFiles);
+        var name=base+'_YFxDataCache_'+timeStamp()+'.yfxcache.zip';
+        downloadBlob(name, zipBlob);
+        var msg='缓存包已保存：'+manifest.packagedTileCount+'/'+rawTiles.length+' 个瓦片已写入 zip。';
+        if(manifest.missingTileCount>0) msg+=' 有 '+manifest.missingTileCount+' 个瓦片因跨域或读取失败只写入清单。';
+        toast(msg);
+      }catch(err){
+        console.error(err);
+        toast('导出缓存包失败：'+((err&&err.message)?err.message:err));
+      }finally{
+        saveBtn.disabled=false;
+        saveBtn.textContent=oldText;
+      }
+    }
+
+    function makePackageReadme(manifest){
+      return [
+        'YFxDataCache 离线缓存包',
+        '',
+        '格式：'+manifest.format,
+        '生成时间：'+manifest.savedAt,
+        '地图源：'+manifest.sourceLabel,
+        '轨迹文件：'+((manifest.trackFile&&manifest.trackFile.name)||trackName||''),
+        '',
+        '说明：',
+        '1. route.kml 为原始轨迹文件。',
+        '2. manifest.json 为缓存清单。',
+        '3. tiles/ 目录下为成功打包的地图瓦片。',
+        '4. 如果 manifest.json 中 missingTiles 不为空，说明部分瓦片因地图服务跨域限制或读取失败，未能写入 zip。',
+        '5. 后续 YFxGeoStudio 增加 .yfxcache.zip 导入功能后，可读取本缓存包。',
+        ''
+      ].join('\n');
+    }
+
+    async function responseToBlobIfReadable(res){
+      if(!res) return {blob:null,reason:'无响应'};
+      if(res.type==='opaque'){
+        // opaque 响应通常无法读取正文；仍尝试一次，以兼容个别浏览器实现。
+        try{
+          var ob=await res.clone().blob();
+          if(ob && ob.size>0) return {blob:ob,reason:''};
+        }catch(e){}
+        return {blob:null,reason:'跨域 opaque 响应不可读取'};
+      }
+      if(!res.ok && res.status!==0) return {blob:null,reason:'HTTP '+res.status};
+      var b=await res.clone().blob();
+      if(!b || b.size===0) return {blob:null,reason:'瓦片数据为空'};
+      return {blob:b,reason:''};
+    }
+
+    function guessTileExt(mime, url){
+      mime=(mime||'').toLowerCase();
+      if(mime.indexOf('png')>=0) return '.png';
+      if(mime.indexOf('jpeg')>=0 || mime.indexOf('jpg')>=0) return '.jpg';
+      if(mime.indexOf('webp')>=0) return '.webp';
+      var m=String(url||'').split('?')[0].match(/\.(png|jpg|jpeg|webp)$/i);
+      if(m) return '.'+m[1].toLowerCase().replace('jpeg','jpg');
+      return '.tile';
+    }
+
+    function safePathPart(s){
+      return String(s||'x').replace(/[^a-zA-Z0-9_\-\.]+/g,'_') || 'x';
+    }
+
+    function idleTick(){
+      return new Promise(function(resolve){ setTimeout(resolve,0); });
+    }
+
+    function blobToArrayBuffer(blob){
+      if(blob.arrayBuffer) return blob.arrayBuffer();
+      return new Promise(function(resolve,reject){
+        var r=new FileReader();
+        r.onload=function(){ resolve(r.result); };
+        r.onerror=function(){ reject(r.error||new Error('读取 Blob 失败')); };
+        r.readAsArrayBuffer(blob);
+      });
+    }
+
+    function boundsToObj(b){
+      if(!b) return null;
+      return {south:b.getSouth(),west:b.getWest(),north:b.getNorth(),east:b.getEast()};
+    }
+
+    function downloadText(filename, text, type){
+      var blob=new Blob([text],{type:type||'text/plain;charset=utf-8'});
+      downloadBlob(filename, blob);
+    }
+
+    function downloadBlob(filename, blob){
+      var a=document.createElement('a');
+      a.href=URL.createObjectURL(blob);
+      a.download=filename;
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },0);
+    }
+
+    function timeStamp(){
+      var d=new Date();
+      function z(n){return n<10?'0'+n:String(n);}
+      return d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+'_'+z(d.getHours())+z(d.getMinutes())+z(d.getSeconds());
+    }
+
+    function updateStatus(){
+      var z=map.getZoom();
+      el.statusFile.textContent=trackName?('轨迹：'+trackName):'未加载轨迹';
+      el.statusSource.textContent=sourceDefs[activeSource].label;
+      el.statusZoom.textContent='Z '+z;
+      el.statusTiles.textContent='瓦片 '+tileRecords.size;
+    }
+
+    function updateOverview(){
+      if(!allowedBounds || el.overview.style.display==='none') return;
+      var canvas=el.canvas;
+      var ctx=canvas.getContext('2d');
+      var w=canvas.width, h=canvas.height;
+      ctx.clearRect(0,0,w,h);
+      ctx.fillStyle='rgba(4,7,10,.85)'; ctx.fillRect(0,0,w,h);
+      ctx.strokeStyle='rgba(255,255,255,.22)'; ctx.lineWidth=1; ctx.strokeRect(.5,.5,w-1,h-1);
+      var z=map.getZoom();
+      var count=0;
+      ctx.fillStyle='rgba(85,212,139,.42)';
+      cellRecords.forEach(function(c){
+        if(c.source!==activeSource || c.z!==z) return;
+        var tb=tileBounds(c.x,c.y,c.z);
+        var inter=intersectBounds(tb, allowedBounds);
+        if(!inter) return;
+        var p1=toCanvas(inter.west, inter.north, w, h);
+        var p2=toCanvas(inter.east, inter.south, w, h);
+        var x=Math.max(0, Math.min(p1.x,p2.x));
+        var y=Math.max(0, Math.min(p1.y,p2.y));
+        var rw=Math.min(w, Math.max(p1.x,p2.x))-x;
+        var rh=Math.min(h, Math.max(p1.y,p2.y))-y;
+        if(rw>0&&rh>0){ ctx.fillRect(x,y,rw,rh); count++; }
+      });
+      ctx.strokeStyle='rgba(85,212,139,.86)'; ctx.lineWidth=1;
+      cellRecords.forEach(function(c){
+        if(c.source!==activeSource || c.z!==z) return;
+        var tb=tileBounds(c.x,c.y,c.z);
+        var inter=intersectBounds(tb, allowedBounds);
+        if(!inter) return;
+        var p1=toCanvas(inter.west, inter.north, w, h);
+        var p2=toCanvas(inter.east, inter.south, w, h);
+        ctx.strokeRect(Math.min(p1.x,p2.x),Math.min(p1.y,p2.y),Math.abs(p2.x-p1.x),Math.abs(p2.y-p1.y));
+      });
+      drawOverviewRoute(ctx,w,h);
+      el.overviewLayer.textContent='Z '+z;
+      el.overviewStats.textContent='当前图层已缓存：'+count+' 格；总瓦片：'+tileRecords.size;
+    }
+
+    function drawOverviewRoute(ctx,w,h){
+      if(!routeLines || !routeLines.length) return;
+      ctx.save();
+      ctx.strokeStyle='#ff6666'; ctx.lineWidth=2; ctx.lineJoin='round'; ctx.lineCap='round';
+      routeLines.forEach(function(line){
+        if(!line.length) return;
+        ctx.beginPath();
+        line.forEach(function(p,i){
+          var q=toCanvas(p.lng,p.lat,w,h);
+          if(i===0) ctx.moveTo(q.x,q.y); else ctx.lineTo(q.x,q.y);
+        });
+        ctx.stroke();
+      });
+      ctx.restore();
+    }
+
+    function toCanvas(lng, lat, w, h){
+      var west=allowedBounds.getWest(), east=allowedBounds.getEast(), south=allowedBounds.getSouth(), north=allowedBounds.getNorth();
+      var x=(lng-west)/(east-west)*w;
+      var y=(north-lat)/(north-south)*h;
+      return {x:x,y:y};
+    }
+
+    function tileBounds(x,y,z){
+      return {west:tile2lng(x,z),east:tile2lng(x+1,z),north:tile2lat(y,z),south:tile2lat(y+1,z)};
+    }
+    function tile2lng(x,z){ return x/Math.pow(2,z)*360-180; }
+    function tile2lat(y,z){
+      var n=Math.PI-2*Math.PI*y/Math.pow(2,z);
+      return 180/Math.PI*Math.atan(0.5*(Math.exp(n)-Math.exp(-n)));
+    }
+    function intersectBounds(tb, lb){
+      var west=Math.max(tb.west, lb.getWest());
+      var east=Math.min(tb.east, lb.getEast());
+      var south=Math.max(tb.south, lb.getSouth());
+      var north=Math.min(tb.north, lb.getNorth());
+      if(west>=east || south>=north) return null;
+      return {west:west,east:east,south:south,north:north};
+    }
+
+    var _crcTable=null;
+    function makeCrcTable(){
+      var table=new Uint32Array(256);
+      for(var n=0;n<256;n++){
+        var c=n;
+        for(var k=0;k<8;k++) c=(c&1)?(0xedb88320^(c>>>1)):(c>>>1);
+        table[n]=c>>>0;
+      }
+      return table;
+    }
+    function crc32(data){
+      if(!_crcTable) _crcTable=makeCrcTable();
+      var c=0xffffffff;
+      for(var i=0;i<data.length;i++) c=_crcTable[(c^data[i])&0xff]^(c>>>8);
+      return (c^0xffffffff)>>>0;
+    }
+    function utf8Bytes(s){ return new TextEncoder().encode(String(s==null?'':s)); }
+    function u16(arr,v){ arr.push(v&255,(v>>>8)&255); }
+    function u32(arr,v){ arr.push(v&255,(v>>>8)&255,(v>>>16)&255,(v>>>24)&255); }
+    function dosTimeDate(d){
+      d=d||new Date();
+      var time=((d.getHours()&31)<<11)|((d.getMinutes()&63)<<5)|((Math.floor(d.getSeconds()/2))&31);
+      var date=(((d.getFullYear()-1980)&127)<<9)|(((d.getMonth()+1)&15)<<5)|(d.getDate()&31);
+      return {time:time,date:date};
+    }
+    function createZipBlob(files){
+      var localParts=[];
+      var centralParts=[];
+      var offset=0;
+      var dt=dosTimeDate(new Date());
+      files.forEach(function(f){
+        var nameBytes=utf8Bytes(f.name);
+        var data=f.data instanceof Uint8Array ? f.data : new Uint8Array(f.data||[]);
+        var crc=crc32(data);
+        var local=[];
+        u32(local,0x04034b50); u16(local,20); u16(local,0x0800); u16(local,0); u16(local,dt.time); u16(local,dt.date);
+        u32(local,crc); u32(local,data.length>>>0); u32(local,data.length>>>0); u16(local,nameBytes.length); u16(local,0);
+        localParts.push(new Uint8Array(local), nameBytes, data);
+        var central=[];
+        u32(central,0x02014b50); u16(central,20); u16(central,20); u16(central,0x0800); u16(central,0); u16(central,dt.time); u16(central,dt.date);
+        u32(central,crc); u32(central,data.length>>>0); u32(central,data.length>>>0); u16(central,nameBytes.length); u16(central,0); u16(central,0);
+        u16(central,0); u16(central,0); u32(central,0); u32(central,offset>>>0);
+        centralParts.push(new Uint8Array(central), nameBytes);
+        offset += 30 + nameBytes.length + data.length;
+      });
+      var centralSize=0;
+      centralParts.forEach(function(p){ centralSize += p.length; });
+      var end=[];
+      u32(end,0x06054b50); u16(end,0); u16(end,0); u16(end,files.length); u16(end,files.length);
+      u32(end,centralSize>>>0); u32(end,offset>>>0); u16(end,0);
+      var all=localParts.concat(centralParts,[new Uint8Array(end)]);
+      return new Blob(all,{type:'application/zip'});
+    }
+
+    function toast(msg){
+      clearTimeout(toastTimer);
+      el.toast.textContent=msg;
+      el.toast.style.display='block';
+      toastTimer=setTimeout(function(){ el.toast.style.display='none'; },3600);
+    }
+
+    window.addEventListener('error', function(e){
+      var msg=e.message||'未知错误';
+      console.error(e.error||msg);
+      toast('错误：'+msg);
+    });
+  })();
+  </script>
+</body>
+</html>
