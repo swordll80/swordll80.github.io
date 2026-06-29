@@ -1,4 +1,4 @@
-*.zip
+#*.zip
 !outdoors/kml/*.zip
 !C:/codex/swordll80.github.io/outdoors/kml/*.zip
 .backup
