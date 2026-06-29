@@ -1,0 +1,32 @@
+{
+  "name": "YFxGeoStudio KML轨迹工具",
+  "short_name": "YFxGeoStudio",
+  "description": "经典轨迹检索切换、轨迹信息浏览、KML文件编辑合并导出和离线工作区。",
+  "lang": "zh-CN",
+  "start_url": "./YFxGeoStudio.html?source=pwa",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#101418",
+  "theme_color": "#1677d2",
+  "icons": [
+    {
+      "src": "icons/yfx-icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/yfx-icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/yfx-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
