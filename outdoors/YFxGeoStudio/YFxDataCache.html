@@ -771,9 +771,12 @@
       if(classicKmlIsCachePackage(item.file)){
         toast(t('classicKmlLoading'));
         fetch(url,{cache:'no-store'})
-          .then(function(resp){ if(!resp.ok) throw new Error('HTTP '+resp.status); return resp.blob(); })
-          .then(function(blob){
-            loadCacheZipBlob(blob, String(item.file||display).split('/').pop() || 'cache.yfxcache.zip');
+          .then(function(resp){
+            if(!resp.ok) throw new Error('HTTP '+resp.status+' '+(resp.statusText||'')+'：'+url);
+            return resp.arrayBuffer();
+          })
+          .then(function(buffer){
+            loadCacheZipArrayBuffer(buffer, String(item.file||display).split('/').pop() || 'cache.yfxcache.zip');
             toast(t('classicKmlZipImported')+'：'+display);
           })
           .catch(function(err){
@@ -798,49 +801,7 @@
       var reader=new FileReader();
       reader.onload=function(ev){
         try{
-          var entries=parseStoredZipEntries(ev.target.result);
-          var manifestEntry=getZipEntry(entries,'manifest.json');
-          if(!manifestEntry) throw new Error('manifest.json not found');
-          var manifest=JSON.parse(bytesToText(manifestEntry.data));
-          var routePath=(manifest.files&&manifest.files.route)||'route.kml';
-          var routeEntry=getZipEntry(entries,routePath) || getZipEntry(entries,'route.kml');
-          if(!routeEntry) throw new Error('route.kml not found');
-          var routeText=bytesToText(routeEntry.data);
-          var parsed=parseKml(routeText);
-          if(!parsed.lines.length && !parsed.points.length) throw new Error(t('emptyKml'));
-
-          clearCurrentTrack();
-          clearPreviewCache();
-          routeLines=parsed.lines;
-          trackText=routeText;
-          trackName=(manifest.trackFile&&manifest.trackFile.name) || routePath || fileName || 'route.kml';
-          trackFileMeta=manifest.trackFile || {name:trackName,size:routeEntry.data.length,lastModified:0};
-          drawTrack(parsed);
-          applyTrackBounds();
-
-          tileRecords.clear();
-          cellRecords.clear();
-          failedTileRecords.clear();
-          failedCellRecords.clear();
-          pendingCacheUrls.clear();
-          previewManifest=manifest;
-          cachePreviewMode=true;
-          activeSource=sourceDefs[manifest.source] ? manifest.source : activeSource;
-          loadPreviewTilesFromManifest(manifest, entries);
-          loadFailedTilesFromManifest(manifest);
-          cacheMode=false;
-          updateCacheButton();
-          el.cacheBar.style.display='flex';
-          el.overview.style.display='block';
-          switchSource(activeSource, true);
-          updateLayerUi();
-          updateStatus();
-          updateOverview();
-          if(tileRecords.size){
-            toast(t('cacheZipOk',{name:fileName||trackName,count:tileRecords.size}));
-          }else{
-            toast(t('cacheZipNoTiles'));
-          }
+          loadCacheZipArrayBuffer(ev.target.result, fileName);
         }catch(err){
           console.error(err);
           toast(t('cacheZipFailed',{error:(err&&err.message?err.message:err)}));
@@ -848,6 +809,52 @@
       };
       reader.onerror=function(){ toast(t('readFailed')); };
       reader.readAsArrayBuffer(blob);
+    }
+
+    function loadCacheZipArrayBuffer(buffer, fileName){
+      var entries=parseStoredZipEntries(buffer);
+      var manifestEntry=getZipEntry(entries,'manifest.json');
+      if(!manifestEntry) throw new Error('manifest.json not found');
+      var manifest=JSON.parse(bytesToText(manifestEntry.data));
+      var routePath=(manifest.files&&manifest.files.route)||'route.kml';
+      var routeEntry=getZipEntry(entries,routePath) || getZipEntry(entries,'route.kml');
+      if(!routeEntry) throw new Error('route.kml not found');
+      var routeText=bytesToText(routeEntry.data);
+      var parsed=parseKml(routeText);
+      if(!parsed.lines.length && !parsed.points.length) throw new Error(t('emptyKml'));
+
+      clearCurrentTrack();
+      clearPreviewCache();
+      routeLines=parsed.lines;
+      trackText=routeText;
+      trackName=(manifest.trackFile&&manifest.trackFile.name) || routePath || fileName || 'route.kml';
+      trackFileMeta=manifest.trackFile || {name:trackName,size:routeEntry.data.length,lastModified:0};
+      drawTrack(parsed);
+      applyTrackBounds();
+
+      tileRecords.clear();
+      cellRecords.clear();
+      failedTileRecords.clear();
+      failedCellRecords.clear();
+      pendingCacheUrls.clear();
+      previewManifest=manifest;
+      cachePreviewMode=true;
+      activeSource=sourceDefs[manifest.source] ? manifest.source : activeSource;
+      loadPreviewTilesFromManifest(manifest, entries);
+      loadFailedTilesFromManifest(manifest);
+      cacheMode=false;
+      updateCacheButton();
+      el.cacheBar.style.display='flex';
+      el.overview.style.display='block';
+      switchSource(activeSource, true);
+      updateLayerUi();
+      updateStatus();
+      updateOverview();
+      if(tileRecords.size){
+        toast(t('cacheZipOk',{name:fileName||trackName,count:tileRecords.size}));
+      }else{
+        toast(t('cacheZipNoTiles'));
+      }
     }
 
     function loadPreviewTilesFromManifest(manifest, entries){
