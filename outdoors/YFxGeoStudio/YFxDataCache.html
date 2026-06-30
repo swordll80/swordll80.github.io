@@ -41,9 +41,14 @@
     #sourceBox button{width:100%;height:30px;min-width:0;font-size:12px;padding:0 4px}
     #overview{left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 38px);display:none;padding:8px;width:198px}
     #overviewTitle{display:flex;align-items:center;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:5px}
-    #overviewCanvas{display:block;width:180px;height:136px;border-radius:7px;background:rgba(4,7,10,.72);border:1px solid rgba(255,255,255,.12)}
+    #overviewCanvas{display:block;width:180px;height:136px;border-radius:7px;background:rgba(4,7,10,.72);border:1px solid rgba(255,255,255,.12);cursor:crosshair;touch-action:manipulation}
     #overviewStats{font-size:11px;color:#c9d3dc;line-height:1.45;margin-top:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    #status{left:0;right:0;bottom:0;height:28px;line-height:28px;border-radius:0;border-left:0;border-right:0;border-bottom:0;padding:0 10px;font-size:12px;color:#c5ced6;display:flex;gap:14px;align-items:center;white-space:nowrap;overflow:hidden}
+    #status{left:0;right:0;bottom:0;height:28px;line-height:28px;border-radius:0;border-left:0;border-right:0;border-bottom:0;padding:0 10px;font-size:12px;color:#c5ced6;display:flex;gap:12px;align-items:center;white-space:nowrap;overflow:hidden}
+    #status span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+    #statusTiles{flex:0 0 auto;color:#e7edf3;font-weight:700}
+    #statusFile{flex:1 1 auto}
+    #statusSource{flex:0 1 auto}
+    #statusZoom{flex:0 0 auto;margin-left:auto;color:#fff;font-weight:700}
     #toast{position:fixed;left:50%;bottom:calc(env(safe-area-inset-bottom,0px) + 78px);transform:translateX(-50%);z-index:2000;max-width:calc(100vw - 24px);padding:9px 13px;border-radius:9px;background:rgba(10,15,20,.94);border:1px solid rgba(255,255,255,.18);box-shadow:0 8px 26px rgba(0,0,0,.3);font-size:13px;color:#fff;display:none;line-height:1.45}
     #helpMask{position:fixed;inset:0;z-index:2100;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.32);padding:14px}
     #helpDialog{width:min(560px,calc(100vw - 28px));max-height:min(680px,calc(100vh - 28px));overflow:auto;border-radius:8px;background:#17202a;color:#c9d3dc;border:1px solid rgba(255,255,255,.16);box-shadow:0 18px 50px rgba(0,0,0,.4)}
@@ -65,7 +70,8 @@
       #sourceBox{width:92px;right:6px}
       #overview{left:6px;width:174px;padding:7px}
       #overviewCanvas{width:158px;height:120px}
-      #status{font-size:11px;gap:8px;padding:0 8px}
+      #status{font-size:11px;gap:7px;padding:0 8px}
+      #statusSource{display:none}
     }
   </style>
 </head>
@@ -96,10 +102,10 @@
     <div id="overviewStats">已缓存：0 瓦片</div>
   </div>
   <div id="status" class="panel">
+    <span id="statusTiles">瓦片 0</span>
     <span id="statusFile">未加载轨迹</span>
     <span id="statusSource">高德地形</span>
     <span id="statusZoom">Z -</span>
-    <span id="statusTiles">瓦片 0</span>
   </div>
   <input id="fileInput" type="file">
   <div id="helpMask">
@@ -137,6 +143,8 @@
     var routeBounds=null;
     var tileRecords=new Map();
     var cellRecords=new Map();
+    var failedTileRecords=new Map();
+    var failedCellRecords=new Map();
     var pendingCacheUrls=new Set();
     var toastTimer=null;
     var cachePreviewMode=false;
@@ -151,19 +159,20 @@
     var I18N={
       zh:{
         appTitle:'YFxDataCache v0.2',
-        load:'加载轨迹 KML',cache:'开始缓存',save:'保存离线缓存包',help:'帮助',close:'关闭',
+        load:'加载 KML / 缓存包',cache:'开始缓存',cacheStop:'停止缓存',save:'保存离线缓存包',help:'帮助',close:'关闭',
         mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',zoomOut:'缩小图层',zoomIn:'放大图层',
         sourceTitle:'地图源',gaode:'高德地形',google:'Google 地形',overviewTitle:'鸟瞰缓存',
         cacheHint:'浏览当前图层，看到的瓦片会被缓存；可以只浏览需要的区域。',
-        noTrack:'未加载轨迹',trackPrefix:'轨迹：',tilePrefix:'瓦片 ',currentLayer:'当前图层 Z',
-        overviewStats:'当前图层已缓存：{count} 格；总瓦片：{total}',overviewEmpty:'已缓存：0 瓦片',
+        noTrack:'未加载轨迹',trackPrefix:'轨迹：',tilePrefix:'绿{ok} 黄{failed}',currentLayer:'当前图层 Z',
+        overviewStats:'绿{count} 黄{failed} 总{total}',overviewEmpty:'绿0 黄0 总0',
         intro:'YFxDataCache v{version}：先加载一个 KML 轨迹；保存时会导出独立 .yfxcache.zip。',
-        switched:'已切换：{label}',chooseKml:'请选择一个 .kml 文件',emptyKml:'KML 中没有可用轨迹坐标',
+        switched:'已切换：{label}',chooseKml:'请选择 .kml 或 .yfxcache.zip 文件',emptyKml:'KML 中没有可用轨迹坐标',
         loadOk:'轨迹已加载：{name}。地图已限制在允许移动范围内。',cacheZipOk:'缓存包已载入：{name}。仅显示已成功写入 zip 的 {count} 个瓦片。',
         cacheZipNoTiles:'缓存包已载入轨迹，但没有成功写入 zip 的瓦片可显示。',cacheZipFailed:'缓存包读取失败：{error}',
         parseFailed:'KML 解析失败：{error}',
         readFailed:'读取文件失败',needLoad:'请先加载一个 KML 轨迹',needLoadShort:'请先加载 KML 轨迹',
         cacheStarted:'缓存已开始：浏览当前图层，看到的瓦片会被缓存；可用 − / ＋ 切换图层，只浏览需要的区域即可。',
+        cacheStopped:'缓存已停止。已记录的瓦片仍保留，可继续检查鸟瞰图或保存缓存包。',
         needBrowse:'请先加载轨迹并浏览缓存区域',confirmEmpty:'当前还没有记录到已缓存瓦片，仍然导出只含轨迹和清单的缓存包吗？',
         packaging:'正在打包离线缓存包，请保持页面打开。',packProgress:'打包瓦片 {done}/{total}，已成功 {ok}',
         saveOk:'缓存包已保存：{ok}/{total} 个瓦片已写入 zip。',missing:' 有 {count} 个瓦片因跨域或读取失败只写入清单。',
@@ -171,23 +180,24 @@
         mapUnlocked:'地图手势已解锁，可双指缩放地图。',mapLockedHint:'地图触控已锁定',
         errorPrefix:'错误：',unknownError:'未知错误',
         helpTitle:'YFxDataCache v0.2',
-        helpHtml:'<div class="help-section"><b>用途</b>：为一个 KML 轨迹制作独立 .yfxcache.zip 离线缓存包，也可重新打开缓存包检查效果。</div><div class="help-section"><b>步骤</b>：点击 📂 加载 KML；点击 ▶️ 开始缓存；在当前允许范围内浏览需要的图层和区域；点击 💾 保存缓存包。</div><div class="help-section"><b>检查缓存包</b>：点击 📂 打开 .yfxcache.zip 时，地图只显示已成功写入 zip 的瓦片；空白区域表示未成功缓存或未浏览到。</div><div class="help-section"><b>手机操作</b>：点击 🔒 锁定地图触控后，地图不再拦截触摸，可用浏览器页面缩放手势缩小当前页面；再次点击 🔓 恢复地图拖动和缩放。</div><div class="help-section"><b>图层</b>：缓存模式下用 − / ＋ 切换当前图层，鸟瞰缓存会显示当前图层已覆盖的瓦片。</div><div class="help-section"><b>说明</b>：若地图服务跨域禁止读取，瓦片可能只能写入清单，保存结果会提示缺失数量。</div>'
+        helpHtml:'<div class="help-section"><b>用途</b>：为一个 KML 轨迹制作独立 .yfxcache.zip 离线缓存包，也可重新打开缓存包检查效果。</div><div class="help-section"><b>步骤</b>：点击 📂 加载 KML；点击 ▶️ 开始缓存；在当前允许范围内浏览需要的图层和区域；点击 💾 保存缓存包。</div><div class="help-section"><b>检查缓存包</b>：点击 📂 打开 .yfxcache.zip 时，地图只显示已成功写入 zip 的瓦片；鸟瞰图黑色表示未浏览，黄色表示浏览过但缓存失败，绿色表示成功缓存。</div><div class="help-section"><b>继续缓存</b>：打开 .yfxcache.zip 后可再次点击 ▶️，切回在线地图继续尝试缓存；再次保存会合并已有成功和失败记录。</div><div class="help-section"><b>手机操作</b>：点击 🔒 锁定地图触控后，地图不再拦截触摸，可用浏览器页面缩放手势缩小当前页面；再次点击 🔓 恢复地图拖动和缩放。</div><div class="help-section"><b>图层</b>：缓存模式下用 − / ＋ 切换当前图层，鸟瞰缓存会显示当前图层已覆盖的瓦片。</div><div class="help-section"><b>说明</b>：若地图服务跨域禁止读取，瓦片可能只能写入清单，保存结果会提示缺失数量。</div>'
       },
       en:{
         appTitle:'YFxDataCache v0.2',
-        load:'Load KML track',cache:'Start cache',save:'Save offline cache package',help:'Help',close:'Close',
+        load:'Load KML / cache package',cache:'Start cache',cacheStop:'Stop cache',save:'Save offline cache package',help:'Help',close:'Close',
         mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',zoomOut:'Zoom layer out',zoomIn:'Zoom layer in',
         sourceTitle:'Map source',gaode:'Amap Terrain',google:'Google Terrain',overviewTitle:'Cache overview',
         cacheHint:'Browse the current layer; visible tiles will be cached. Visit only the areas you need.',
-        noTrack:'No track loaded',trackPrefix:'Track: ',tilePrefix:'Tiles ',currentLayer:'Current layer Z',
-        overviewStats:'Cached on current layer: {count} cells; total tiles: {total}',overviewEmpty:'Cached: 0 tiles',
+        noTrack:'No track loaded',trackPrefix:'Track: ',tilePrefix:'G{ok} Y{failed}',currentLayer:'Current layer Z',
+        overviewStats:'G{count} Y{failed} T{total}',overviewEmpty:'G0 Y0 T0',
         intro:'YFxDataCache v{version}: load a KML track first; saving exports a standalone .yfxcache.zip.',
-        switched:'Switched to {label}',chooseKml:'Please choose a .kml file',emptyKml:'No usable track coordinates found in the KML',
+        switched:'Switched to {label}',chooseKml:'Please choose a .kml or .yfxcache.zip file',emptyKml:'No usable track coordinates found in the KML',
         loadOk:'Track loaded: {name}. The map is now limited to the allowed area.',cacheZipOk:'Cache package loaded: {name}. Showing only {count} tiles written to the zip.',
         cacheZipNoTiles:'Cache package route loaded, but no tiles were written to the zip.',cacheZipFailed:'Failed to read cache package: {error}',
         parseFailed:'KML parse failed: {error}',
         readFailed:'Failed to read the file',needLoad:'Load a KML track first',needLoadShort:'Load a KML track first',
         cacheStarted:'Caching started: browse the current layer to cache visible tiles. Use − / ＋ to switch layers.',
+        cacheStopped:'Caching stopped. Recorded tiles are kept for overview inspection or package saving.',
         needBrowse:'Load a track and browse cache areas first',confirmEmpty:'No cached tiles have been recorded. Export a package with only the route and manifest?',
         packaging:'Packaging offline cache. Keep this page open.',packProgress:'Packaging tile {done}/{total}, success {ok}',
         saveOk:'Cache package saved: {ok}/{total} tiles written to zip.',missing:' {count} tiles were written only to the manifest due to CORS or read failure.',
@@ -195,7 +205,7 @@
         mapUnlocked:'Map gestures enabled. Pinch zoom controls the map again.',mapLockedHint:'Map touch locked',
         errorPrefix:'Error: ',unknownError:'Unknown error',
         helpTitle:'YFxDataCache v0.2',
-        helpHtml:'<div class="help-section"><b>Purpose</b>: create a standalone .yfxcache.zip offline cache package for one KML track, and reopen cache packages to inspect them.</div><div class="help-section"><b>Steps</b>: tap 📂 to load a KML; tap ▶️ to start caching; browse the needed layers and areas inside the allowed range; tap 💾 to save the package.</div><div class="help-section"><b>Inspect a package</b>: tap 📂 and open a .yfxcache.zip. The map shows only tiles successfully written to the zip; blank areas were not cached or could not be read.</div><div class="help-section"><b>Mobile</b>: tap 🔒 to lock map touch so the map stops intercepting gestures and the browser can zoom the page; tap 🔓 to restore map pan and zoom.</div><div class="help-section"><b>Layers</b>: in cache mode, use − / ＋ to switch the current layer. The overview shows cached tiles for that layer.</div><div class="help-section"><b>Note</b>: if a map service blocks cross-origin reads, some tiles may be listed in the manifest only. The save result reports the missing count.</div>'
+        helpHtml:'<div class="help-section"><b>Purpose</b>: create a standalone .yfxcache.zip offline cache package for one KML track, and reopen cache packages to inspect them.</div><div class="help-section"><b>Steps</b>: tap 📂 to load a KML; tap ▶️ to start caching; browse the needed layers and areas inside the allowed range; tap 💾 to save the package.</div><div class="help-section"><b>Inspect a package</b>: tap 📂 and open a .yfxcache.zip. The map shows only tiles successfully written to the zip. In the overview, black means not browsed, yellow means browsed but failed, and green means successfully cached.</div><div class="help-section"><b>Continue caching</b>: after opening a .yfxcache.zip, tap ▶️ again to switch back to online maps and retry caching. Saving again merges existing success and failure records.</div><div class="help-section"><b>Mobile</b>: tap 🔒 to lock map touch so the map stops intercepting gestures and the browser can zoom the page; tap 🔓 to restore map pan and zoom.</div><div class="help-section"><b>Layers</b>: in cache mode, use − / ＋ to switch the current layer. The overview shows cached tiles for that layer.</div><div class="help-section"><b>Note</b>: if a map service blocks cross-origin reads, some tiles may be listed in the manifest only. The save result reports the missing count.</div>'
       }
     };
 
@@ -258,7 +268,7 @@
     function init(){
       switchSource('gaode', true);
       el.load.addEventListener('click', function(){ el.input.click(); });
-      el.cache.addEventListener('click', startCacheMode);
+      el.cache.addEventListener('click', toggleCacheMode);
       el.save.addEventListener('click', saveCacheManifest);
       el.input.addEventListener('change', function(){ if(this.files&&this.files[0]) loadInputFile(this.files[0]); this.value=''; });
       el.zoomOut.addEventListener('click', function(){ stepZoom(-1); });
@@ -270,8 +280,19 @@
       el.lang.addEventListener('click', toggleLang);
       el.helpClose.addEventListener('click', closeHelp);
       el.helpMask.addEventListener('click', function(e){ if(e.target===el.helpMask) closeHelp(); });
+      el.canvas.addEventListener('click', jumpToOverviewPoint);
+      el.canvas.addEventListener('touchend', function(e){
+        if(e.changedTouches && e.changedTouches.length){
+          jumpToOverviewPoint(e.changedTouches[0]);
+          e.preventDefault();
+        }
+      }, {passive:false});
       map.on('zoomend moveend', function(){
-        if(cacheMode){ currentZoom=map.getZoom(); updateLayerUi(); updateOverview(); }
+        if(cacheMode || el.overview.style.display!=='none'){
+          currentZoom=map.getZoom();
+          updateLayerUi();
+          updateOverview();
+        }
         updateStatus();
       });
       map.getContainer().addEventListener('mousedown', showMapTouchLockedHint);
@@ -318,6 +339,7 @@
       sourceDefs.gaode.label=t('gaode');
       sourceDefs.google.label=t('google');
       updateMapTouchLockButton();
+      updateCacheButton();
       updateLayerUi();
       updateStatus();
       updateOverview();
@@ -453,10 +475,9 @@
           cachePreviewMode=false;
           previewManifest=null;
           switchSource(activeSource, true);
-          tileRecords.clear(); cellRecords.clear(); pendingCacheUrls.clear();
+          tileRecords.clear(); cellRecords.clear(); failedTileRecords.clear(); failedCellRecords.clear(); pendingCacheUrls.clear();
           cacheMode=false;
-          el.cache.classList.remove('active');
-          el.cache.textContent='▶️';
+          updateCacheButton();
           el.cacheBar.style.display='none';
           el.overview.style.display='none';
           updateStatus();
@@ -469,6 +490,216 @@
       };
       reader.onerror=function(){ toast(t('readFailed')); };
       reader.readAsText(file,'utf-8');
+    }
+
+    function loadCacheZipFile(file){
+      var reader=new FileReader();
+      reader.onload=function(ev){
+        try{
+          var entries=parseStoredZipEntries(ev.target.result);
+          var manifestEntry=getZipEntry(entries,'manifest.json');
+          if(!manifestEntry) throw new Error('manifest.json not found');
+          var manifest=JSON.parse(bytesToText(manifestEntry.data));
+          var routePath=(manifest.files&&manifest.files.route)||'route.kml';
+          var routeEntry=getZipEntry(entries,routePath) || getZipEntry(entries,'route.kml');
+          if(!routeEntry) throw new Error('route.kml not found');
+          var routeText=bytesToText(routeEntry.data);
+          var parsed=parseKml(routeText);
+          if(!parsed.lines.length && !parsed.points.length) throw new Error(t('emptyKml'));
+
+          clearCurrentTrack();
+          clearPreviewCache();
+          routeLines=parsed.lines;
+          trackText=routeText;
+          trackName=(manifest.trackFile&&manifest.trackFile.name) || routePath || file.name || 'route.kml';
+          trackFileMeta=manifest.trackFile || {name:trackName,size:routeEntry.data.length,lastModified:0};
+          drawTrack(parsed);
+          applyTrackBounds();
+
+          tileRecords.clear();
+          cellRecords.clear();
+          failedTileRecords.clear();
+          failedCellRecords.clear();
+          pendingCacheUrls.clear();
+          previewManifest=manifest;
+          cachePreviewMode=true;
+          activeSource=sourceDefs[manifest.source] ? manifest.source : activeSource;
+          loadPreviewTilesFromManifest(manifest, entries);
+          loadFailedTilesFromManifest(manifest);
+          cacheMode=false;
+          updateCacheButton();
+          el.cacheBar.style.display='flex';
+          el.overview.style.display='block';
+          switchSource(activeSource, true);
+          updateLayerUi();
+          updateStatus();
+          updateOverview();
+          if(tileRecords.size){
+            toast(t('cacheZipOk',{name:file.name||trackName,count:tileRecords.size}));
+          }else{
+            toast(t('cacheZipNoTiles'));
+          }
+        }catch(err){
+          console.error(err);
+          toast(t('cacheZipFailed',{error:(err&&err.message?err.message:err)}));
+        }
+      };
+      reader.onerror=function(){ toast(t('readFailed')); };
+      reader.readAsArrayBuffer(file);
+    }
+
+    function loadPreviewTilesFromManifest(manifest, entries){
+      var tiles=Array.isArray(manifest.tiles) ? manifest.tiles : [];
+      previewProvidersBySource={};
+      for(var i=0;i<tiles.length;i++){
+        var tile=tiles[i];
+        if(!tile || !tile.file) continue;
+        var entry=getZipEntry(entries,tile.file);
+        if(!entry || !entry.data || !entry.data.length) continue;
+        var source=tile.source || manifest.source || activeSource;
+        var provider=tile.provider || 'tile';
+        var z=Number(tile.z), x=Number(tile.x), y=Number(tile.y);
+        if(!isFinite(z)||!isFinite(x)||!isFinite(y)) continue;
+        var blob=new Blob([entry.data],{type:tile.mime||'application/octet-stream'});
+        var objectUrl=URL.createObjectURL(blob);
+        previewObjectUrls.push(objectUrl);
+        var key=source+'|'+provider+'|'+z+'|'+x+'|'+y;
+        previewTileUrls.set(key,objectUrl);
+        if(!previewProvidersBySource[source]) previewProvidersBySource[source]=[];
+        if(previewProvidersBySource[source].indexOf(provider)<0) previewProvidersBySource[source].push(provider);
+        tileRecords.set(key,{source:source,provider:provider,z:z,x:x,y:y,url:objectUrl,file:tile.file,cachedAt:tile.cachedAt||manifest.savedAt||''});
+        var cellKey=source+'|'+z+'|'+x+'|'+y;
+        if(!cellRecords.has(cellKey)) cellRecords.set(cellKey,{source:source,z:z,x:x,y:y});
+      }
+    }
+
+    function loadFailedTilesFromManifest(manifest){
+      var tiles=Array.isArray(manifest.missingTiles) ? manifest.missingTiles : [];
+      for(var i=0;i<tiles.length;i++){
+        var tile=tiles[i];
+        if(!tile) continue;
+        var source=tile.source || manifest.source || activeSource;
+        var provider=tile.provider || 'tile';
+        var z=Number(tile.z), x=Number(tile.x), y=Number(tile.y);
+        if(!isFinite(z)||!isFinite(x)||!isFinite(y)) continue;
+        setFailedTile(Object.assign({},tile,{source:source,provider:provider,z:z,x:x,y:y}));
+      }
+    }
+
+    function tileKey(source, provider, z, x, y){
+      return source+'|'+provider+'|'+z+'|'+x+'|'+y;
+    }
+
+    function cellKey(source, z, x, y){
+      return source+'|'+z+'|'+x+'|'+y;
+    }
+
+    function setFailedTile(tile){
+      var source=tile.source || activeSource;
+      var provider=tile.provider || 'tile';
+      var z=Number(tile.z), x=Number(tile.x), y=Number(tile.y);
+      if(!isFinite(z)||!isFinite(x)||!isFinite(y)) return;
+      var key=tileKey(source,provider,z,x,y);
+      if(tileRecords.has(key)) return;
+      failedTileRecords.set(key,Object.assign({},tile,{source:source,provider:provider,z:z,x:x,y:y}));
+      var ck=cellKey(source,z,x,y);
+      if(!failedCellRecords.has(ck)) failedCellRecords.set(ck,{source:source,z:z,x:x,y:y});
+    }
+
+    function markTileFailure(tile){
+      var source=tile.source || activeSource;
+      var provider=tile.provider || 'tile';
+      var z=Number(tile.z), x=Number(tile.x), y=Number(tile.y);
+      if(!isFinite(z)||!isFinite(x)||!isFinite(y)) return;
+      tileRecords.delete(tileKey(source,provider,z,x,y));
+      var ck=cellKey(source,z,x,y);
+      var hasSuccess=false;
+      tileRecords.forEach(function(t){
+        if(t.source===source && t.z===z && t.x===x && t.y===y) hasSuccess=true;
+      });
+      if(!hasSuccess) cellRecords.delete(ck);
+      setFailedTile(Object.assign({},tile,{source:source,provider:provider,z:z,x:x,y:y}));
+    }
+
+    function clearFailedTile(source, provider, z, x, y){
+      failedTileRecords.delete(tileKey(source,provider,z,x,y));
+      failedCellRecords.delete(cellKey(source,z,x,y));
+    }
+
+    function addPreviewLayers(source){
+      var providers=previewProvidersBySource[source] || [];
+      providers.forEach(function(provider){
+        var layer=L.gridLayer({
+          tileSize:256,
+          maxZoom:sourceDefs[source] ? sourceDefs[source].maxZoom : 20,
+          attribution:previewManifest&&previewManifest.sourceLabel ? previewManifest.sourceLabel : 'YFxDataCache'
+        });
+        layer.createTile=function(coords){
+          var key=source+'|'+provider+'|'+coords.z+'|'+coords.x+'|'+coords.y;
+          var url=previewTileUrls.get(key);
+          if(url){
+            var img=document.createElement('img');
+            img.width=256;
+            img.height=256;
+            img.alt='';
+            img.decoding='async';
+            img.src=url;
+            return img;
+          }
+          var empty=document.createElement('div');
+          empty.style.width='256px';
+          empty.style.height='256px';
+          return empty;
+        };
+        layer.addTo(map);
+        activeLayers.push(layer);
+      });
+    }
+
+    function clearPreviewCache(){
+      for(var i=0;i<previewObjectUrls.length;i++){
+        try{ URL.revokeObjectURL(previewObjectUrls[i]); }catch(e){}
+      }
+      previewTileUrls.clear();
+      previewObjectUrls=[];
+      previewProvidersBySource={};
+      previewManifest=null;
+    }
+
+    function getZipEntry(entries, name){
+      if(!entries || !name) return null;
+      return entries.get(name) || entries.get(String(name).replace(/\\/g,'/')) || null;
+    }
+
+    function parseStoredZipEntries(buffer){
+      var bytes=new Uint8Array(buffer);
+      var view=new DataView(buffer);
+      var entries=new Map();
+      var off=0;
+      while(off+30<=bytes.length){
+        if(view.getUint32(off,true)!==0x04034b50){
+          off++;
+          continue;
+        }
+        var method=view.getUint16(off+8,true);
+        var compSize=view.getUint32(off+18,true);
+        var nameLen=view.getUint16(off+26,true);
+        var extraLen=view.getUint16(off+28,true);
+        var nameStart=off+30;
+        var dataStart=nameStart+nameLen+extraLen;
+        var dataEnd=dataStart+compSize;
+        if(nameStart>bytes.length || dataEnd>bytes.length) break;
+        var name=bytesToText(bytes.slice(nameStart,nameStart+nameLen));
+        if(method===0 && name && name.charAt(name.length-1)!=='/'){
+          entries.set(name.replace(/\\/g,'/'),{name:name,data:bytes.slice(dataStart,dataEnd)});
+        }
+        off=dataEnd;
+      }
+      return entries;
+    }
+
+    function bytesToText(bytes){
+      return new TextDecoder('utf-8').decode(bytes);
     }
 
     function clearCurrentTrack(){
@@ -553,11 +784,23 @@
       return L.latLngBounds([south-latPad, west-lngPad],[north+latPad, east+lngPad]);
     }
 
+    function toggleCacheMode(){
+      if(cacheMode){
+        stopCacheMode();
+      }else{
+        startCacheMode();
+      }
+    }
+
     function startCacheMode(){
       if(!allowedBounds){ toast(t('needLoad')); return; }
+      if(cachePreviewMode){
+        cachePreviewMode=false;
+        pendingCacheUrls.clear();
+        switchSource(activeSource, true);
+      }
       cacheMode=true;
-      el.cache.classList.add('active');
-      el.cache.textContent='⏺';
+      updateCacheButton();
       el.cacheBar.style.display='flex';
       el.overview.style.display='block';
       currentZoom=map.getZoom();
@@ -566,6 +809,29 @@
       updateOverview();
       setTimeout(function(){ syncVisibleTiles(); updateStatus(); updateOverview(); },120);
       toast(t('cacheStarted'));
+    }
+
+    function stopCacheMode(){
+      cacheMode=false;
+      updateCacheButton();
+      el.cacheBar.style.display='none';
+      if(tileRecords.size===0 && !cachePreviewMode){
+        el.overview.style.display='none';
+      }else{
+        el.overview.style.display='block';
+        updateOverview();
+      }
+      updateStatus();
+      toast(t('cacheStopped'));
+    }
+
+    function updateCacheButton(){
+      var key=cacheMode?'cacheStop':'cache';
+      el.cache.textContent=cacheMode?'⏹':'▶️';
+      el.cache.classList.toggle('active',cacheMode);
+      el.cache.setAttribute('data-tip-text',t(key));
+      el.cache.setAttribute('title',t(key));
+      el.cache.setAttribute('aria-label',t(key));
     }
 
     function stepZoom(delta){
@@ -610,36 +876,74 @@
       var url=tile.currentSrc || tile.src || '';
       if(!url) return;
       var provider=providerId || 'tile';
-      var key=activeSource+'|'+provider+'|'+z+'|'+x+'|'+y;
-      if(!tileRecords.has(key)){
-        tileRecords.set(key,{source:activeSource,provider:provider,z:z,x:x,y:y,url:url,cachedAt:new Date().toISOString()});
+      var item={source:activeSource,provider:provider,z:z,x:x,y:y,url:url,cachedAt:new Date().toISOString()};
+      var key=tileKey(item.source,item.provider,item.z,item.x,item.y);
+      if(tileRecords.has(key)) return;
+      if(!failedTileRecords.has(key)){
+        item.reason='正在验证瓦片是否可写入 zip';
+        setFailedTile(item);
       }
-      var cellKey=activeSource+'|'+z+'|'+x+'|'+y;
-      if(!cellRecords.has(cellKey)) cellRecords.set(cellKey,{source:activeSource,z:z,x:x,y:y});
-      saveTileToCache(url);
+      verifyAndCacheTile(item);
     }
 
-    function saveTileToCache(url){
-      if(!('caches' in window) || !url || pendingCacheUrls.has(url)) return;
-      pendingCacheUrls.add(url);
-      caches.open(GEO_TILE_CACHE_NAME).then(function(cache){
-        return cache.match(url).then(function(hit){
-          if(hit) return true;
-          // 先尝试 CORS 获取，成功时后续可以导出到独立 zip；失败再退回 no-cors，保证同源 CacheStorage 可复用。
-          return fetch(url,{mode:'cors',cache:'force-cache'}).catch(function(){
-            return fetch(url,{mode:'no-cors',cache:'force-cache'});
-          }).then(function(res){
-            if(res) return cache.put(url,res.clone()).then(function(){return true;});
-            return false;
-          });
-        });
-      }).catch(function(){
-      }).finally(function(){ pendingCacheUrls.delete(url); });
+    function markTileSuccess(tile){
+      var key=tileKey(tile.source,tile.provider,tile.z,tile.x,tile.y);
+      if(!tileRecords.has(key)){
+        tileRecords.set(key,Object.assign({},tile,{cachedAt:tile.cachedAt||new Date().toISOString()}));
+      }
+      clearFailedTile(tile.source,tile.provider,tile.z,tile.x,tile.y);
+      var ck=cellKey(tile.source,tile.z,tile.x,tile.y);
+      if(!cellRecords.has(ck)) cellRecords.set(ck,{source:tile.source,z:tile.z,x:tile.x,y:tile.y});
+    }
+
+    function verifyAndCacheTile(tile){
+      if(!tile || !tile.url || pendingCacheUrls.has(tile.url)) return;
+      pendingCacheUrls.add(tile.url);
+      verifyAndCacheTileAsync(tile).then(function(result){
+        if(result && result.ok){
+          markTileSuccess(tile);
+        }else{
+          markTileFailure(Object.assign({},tile,{reason:(result&&result.reason)||'瓦片响应不可读取，可能是跨域 opaque 响应'}));
+        }
+      }).catch(function(err){
+        markTileFailure(Object.assign({},tile,{reason:(err&&err.message)?err.message:String(err)}));
+      }).finally(function(){
+        pendingCacheUrls.delete(tile.url);
+        updateStatus();
+        updateOverview();
+      });
+    }
+
+    async function verifyAndCacheTileAsync(tile){
+      if(!('caches' in window)) return {ok:false,reason:'浏览器不支持 CacheStorage'};
+      var cache=await caches.open(GEO_TILE_CACHE_NAME);
+      var hit=await cache.match(tile.url);
+      if(hit){
+        var cached=await responseToBlobIfReadable(hit);
+        if(cached.blob && cached.blob.size>0) return {ok:true,reason:''};
+      }
+      var res=null;
+      try{
+        res=await fetch(tile.url,{mode:'cors',cache:'force-cache'});
+      }catch(err){
+        try{
+          var opaque=await fetch(tile.url,{mode:'no-cors',cache:'force-cache'});
+          if(opaque) await cache.put(tile.url,opaque.clone());
+        }catch(e){}
+        return {ok:false,reason:'跨域限制，无法读取瓦片数据'};
+      }
+      if(!res) return {ok:false,reason:'在线读取失败'};
+      var readable=await responseToBlobIfReadable(res);
+      if(readable.blob && readable.blob.size>0){
+        await cache.put(tile.url,res.clone());
+        return {ok:true,reason:''};
+      }
+      return {ok:false,reason:readable.reason||'瓦片响应不可读取'};
     }
 
     async function saveCacheManifest(){
       if(!trackName || !allowedBounds){ toast(t('needBrowse')); return; }
-      if(tileRecords.size===0){
+      if(tileRecords.size===0 && failedTileRecords.size===0){
         if(!confirm(t('confirmEmpty'))) return;
       }
       var saveBtn=el.save;
@@ -651,6 +955,7 @@
         var base=(trackName||'track').replace(/\.kml$/i,'').replace(/[\\/:*?"<>|\s]+/g,'_').slice(0,80) || 'track';
         var savedAt=new Date().toISOString();
         var rawTiles=Array.from(tileRecords.values());
+        var totalAttempts=tileRecords.size+failedTileRecords.size;
         var manifest={
           format:'YFxGeoStudio.DataCacheZip.v1',
           app:'YFxDataCache',
@@ -665,8 +970,8 @@
           routeBounds:boundsToObj(routeBounds),
           allowedBounds:boundsToObj(allowedBounds),
           fullViewZoom:fullViewZoom,
-          tileCount:rawTiles.length,
-          cellCount:cellRecords.size,
+          tileCount:totalAttempts,
+          cellCount:cellRecords.size+failedCellRecords.size,
           packagedTileCount:0,
           missingTileCount:0,
           files:{route:'route.kml',tilesRoot:'tiles/'},
@@ -708,20 +1013,24 @@
             item.bytes=blob.size;
             manifest.packagedTileCount++;
             manifest.tiles.push(item);
+            clearFailedTile(tile.source,tile.provider,tile.z,tile.x,tile.y);
           }else{
             item.reason=reason || '瓦片响应不可读取，可能是跨域 opaque 响应';
-            manifest.missingTileCount++;
-            manifest.missingTiles.push(item);
+            markTileFailure(item);
           }
           if(i%12===0) await idleTick();
         }
-        manifest.tileCount=rawTiles.length;
+        manifest.tileCount=manifest.packagedTileCount+failedTileRecords.size;
+        manifest.missingTiles=Array.from(failedTileRecords.values());
+        manifest.missingTileCount=manifest.missingTiles.length;
         // manifest 放在最后生成，确保包含打包结果统计和文件路径。
         zipFiles.push({name:'manifest.json', data:utf8Bytes(JSON.stringify(manifest,null,2)), type:'application/json'});
         var zipBlob=createZipBlob(zipFiles);
         var name=base+'_YFxDataCache_'+timeStamp()+'.yfxcache.zip';
         downloadBlob(name, zipBlob);
-        var msg=t('saveOk',{ok:manifest.packagedTileCount,total:rawTiles.length});
+        updateStatus();
+        updateOverview();
+        var msg=t('saveOk',{ok:manifest.packagedTileCount,total:manifest.tileCount});
         if(manifest.missingTileCount>0) msg+=t('missing',{count:manifest.missingTileCount});
         toast(msg);
       }catch(err){
@@ -826,7 +1135,7 @@
       el.statusFile.textContent=trackName?(t('trackPrefix')+trackName):t('noTrack');
       el.statusSource.textContent=sourceDefs[activeSource].label;
       el.statusZoom.textContent='Z '+z;
-      el.statusTiles.textContent=t('tilePrefix')+tileRecords.size;
+      el.statusTiles.textContent=t('tilePrefix',{ok:tileRecords.size,failed:failedTileRecords.size});
     }
 
     function updateOverview(){
@@ -839,6 +1148,22 @@
       ctx.strokeStyle='rgba(255,255,255,.22)'; ctx.lineWidth=1; ctx.strokeRect(.5,.5,w-1,h-1);
       var z=map.getZoom();
       var count=0;
+      var failedCount=0;
+      ctx.fillStyle='rgba(255,207,102,.50)';
+      failedCellRecords.forEach(function(c){
+        if(c.source!==activeSource || c.z!==z) return;
+        if(cellRecords.has(cellKey(c.source,c.z,c.x,c.y))) return;
+        var tb=tileBounds(c.x,c.y,c.z);
+        var inter=intersectBounds(tb, allowedBounds);
+        if(!inter) return;
+        var p1=toCanvas(inter.west, inter.north, w, h);
+        var p2=toCanvas(inter.east, inter.south, w, h);
+        var x=Math.max(0, Math.min(p1.x,p2.x));
+        var y=Math.max(0, Math.min(p1.y,p2.y));
+        var rw=Math.min(w, Math.max(p1.x,p2.x))-x;
+        var rh=Math.min(h, Math.max(p1.y,p2.y))-y;
+        if(rw>0&&rh>0){ ctx.fillRect(x,y,rw,rh); failedCount++; }
+      });
       ctx.fillStyle='rgba(85,212,139,.42)';
       cellRecords.forEach(function(c){
         if(c.source!==activeSource || c.z!==z) return;
@@ -863,9 +1188,21 @@
         var p2=toCanvas(inter.east, inter.south, w, h);
         ctx.strokeRect(Math.min(p1.x,p2.x),Math.min(p1.y,p2.y),Math.abs(p2.x-p1.x),Math.abs(p2.y-p1.y));
       });
+      ctx.strokeStyle='rgba(255,207,102,.90)'; ctx.lineWidth=1;
+      failedCellRecords.forEach(function(c){
+        if(c.source!==activeSource || c.z!==z) return;
+        if(cellRecords.has(cellKey(c.source,c.z,c.x,c.y))) return;
+        var tb=tileBounds(c.x,c.y,c.z);
+        var inter=intersectBounds(tb, allowedBounds);
+        if(!inter) return;
+        var p1=toCanvas(inter.west, inter.north, w, h);
+        var p2=toCanvas(inter.east, inter.south, w, h);
+        ctx.strokeRect(Math.min(p1.x,p2.x),Math.min(p1.y,p2.y),Math.abs(p2.x-p1.x),Math.abs(p2.y-p1.y));
+      });
       drawOverviewRoute(ctx,w,h);
+      drawOverviewViewport(ctx,w,h);
       el.overviewLayer.textContent='Z '+z;
-      el.overviewStats.textContent=t('overviewStats',{count:count,total:tileRecords.size});
+      el.overviewStats.textContent=t('overviewStats',{count:count,failed:failedCount,total:count+failedCount});
     }
 
     function drawOverviewRoute(ctx,w,h){
@@ -882,6 +1219,49 @@
         ctx.stroke();
       });
       ctx.restore();
+    }
+
+    function drawOverviewViewport(ctx,w,h){
+      if(!map || !allowedBounds) return;
+      var mb=map.getBounds();
+      if(!mb || !mb.isValid || !mb.isValid()) return;
+      var inter=intersectBounds({
+        west:mb.getWest(),
+        east:mb.getEast(),
+        south:mb.getSouth(),
+        north:mb.getNorth()
+      }, allowedBounds);
+      if(!inter) return;
+      var p1=toCanvas(inter.west, inter.north, w, h);
+      var p2=toCanvas(inter.east, inter.south, w, h);
+      var x=Math.max(0,Math.min(p1.x,p2.x));
+      var y=Math.max(0,Math.min(p1.y,p2.y));
+      var rw=Math.min(w,Math.max(p1.x,p2.x))-x;
+      var rh=Math.min(h,Math.max(p1.y,p2.y))-y;
+      if(rw<=0 || rh<=0) return;
+      ctx.save();
+      ctx.fillStyle='rgba(74,163,255,.13)';
+      ctx.strokeStyle='rgba(124,196,255,.96)';
+      ctx.lineWidth=2;
+      ctx.setLineDash([5,3]);
+      ctx.fillRect(x,y,rw,rh);
+      ctx.strokeRect(x+.5,y+.5,Math.max(0,rw-1),Math.max(0,rh-1));
+      ctx.restore();
+    }
+
+    function jumpToOverviewPoint(e){
+      if(!allowedBounds || !e) return;
+      var rect=el.canvas.getBoundingClientRect();
+      if(!rect.width || !rect.height) return;
+      var px=(e.clientX-rect.left)/rect.width;
+      var py=(e.clientY-rect.top)/rect.height;
+      px=Math.max(0,Math.min(1,px));
+      py=Math.max(0,Math.min(1,py));
+      var west=allowedBounds.getWest(), east=allowedBounds.getEast();
+      var south=allowedBounds.getSouth(), north=allowedBounds.getNorth();
+      var lng=west+(east-west)*px;
+      var lat=north-(north-south)*py;
+      map.panTo([lat,lng],{animate:true});
     }
 
     function toCanvas(lng, lat, w, h){
