@@ -51,10 +51,11 @@
             <h3>YFxGeoStudio</h3>
             <p>KML 轨迹文件合并、查看和编辑工具。</p>
             <div class="card-actions">
-              <a class="button primary" href="outdoors/YFxGeoStudio/YFxGeoStudio.html" data-cache-bust-link>YFxGeoStudio</a>
+              <a class="button primary" href="outdoors/YFxGeoStudio/YFxGeoStudio.html" data-cache-bust-link data-clear-yfx-shell>YFxGeoStudio 最新版</a>
               <a class="button" href="outdoors/YFxGeoStudio/YFxGeoStudio_beta.html" data-cache-bust-link>内测版</a>
               <a class="button" href="outdoors/YFxGeoStudio/YFxGeoStudioHelp.html" data-cache-bust-link>帮助文档</a>
             </div>
+            <p style="margin:10px 0 0;font-size:13px">手机测试建议从“最新版”进入，会先刷新 YFxGeoStudio 应用外壳缓存。</p>
           </div>
         </section>
       </main>
@@ -81,6 +82,36 @@
         }
       }
 
+      function clearYFxGeoStudioShellCache(){
+        var tasks = [];
+        try{
+          if(window.caches && caches.keys){
+            tasks.push(caches.keys().then(function(keys){
+              return Promise.all(keys.map(function(k){
+                if(/^YFxGeoStudio-app-/.test(k) || /^YFxGeoStudio-runtime-/.test(k)){
+                  return caches.delete(k);
+                }
+                return Promise.resolve(false);
+              }));
+            }));
+          }
+        }catch(e){}
+        try{
+          if(navigator.serviceWorker && navigator.serviceWorker.getRegistrations){
+            tasks.push(navigator.serviceWorker.getRegistrations().then(function(regs){
+              return Promise.all(regs.map(function(reg){
+                var scope = (reg && reg.scope) || '';
+                if(scope.indexOf('/outdoors/YFxGeoStudio/') >= 0){
+                  return reg.unregister();
+                }
+                return Promise.resolve(false);
+              }));
+            }));
+          }
+        }catch(e){}
+        return Promise.all(tasks);
+      }
+
       function clearLocalSiteCache(){
         try{
           if(window.caches && caches.keys){
@@ -101,8 +132,16 @@
       document.addEventListener('DOMContentLoaded', function(){
         var links = document.querySelectorAll('[data-cache-bust-link]');
         links.forEach(function(a){
-          a.addEventListener('click', function(ev){
+          a.addEventListener('click', async function(ev){
             ev.preventDefault();
+            if(a.hasAttribute('data-clear-yfx-shell')){
+              try{
+                await Promise.race([
+                  clearYFxGeoStudioShellCache(),
+                  new Promise(function(resolve){ setTimeout(resolve, 1200); })
+                ]);
+              }catch(e){}
+            }
             window.location.href = withFreshParam(a.getAttribute('href') || a.href);
           });
         });
