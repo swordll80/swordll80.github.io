@@ -1534,7 +1534,8 @@ var yfxOriginalViewportContent = null;
       if(coordFixMode==='off')return false;
       if(!isPointInMainlandChina(lat,lng))return false;
       if(coordFixMode==='force')return true;
-      return activeLayerKey==='gaode'||(activeLayerKey==='google'&&mapDisplayMode==='city');
+      // Google terrain tiles used here are GCJ-02 aligned in mainland China, same as the city layer.
+      return activeLayerKey==='gaode'||activeLayerKey==='google';
     }
     function dataLatLngToMap(latlng){if(!latlng)return latlng;var lat=Number(latlng.lat),lng=Number(latlng.lng);if(!isFinite(lat)||!isFinite(lng))return latlng;if(shouldUseGcjForDataPoint(lat,lng)){var g=wgs84ToGcj02(lat,lng);return L.latLng(g.lat,g.lng);}return L.latLng(lat,lng);}
     function mapLatLngToData(latlng){if(!latlng)return latlng;var lat=Number(latlng.lat),lng=Number(latlng.lng);if(!isFinite(lat)||!isFinite(lng))return latlng;if(shouldUseGcjForDataPoint(lat,lng)){var w=gcj02ToWgs84(lat,lng);return L.latLng(w.lat,w.lng);}return L.latLng(lat,lng);}
