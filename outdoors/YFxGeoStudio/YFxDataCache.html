@@ -58,6 +58,23 @@
     #helpContent{padding:12px;font-size:13px;line-height:1.8}
     #helpContent b{color:#fff}
     #helpContent .help-section{margin:0 0 10px;padding:10px 12px;border-radius:8px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.10)}
+    #classicKmlDialog{position:fixed;inset:0;z-index:2150;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.42);padding:14px}
+    #classicKmlDialog .classic-box{width:min(560px,calc(100vw - 28px));max-height:min(700px,calc(100vh - 28px));display:flex;flex-direction:column;border-radius:8px;background:#17202a;color:#e7edf3;border:1px solid rgba(255,255,255,.16);box-shadow:0 18px 50px rgba(0,0,0,.4);overflow:hidden}
+    #classicKmlDialog .classic-head{height:42px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 12px;border-bottom:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.05)}
+    #classicKmlDialog .classic-title{font-size:15px;font-weight:700;white-space:nowrap}
+    #classicKmlDialog .classic-search{flex:1;min-width:90px;max-width:220px;height:28px;padding:3px 8px;border-radius:7px;border:1px solid rgba(255,255,255,.18);background:#101820;color:#fff;font:inherit;font-size:12px}
+    #classicKmlDialog .classic-actions{display:flex;align-items:center;gap:6px}
+    #classicKmlDialog .classic-actions button{min-width:30px;height:28px;padding:0 8px;font-size:12px}
+    #classicKmlDialog .classic-hint{padding:8px 12px;color:#aebdcc;font-size:12px;border-bottom:1px solid rgba(255,255,255,.08)}
+    #classicKmlTree{padding:8px 10px 12px;overflow:auto;flex:1;font-size:13px;line-height:1.5}
+    #classicKmlTree details{margin:2px 0 2px 10px}
+    #classicKmlTree details.root{margin-left:0}
+    #classicKmlTree summary{cursor:pointer;user-select:none;padding:4px 6px;border-radius:5px;color:#dce6ef}
+    #classicKmlTree summary:hover{background:rgba(74,163,255,.15)}
+    #classicKmlTree .classic-file{display:block;width:100%;height:auto;min-height:32px;text-align:left;margin:2px 0 2px 24px;padding:6px 8px;border:0;border-radius:5px;background:transparent;color:#ffd966;cursor:pointer;font-size:13px;justify-content:flex-start;white-space:normal}
+    #classicKmlTree .classic-file:hover{background:rgba(255,217,102,.14)}
+    #classicKmlTree .classic-empty,#classicKmlTree .classic-error{padding:10px 8px;color:#aebdcc}
+    #classicKmlTree .classic-error{color:#ff9b9b}
     #fileInput{display:none}
     .track-line{filter:drop-shadow(0 2px 3px rgba(0,0,0,.35))}
     html.yfx-map-touch-locked,body.yfx-map-touch-locked{touch-action:auto!important;overscroll-behavior:auto!important}
@@ -79,6 +96,7 @@
   <div id="map"></div>
   <div id="toolbar" class="panel">
     <button id="btnLoad" data-tip="load">📂</button>
+    <button id="btnClassic" data-tip="classicKml">🛤️</button>
     <button id="btnCache" data-tip="cache">▶️</button>
     <button id="btnSave" data-tip="save">💾</button>
     <button id="btnMapLock" data-tip="mapTouchLock">🔒</button>
@@ -117,6 +135,20 @@
       <div id="helpContent"></div>
     </div>
   </div>
+  <div id="classicKmlDialog">
+    <div class="classic-box">
+      <div class="classic-head">
+        <div id="classicKmlTitle" class="classic-title">经典轨迹</div>
+        <input id="classicKmlSearch" class="classic-search" placeholder="搜索经典轨迹...">
+        <div class="classic-actions">
+          <button id="classicKmlRefreshBtn" type="button">刷新</button>
+          <button id="classicKmlCloseBtn" type="button" title="关闭">×</button>
+        </div>
+      </div>
+      <div id="classicKmlHint" class="classic-hint">选择一个 KML 轨迹或 .yfxcache.zip 离线缓存包载入。</div>
+      <div id="classicKmlTree"></div>
+    </div>
+  </div>
   <div id="toast"></div>
   <script>
   (function(){
@@ -129,6 +161,8 @@
     var APP_VERSION='0.2';
     var GEO_TILE_CACHE_NAME='YFxGeoStudio-tile-cache-v1';
     var MANIFEST_FORMAT='YFxGeoStudio.DataCache.v1';
+    var CLASSIC_KML_BASE_URL='https://swordll80.github.io/outdoors/kml/';
+    var CLASSIC_KML_LIST_URL=CLASSIC_KML_BASE_URL+'list.txt';
     var activeSource='gaode';
     var activeLayers=[];
     var cacheMode=false;
@@ -155,11 +189,13 @@
     var lang=localStorage.getItem('yfx_lang') || 'zh';
     var mapTouchLocked=false;
     var originalViewportContent=null;
+    var classicKmlCache=null;
+    var classicSearchTimer=0;
 
     var I18N={
       zh:{
         appTitle:'YFxDataCache v0.2',
-        load:'加载 KML / 缓存包',cache:'开始缓存',cacheStop:'停止缓存',save:'保存离线缓存包',help:'帮助',close:'关闭',
+        load:'加载 KML / 缓存包',classicKml:'经典轨迹',cache:'开始缓存',cacheStop:'停止缓存',save:'保存离线缓存包',help:'帮助',close:'关闭',
         mapTouchLock:'锁定地图触控',mapTouchUnlock:'解锁地图触控',zoomOut:'缩小图层',zoomIn:'放大图层',
         sourceTitle:'地图源',gaode:'高德地形',google:'Google 地形',overviewTitle:'鸟瞰缓存',
         cacheHint:'浏览当前图层，看到的瓦片会被缓存；可以只浏览需要的区域。',
@@ -167,6 +203,7 @@
         overviewStats:'绿{count} 黄{failed} 总{total}',overviewEmpty:'绿0 黄0 总0',
         intro:'YFxDataCache v{version}：先加载一个 KML 轨迹；保存时会导出独立 .yfxcache.zip。',
         switched:'已切换：{label}',chooseKml:'请选择 .kml 或 .yfxcache.zip 文件',emptyKml:'KML 中没有可用轨迹坐标',
+        classicKmlTitle:'经典轨迹目录',classicKmlChoose:'选择一个 KML 轨迹或 .yfxcache.zip 离线缓存包载入。',classicKmlSearch:'搜索经典轨迹...',classicKmlRefresh:'刷新',classicKmlLoading:'正在读取经典轨迹列表...',classicKmlLoadFailed:'经典轨迹列表读取失败',classicKmlEmpty:'经典轨迹列表为空',classicKmlNoKml:'没有找到 KML 或缓存包',classicKmlNoMatch:'没有匹配的经典轨迹',classicKmlRoot:'参考线路',classicKmlImported:'经典轨迹已载入',classicKmlZipImported:'经典缓存包已载入',
         loadOk:'轨迹已加载：{name}。地图已限制在允许移动范围内。',cacheZipOk:'缓存包已载入：{name}。仅显示已成功写入 zip 的 {count} 个瓦片。',
         cacheZipNoTiles:'缓存包已载入轨迹，但没有成功写入 zip 的瓦片可显示。',cacheZipFailed:'缓存包读取失败：{error}',
         parseFailed:'KML 解析失败：{error}',
@@ -180,11 +217,11 @@
         mapUnlocked:'地图手势已解锁，可双指缩放地图。',mapLockedHint:'地图触控已锁定',
         errorPrefix:'错误：',unknownError:'未知错误',
         helpTitle:'YFxDataCache v0.2',
-        helpHtml:'<div class="help-section"><b>用途</b>：为一个 KML 轨迹制作独立 .yfxcache.zip 离线缓存包，也可重新打开缓存包检查效果。</div><div class="help-section"><b>步骤</b>：点击 📂 加载 KML；点击 ▶️ 开始缓存；在当前允许范围内浏览需要的图层和区域；点击 💾 保存缓存包。</div><div class="help-section"><b>检查缓存包</b>：点击 📂 打开 .yfxcache.zip 时，地图只显示已成功写入 zip 的瓦片；鸟瞰图黑色表示未浏览，黄色表示浏览过但缓存失败，绿色表示成功缓存。</div><div class="help-section"><b>继续缓存</b>：打开 .yfxcache.zip 后可再次点击 ▶️，切回在线地图继续尝试缓存；再次保存会合并已有成功和失败记录。</div><div class="help-section"><b>手机操作</b>：点击 🔒 锁定地图触控后，地图不再拦截触摸，可用浏览器页面缩放手势缩小当前页面；再次点击 🔓 恢复地图拖动和缩放。</div><div class="help-section"><b>图层</b>：缓存模式下用 − / ＋ 切换当前图层，鸟瞰缓存会显示当前图层已覆盖的瓦片。</div><div class="help-section"><b>说明</b>：若地图服务跨域禁止读取，瓦片可能只能写入清单，保存结果会提示缺失数量。</div>'
+        helpHtml:'<div class="help-section"><b>用途</b>：为一个 KML 轨迹制作独立 .yfxcache.zip 离线缓存包，也可重新打开缓存包检查效果。</div><div class="help-section"><b>步骤</b>：点击 📂 加载本地 KML，或点击 🛤️ 从经典轨迹目录在线选择目标地；点击 ▶️ 开始缓存；在当前允许范围内浏览需要的图层和区域；点击 💾 保存缓存包。</div><div class="help-section"><b>检查缓存包</b>：点击 📂 打开 .yfxcache.zip 时，地图只显示已成功写入 zip 的瓦片；鸟瞰图黑色表示未浏览，黄色表示浏览过但缓存失败，绿色表示成功缓存。</div><div class="help-section"><b>继续缓存</b>：打开 .yfxcache.zip 后可再次点击 ▶️，切回在线地图继续尝试缓存；再次保存会合并已有成功和失败记录。</div><div class="help-section"><b>手机操作</b>：点击 🔒 锁定地图触控后，地图不再拦截触摸，可用浏览器页面缩放手势缩小当前页面；再次点击 🔓 恢复地图拖动和缩放。</div><div class="help-section"><b>图层</b>：缓存模式下用 − / ＋ 切换当前图层，鸟瞰缓存会显示当前图层已覆盖的瓦片。</div><div class="help-section"><b>说明</b>：若地图服务跨域禁止读取，瓦片可能只能写入清单，保存结果会提示缺失数量。</div>'
       },
       en:{
         appTitle:'YFxDataCache v0.2',
-        load:'Load KML / cache package',cache:'Start cache',cacheStop:'Stop cache',save:'Save offline cache package',help:'Help',close:'Close',
+        load:'Load KML / cache package',classicKml:'Classic tracks',cache:'Start cache',cacheStop:'Stop cache',save:'Save offline cache package',help:'Help',close:'Close',
         mapTouchLock:'Lock map touch',mapTouchUnlock:'Unlock map touch',zoomOut:'Zoom layer out',zoomIn:'Zoom layer in',
         sourceTitle:'Map source',gaode:'Amap Terrain',google:'Google Terrain',overviewTitle:'Cache overview',
         cacheHint:'Browse the current layer; visible tiles will be cached. Visit only the areas you need.',
@@ -192,6 +229,7 @@
         overviewStats:'G{count} Y{failed} T{total}',overviewEmpty:'G0 Y0 T0',
         intro:'YFxDataCache v{version}: load a KML track first; saving exports a standalone .yfxcache.zip.',
         switched:'Switched to {label}',chooseKml:'Please choose a .kml or .yfxcache.zip file',emptyKml:'No usable track coordinates found in the KML',
+        classicKmlTitle:'Classic Track Directory',classicKmlChoose:'Choose a KML track or .yfxcache.zip offline cache package to load.',classicKmlSearch:'Search classic tracks...',classicKmlRefresh:'Refresh',classicKmlLoading:'Loading classic track list...',classicKmlLoadFailed:'Failed to load classic track list',classicKmlEmpty:'Classic track list is empty',classicKmlNoKml:'No KML/cache packages found',classicKmlNoMatch:'No matching classic tracks',classicKmlRoot:'Reference Routes',classicKmlImported:'Classic track loaded',classicKmlZipImported:'Classic cache package loaded',
         loadOk:'Track loaded: {name}. The map is now limited to the allowed area.',cacheZipOk:'Cache package loaded: {name}. Showing only {count} tiles written to the zip.',
         cacheZipNoTiles:'Cache package route loaded, but no tiles were written to the zip.',cacheZipFailed:'Failed to read cache package: {error}',
         parseFailed:'KML parse failed: {error}',
@@ -205,7 +243,7 @@
         mapUnlocked:'Map gestures enabled. Pinch zoom controls the map again.',mapLockedHint:'Map touch locked',
         errorPrefix:'Error: ',unknownError:'Unknown error',
         helpTitle:'YFxDataCache v0.2',
-        helpHtml:'<div class="help-section"><b>Purpose</b>: create a standalone .yfxcache.zip offline cache package for one KML track, and reopen cache packages to inspect them.</div><div class="help-section"><b>Steps</b>: tap 📂 to load a KML; tap ▶️ to start caching; browse the needed layers and areas inside the allowed range; tap 💾 to save the package.</div><div class="help-section"><b>Inspect a package</b>: tap 📂 and open a .yfxcache.zip. The map shows only tiles successfully written to the zip. In the overview, black means not browsed, yellow means browsed but failed, and green means successfully cached.</div><div class="help-section"><b>Continue caching</b>: after opening a .yfxcache.zip, tap ▶️ again to switch back to online maps and retry caching. Saving again merges existing success and failure records.</div><div class="help-section"><b>Mobile</b>: tap 🔒 to lock map touch so the map stops intercepting gestures and the browser can zoom the page; tap 🔓 to restore map pan and zoom.</div><div class="help-section"><b>Layers</b>: in cache mode, use − / ＋ to switch the current layer. The overview shows cached tiles for that layer.</div><div class="help-section"><b>Note</b>: if a map service blocks cross-origin reads, some tiles may be listed in the manifest only. The save result reports the missing count.</div>'
+        helpHtml:'<div class="help-section"><b>Purpose</b>: create a standalone .yfxcache.zip offline cache package for one KML track, and reopen cache packages to inspect them.</div><div class="help-section"><b>Steps</b>: tap 📂 to load a local KML, or tap 🛤️ to choose a destination from the online classic track catalog; tap ▶️ to start caching; browse the needed layers and areas inside the allowed range; tap 💾 to save the package.</div><div class="help-section"><b>Inspect a package</b>: tap 📂 and open a .yfxcache.zip. The map shows only tiles successfully written to the zip. In the overview, black means not browsed, yellow means browsed but failed, and green means successfully cached.</div><div class="help-section"><b>Continue caching</b>: after opening a .yfxcache.zip, tap ▶️ again to switch back to online maps and retry caching. Saving again merges existing success and failure records.</div><div class="help-section"><b>Mobile</b>: tap 🔒 to lock map touch so the map stops intercepting gestures and the browser can zoom the page; tap 🔓 to restore map pan and zoom.</div><div class="help-section"><b>Layers</b>: in cache mode, use − / ＋ to switch the current layer. The overview shows cached tiles for that layer.</div><div class="help-section"><b>Note</b>: if a map service blocks cross-origin reads, some tiles may be listed in the manifest only. The save result reports the missing count.</div>'
       }
     };
 
@@ -233,6 +271,7 @@
 
     var el={
       load:document.getElementById('btnLoad'),
+      classic:document.getElementById('btnClassic'),
       cache:document.getElementById('btnCache'),
       save:document.getElementById('btnSave'),
       input:document.getElementById('fileInput'),
@@ -260,7 +299,14 @@
       helpMask:document.getElementById('helpMask'),
       helpTitle:document.getElementById('helpTitle'),
       helpContent:document.getElementById('helpContent'),
-      helpClose:document.getElementById('helpClose')
+      helpClose:document.getElementById('helpClose'),
+      classicDialog:document.getElementById('classicKmlDialog'),
+      classicTitle:document.getElementById('classicKmlTitle'),
+      classicHint:document.getElementById('classicKmlHint'),
+      classicTree:document.getElementById('classicKmlTree'),
+      classicSearch:document.getElementById('classicKmlSearch'),
+      classicRefresh:document.getElementById('classicKmlRefreshBtn'),
+      classicClose:document.getElementById('classicKmlCloseBtn')
     };
 
     init();
@@ -268,6 +314,7 @@
     function init(){
       switchSource('gaode', true);
       el.load.addEventListener('click', function(){ el.input.click(); });
+      el.classic.addEventListener('click', showClassicKmlMenu);
       el.cache.addEventListener('click', toggleCacheMode);
       el.save.addEventListener('click', saveCacheManifest);
       el.input.addEventListener('change', function(){ if(this.files&&this.files[0]) loadInputFile(this.files[0]); this.value=''; });
@@ -280,6 +327,15 @@
       el.lang.addEventListener('click', toggleLang);
       el.helpClose.addEventListener('click', closeHelp);
       el.helpMask.addEventListener('click', function(e){ if(e.target===el.helpMask) closeHelp(); });
+      el.classicClose.addEventListener('click', closeClassicKmlDialog);
+      el.classicRefresh.addEventListener('click', reloadClassicKmlTree);
+      el.classicDialog.addEventListener('click', function(e){ if(e.target===el.classicDialog) closeClassicKmlDialog(); });
+      el.classicSearch.addEventListener('input', function(){
+        if(classicSearchTimer) clearTimeout(classicSearchTimer);
+        classicSearchTimer=setTimeout(function(){
+          if(classicKmlCache) renderClassicKmlCurrentView(classicKmlCache);
+        },120);
+      });
       el.canvas.addEventListener('click', jumpToOverviewPoint);
       el.canvas.addEventListener('touchend', function(e){
         if(e.changedTouches && e.changedTouches.length){
@@ -335,6 +391,12 @@
       el.srcGoogle.textContent=t('google');
       el.cacheHint.textContent=t('cacheHint');
       el.overviewTitleText.textContent=t('overviewTitle');
+      el.classicTitle.textContent=t('classicKmlTitle');
+      el.classicHint.textContent=t('classicKmlChoose');
+      el.classicSearch.placeholder=t('classicKmlSearch');
+      el.classicRefresh.textContent=t('classicKmlRefresh');
+      el.classicClose.title=t('close');
+      el.classicClose.setAttribute('aria-label',t('close'));
       if(!allowedBounds || el.overview.style.display==='none') el.overviewStats.textContent=t('overviewEmpty');
       sourceDefs.gaode.label=t('gaode');
       sourceDefs.google.label=t('google');
@@ -344,6 +406,7 @@
       updateStatus();
       updateOverview();
       if(el.helpMask.style.display==='flex') showHelp();
+      if(el.classicDialog.style.display==='flex' && classicKmlCache) renderClassicKmlCurrentView(classicKmlCache);
     }
 
     function showHelp(){
@@ -462,26 +525,7 @@
       reader.onload=function(ev){
         try{
           var text=String(ev.target.result||'');
-          var parsed=parseKml(text);
-          if(!parsed.lines.length && !parsed.points.length){ toast(t('emptyKml')); return; }
-          clearCurrentTrack();
-          routeLines=parsed.lines;
-          trackText=text;
-          trackName=file.name || 'track.kml';
-          trackFileMeta={name:file.name||'',size:file.size||0,lastModified:file.lastModified||0};
-          drawTrack(parsed);
-          applyTrackBounds();
-          clearPreviewCache();
-          cachePreviewMode=false;
-          previewManifest=null;
-          switchSource(activeSource, true);
-          tileRecords.clear(); cellRecords.clear(); failedTileRecords.clear(); failedCellRecords.clear(); pendingCacheUrls.clear();
-          cacheMode=false;
-          updateCacheButton();
-          el.cacheBar.style.display='none';
-          el.overview.style.display='none';
-          updateStatus();
-          updateOverview();
+          loadKmlText(text,file.name || 'track.kml',{name:file.name||'',size:file.size||0,lastModified:file.lastModified||0});
           toast(t('loadOk',{name:trackName}));
         }catch(err){
           console.error(err);
@@ -492,7 +536,265 @@
       reader.readAsText(file,'utf-8');
     }
 
+    function loadKmlText(text, name, meta){
+      var parsed=parseKml(text);
+      if(!parsed.lines.length && !parsed.points.length) throw new Error(t('emptyKml'));
+      clearCurrentTrack();
+      routeLines=parsed.lines;
+      trackText=String(text||'');
+      trackName=name || 'track.kml';
+      trackFileMeta=meta || {name:trackName,size:trackText.length,lastModified:0};
+      drawTrack(parsed);
+      applyTrackBounds();
+      clearPreviewCache();
+      cachePreviewMode=false;
+      previewManifest=null;
+      switchSource(activeSource, true);
+      tileRecords.clear(); cellRecords.clear(); failedTileRecords.clear(); failedCellRecords.clear(); pendingCacheUrls.clear();
+      cacheMode=false;
+      updateCacheButton();
+      el.cacheBar.style.display='none';
+      el.overview.style.display='none';
+      updateStatus();
+      updateOverview();
+    }
+
     function loadCacheZipFile(file){
+      loadCacheZipBlob(file, (file&&file.name)||'cache.yfxcache.zip');
+    }
+
+    function classicKmlIsCachePackage(file){
+      return /\.yfxcache\.zip$/i.test(String(file||''));
+    }
+
+    function classicKmlIsKml(file){
+      return /\.kml$/i.test(String(file||''));
+    }
+
+    function classicKmlIcon(item){
+      return classicKmlIsCachePackage(item&&item.file) ? '🗺️' : '🛤️';
+    }
+
+    function classicKmlDisplayName(item){
+      if(!item) return '';
+      var text=(lang==='en'&&item.en)?item.en:(item.zh||item.name||item.file||'KML');
+      text=String(text||'');
+      if(item.file&&(classicKmlIsKml(item.file)||classicKmlIsCachePackage(item.file))){
+        var suffix=classicKmlIsCachePackage(item.file)?'.yfxcache.zip':'.kml';
+        if(text===item.file) text=text.split('/').pop();
+        if(text.toLowerCase().slice(-suffix.length)!==suffix) text+=suffix;
+      }
+      return text;
+    }
+
+    function normalizeClassicKmlEntry(line){
+      line=(line||'').trim();
+      if(!line || line.charAt(0)==='#' || line.indexOf('//')===0) return null;
+      var parts=line.split('|').map(function(s){return s.trim();});
+      var file=(parts[0]||'').replace(/\\/g,'/');
+      if(!file) return null;
+      if(!classicKmlIsKml(file) && !classicKmlIsCachePackage(file)) file+='.kml';
+      return {file:file,name:parts[1]||file,zh:parts[1]||file,en:parts[2]||''};
+    }
+
+    function parseClassicKmlList(text){
+      var arr=[];
+      var rows=String(text||'').replace(/^\uFEFF/,'').split(/\r?\n/);
+      for(var i=0;i<rows.length;i++){
+        var item=normalizeClassicKmlEntry(rows[i]);
+        if(item) arr.push(item);
+      }
+      return arr;
+    }
+
+    function classicKmlUrl(file){
+      var raw=String(file||'').trim().replace(/^\/+/, '');
+      raw=raw.replace(/^https?:\/\/[^\/]+\/outdoors\/kml\//i,'');
+      var parts=raw.split('/');
+      for(var i=0;i<parts.length;i++) parts[i]=encodeURIComponent(parts[i]);
+      return CLASSIC_KML_BASE_URL+parts.join('/');
+    }
+
+    function ensureClassicKmlList(cb){
+      if(classicKmlCache){ cb(null,classicKmlCache); return; }
+      fetch(CLASSIC_KML_LIST_URL,{cache:'no-store'})
+        .then(function(resp){ if(!resp.ok) throw new Error('HTTP '+resp.status); return resp.text(); })
+        .then(function(text){ classicKmlCache=parseClassicKmlList(text); cb(null,classicKmlCache); })
+        .catch(function(err){ cb(err,null); });
+    }
+
+    function showClassicKmlMenu(e){
+      if(e){ e.preventDefault(); e.stopPropagation(); }
+      el.classicDialog.style.display='flex';
+      el.classicTitle.textContent=t('classicKmlTitle');
+      el.classicHint.textContent=t('classicKmlChoose');
+      el.classicSearch.placeholder=t('classicKmlSearch');
+      setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(t('classicKmlLoading'))+'</div>');
+      ensureClassicKmlList(function(err,list){
+        if(err){
+          console.error(err);
+          setClassicKmlTreeHtml('<div class="classic-error">'+escapeHtml(t('classicKmlLoadFailed'))+'</div>');
+          return;
+        }
+        renderClassicKmlCurrentView(list);
+      });
+    }
+
+    function closeClassicKmlDialog(){
+      el.classicDialog.style.display='none';
+    }
+
+    function reloadClassicKmlTree(){
+      classicKmlCache=null;
+      setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(t('classicKmlLoading'))+'</div>');
+      ensureClassicKmlList(function(err,list){
+        if(err){
+          console.error(err);
+          setClassicKmlTreeHtml('<div class="classic-error">'+escapeHtml(t('classicKmlLoadFailed'))+'</div>');
+          return;
+        }
+        renderClassicKmlCurrentView(list);
+      });
+    }
+
+    function setClassicKmlTreeHtml(html){
+      el.classicTree.innerHTML=html;
+    }
+
+    function classicKmlDirName(name){
+      name=String(name||'').trim();
+      return name || t('classicKmlRoot');
+    }
+
+    function buildClassicKmlTree(list){
+      var root={dirs:{},files:[]};
+      for(var i=0;i<(list||[]).length;i++){
+        var item=list[i];
+        var raw=String(item.file||'').replace(/\\/g,'/').replace(/^\/+/, '');
+        var parts=raw.split('/').filter(function(x){return x!=='';});
+        if(!parts.length) continue;
+        var node=root;
+        for(var j=0;j<parts.length-1;j++){
+          var dir=parts[j];
+          if(!node.dirs[dir]) node.dirs[dir]={dirs:{},files:[]};
+          node=node.dirs[dir];
+        }
+        node.files.push({idx:(item&&item.__classicIndex!=null?item.__classicIndex:i),item:item});
+      }
+      return root;
+    }
+
+    function buildClassicNode(node,label,forceOpen){
+      var details=document.createElement('details');
+      details.open=!!forceOpen;
+      var summary=document.createElement('summary');
+      summary.textContent='📁 '+classicKmlDirName(label);
+      details.appendChild(summary);
+      function loadChildren(){
+        if(node._loaded) return;
+        node._loaded=true;
+        var dirs=Object.keys(node.dirs||{}).sort(function(a,b){return a.localeCompare(b,'zh-Hans-CN');});
+        for(var i=0;i<dirs.length;i++) details.appendChild(buildClassicNode(node.dirs[dirs[i]],dirs[i],forceOpen));
+        appendClassicFiles(details,node.files||[]);
+      }
+      summary.addEventListener('click',function(e){ e.stopPropagation(); loadChildren(); });
+      if(forceOpen) loadChildren();
+      return details;
+    }
+
+    function appendClassicFiles(container, files){
+      files.sort(function(a,b){return classicKmlDisplayName(a.item).localeCompare(classicKmlDisplayName(b.item),'zh-Hans-CN');});
+      for(var i=0;i<files.length;i++){
+        var f=files[i];
+        var btn=document.createElement('button');
+        btn.type='button';
+        btn.className='classic-file';
+        btn.textContent=classicKmlIcon(f.item)+' '+classicKmlDisplayName(f.item);
+        btn.title=f.item.file;
+        btn.addEventListener('click',(function(idx){return function(){ loadClassicKml(idx); };})(f.idx));
+        container.appendChild(btn);
+      }
+    }
+
+    function renderClassicKmlTree(list){
+      if(!list || !list.length){
+        setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(t('classicKmlEmpty'))+'</div>');
+        return;
+      }
+      var root=buildClassicKmlTree(list);
+      var dirs=Object.keys(root.dirs||{}).sort(function(a,b){return a.localeCompare(b,'zh-Hans-CN');});
+      el.classicTree.innerHTML='';
+      if(!dirs.length && (!root.files || !root.files.length)){
+        setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(t('classicKmlNoKml'))+'</div>');
+        return;
+      }
+      for(var i=0;i<dirs.length;i++) el.classicTree.appendChild(buildClassicNode(root.dirs[dirs[i]],dirs[i],false));
+      appendClassicFiles(el.classicTree,root.files||[]);
+    }
+
+    function classicKmlSearchText(item){
+      return (classicKmlDisplayName(item)+' '+(item&&item.file||'')).toLowerCase();
+    }
+
+    function renderClassicKmlSearchTree(list, keyword){
+      keyword=String(keyword||'').trim().toLowerCase();
+      if(!keyword){ renderClassicKmlTree(list); return; }
+      var filtered=[];
+      for(var i=0;i<(list||[]).length;i++){
+        if(classicKmlSearchText(list[i]).indexOf(keyword)>=0){
+          var copy=Object.assign({},list[i]);
+          copy.__classicIndex=i;
+          filtered.push(copy);
+        }
+      }
+      if(!filtered.length){
+        setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(t('classicKmlNoMatch'))+'</div>');
+        return;
+      }
+      var root=buildClassicKmlTree(filtered);
+      el.classicTree.innerHTML='';
+      var dirs=Object.keys(root.dirs||{}).sort(function(a,b){return a.localeCompare(b,'zh-Hans-CN');});
+      for(var j=0;j<dirs.length;j++) el.classicTree.appendChild(buildClassicNode(root.dirs[dirs[j]],dirs[j],true));
+      appendClassicFiles(el.classicTree,root.files||[]);
+    }
+
+    function renderClassicKmlCurrentView(list){
+      renderClassicKmlSearchTree(list, el.classicSearch ? el.classicSearch.value : '');
+    }
+
+    function loadClassicKml(idx){
+      var item=classicKmlCache && classicKmlCache[idx];
+      if(!item) return;
+      closeClassicKmlDialog();
+      var url=classicKmlUrl(item.file);
+      var display=classicKmlDisplayName(item);
+      if(classicKmlIsCachePackage(item.file)){
+        toast(t('classicKmlLoading'));
+        fetch(url,{cache:'no-store'})
+          .then(function(resp){ if(!resp.ok) throw new Error('HTTP '+resp.status); return resp.blob(); })
+          .then(function(blob){
+            loadCacheZipBlob(blob, String(item.file||display).split('/').pop() || 'cache.yfxcache.zip');
+            toast(t('classicKmlZipImported')+'：'+display);
+          })
+          .catch(function(err){
+            console.error(err);
+            toast(t('cacheZipFailed',{error:(err&&err.message?err.message:err)}));
+          });
+        return;
+      }
+      fetch(url,{cache:'no-store'})
+        .then(function(resp){ if(!resp.ok) throw new Error('HTTP '+resp.status); return resp.text(); })
+        .then(function(text){
+          loadKmlText(text, String(item.file||display).split('/').pop() || display, {name:item.file,size:text.length,lastModified:0});
+          toast(t('classicKmlImported')+'：'+display);
+        })
+        .catch(function(err){
+          console.error(err);
+          toast(t('parseFailed',{error:(err&&err.message?err.message:err)}));
+        });
+    }
+
+    function loadCacheZipBlob(blob, fileName){
       var reader=new FileReader();
       reader.onload=function(ev){
         try{
@@ -511,7 +813,7 @@
           clearPreviewCache();
           routeLines=parsed.lines;
           trackText=routeText;
-          trackName=(manifest.trackFile&&manifest.trackFile.name) || routePath || file.name || 'route.kml';
+          trackName=(manifest.trackFile&&manifest.trackFile.name) || routePath || fileName || 'route.kml';
           trackFileMeta=manifest.trackFile || {name:trackName,size:routeEntry.data.length,lastModified:0};
           drawTrack(parsed);
           applyTrackBounds();
@@ -535,7 +837,7 @@
           updateStatus();
           updateOverview();
           if(tileRecords.size){
-            toast(t('cacheZipOk',{name:file.name||trackName,count:tileRecords.size}));
+            toast(t('cacheZipOk',{name:fileName||trackName,count:tileRecords.size}));
           }else{
             toast(t('cacheZipNoTiles'));
           }
@@ -545,7 +847,7 @@
         }
       };
       reader.onerror=function(){ toast(t('readFailed')); };
-      reader.readAsArrayBuffer(file);
+      reader.readAsArrayBuffer(blob);
     }
 
     function loadPreviewTilesFromManifest(manifest, entries){
@@ -1128,6 +1430,12 @@
       var d=new Date();
       function z(n){return n<10?'0'+n:String(n);}
       return d.getFullYear()+z(d.getMonth()+1)+z(d.getDate())+'_'+z(d.getHours())+z(d.getMinutes())+z(d.getSeconds());
+    }
+
+    function escapeHtml(s){
+      return String(s||'').replace(/[&<>"']/g,function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+      });
     }
 
     function updateStatus(){
