@@ -3262,10 +3262,10 @@ function setMapTouchLocked(locked){
     function showAllLegendsDialog(){
       var rows=lang==='en'?
         [
-          ['🛤️','Track','Track line.'],['└──┘','Scale','Current map scale shown in the status bar.'],['👁','Browse mode','Browse/view mode.'],['✏️','Edit mode','Draw tracks or edit objects.'],['▦','Track list columns','Choose track-list columns.'],['📖','Legend notes','Open the legend notes dialog.'],['📋','Instructions','Open operation instructions.'],['🗺️','Offline cache','Open YFxDataCache to create or import offline cache packages.'],['🧹','Clear workspace','Clear the locally saved workspace snapshot.'],['👍','Special thanks','Show contributors and acknowledgements.'],['📍','Marker','User marker point.'],['🛰','GPS point','GPS sampling point from a track.'],['↔','Distance','Track distance.'],['↑','Ascent','Cumulative ascent.'],['↓','Descent','Cumulative descent.'],['⛰','Elevation','Elevation or elevation range.'],['🕒','Time','Time or duration.'],['🏃','1 km/s','Track playback at 1 km/s.'],['🏃🏃','2 km/s','Track playback at 2 km/s.'],['🗑️','Delete','Delete current object/data.'],['×','Close','Cancel or close.'],['✓','Save','Save changes.'],['🌐','Online help','Open online help page.'],['🏠','Home','Open home page.'],['🔒','Lock touch','Lock map touch gestures.'],['🔓','Unlock touch','Restore map touch gestures.'],['🏷️','Name','Name field.'],['📝','Comment','Comment field.'],['🎨','Color','Color setting.'],['🔍','Zoom','Current map zoom level.'],['⛰️','Outdoor','Outdoor map mode.'],['🏙️','City','City map mode.'],['🛤️...🛤️','Classic tracks','Classic track catalog.']
+          ['🛤️','Track','Track line.'],['└──┘','Scale','Current map scale shown in the status bar.'],['👁','Browse mode','Browse/view mode.'],['✏️','Edit mode','Draw tracks or edit objects.'],['▦','Track list columns','Choose track-list columns.'],['📖','Legend notes','Open the legend notes dialog.'],['📋','Instructions','Open operation instructions.'],['🗺️','Offline cache','Open YFxDataCache to create or import offline cache packages.'],['🧹','Clear workspace','Clear the locally saved workspace snapshot.'],['👍','Special thanks','Show contributors and acknowledgements.'],['📍','Marker','User marker point.'],['🛰','GPS point','GPS sampling point from a track.'],['↔','Distance','Track distance.'],['↑','Ascent','Cumulative ascent.'],['↓','Descent','Cumulative descent.'],['⛰','Elevation','Elevation or elevation range.'],['🕒','Time','Time or duration.'],['🏃','Auto runner','Track playback, max 2 km/s and minimum 1 second.'],['📋','Activity plan','Generate an outdoor activity plan from the current track.'],['🗑️','Delete','Delete current object/data.'],['×','Close','Cancel or close.'],['✓','Save','Save changes.'],['🌐','Online help','Open online help page.'],['🏠','Home','Open home page.'],['🔒','Lock touch','Lock map touch gestures.'],['🔓','Unlock touch','Restore map touch gestures.'],['🏷️','Name','Name field.'],['📝','Comment','Comment field.'],['🎨','Color','Color setting.'],['🔍','Zoom','Current map zoom level.'],['⛰️','Outdoor','Outdoor map mode.'],['🏙️','City','City map mode.'],['🛤️...🛤️','Classic tracks','Classic track catalog.']
         ]:
         [
-          ['🛤️','轨迹','轨迹线路。'],['└──┘','比例尺','状态栏显示当前地图比例尺。'],['👁','浏览模式','浏览/查看模式。'],['✏️','编辑模式','手绘轨迹或编辑对象。'],['▦','轨迹列表列信息','设置轨迹列表中显示或隐藏的列。'],['📖','图例说明','打开图例说明对话框。'],['📋','操作说明','打开操作说明对话框。'],['🗺️','离线缓存','打开 YFxDataCache 缓存工具，制作或导入离线缓存包。'],['🧹','清除本地工作区','清除浏览器保存的本地工作区快照。'],['👍','特别感谢','显示建议贡献人员和致谢。'],['📍','标记点','用户标记点。'],['🛰','GPS点','轨迹中的 GPS 采样点。'],['↔','距离','轨迹距离。'],['↑','累计上升','轨迹累计上升。'],['↓','累计下降','轨迹累计下降。'],['⛰','海拔','海拔或海拔范围。'],['🕒','时间','时间或耗时，hh:mm 为小时:分钟。'],['🏃','1km/s','按 1km/s 播放轨迹。'],['🏃🏃','2km/s','按 2km/s 播放轨迹。'],['🗑️','删除','删除当前对象或数据。'],['×','关闭','取消或关闭。'],['✓','保存','保存修改。'],['🌐','在线帮助','打开在线帮助页面。'],['🏠','主页','打开主页。'],['🔒','锁定地图触控','锁定地图触摸手势。'],['🔓','解锁地图触控','恢复地图触摸手势。'],['🏷️','名称','名称输入项。'],['📝','备注','备注输入项。'],['🎨','颜色','颜色设置。'],['🔍','缩放','当前地图缩放级别。'],['⛰️','户外模式','切换到户外地图模式。'],['🏙️','城市模式','切换到城市地图模式。'],['🛤️...🛤️','经典轨迹','打开经典轨迹目录。']
+          ['🛤️','轨迹','轨迹线路。'],['└──┘','比例尺','状态栏显示当前地图比例尺。'],['👁','浏览模式','浏览/查看模式。'],['✏️','编辑模式','手绘轨迹或编辑对象。'],['▦','轨迹列表列信息','设置轨迹列表中显示或隐藏的列。'],['📖','图例说明','打开图例说明对话框。'],['📋','操作说明','打开操作说明对话框。'],['🗺️','离线缓存','打开 YFxDataCache 缓存工具，制作或导入离线缓存包。'],['🧹','清除本地工作区','清除浏览器保存的本地工作区快照。'],['👍','特别感谢','显示建议贡献人员和致谢。'],['📍','标记点','用户标记点。'],['🛰','GPS点','轨迹中的 GPS 采样点。'],['↔','距离','轨迹距离。'],['↑','累计上升','轨迹累计上升。'],['↓','累计下降','轨迹累计下降。'],['⛰','海拔','海拔或海拔范围。'],['🕒','时间','时间或耗时，hh:mm 为小时:分钟。'],['🏃','自动小人','自动按轨迹长度播放，最快 2km/s，最短 1 秒。'],['📋','户外活动计划','根据当前轨迹和当前位置生成活动计划。'],['🗑️','删除','删除当前对象或数据。'],['×','关闭','取消或关闭。'],['✓','保存','保存修改。'],['🌐','在线帮助','打开在线帮助页面。'],['🏠','主页','打开主页。'],['🔒','锁定地图触控','锁定地图触摸手势。'],['🔓','解锁地图触控','恢复地图触摸手势。'],['🏷️','名称','名称输入项。'],['📝','备注','备注输入项。'],['🎨','颜色','颜色设置。'],['🔍','缩放','当前地图缩放级别。'],['⛰️','户外模式','切换到户外地图模式。'],['🏙️','城市模式','切换到城市地图模式。'],['🛤️...🛤️','经典轨迹','打开经典轨迹目录。']
         ];
       var html='<table><thead><tr><th>'+(lang==='en'?'Icon':'图标')+'</th><th>'+(lang==='en'?'Name':'名称')+'</th><th>'+(lang==='en'?'Description':'说明')+'</th></tr></thead><tbody>';
       for(var i=0;i<rows.length;i++)html+='<tr><td class="legend-icon-cell">'+helpSubEscape(rows[i][0])+'</td><td class="legend-name-cell">'+helpSubEscape(rows[i][1])+'</td><td>'+helpSubEscape(rows[i][2])+'</td></tr>';
@@ -3866,7 +3866,55 @@ function setMapTouchLocked(locked){
       }function onLineContext(e){if(e&&e.originalEvent)L.DomEvent.preventDefault(e.originalEvent);if(e&&e.originalEvent)L.DomEvent.stop(e.originalEvent);if(editModeEnabled)openLineDialog(line);}function onLineDblClick(e){if(e&&e.originalEvent){L.DomEvent.stop(e.originalEvent);L.DomEvent.preventDefault(e.originalEvent);}if(editModeEnabled)openLineDialog(line);else selectLine(line,e&&e.latlng?e.latlng:null,false,'map');}line.polyline.on('click',onLineClick);line.hitPolyline.on('click',onLineClick);line.polyline.on('dblclick',onLineDblClick);line.hitPolyline.on('dblclick',onLineDblClick);line.polyline.on('contextmenu',onLineContext);line.hitPolyline.on('contextmenu',onLineContext);lines.push(line);updateLineStartEndMarkers(line);updateStats();return line;}
     function removeLine(line){if(runnerActiveLine===line)stopRunner();if(elevationHoverLine===line)hideElevationHoverMarker();selectedLines.delete(line);if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}clearLineDirectionArrows(line);if(line.polyline)lineLayer.removeLayer(line.polyline);if(line.hitPolyline)lineLayer.removeLayer(line.hitPolyline);for(var i=lines.length-1;i>=0;i--)if(lines[i]===line)lines.splice(i,1);var removedFileName=line._importedFile||null;for(var k=objects.length-1;k>=0;k--){var oo=objects[k];if(oo.lineId===line.id){if(oo.marker)itemLayer.removeLayer(oo.marker);if(!removedFileName&&oo.sources&&oo.sources.length)removedFileName=oo.sources[0];objects.splice(k,1);}}for(var fn=importedFilePaths.length-1;fn>=0;fn--){var fname=importedFilePaths[fn];var stillUsed=false;for(var oi=0;oi<objects.length;oi++){var sArr=objects[oi].sources||[];if(sArr.indexOf(fname)>=0){stillUsed=true;break;}}if(!stillUsed){for(var li=0;li<lines.length;li++){if(lines[li]._importedFile===fname){stillUsed=true;break;}}if(!stillUsed)importedFilePaths.splice(fn,1);}}var txt=document.getElementById('fileText');if(txt&&removedFileName){var cur=getFileStatusText();if(cur.indexOf(removedFileName)>=0){var parts=cur.split(',').map(function(s){return s.trim();}).filter(function(s){return s&&s!==removedFileName;});setFileStatusText(parts.length?parts.join(', '):tr('none'));}}updateStats();}
     function updateLineStartEndMarkers(line){if(line.startMarker){itemLayer.removeLayer(line.startMarker);line.startMarker=null;}if(line.endMarker){itemLayer.removeLayer(line.endMarker);line.endMarker=null;}if(line.points.length>0&&line.startIcon){line.startMarker=L.marker(dataLatLngToMap(line.points[0]),{icon:pinIcon(ICON_PINS[line.startIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}if(line.points.length>0&&line.endIcon){line.endMarker=L.marker(dataLatLngToMap(line.points[line.points.length-1]),{icon:pinIcon(ICON_PINS[line.endIcon]||'pin-red'),draggable:false,opacity:.9}).addTo(itemLayer);}}
-    function lineStats(line){var dist=0,up=0,down=0,elapsed=0,gpsPts=line.points.length;for(var i=1;i<line.points.length;i++){dist+=distanceMeters(line.points[i-1].lat,line.points[i-1].lng,line.points[i].lat,line.points[i].lng);var dh=(line.points[i].alt||0)-(line.points[i-1].alt||0);if(dh>0)up+=dh;else down-=dh;}var tm=lineTimeRange(line);if(tm.min!=null&&tm.max!=null&&tm.max>tm.min)elapsed=(tm.max-tm.min)/1000;return{distance:dist,ascent:up,descent:down,elapsed:elapsed,gpsPoints:gpsPts};}
+    var ELEVATION_SMOOTH_WINDOW_POINTS=30;
+    function smoothLineAltitudes(points,windowSize){
+      points=points||[];
+      windowSize=Math.max(1,Math.round(Number(windowSize)||1));
+      var n=points.length,halfBefore=Math.floor((windowSize-1)/2),halfAfter=windowSize-1-halfBefore;
+      var prefixSum=[0],prefixCount=[0];
+      for(var i=0;i<n;i++){
+        var a=Number(points[i]&&points[i].alt);
+        if(isFinite(a)){
+          prefixSum.push(prefixSum[prefixSum.length-1]+a);
+          prefixCount.push(prefixCount[prefixCount.length-1]+1);
+        }else{
+          prefixSum.push(prefixSum[prefixSum.length-1]);
+          prefixCount.push(prefixCount[prefixCount.length-1]);
+        }
+      }
+      var out=[];
+      for(var j=0;j<n;j++){
+        var from=Math.max(0,j-halfBefore),to=Math.min(n-1,j+halfAfter);
+        var cnt=prefixCount[to+1]-prefixCount[from];
+        out[j]=cnt>0?(prefixSum[to+1]-prefixSum[from])/cnt:null;
+      }
+      return out;
+    }
+    function calcSmoothedElevationGain(points,windowSize){
+      points=points||[];
+      var alts=smoothLineAltitudes(points,windowSize),up=0,down=0,prev=null;
+      for(var i=0;i<alts.length;i++){
+        var a=alts[i];
+        if(a==null||!isFinite(a))continue;
+        if(prev!=null){
+          var dh=a-prev;
+          if(dh>0)up+=dh;else down-=dh;
+        }
+        prev=a;
+      }
+      return {ascent:up,descent:down};
+    }
+    function lineStats(line){
+      var dist=0,elapsed=0,gpsPts=(line&&line.points)?line.points.length:0;
+      if(!line||!line.points)return{distance:0,ascent:0,descent:0,elapsed:0,gpsPoints:0};
+      for(var i=1;i<line.points.length;i++){
+        dist+=distanceMeters(line.points[i-1].lat,line.points[i-1].lng,line.points[i].lat,line.points[i].lng);
+      }
+      var gain=calcSmoothedElevationGain(line.points,ELEVATION_SMOOTH_WINDOW_POINTS);
+      var tm=lineTimeRange(line);
+      if(tm.min!=null&&tm.max!=null&&tm.max>tm.min)elapsed=(tm.max-tm.min)/1000;
+      return{distance:dist,ascent:gain.ascent,descent:gain.descent,elapsed:elapsed,gpsPoints:gpsPts};
+    }
     function countMarkPoints(line){var n=0;for(var i=0;i<objects.length;i++){if(objects[i].lineId===line.id)n++;}return n;}
     function lineTimeRange(line){
       // V9：线路耗时按“本分段轨迹点”的时间统计。
@@ -4250,6 +4298,218 @@ function setMapTouchLocked(locked){
       return h;
     }
 
+
+    function calcAutoRunnerSpeedMps(line){
+      var pts=buildLineDistanceTable(line);
+      if(!pts||pts.length<2)return 0;
+      var total=pts[pts.length-1].dist;
+      if(!isFinite(total)||total<=0)return 0;
+      // 自动速度规则：短线路最短 1 秒跑完；长线路最高 2 km/s，不再更快。
+      return Math.min(2000,Math.max(1,total));
+    }
+
+    function toggleAutoRunnerForActiveLine(){
+      if(!dlgLineTarget)return;
+      var speed=calcAutoRunnerSpeedMps(dlgLineTarget);
+      if(!speed){toast(lang==='en'?'Track distance is too short':'轨迹距离太短，无法播放');return;}
+      if(runnerActiveLine===dlgLineTarget&&runnerMarker){stopRunner();return;}
+      playRunnerOnLine(dlgLineTarget,speed,'🏃');
+    }
+
+    var lastActivityPlanText='';
+
+    function activityPlanLineStart(line){
+      if(!line||!line.points||!line.points.length)return null;
+      var p=line.points[0];
+      var lat=Number(p.lat),lng=Number(p.lng);
+      if(!isFinite(lat)||!isFinite(lng))return null;
+      return {lat:lat,lng:lng};
+    }
+
+    function hasUsableAltitude(line){
+      if(!line||!line.points)return false;
+      var n=0;
+      for(var i=0;i<line.points.length;i++){
+        var a=Number(line.points[i].alt);
+        if(isFinite(a)){n++;if(n>=2)return true;}
+      }
+      return false;
+    }
+
+    function formatPlanHours(hours){
+      hours=Number(hours)||0;
+      if(hours<0)hours=0;
+      var mins=Math.round(hours*60);
+      var h=Math.floor(mins/60),m=mins%60;
+      if(h<=0)return m+'分钟';
+      if(m===0)return h+'小时';
+      return h+'小时'+m+'分钟';
+    }
+
+    function formatPlanClock(date){
+      if(!date||!isFinite(date.getTime()))return '-';
+      function z(n){return n<10?'0'+n:String(n);}
+      return z(date.getHours())+':'+z(date.getMinutes());
+    }
+
+    function addHoursToDate(date,hours){
+      return new Date(date.getTime()+Number(hours||0)*3600000);
+    }
+
+    function dayOfYearLocal(date){
+      var start=new Date(date.getFullYear(),0,0);
+      return Math.floor((date-start)/86400000);
+    }
+
+    function normalizeDeg(x){
+      x=x%360;
+      if(x<0)x+=360;
+      return x;
+    }
+
+    function calcSunsetTime(date,lat,lng){
+      lat=Number(lat);lng=Number(lng);
+      if(!isFinite(lat)||!isFinite(lng))return null;
+      var N=dayOfYearLocal(date);
+      var lngHour=lng/15;
+      var t=N+((18-lngHour)/24);
+      var M=(0.9856*t)-3.289;
+      var L=normalizeDeg(M+(1.916*Math.sin(M*Math.PI/180))+(0.020*Math.sin(2*M*Math.PI/180))+282.634);
+      var RA=normalizeDeg(Math.atan(0.91764*Math.tan(L*Math.PI/180))*180/Math.PI);
+      var Lquadrant=Math.floor(L/90)*90;
+      var RAquadrant=Math.floor(RA/90)*90;
+      RA=(RA+(Lquadrant-RAquadrant))/15;
+      var sinDec=0.39782*Math.sin(L*Math.PI/180);
+      var cosDec=Math.cos(Math.asin(sinDec));
+      var zenith=90.833;
+      var cosH=(Math.cos(zenith*Math.PI/180)-(sinDec*Math.sin(lat*Math.PI/180)))/(cosDec*Math.cos(lat*Math.PI/180));
+      if(cosH>1||cosH<-1)return null;
+      var H=(Math.acos(cosH)*180/Math.PI)/15;
+      var T=H+RA-(0.06571*t)-6.622;
+      var UT=(T-lngHour)%24;
+      if(UT<0)UT+=24;
+      var d=new Date(Date.UTC(date.getFullYear(),date.getMonth(),date.getDate(),0,0,0));
+      d=new Date(d.getTime()+UT*3600000);
+      return d;
+    }
+
+    function activityPlanEquipList(st,routeHours){
+      var arr=['手机满电、充电宝、离线 KML/离线地图、纸质或截图备份','头灯或手电、备用电池','足量饮水和路餐，低血糖易发者准备糖果/能量胶','防滑徒步鞋、雨具、防晒帽、保暖层','急救包、哨子、纸巾/垃圾袋'];
+      if(st.ascent>300||st.descent>300)arr.push('登山杖、护膝，长下降路段注意膝盖保护');
+      if(routeHours>4)arr.push('额外水和高热量食物，建议结伴并向家人报备路线');
+      return arr;
+    }
+
+    function activityPlanRiskList(st,routeHours,hasAlt,latestDeparture){
+      var arr=[];
+      if(!hasAlt)arr.push('当前轨迹缺少有效海拔数据，累计爬升/下降可能低估，计划时间只作保守参考');
+      if(st.ascent>500)arr.push('累计爬升较大，体力消耗和抽筋风险增加');
+      if(st.descent>500)arr.push('累计下降较大，膝盖压力和滑倒风险增加');
+      if(routeHours>5)arr.push('线路时间较长，注意补水、补给和天黑前撤离');
+      arr.push('山区信号不稳定，提前下载轨迹和地图，关键岔路不要只依赖在线地图');
+      arr.push('雨后湿滑、涉水、落石、蛇虫等户外风险需要现场判断');
+      if(latestDeparture&&isFinite(latestDeparture.getTime())&&Date.now()>latestDeparture.getTime())arr.push('当前时间已晚于建议最晚出发时间，不建议今天再完整穿越');
+      return arr;
+    }
+
+    function generateActivityPlanText(line,pos){
+      var st=lineStats(line);
+      var start=activityPlanLineStart(line);
+      var now=new Date();
+      var distKm=st.distance/1000;
+      var flatHours=distKm/5;
+      var upHours=st.ascent/300;
+      var downHours=st.descent/400;
+      var routeHours=flatHours+upHours+downHours;
+      var routeSafeHours=routeHours*1.2;
+      var driveKm=start?distanceMeters(pos.lat,pos.lng,start.lat,start.lng)/1000:0;
+      var driveHours=driveKm/50;
+      var sunset=calcSunsetTime(now,pos.lat,pos.lng);
+      var latest=sunset?addHoursToDate(sunset,-(driveHours+routeSafeHours)):null;
+      var hasAlt=hasUsableAltitude(line);
+      var equip=activityPlanEquipList(st,routeHours);
+      var risks=activityPlanRiskList(st,routeHours,hasAlt,latest);
+      var finishBase=addHoursToDate(now,driveHours+routeHours);
+      var finishSafe=addHoursToDate(now,driveHours+routeSafeHours);
+      var out=[];
+      out.push('户外活动计划：'+displayLineName(line));
+      out.push('');
+      out.push('一、基础数据');
+      out.push('轨迹长度：'+distKm.toFixed(2)+' km');
+      out.push('累计爬升（30点平滑估算）：'+Math.round(st.ascent)+' m');
+      out.push('累计下降（30点平滑估算）：'+Math.round(st.descent)+' m');
+      out.push('GPS 点数：'+st.gpsPoints);
+      out.push('当前位置：'+pos.lat.toFixed(6)+', '+pos.lng.toFixed(6));
+      if(start)out.push('轨迹起点：'+start.lat.toFixed(6)+', '+start.lng.toFixed(6));
+      out.push('');
+      out.push('二、时间估算');
+      out.push('自驾到起点：约 '+driveKm.toFixed(1)+' km，按 50 km/h 估计 '+formatPlanHours(driveHours)+'（直线距离估算，实际道路可能更久）');
+      out.push('轨迹长度时间：'+distKm.toFixed(2)+' km / 5 km/h = '+formatPlanHours(flatHours));
+      out.push('爬升时间：'+Math.round(st.ascent)+' m / 300 m/h = '+formatPlanHours(upHours));
+      out.push('下降时间：'+Math.round(st.descent)+' m / 400 m/h = '+formatPlanHours(downHours));
+      out.push('线路基础时间：'+formatPlanHours(routeHours));
+      out.push('预留 20% 机动后：'+formatPlanHours(routeSafeHours));
+      out.push('线路时间范围：'+formatPlanHours(routeHours)+' ～ '+formatPlanHours(routeSafeHours));
+      if(sunset){
+        out.push('今日估算天黑时间：'+formatPlanClock(sunset)+'（按当前位置纬度/经度近似计算）');
+        out.push('建议最晚出发时间：'+formatPlanClock(latest)+'（天黑前完成线路，含去程自驾和 20% 机动）');
+      }else{
+        out.push('今日天黑时间：当前纬度无法可靠估算，请以当地天气/日落信息为准');
+      }
+      out.push('如果现在出发，预计完成时间：'+formatPlanClock(finishBase)+' ～ '+formatPlanClock(finishSafe));
+      out.push('');
+      out.push('三、建议安排');
+      out.push('1. 出发前保存 KML 到下载目录，并下载离线地图。');
+      out.push('2. 到达起点后先确认轨迹方向、撤退点和岔路。');
+      out.push('3. 按 '+formatPlanHours(routeSafeHours)+' 作为线路保守时间控制，超过计划时间应考虑折返。');
+      out.push('4. 天黑前至少预留 30～60 分钟安全余量。');
+      out.push('');
+      out.push('四、装备清单');
+      for(var i=0;i<equip.length;i++)out.push('• '+equip[i]);
+      out.push('');
+      out.push('五、安全风险');
+      for(var j=0;j<risks.length;j++)out.push('• '+risks[j]);
+      return out.join('\n');
+    }
+
+    function activityPlanHtml(text){
+      var html='<div class="help-sub-section"><b>说明：</b>该计划基于轨迹长度、30点平滑累计爬升/下降、当前位置和估算天黑时间生成；自驾时间按直线距离 / 50 km/h 粗估，不能替代实际导航和天气判断。</div>';
+      html+='<div style="display:flex;justify-content:flex-end;margin:0 0 8px"><button type="button" onclick="copyActivityPlanText()">'+(lang==='en'?'Copy':'复制计划')+'</button></div>';
+      html+='<pre style="white-space:pre-wrap;word-break:break-word;margin:0;padding:10px;border-radius:8px;background:rgba(0,0,0,.24);border:1px solid rgba(255,255,255,.10);font-size:12px;line-height:1.65;color:#dbe7f1">'+escapeHtml(text)+'</pre>';
+      return html;
+    }
+
+    function copyActivityPlanText(){
+      var text=lastActivityPlanText||'';
+      if(!text)return;
+      if(navigator.clipboard&&navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(function(){toast(lang==='en'?'Copied':'已复制计划');},function(){toast(lang==='en'?'Copy failed':'复制失败');});
+      }else{
+        var ta=document.createElement('textarea');
+        ta.value=text;document.body.appendChild(ta);ta.select();
+        try{document.execCommand('copy');toast(lang==='en'?'Copied':'已复制计划');}catch(e){toast(lang==='en'?'Copy failed':'复制失败');}
+        document.body.removeChild(ta);
+      }
+    }
+
+    function showActivityPlanForActiveLine(){
+      var line=dlgLineTarget;
+      if(!line||!line.points||line.points.length<2){toast(lang==='en'?'No active track':'没有可生成计划的当前轨迹');return;}
+      if(!navigator.geolocation){toast(lang==='en'?'Geolocation is unavailable':'当前浏览器不支持定位，无法生成完整计划');return;}
+      toast(lang==='en'?'Requesting current location...':'正在请求当前位置...');
+      navigator.geolocation.getCurrentPosition(function(position){
+        var c=position&&position.coords?position.coords:null;
+        if(!c||!isFinite(c.latitude)||!isFinite(c.longitude)){toast(lang==='en'?'Invalid location':'定位结果无效');return;}
+        var text=generateActivityPlanText(line,{lat:Number(c.latitude),lng:Number(c.longitude)});
+        lastActivityPlanText=text;
+        showHelpSubDialog(lang==='en'?'Outdoor Activity Plan':'户外活动计划',activityPlanHtml(text));
+      },function(err){
+        var msg=lang==='en'?'Location permission is required to generate the plan':'需要获得当前位置授权，才能计算自驾时间和最晚出发时间';
+        if(err&&err.message)msg+='：'+err.message;
+        toast(msg,5200);
+      },{enableHighAccuracy:true,timeout:12000,maximumAge:60000});
+    }
+
     function bindLinePopup(line){
       // 多选时仍保留小 popup；单选主信息使用深色对话框，Leaflet 小 popup 使用浅底深字。
       line.polyline.bindPopup(linePopupSummaryHtml(line));
@@ -4286,8 +4546,8 @@ function setMapTouchLocked(locked){
       var h='<div class="line-info-titlebar" style="display:flex;align-items:center;gap:8px;margin:0 0 6px">';
       h+='<h2 id="lineInfoTitle" title="拖动此处移动窗口" style="flex:1 1 auto;min-width:0;font-size:14px;line-height:1.25;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+infoTitle+'</h2>';
       h+='<div class="line-info-actions" style="flex:0 0 auto;display:flex;align-items:center;gap:5px">';
-      h+='<button class="run-btn" onclick="toggleRunnerForActiveLine(1000,&quot;🏃&quot;)" title="'+(lang==='en'?'Runner 1 km/s':'小人 1 km/s')+'" style="height:28px;min-width:32px;padding:0 8px;line-height:26px">🏃</button>';
-      h+='<button class="run-btn" onclick="toggleRunnerForActiveLine(2000,&quot;🏃🏃&quot;)" title="'+(lang==='en'?'Runners 2 km/s':'两人 2 km/s')+'" style="height:28px;min-width:36px;padding:0 8px;line-height:26px">🏃🏃</button>';
+      h+='<button class="run-btn" onclick="toggleAutoRunnerForActiveLine()" title="'+(lang==='en'?'Auto runner: max 2 km/s, minimum 1 second':'自动小人：最快 2km/s，最短 1 秒跑完')+'" style="height:28px;min-width:34px;padding:0 8px;line-height:26px">🏃</button>';
+      h+='<button class="run-btn" onclick="showActivityPlanForActiveLine()" title="'+(lang==='en'?'Generate outdoor activity plan':'自动生成户外活动计划')+'" style="height:28px;min-width:34px;padding:0 8px;line-height:26px">📋</button>';
       h+='<button class="dlg-action-icon" onclick="closeLineInfoDialog()" title="'+tr('close')+'" style="height:28px;min-width:30px;padding:0 8px;line-height:26px">×</button>';
       h+='</div></div>';
       h+=lineSummaryHtml(line);
@@ -4462,7 +4722,7 @@ function setMapTouchLocked(locked){
       var speed=Number(speedMps)||1000;
       if(total<=0)return 1000;
       if(speed<=0)speed=1000;
-      // 固定速度播放：单人 1 km/s，双人 2 km/s；任何线路至少播放 1 秒。
+      // 播放速度由调用方决定；任何线路至少播放 1 秒。
       var ms=total/speed*1000;
       if(ms<1000)ms=1000;
       return Math.round(ms);
