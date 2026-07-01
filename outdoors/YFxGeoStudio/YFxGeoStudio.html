@@ -4795,6 +4795,12 @@ function setMapTouchLocked(locked){
     var CLASSIC_KML_BASE_URL='https://swordll80.github.io/outdoors/kml/';
     var CLASSIC_KML_LIST_URL=CLASSIC_KML_BASE_URL+'list.txt';
     var classicKmlCache=null;
+    function classicKmlListFetchUrl(){
+      // 刷新经典轨迹目录时必须绕过浏览器 / GitHub Pages / CDN 对 list.txt 的缓存。
+      // 只给 list.txt 加时间戳参数，不改变后续 KML / yfxcache.zip 文件路径。
+      var ts=(Date.now?Date.now():(new Date()).getTime())+'_'+Math.floor(Math.random()*1000000);
+      return CLASSIC_KML_LIST_URL+(CLASSIC_KML_LIST_URL.indexOf('?')>=0?'&':'?')+'_yfx_list_ts='+ts;
+    }
     function classicKmlIsCachePackage(file){
       return /\.yfxcache\.zip$/i.test(String(file||''));
     }
@@ -4845,10 +4851,11 @@ function setMapTouchLocked(locked){
       for(var i=0;i<parts.length;i++)parts[i]=encodeURIComponent(parts[i]);
       return CLASSIC_KML_BASE_URL+parts.join('/');
     }
-    function ensureClassicKmlList(cb){
-      if(classicKmlCache){cb(null,classicKmlCache);return;}
-      logInfo('读取经典 KML 列表：'+CLASSIC_KML_LIST_URL);
-      fetch(CLASSIC_KML_LIST_URL,{cache:'no-store'})
+    function ensureClassicKmlList(cb,forceRefresh){
+      if(!forceRefresh&&classicKmlCache){cb(null,classicKmlCache);return;}
+      var fetchUrl=classicKmlListFetchUrl();
+      logInfo('读取经典 KML 列表：'+fetchUrl);
+      fetch(fetchUrl,{cache:'no-store'})
         .then(function(resp){if(!resp.ok)throw new Error('HTTP '+resp.status);return resp.text();})
         .then(function(text){classicKmlCache=parseClassicKmlList(text);cb(null,classicKmlCache);})
         .catch(function(err){cb(err,null);});
@@ -5073,7 +5080,7 @@ function renderClassicKmlCurrentView(list){
           return;
         }
         renderClassicKmlCurrentView(list);
-      });
+      },true);
     }
     function showClassicKmlMenu(e){
       finishAndExitTrackMode(true);
