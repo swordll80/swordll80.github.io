@@ -12,9 +12,8 @@
   <link rel="manifest" href="manifest.webmanifest">
   <link rel="apple-touch-icon" href="icons/yfx-icon-192.png">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='10' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='6' fill='none' stroke='%231677d2' stroke-width='2'/%3E%3Ccircle cx='12' cy='12' r='2' fill='%231677d2'/%3E%3C/svg%3E">
-<link rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous" />
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="anonymous" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin="anonymous"></script>
   <style>
     * { box-sizing: border-box; }
     html, body, #map { width: 100%; height: 100%; margin: 0; padding: 0; }
@@ -69,6 +68,7 @@
     #classicKmlTree summary:hover { background: rgba(74,163,255,.15); }
     #classicKmlTree .classic-file { display:block; width:100%; text-align:left; margin: 2px 0 2px 24px; padding: 5px 8px; border: 0; border-radius: 5px; background: transparent; color: #ffd966; cursor:pointer; font-size:13px; }
     #classicKmlTree .classic-file:hover { background: rgba(255,217,102,.14); border-color: transparent; }
+    #classicKmlTree .classic-file.classic-selected { background: rgba(74,163,255,.24); color: #ffffff; box-shadow: inset 3px 0 0 #4aa3ff; }
     #classicKmlTree .classic-empty, #classicKmlTree .classic-error { padding: 10px 8px; color: #aebdcc; }
     #classicKmlTree .classic-error { color: #ff9b9b; }
 
@@ -5070,7 +5070,50 @@ function setMapTouchLocked(locked){
     // list.txt 和其中列出的 KML 文件也都访问 https://swordll80.github.io/outdoors/kml/。
     var CLASSIC_KML_BASE_URL='https://swordll80.github.io/outdoors/kml/';
     var CLASSIC_KML_LIST_URL=CLASSIC_KML_BASE_URL+'list.txt';
+    var CLASSIC_KML_LAST_FILE_KEY='YFxGeoStudio.classicKml.lastFile.v1';
     var classicKmlCache=null;
+    var classicKmlLastFile='';
+    function normalizeClassicKmlFileKey(file){
+      var raw=String(file||'').trim().replace(/\\/g,'/').replace(/^\/+/, '');
+      raw=raw.replace(/^https?:\/\/[^\/]+\/outdoors\/kml\//i,'');
+      raw=raw.replace(/\/+/g, '/');
+      return raw.toLowerCase();
+    }
+    function classicKmlPathParts(file){
+      var key=normalizeClassicKmlFileKey(file);
+      return key?key.split('/').filter(function(x){return x!=='';}):[];
+    }
+    function classicKmlGetLastFile(){
+      if(classicKmlLastFile)return classicKmlLastFile;
+      try{classicKmlLastFile=localStorage.getItem(CLASSIC_KML_LAST_FILE_KEY)||'';}catch(e){classicKmlLastFile='';}
+      return classicKmlLastFile;
+    }
+    function classicKmlRememberFile(file){
+      var key=normalizeClassicKmlFileKey(file);
+      if(!key)return;
+      classicKmlLastFile=key;
+      try{localStorage.setItem(CLASSIC_KML_LAST_FILE_KEY,key);}catch(e){}
+    }
+    function classicKmlIsLastFile(file){
+      var last=classicKmlGetLastFile();
+      return !!last && normalizeClassicKmlFileKey(file)===last;
+    }
+    function classicKmlShouldOpenNode(nodePath){
+      var parts=classicKmlPathParts(classicKmlGetLastFile());
+      if(!parts.length||!nodePath||!nodePath.length)return false;
+      if(nodePath.length>Math.max(0,parts.length-1))return false;
+      for(var i=0;i<nodePath.length;i++){
+        if(String(nodePath[i]||'').toLowerCase()!==parts[i])return false;
+      }
+      return true;
+    }
+    function revealLastClassicKmlFile(){
+      var tree=document.getElementById('classicKmlTree');
+      if(!tree)return;
+      var btn=tree.querySelector('.classic-file.classic-selected');
+      if(!btn)return;
+      try{btn.scrollIntoView({block:'center',inline:'nearest'});}catch(e){btn.scrollIntoView(false);}
+    }
     function classicKmlListFetchUrl(){
       // 刷新经典轨迹目录时必须绕过浏览器 / GitHub Pages / CDN 对 list.txt 的缓存。
       // 只给 list.txt 加时间戳参数，不改变后续 KML / yfxcache.zip 文件路径。
@@ -5180,12 +5223,14 @@ function setMapTouchLocked(locked){
     }
     
 
-function buildClassicLazyNode(node, label, level, forceLoad){
+function buildClassicLazyNode(node, label, level, forceLoad, parentPath){
   var details = document.createElement('details');
+  var nodePath = (parentPath || []).concat([String(label || '')]);
+  var autoOpen = !!forceLoad || classicKmlShouldOpenNode(nodePath);
 
-  // v0.71 fix: root is hidden, visible first-level folders are treated as forest roots.
-  // In normal lazy mode they remain closed; children are created only after opening.
-  if(forceLoad){
+  // v0.112+: remember last selected classic track.  The lazy tree only materializes
+  // the remembered directory chain, so the next menu open jumps straight to it.
+  if(autoOpen){
     details.open = true;
   }
 
@@ -5204,7 +5249,7 @@ function buildClassicLazyNode(node, label, level, forceLoad){
     var frag = document.createDocumentFragment();
 
     for(var i=0;i<dirs.length;i++){
-      frag.appendChild(buildClassicLazyNode(node.dirs[dirs[i]], dirs[i], level+1, !!forceLoad));
+      frag.appendChild(buildClassicLazyNode(node.dirs[dirs[i]], dirs[i], level+1, !!forceLoad, nodePath));
     }
 
     if(node.files && node.files.length){
@@ -5214,9 +5259,11 @@ function buildClassicLazyNode(node, label, level, forceLoad){
 
       for(var j=0;j<node.files.length;j++){
         var f = node.files[j];
+        var selected = classicKmlIsLastFile(f.item && f.item.file);
         var btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = 'classic-file';
+        btn.className = 'classic-file' + (selected ? ' classic-selected' : '');
+        btn.setAttribute('data-classic-file', normalizeClassicKmlFileKey(f.item && f.item.file));
         btn.textContent = classicKmlIcon(f.item) + ' ' + classicKmlDisplayName(f.item);
         btn.title = f.item.file;
         btn.onclick = (function(idx){
@@ -5234,7 +5281,7 @@ function buildClassicLazyNode(node, label, level, forceLoad){
     loadChildren();
   });
 
-  if(forceLoad){
+  if(autoOpen){
     loadChildren();
   }
 
@@ -5250,9 +5297,11 @@ function appendClassicRootFiles(container, root){
 
   for(var j=0;j<root.files.length;j++){
     var f = root.files[j];
+    var selected = classicKmlIsLastFile(f.item && f.item.file);
     var btn = document.createElement('button');
     btn.type = 'button';
-    btn.className = 'classic-file';
+    btn.className = 'classic-file' + (selected ? ' classic-selected' : '');
+    btn.setAttribute('data-classic-file', normalizeClassicKmlFileKey(f.item && f.item.file));
     btn.textContent = classicKmlIcon(f.item) + ' ' + classicKmlDisplayName(f.item);
     btn.title = f.item.file;
     btn.onclick = (function(idx){
@@ -5279,10 +5328,11 @@ function renderClassicKmlRoot(root, forceLoad){
   // Hidden virtual root: first-level folders are displayed directly as multiple tree roots.
   for(var i=0;i<dirNames.length;i++){
     var nodeName = dirNames[i];
-    container.appendChild(buildClassicLazyNode(root.dirs[nodeName], nodeName, 0, !!forceLoad));
+    container.appendChild(buildClassicLazyNode(root.dirs[nodeName], nodeName, 0, !!forceLoad, []));
   }
 
   appendClassicRootFiles(container, root);
+  setTimeout(revealLastClassicKmlFile,0);
 }
 
 function renderClassicKmlTree(list){
@@ -5367,6 +5417,7 @@ function renderClassicKmlCurrentView(list){
       var hint=document.getElementById('classicKmlHint'); if(hint)hint.textContent=tr('classicKmlChoose');
       var refresh=document.getElementById('classicKmlRefreshBtn'); if(refresh)refresh.textContent=tr('classicKmlRefresh');
       var close=document.getElementById('classicKmlCloseBtn'); if(close)close.title=tr('close');
+      var search=document.getElementById('classicKmlTitleSearch'); if(search)search.value='';
       var dlg=document.getElementById('classicKmlDialog');
       if(dlg)dlg.style.display='flex';
       setClassicKmlTreeHtml('<div class="classic-empty">'+escapeHtml(tr('classicKmlLoading'))+'</div>');
@@ -5512,6 +5563,7 @@ function classicKmlSafetyChoose(action){
   hideClassicKmlSafetyDialog();
   if(action==='cancel'||!item){classicKmlSafetyPendingItem=null;return;}
   classicKmlSafetyPendingItem=null;
+  classicKmlRememberFile(item.file);
   closeClassicKmlDialog();
   loadClassicKmlTextItem(item,{backupDownload:action==='backup'});
 }
@@ -5543,6 +5595,7 @@ function downloadClassicKml(idx){
   if(isCachePkg){
     // 离线缓存包本身已经会保存到下载目录，保持原有确认和下载逻辑。
     if((lines.length||objects.length)&&!confirm(tr('classicKmlConfirm')))return;
+    classicKmlRememberFile(item.file);
     closeClassicKmlDialog();
     (async function(){
       var fileName=String(item.file||'cache.yfxcache.zip').split('/').pop()||'cache.yfxcache.zip';
