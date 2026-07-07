@@ -1,0 +1,478 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="NetDataParse 网络数据在线解析工具，支持 PCAPNG 示例和本地文件解析。">
+  <title>NetDataParse · 网络数据在线解析</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;--panel:#fff;--panel2:#f9fafb;--line:#d8dee9;--text:#172033;--muted:#667085;
+      --accent:#2f6fed;--accent2:#ecf3ff;--good:#067647;--warn:#b54708;--bad:#b42318;--shadow:0 16px 40px rgba(16,24,40,.08);
+      --mono:Consolas,"SFMono-Regular","Liberation Mono",Menlo,monospace;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(135deg,#f7f9ff 0,#f3fbf8 100%);color:var(--text);font:14px/1.55 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",Arial,sans-serif;overflow-x:hidden}
+    a{color:var(--accent);text-decoration:none}.page{min-height:100vh;display:flex;flex-direction:column}
+    header{position:sticky;top:0;z-index:20;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.92);backdrop-filter:blur(12px)}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-mark{width:42px;height:42px;border-radius:14px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:800;font-family:var(--mono)}
+    h1{font-size:18px;margin:0;line-height:1.2}.subtitle{margin:3px 0 0;color:var(--muted);font-size:12px}.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    button,.button,input[type=file],select{font:inherit}button,.button{border:1px solid var(--line);background:#fff;border-radius:11px;padding:8px 12px;min-height:36px;cursor:pointer;color:var(--text);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+    button:hover,.button:hover{border-color:rgba(47,111,237,.35);background:var(--accent2)}button.primary,.button.primary{background:var(--accent);border-color:var(--accent);color:#fff}.lang button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    main{flex:1;padding:16px;display:grid;grid-template-columns:minmax(360px,42%) minmax(0,1fr);gap:14px;min-height:0}.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}.card-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(249,250,251,.86)}.card-title{font-weight:750}.card-body{padding:14px}
+    .toolbar{display:grid;grid-template-columns:1fr;gap:12px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.filebox{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.filebox input{max-width:100%;border:1px dashed var(--line);border-radius:12px;background:#fff;padding:8px}.examples{display:flex;gap:8px;flex-wrap:wrap}.example-btn{font-family:var(--mono);font-size:12px;padding:6px 9px;min-height:30px}.hint{font-size:12px;color:var(--muted);margin:0}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.metric{padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--panel2)}.metric b{display:block;font-size:20px;line-height:1.1}.metric span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+    .left{display:flex;flex-direction:column;gap:14px;min-height:0}.right{display:grid;grid-template-rows:minmax(260px,45%) minmax(260px,1fr);gap:14px;min-height:0}.packet-card,.tree-card,.hex-card{min-height:0;display:flex;flex-direction:column}.scroll{overflow:auto;min-height:0}.packet-table{width:100%;border-collapse:collapse;font-size:13px}.packet-table th,.packet-table td{border-bottom:1px solid var(--line);padding:8px 9px;text-align:left;vertical-align:top}.packet-table th{position:sticky;top:0;background:#f8fafc;z-index:1;color:#475467;font-size:12px}.packet-table tr{cursor:pointer}.packet-table tr:hover{background:#f4f8ff}.packet-table tr.active{background:#eaf2ff}.nowrap{white-space:nowrap}.mono{font-family:var(--mono)}.proto{display:inline-flex;border:1px solid #c7d7fe;background:#eef4ff;color:#1849a9;border-radius:999px;padding:1px 7px;font-weight:700;font-size:11px}
+    .tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{padding:6px 10px;min-height:30px}.tab.active{background:var(--accent);border-color:var(--accent);color:#fff}.filter{display:flex;gap:8px;align-items:center}.filter input{width:220px;max-width:100%;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:#fff}
+    .tree{font-family:var(--mono);font-size:12px}.field-row{display:grid;grid-template-columns:82px 54px minmax(120px,210px) minmax(120px,1fr) minmax(160px,1fr);gap:8px;align-items:start;padding:6px 10px;border-bottom:1px solid #edf0f5;cursor:pointer}.field-row:hover{background:#f5f9ff}.field-row.header{position:sticky;top:0;z-index:2;background:#f8fafc;color:#475467;font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",Arial,sans-serif;font-size:12px;font-weight:700}.field-row.group{background:#fbfcff;font-weight:800;color:#1d2939}.field-row .muted{color:var(--muted)}
+    .hex-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.hex-wrap{font-family:var(--mono);font-size:12px;line-height:1.7;white-space:pre;overflow:auto;padding:12px;background:#0b1020;color:#d6e2ff;min-height:0}.hex-line{display:block}.hex-off{color:#8292bd}.hex-byte{display:inline-block;min-width:19px;text-align:center;border-radius:4px}.hex-byte.hl{background:#facc15;color:#101828}.hex-ascii{color:#a7b3d6;margin-left:10px}.empty{padding:22px;color:var(--muted);text-align:center}.status{color:var(--muted);font-size:12px}.error{color:var(--bad)}.ok{color:var(--good)}.warn{color:var(--warn)}
+    .block-list{font-family:var(--mono);font-size:12px}.block-row{display:grid;grid-template-columns:82px 90px 80px 1fr;gap:8px;padding:6px 10px;border-bottom:1px solid #edf0f5}.block-row.head{position:sticky;top:0;background:#f8fafc;font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",Arial,sans-serif;font-weight:700;color:#475467}.pill{display:inline-block;border-radius:999px;padding:1px 7px;background:#eef4ff;color:#1849a9;font-size:11px;border:1px solid #c7d7fe}.apptext{font-family:var(--mono);font-size:12px;white-space:pre-wrap;padding:10px;margin:0;background:#f8fafc;border:1px solid var(--line);border-radius:12px;max-height:220px;overflow:auto}.footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center;border-top:1px solid var(--line);background:rgba(255,255,255,.72)}
+    @media (max-width:1000px){main{grid-template-columns:1fr}.right{grid-template-rows:auto auto}.tree-card,.hex-card{min-height:320px}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.field-row{grid-template-columns:70px 44px minmax(110px,1fr);}.field-row>span:nth-child(4),.field-row>span:nth-child(5){grid-column:3/-1}.field-row.header>span:nth-child(4),.field-row.header>span:nth-child(5){display:none}}
+    @media (max-width:640px){header{align-items:flex-start;flex-direction:column}.top-actions{justify-content:flex-start}.summary{grid-template-columns:1fr}.packet-table{font-size:12px}.packet-table th:nth-child(2),.packet-table td:nth-child(2),.packet-table th:nth-child(4),.packet-table td:nth-child(4){display:none}.card-body{padding:11px}main{padding:10px}.brand-mark{width:38px;height:38px}.subtitle{display:none}}
+  </style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="brand">
+      <div class="brand-mark">NP</div>
+      <div>
+        <h1 data-i18n="title">网络数据在线解析工具</h1>
+        <p class="subtitle" data-i18n="subtitle">打开 .pcapng，按 Wireshark 风格查看包列表、协议字段、十六进制数据与字段含义。</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="button" href="../index.html" data-i18n="home">返回主页</a>
+      <div class="lang" aria-label="language">
+        <button type="button" data-lang="zh" class="active">中文</button>
+        <button type="button" data-lang="en">English</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="left">
+      <div class="card">
+        <div class="card-head"><span class="card-title" data-i18n="openTitle">打开数据</span><span id="loadStatus" class="status"></span></div>
+        <div class="card-body toolbar">
+          <div class="filebox">
+            <input id="fileInput" type="file" accept=".pcapng,application/octet-stream">
+            <button id="clearBtn" type="button" data-i18n="clear">清空</button>
+          </div>
+          <p class="hint" data-i18n="openHint">本工具在浏览器本地解析文件，不上传数据。当前重点支持 PCAPNG + Ethernet/IPv4/ARP/TCP/UDP/DNS/DHCP/SSDP/TLS 基础解析。</p>
+          <div>
+            <div class="row" style="justify-content:space-between;margin-bottom:8px">
+              <strong data-i18n="examples">在线示例</strong>
+              <button id="reloadExamples" type="button" data-i18n="reloadExamples">刷新列表</button>
+            </div>
+            <div id="examples" class="examples"><span class="status" data-i18n="loadingExamples">正在读取 list.txt...</span></div>
+          </div>
+          <div class="summary">
+            <div class="metric"><b id="mPackets">0</b><span data-i18n="packets">数据包</span></div>
+            <div class="metric"><b id="mBlocks">0</b><span data-i18n="blocks">PCAPNG 块</span></div>
+            <div class="metric"><b id="mIfaces">0</b><span data-i18n="ifaces">接口</span></div>
+            <div class="metric"><b id="mBytes">0</b><span data-i18n="bytes">字节</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card packet-card">
+        <div class="card-head">
+          <span class="card-title" data-i18n="packetList">数据包列表</span>
+          <div class="filter"><input id="packetFilter" type="search" placeholder="过滤协议/地址/说明"></div>
+        </div>
+        <div class="scroll">
+          <table class="packet-table">
+            <thead><tr><th>No.</th><th data-i18n="time">时间</th><th data-i18n="src">源</th><th data-i18n="dst">目的</th><th data-i18n="proto">协议</th><th data-i18n="len">长度</th><th data-i18n="info">信息</th></tr></thead>
+            <tbody id="packetRows"><tr><td colspan="7" class="empty" data-i18n="emptyOpen">请选择 .pcapng 文件，或加载一个在线示例。</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="right">
+      <div class="card tree-card">
+        <div class="card-head">
+          <span class="card-title" data-i18n="structure">二进制结构与字段含义</span>
+          <div class="tabs">
+            <button class="tab active" type="button" data-tab="fields" data-i18n="fields">字段</button>
+            <button class="tab" type="button" data-tab="blocks" data-i18n="pcapBlocks">PCAPNG块</button>
+          </div>
+        </div>
+        <div class="scroll" id="treeScroll"><div class="empty" data-i18n="emptyPacket">选择一个数据包后显示字段结构。</div></div>
+      </div>
+
+      <div class="card hex-card">
+        <div class="card-head">
+          <span class="card-title" data-i18n="hexTitle">十六进制数据</span>
+          <div class="hex-tools"><span id="hexHint" class="status" data-i18n="hexHint">点击字段可高亮对应字节。</span></div>
+        </div>
+        <div id="hexDump" class="hex-wrap"><span data-i18n="emptyHex">暂无数据</span></div>
+      </div>
+    </section>
+  </main>
+  <div class="footer" data-i18n="footer">静态前端解析器 · 可直接部署到 GitHub Pages · 不依赖服务器</div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+
+  var I18N = {
+    zh: {
+      title:'网络数据在线解析工具', subtitle:'打开 .pcapng，按 Wireshark 风格查看包列表、协议字段、十六进制数据与字段含义。', home:'返回主页', openTitle:'打开数据', clear:'清空', openHint:'本工具在浏览器本地解析文件，不上传数据。当前重点支持 PCAPNG + Ethernet/IPv4/ARP/TCP/UDP/DNS/DHCP/SSDP/TLS 基础解析。', examples:'在线示例', reloadExamples:'刷新列表', loadingExamples:'正在读取 list.txt...', packets:'数据包', blocks:'PCAPNG 块', ifaces:'接口', bytes:'字节', packetList:'数据包列表', time:'时间', src:'源', dst:'目的', proto:'协议', len:'长度', info:'信息', emptyOpen:'请选择 .pcapng 文件，或加载一个在线示例。', structure:'二进制结构与字段含义', fields:'字段', pcapBlocks:'PCAPNG块', emptyPacket:'选择一个数据包后显示字段结构。', hexTitle:'十六进制数据', hexHint:'点击字段可高亮对应字节。', emptyHex:'暂无数据', footer:'静态前端解析器 · 可直接部署到 GitHub Pages · 不依赖服务器', loading:'正在解析...', loaded:'已加载', failed:'解析失败', noExample:'未找到 list.txt 或示例文件', offset:'偏移', size:'长度', field:'字段', value:'值', meaning:'含义', packetData:'Packet 数据', noPackets:'未发现可解析的数据包', blockType:'块类型', totalLength:'总长度', blockInfo:'说明', filterPh:'过滤协议/地址/说明', unsupportedLink:'暂仅支持以太网链路层', localFile:'本地文件', exampleFile:'示例文件', bytesUnit:'字节', frame:'帧', pcapng:'PCAPNG', ethernet:'以太网 II', ipv4:'IPv4', ipv6:'IPv6', arp:'ARP', tcp:'TCP', udp:'UDP', dns:'DNS', dhcp:'DHCP/BOOTP', tls:'TLS', ssdp:'SSDP/HTTP', unknown:'未知', options:'选项', payload:'负载', rawData:'原始数据', malformed:'结构异常或长度不足', checksum:'校验和', yes:'是', no:'否' },
+      en: {
+      title:'Online Network Data Parser', subtitle:'Open .pcapng and inspect packet list, protocol fields, hex bytes and meanings in a Wireshark-like view.', home:'Home', openTitle:'Open data', clear:'Clear', openHint:'Files are parsed locally in your browser and are not uploaded. This version focuses on PCAPNG + Ethernet/IPv4/ARP/TCP/UDP/DNS/DHCP/SSDP/TLS basics.', examples:'Online examples', reloadExamples:'Reload list', loadingExamples:'Reading list.txt...', packets:'Packets', blocks:'PCAPNG blocks', ifaces:'Interfaces', bytes:'Bytes', packetList:'Packet list', time:'Time', src:'Source', dst:'Destination', proto:'Protocol', len:'Length', info:'Info', emptyOpen:'Choose a .pcapng file or load an online example.', structure:'Binary structure and field meanings', fields:'Fields', pcapBlocks:'PCAPNG blocks', emptyPacket:'Select a packet to show decoded fields.', hexTitle:'Hex dump', hexHint:'Click a field to highlight corresponding bytes.', emptyHex:'No data', footer:'Static front-end parser · GitHub Pages ready · No server required', loading:'Parsing...', loaded:'Loaded', failed:'Parse failed', noExample:'list.txt or example files not found', offset:'Offset', size:'Size', field:'Field', value:'Value', meaning:'Meaning', packetData:'Packet data', noPackets:'No parseable packets found', blockType:'Block type', totalLength:'Total length', blockInfo:'Info', filterPh:'Filter protocol/address/info', unsupportedLink:'Only Ethernet link layer is supported currently', localFile:'Local file', exampleFile:'Example file', bytesUnit:'bytes', frame:'Frame', pcapng:'PCAPNG', ethernet:'Ethernet II', ipv4:'IPv4', ipv6:'IPv6', arp:'ARP', tcp:'TCP', udp:'UDP', dns:'DNS', dhcp:'DHCP/BOOTP', tls:'TLS', ssdp:'SSDP/HTTP', unknown:'Unknown', options:'Options', payload:'Payload', rawData:'Raw data', malformed:'Malformed or truncated structure', checksum:'Checksum', yes:'Yes', no:'No' }
+  };
+
+  var state = { lang: localStorage.getItem('NetDataParse.lang') || 'zh', fileName:'', data:null, blocks:[], interfaces:[], packets:[], selected:0, tab:'fields', filter:'' };
+  var $ = function(id){return document.getElementById(id);};
+  var t = function(k){return (I18N[state.lang] && I18N[state.lang][k]) || I18N.zh[k] || k;};
+
+  function setText(id, text){ var n=$(id); if(n) n.textContent=text; }
+  function fmtBytes(n){ if(!isFinite(n)) return '0'; if(n<1024) return n+' B'; if(n<1048576) return (n/1024).toFixed(1)+' KB'; return (n/1048576).toFixed(2)+' MB'; }
+  function hex(n,w){ var s=(Number(n)>>>0).toString(16).toUpperCase(); while(s.length<(w||2)) s='0'+s; return '0x'+s; }
+  function pad2(n){return (n<10?'0':'')+n;}
+  function safeText(bytes, max){
+    var out='', limit=Math.min(bytes.length, max||220);
+    for(var i=0;i<limit;i++){ var c=bytes[i]; out += (c>=32 && c<=126) ? String.fromCharCode(c) : (c===13?'\\r':(c===10?'\\n':'.')); }
+    return out;
+  }
+  function mac(bytes, off){ if(off+6>bytes.length) return ''; var a=[]; for(var i=0;i<6;i++) a.push(('0'+bytes[off+i].toString(16)).slice(-2)); return a.join(':'); }
+  function ip4(bytes, off){ if(off+4>bytes.length) return ''; return [bytes[off],bytes[off+1],bytes[off+2],bytes[off+3]].join('.'); }
+  function ip6(bytes, off){ if(off+16>bytes.length) return ''; var parts=[]; for(var i=0;i<16;i+=2) parts.push(((bytes[off+i]<<8)|bytes[off+i+1]).toString(16)); return parts.join(':').replace(/(^|:)0(:0)+(:|$)/, '::'); }
+  function u16(bytes, off){ return off+1<bytes.length ? ((bytes[off]<<8)|bytes[off+1]) : 0; }
+  function u24(bytes, off){ return off+2<bytes.length ? ((bytes[off]<<16)|(bytes[off+1]<<8)|bytes[off+2]) : 0; }
+  function u32(bytes, off){ return off+3<bytes.length ? ((bytes[off]*0x1000000)+((bytes[off+1]<<16)|(bytes[off+2]<<8)|bytes[off+3])) >>> 0 : 0; }
+  function bytesHex(bytes, off, len){ var a=[]; for(var i=0;i<len && off+i<bytes.length;i++) a.push(('0'+bytes[off+i].toString(16)).slice(-2)); return a.join(' '); }
+  function asciiPrintable(bytes, off, len){ var s=''; for(var i=0;i<len && off+i<bytes.length;i++){ var c=bytes[off+i]; s += (c>=32&&c<=126)||c===13||c===10||c===9 ? String.fromCharCode(c) : '.'; } return s; }
+  function protocolName(n){ var m={1:'ICMP',2:'IGMP',6:'TCP',17:'UDP',41:'IPv6',47:'GRE',50:'ESP',51:'AH',58:'ICMPv6',89:'OSPF'}; return m[n] || ('IP-'+n); }
+  function ethTypeName(v){ var m={0x0800:'IPv4',0x0806:'ARP',0x86dd:'IPv6',0x8100:'802.1Q VLAN',0x88cc:'LLDP'}; return m[v] || 'EtherType '+hex(v,4); }
+  function portHint(p){ var m={20:'FTP-DATA',21:'FTP',22:'SSH',23:'Telnet',25:'SMTP',53:'DNS',67:'DHCP Server',68:'DHCP Client',80:'HTTP',110:'POP3',123:'NTP',137:'NetBIOS-NS',138:'NetBIOS-DGM',139:'NetBIOS-SSN',143:'IMAP',161:'SNMP',443:'HTTPS/TLS',445:'SMB',500:'ISAKMP',5353:'mDNS',5355:'LLMNR',1900:'SSDP',8080:'HTTP-Alt'}; return m[p] || ''; }
+  function tcpFlagText(f){ var arr=[]; if(f&0x100) arr.push('NS'); if(f&0x80) arr.push('CWR'); if(f&0x40) arr.push('ECE'); if(f&0x20) arr.push('URG'); if(f&0x10) arr.push('ACK'); if(f&0x08) arr.push('PSH'); if(f&0x04) arr.push('RST'); if(f&0x02) arr.push('SYN'); if(f&0x01) arr.push('FIN'); return arr.join(', ') || '0'; }
+  function tlsType(v){ return ({20:'ChangeCipherSpec',21:'Alert',22:'Handshake',23:'Application Data',24:'Heartbeat'})[v] || ('ContentType '+v); }
+  function tlsHandshake(v){ return ({0:'HelloRequest',1:'ClientHello',2:'ServerHello',4:'NewSessionTicket',11:'Certificate',12:'ServerKeyExchange',13:'CertificateRequest',14:'ServerHelloDone',15:'CertificateVerify',16:'ClientKeyExchange',20:'Finished'})[v] || ('Handshake '+v); }
+  function dnsType(v){ return ({1:'A',2:'NS',5:'CNAME',6:'SOA',12:'PTR',15:'MX',16:'TXT',28:'AAAA',33:'SRV',41:'OPT',65:'HTTPS',255:'ANY'})[v] || String(v); }
+  function dhcpMessage(v){ return ({1:'Discover',2:'Offer',3:'Request',4:'Decline',5:'ACK',6:'NAK',7:'Release',8:'Inform'})[v] || String(v); }
+  function add(fields, group, off, len, name, value, meaning){ fields.push({group:!!group, off:off, len:len, name:name, value:value, meaning:meaning||''}); }
+
+  function parseOptions(view, start, end, little){
+    var opts=[]; var p=start;
+    while(p+4<=end){
+      var code=view.getUint16(p,little), len=view.getUint16(p+2,little); p+=4;
+      if(code===0){ opts.push({code:0,len:0,value:'End'}); break; }
+      if(p+len>end) break;
+      var bytes=new Uint8Array(view.buffer, view.byteOffset+p, len);
+      opts.push({code:code,len:len,raw:bytes,value:optionValue(code, bytes)});
+      p += len + ((4 - (len % 4)) % 4);
+    }
+    return opts;
+  }
+  function optionValue(code, bytes){
+    var textCodes={1:'comment',2:'name',3:'description',4:'IPv4 address',9:'timestamp resolution',12:'OS',13:'hardware',14:'user application'};
+    if(code===9 && bytes.length){ return '10^-' + bytes[0]; }
+    var printable=true; for(var i=0;i<bytes.length;i++){ if(bytes[i] && (bytes[i]<9 || (bytes[i]>13 && bytes[i]<32) || bytes[i]>126)){ printable=false; break; } }
+    if(printable) return (textCodes[code]?textCodes[code]+': ':'') + safeText(bytes, 200);
+    return bytesHex(bytes,0,Math.min(bytes.length,32));
+  }
+
+  function parsePcapng(buffer){
+    var view=new DataView(buffer), bytes=new Uint8Array(buffer), pos=0, little=true, blocks=[], ifaces=[], packets=[];
+    while(pos+12<=buffer.byteLength){
+      var typeLE=view.getUint32(pos,true), typeBE=view.getUint32(pos,false), type=typeLE;
+      if(typeLE===0x0A0D0D0A || typeBE===0x0A0D0D0A){
+        var magicLE=view.getUint32(pos+8,true), magicBE=view.getUint32(pos+8,false);
+        if(magicLE===0x1A2B3C4D) little=true; else if(magicBE===0x1A2B3C4D) little=false;
+        type=0x0A0D0D0A;
+      }else{
+        type=view.getUint32(pos,little);
+      }
+      var total=view.getUint32(pos+4,little);
+      if(total<12 || pos+total>buffer.byteLength){
+        blocks.push({offset:pos,type:type,total:Math.max(0,buffer.byteLength-pos),info:t('malformed')});
+        break;
+      }
+      var tail=view.getUint32(pos+total-4,little);
+      var info='';
+      if(type===0x0A0D0D0A){
+        var major=view.getUint16(pos+12,little), minor=view.getUint16(pos+14,little);
+        info='Section Header v'+major+'.'+minor+', '+(little?'Little Endian':'Big Endian');
+        var opts=parseOptions(view,pos+28,pos+total-4,little);
+        if(opts.length) info += ', '+opts.map(function(o){return o.value;}).filter(Boolean).slice(0,3).join('; ');
+      }else if(type===1){
+        var link=view.getUint16(pos+8,little), snap=view.getUint32(pos+12,little);
+        var opts2=parseOptions(view,pos+16,pos+total-4,little); var tsresol=6, name='if'+ifaces.length;
+        opts2.forEach(function(o){ if(o.code===9 && o.raw && o.raw.length){ tsresol=o.raw[0] & 0x7f; } if((o.code===2||o.code===3) && o.raw){ name=safeText(o.raw,80); } });
+        ifaces.push({id:ifaces.length, linkType:link, snaplen:snap, tsresol:tsresol, name:name, options:opts2});
+        info='Interface '+ifaces.length+', linkType='+link+', snaplen='+snap+', tsresol=10^-'+tsresol;
+      }else if(type===6){
+        var ifaceId=view.getUint32(pos+8,little), tsh=view.getUint32(pos+12,little), tsl=view.getUint32(pos+16,little), caplen=view.getUint32(pos+20,little), origlen=view.getUint32(pos+24,little);
+        var dataOff=pos+28, dataEnd=dataOff+caplen;
+        var pktBytes = dataEnd <= pos+total-4 ? bytes.slice(dataOff,dataEnd) : new Uint8Array(0);
+        var iface=ifaces[ifaceId] || {id:ifaceId,linkType:1,tsresol:6};
+        var ts = ((tsh * 4294967296) + tsl) / Math.pow(10, iface.tsresol || 6);
+        var pkt={no:packets.length+1, blockOffset:pos, dataOffset:dataOff, ifaceId:ifaceId, timestamp:ts, capturedLength:caplen, originalLength:origlen, bytes:pktBytes, fields:[], proto:'DATA', src:'', dst:'', info:'', appText:''};
+        decodePacket(pkt, iface);
+        packets.push(pkt);
+        info='Enhanced Packet, if='+ifaceId+', captured='+caplen+', original='+origlen;
+      }else if(type===3){ info='Simple Packet'; }
+      else if(type===2){ info='Packet Block (obsolete)'; }
+      else if(type===4){ info='Name Resolution Block'; }
+      else if(type===5){ info='Interface Statistics Block'; }
+      else { info='Block '+hex(type,8); }
+      if(tail!==total) info += ', tail length mismatch';
+      blocks.push({offset:pos,type:type,total:total,info:info});
+      pos += total;
+    }
+    return {blocks:blocks, interfaces:ifaces, packets:packets};
+  }
+
+  function decodePacket(pkt, iface){
+    var b=pkt.bytes, f=pkt.fields;
+    add(f,true,0,b.length,t('frame'), '#'+pkt.no, t('packetData')+', '+b.length+' '+t('bytesUnit'));
+    if(!iface || iface.linkType!==1){ pkt.proto='DATA'; pkt.info=t('unsupportedLink')+' linkType='+(iface?iface.linkType:'?'); add(f,false,0,b.length,t('rawData'), bytesHex(b,0,Math.min(16,b.length)), pkt.info); return; }
+    parseEther(pkt, 0);
+  }
+
+  function parseEther(pkt, off){
+    var b=pkt.bytes, f=pkt.fields; if(off+14>b.length){ add(f,false,off,Math.max(0,b.length-off),t('ethernet'),'',t('malformed')); return; }
+    add(f,true,off,14,t('ethernet'),'', 'Ethernet II frame header');
+    var dst=mac(b,off), src=mac(b,off+6), type=u16(b,off+12), ethOff=off+14;
+    add(f,false,off,6,'Destination MAC',dst,'Frame receiver MAC address');
+    add(f,false,off+6,6,'Source MAC',src,'Frame sender MAC address');
+    if(type===0x8100 && off+18<=b.length){
+      var tci=u16(b,off+14); add(f,false,off+12,2,'802.1Q TPID',hex(type,4),'VLAN tag marker'); add(f,false,off+14,2,'VLAN TCI',hex(tci,4),'Priority='+(tci>>13)+', VLAN ID='+(tci&0x0fff)); type=u16(b,off+16); ethOff=off+18;
+      add(f,false,off+16,2,'EtherType',hex(type,4),ethTypeName(type));
+    }else{ add(f,false,off+12,2,'EtherType',hex(type,4),ethTypeName(type)); }
+    pkt.src=src; pkt.dst=dst; pkt.proto=ethTypeName(type);
+    if(type===0x0800) parseIPv4(pkt, ethOff);
+    else if(type===0x0806) parseARP(pkt, ethOff);
+    else if(type===0x86dd) parseIPv6(pkt, ethOff);
+    else { add(f,false,ethOff,b.length-ethOff,t('payload'), b.length-ethOff+' bytes', 'Unparsed Ethernet payload'); pkt.info=ethTypeName(type); }
+  }
+
+  function parseARP(pkt, off){
+    var b=pkt.bytes, f=pkt.fields; if(off+28>b.length){ add(f,false,off,Math.max(0,b.length-off),t('arp'),'',t('malformed')); return; }
+    add(f,true,off,28,t('arp'),'', 'Address Resolution Protocol');
+    var htype=u16(b,off), ptype=u16(b,off+2), hlen=b[off+4], plen=b[off+5], oper=u16(b,off+6);
+    var smac=mac(b,off+8), sip=ip4(b,off+14), tmac=mac(b,off+18), tip=ip4(b,off+24);
+    add(f,false,off,2,'Hardware type',htype, htype===1?'Ethernet':''); add(f,false,off+2,2,'Protocol type',hex(ptype,4), ethTypeName(ptype));
+    add(f,false,off+4,1,'Hardware size',hlen,'MAC address length'); add(f,false,off+5,1,'Protocol size',plen,'IPv4 address length');
+    add(f,false,off+6,2,'Opcode',oper, oper===1?'Request':(oper===2?'Reply':''));
+    add(f,false,off+8,6,'Sender MAC',smac,'ARP sender hardware address'); add(f,false,off+14,4,'Sender IP',sip,'ARP sender protocol address');
+    add(f,false,off+18,6,'Target MAC',tmac,'ARP target hardware address'); add(f,false,off+24,4,'Target IP',tip,'ARP target protocol address');
+    pkt.proto='ARP'; pkt.src=sip || smac; pkt.dst=tip || tmac; pkt.info=(oper===1?'Who has '+tip+'? Tell '+sip:(oper===2?sip+' is at '+smac:'Opcode '+oper));
+  }
+
+  function parseIPv4(pkt, off){
+    var b=pkt.bytes, f=pkt.fields; if(off+20>b.length){ add(f,false,off,Math.max(0,b.length-off),t('ipv4'),'',t('malformed')); return; }
+    var ver=b[off]>>4, ihl=(b[off]&0x0f)*4, total=u16(b,off+2), proto=b[off+9], src=ip4(b,off+12), dst=ip4(b,off+16), flagsFrag=u16(b,off+6);
+    if(ihl<20 || off+ihl>b.length){ add(f,false,off,Math.max(0,b.length-off),t('ipv4'),'',t('malformed')); return; }
+    add(f,true,off,ihl,t('ipv4'),src+' → '+dst,'Internet Protocol version 4');
+    add(f,false,off,1,'Version / IHL',ver+' / '+ihl+' bytes','IP version and header length');
+    add(f,false,off+1,1,'DSCP / ECN',hex(b[off+1],2),'Traffic class fields'); add(f,false,off+2,2,'Total Length',total+' bytes','IPv4 datagram length');
+    add(f,false,off+4,2,'Identification',hex(u16(b,off+4),4),'Fragment identification'); add(f,false,off+6,2,'Flags / Fragment Offset',hex(flagsFrag,4),'DF=' + ((flagsFrag&0x4000)?t('yes'):t('no')) + ', MF=' + ((flagsFrag&0x2000)?t('yes'):t('no')) + ', offset=' + (flagsFrag&0x1fff));
+    add(f,false,off+8,1,'TTL',b[off+8],'Time to live'); add(f,false,off+9,1,'Protocol',proto,protocolName(proto)); add(f,false,off+10,2,t('checksum'),hex(u16(b,off+10),4),'IPv4 header checksum');
+    add(f,false,off+12,4,'Source IP',src,'Sender IP address'); add(f,false,off+16,4,'Destination IP',dst,'Receiver IP address');
+    if(ihl>20) add(f,false,off+20,ihl-20,'IPv4 Options',ihl-20+' bytes','Optional header fields');
+    pkt.src=src; pkt.dst=dst; pkt.proto=protocolName(proto); pkt.info=src+' → '+dst+', '+protocolName(proto);
+    var payloadOff=off+ihl; var ipEnd=Math.min(b.length, off+(total||b.length-off));
+    if(proto===6) parseTCP(pkt,payloadOff,ipEnd);
+    else if(proto===17) parseUDP(pkt,payloadOff,ipEnd);
+    else if(proto===1) parseICMP(pkt,payloadOff,ipEnd);
+    else add(f,false,payloadOff,Math.max(0,ipEnd-payloadOff),t('payload'),Math.max(0,ipEnd-payloadOff)+' bytes','IPv4 payload');
+  }
+
+  function parseIPv6(pkt, off){
+    var b=pkt.bytes, f=pkt.fields; if(off+40>b.length){ add(f,false,off,Math.max(0,b.length-off),t('ipv6'),'',t('malformed')); return; }
+    var payloadLen=u16(b,off+4), next=b[off+6], hop=b[off+7], src=ip6(b,off+8), dst=ip6(b,off+24);
+    add(f,true,off,40,t('ipv6'),src+' → '+dst,'Internet Protocol version 6');
+    add(f,false,off,4,'Version / Traffic Class / Flow Label',hex(u32(b,off),8),'IPv6 header first 32 bits'); add(f,false,off+4,2,'Payload Length',payloadLen+' bytes','IPv6 payload length');
+    add(f,false,off+6,1,'Next Header',next,protocolName(next)); add(f,false,off+7,1,'Hop Limit',hop,'Maximum hops'); add(f,false,off+8,16,'Source IPv6',src,'Sender IPv6 address'); add(f,false,off+24,16,'Destination IPv6',dst,'Receiver IPv6 address');
+    pkt.src=src; pkt.dst=dst; pkt.proto=protocolName(next); pkt.info=src+' → '+dst+', '+protocolName(next);
+    var payloadOff=off+40, end=Math.min(b.length,payloadOff+payloadLen);
+    if(next===6) parseTCP(pkt,payloadOff,end); else if(next===17) parseUDP(pkt,payloadOff,end); else add(f,false,payloadOff,Math.max(0,end-payloadOff),t('payload'),Math.max(0,end-payloadOff)+' bytes','IPv6 payload');
+  }
+
+  function parseTCP(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+20>end){ add(f,false,off,Math.max(0,end-off),t('tcp'),'',t('malformed')); return; }
+    var sp=u16(b,off), dp=u16(b,off+2), seq=u32(b,off+4), ack=u32(b,off+8), hlen=(b[off+12]>>4)*4, flags=((b[off+12]&1)<<8)|b[off+13], win=u16(b,off+14);
+    add(f,true,off,Math.min(hlen,end-off),t('tcp'),sp+' → '+dp,'Transmission Control Protocol');
+    add(f,false,off,2,'Source Port',sp,portHint(sp)); add(f,false,off+2,2,'Destination Port',dp,portHint(dp)); add(f,false,off+4,4,'Sequence Number',seq,'TCP stream byte sequence'); add(f,false,off+8,4,'Acknowledgment Number',ack,'Next expected byte when ACK is set');
+    add(f,false,off+12,1,'Header Length',hlen+' bytes','TCP data offset'); add(f,false,off+13,1,'Flags',tcpFlagText(flags),'TCP control bits'); add(f,false,off+14,2,'Window',win,'Receive window size'); add(f,false,off+16,2,t('checksum'),hex(u16(b,off+16),4),'TCP checksum'); add(f,false,off+18,2,'Urgent Pointer',u16(b,off+18),'Used when URG flag is set');
+    if(hlen>20 && off+hlen<=end) add(f,false,off+20,hlen-20,'TCP Options',hlen-20+' bytes','Options such as MSS, SACK, timestamp');
+    var payloadOff=off+hlen, payLen=Math.max(0,end-payloadOff); pkt.proto='TCP'; pkt.info=sp+' → '+dp+' ['+tcpFlagText(flags)+'] Len='+payLen;
+    if(payLen>0){ if(looksLikeTLS(b,payloadOff,end)) parseTLS(pkt,payloadOff,end); else if(sp===443 || dp===443) parseTLSPayload(pkt,payloadOff,end); else if(looksLikeHTTP(b,payloadOff,end)) parseHTTP(pkt,payloadOff,end,'HTTP'); else add(f,false,payloadOff,payLen,t('payload'),payLen+' bytes','TCP application data'); }
+  }
+
+  function parseUDP(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+8>end){ add(f,false,off,Math.max(0,end-off),t('udp'),'',t('malformed')); return; }
+    var sp=u16(b,off), dp=u16(b,off+2), len=u16(b,off+4), payloadOff=off+8, udpEnd=Math.min(end, off+(len||end-off)), payLen=Math.max(0,udpEnd-payloadOff);
+    add(f,true,off,8,t('udp'),sp+' → '+dp,'User Datagram Protocol');
+    add(f,false,off,2,'Source Port',sp,portHint(sp)); add(f,false,off+2,2,'Destination Port',dp,portHint(dp)); add(f,false,off+4,2,'Length',len+' bytes','UDP header + payload'); add(f,false,off+6,2,t('checksum'),hex(u16(b,off+6),4),'UDP checksum');
+    pkt.proto='UDP'; pkt.info=sp+' → '+dp+', Len='+payLen;
+    if(sp===53||dp===53) parseDNS(pkt,payloadOff,udpEnd);
+    else if(sp===67||sp===68||dp===67||dp===68) parseDHCP(pkt,payloadOff,udpEnd);
+    else if(sp===1900||dp===1900) parseHTTP(pkt,payloadOff,udpEnd,'SSDP');
+    else if(looksLikeHTTP(b,payloadOff,udpEnd)) parseHTTP(pkt,payloadOff,udpEnd,'HTTP-like');
+    else add(f,false,payloadOff,payLen,t('payload'),payLen+' bytes','UDP payload');
+  }
+
+  function parseICMP(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+4>end){ add(f,false,off,Math.max(0,end-off),'ICMP','',t('malformed')); return; }
+    var type=b[off], code=b[off+1]; add(f,true,off,end-off,'ICMP','Type '+type+', Code '+code,'Internet Control Message Protocol'); add(f,false,off,1,'Type',type,'ICMP message type'); add(f,false,off+1,1,'Code',code,'ICMP subtype'); add(f,false,off+2,2,t('checksum'),hex(u16(b,off+2),4),'ICMP checksum'); pkt.proto='ICMP'; pkt.info='Type '+type+', Code '+code;
+  }
+
+  function readDNSName(b, off, end, depth){
+    var labels=[], p=off, jumped=false, consumed=0, guard=0; depth=depth||0;
+    while(p<end && guard++<40){
+      var len=b[p];
+      if((len&0xc0)===0xc0){ if(p+1>=end) break; var ptr=((len&0x3f)<<8)|b[p+1]; var r=readDNSName(b,ptr,b.length,depth+1); labels.push(r.name); if(!jumped) consumed += 2; jumped=true; break; }
+      if(len===0){ if(!jumped) consumed += 1; break; }
+      p++;
+      if(p+len>end) break;
+      var lab=''; for(var i=0;i<len;i++){ var c=b[p+i]; lab += (c>=32&&c<=126)?String.fromCharCode(c):'.'; }
+      labels.push(lab); if(!jumped) consumed += 1+len; p += len;
+    }
+    return {name:labels.filter(Boolean).join('.')||'.', length:consumed};
+  }
+
+  function parseDNS(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+12>end){ add(f,false,off,Math.max(0,end-off),t('dns'),'',t('malformed')); return; }
+    var id=u16(b,off), flags=u16(b,off+2), qd=u16(b,off+4), an=u16(b,off+6), ns=u16(b,off+8), ar=u16(b,off+10), qr=(flags&0x8000)?'Response':'Query';
+    add(f,true,off,end-off,t('dns'),qr+' id='+hex(id,4),'Domain Name System');
+    add(f,false,off,2,'Transaction ID',hex(id,4),'DNS request/response identifier'); add(f,false,off+2,2,'Flags',hex(flags,4),qr+', opcode='+((flags>>11)&15)+', rcode='+(flags&15));
+    add(f,false,off+4,2,'Questions',qd,'QDCOUNT'); add(f,false,off+6,2,'Answer RRs',an,'ANCOUNT'); add(f,false,off+8,2,'Authority RRs',ns,'NSCOUNT'); add(f,false,off+10,2,'Additional RRs',ar,'ARCOUNT');
+    var p=off+12, firstName='';
+    for(var i=0;i<qd && p<end;i++){ var q=readDNSName(b,p,end); if(!firstName) firstName=q.name; add(f,false,p,q.length,'Question Name',q.name,'Queried domain name'); p += q.length; if(p+4<=end){ var qt=u16(b,p), qc=u16(b,p+2); add(f,false,p,2,'Question Type',dnsType(qt), 'QTYPE'); add(f,false,p+2,2,'Question Class',qc===1?'IN':String(qc),'QCLASS'); p += 4; } }
+    var totalRR=an+ns+ar;
+    for(var r=0;r<totalRR && p<end;r++){
+      var n=readDNSName(b,p,end); var rrStart=p; p += n.length; if(p+10>end) break; var typ=u16(b,p), cls=u16(b,p+2), ttl=u32(b,p+4), rdlen=u16(b,p+8); var rdataOff=p+10;
+      var rv=''; if(typ===1 && rdlen===4) rv=ip4(b,rdataOff); else if(typ===28 && rdlen===16) rv=ip6(b,rdataOff); else if((typ===2||typ===5||typ===12) && rdataOff<end) rv=readDNSName(b,rdataOff,end).name; else rv=bytesHex(b,rdataOff,Math.min(rdlen,24));
+      add(f,false,rrStart,Math.min(end-rrStart,10+n.length+rdlen),'Resource Record',n.name+' '+dnsType(typ)+' '+rv,'class='+(cls===1?'IN':cls)+', ttl='+ttl+', rdlength='+rdlen); p=rdataOff+rdlen;
+    }
+    pkt.proto='DNS'; pkt.info=qr+' '+(firstName||'')+' Q='+qd+' Ans='+an;
+  }
+
+  function parseDHCP(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+240>end){ add(f,false,off,Math.max(0,end-off),t('dhcp'),'',t('malformed')); return; }
+    add(f,true,off,end-off,t('dhcp'),'BOOTP/DHCP','Dynamic Host Configuration Protocol');
+    var op=b[off], htype=b[off+1], hlen=b[off+2], xid=u32(b,off+4); var ci=ip4(b,off+12), yi=ip4(b,off+16), si=ip4(b,off+20), gi=ip4(b,off+24), ch=mac(b,off+28);
+    add(f,false,off,1,'Message op',op,op===1?'Boot Request':(op===2?'Boot Reply':'')); add(f,false,off+1,1,'Hardware type',htype,htype===1?'Ethernet':''); add(f,false,off+2,1,'Hardware length',hlen,'Client hardware address length'); add(f,false,off+4,4,'Transaction ID',hex(xid,8),'DHCP transaction identifier');
+    add(f,false,off+10,2,'Flags',hex(u16(b,off+10),4),'Broadcast flag and reserved bits'); add(f,false,off+12,4,'Client IP',ci,'ciaddr'); add(f,false,off+16,4,'Your IP',yi,'yiaddr'); add(f,false,off+20,4,'Server IP',si,'siaddr'); add(f,false,off+24,4,'Relay IP',gi,'giaddr'); add(f,false,off+28,16,'Client MAC',ch,'chaddr');
+    add(f,false,off+236,4,'Magic Cookie',hex(u32(b,off+236),8),'DHCP option marker 0x63825363');
+    var p=off+240, msg='', server='', host='';
+    while(p<end){ var code=b[p++]; if(code===255){ add(f,false,p-1,1,'Option 255','End','End of options'); break; } if(code===0){ add(f,false,p-1,1,'Option 0','Pad','Padding'); continue; } if(p>=end) break; var len=b[p++]; if(p+len>end) break; var val='';
+      if(code===53 && len>=1){ msg=dhcpMessage(b[p]); val='Message Type: '+msg; }
+      else if((code===50||code===54||code===1||code===3||code===6) && len>=4){ var ips=[]; for(var j=0;j+3<len;j+=4) ips.push(ip4(b,p+j)); val=ips.join(', '); if(code===54) server=val; }
+      else if(code===51 && len===4) val=u32(b,p)+' seconds';
+      else if(code===12){ host=safeText(b.slice(p,p+len),80); val=host; }
+      else if(code===55){ var req=[]; for(var k=0;k<len;k++) req.push(b[p+k]); val=req.join(', '); }
+      else val=bytesHex(b,p,Math.min(len,32));
+      var name=({1:'Subnet Mask',3:'Router',6:'DNS Server',12:'Host Name',50:'Requested IP',51:'Lease Time',53:'DHCP Message Type',54:'Server Identifier',55:'Parameter Request List',58:'Renewal Time',59:'Rebinding Time'})[code] || ('Option '+code);
+      add(f,false,p-2,len+2,name,val,'DHCP option '+code+', length '+len); p+=len;
+    }
+    pkt.proto='DHCP'; pkt.src=ci && ci!=='0.0.0.0' ? ci : ch; pkt.dst=yi && yi!=='0.0.0.0' ? yi : '255.255.255.255'; pkt.info=(msg||'DHCP')+(host?(' Host='+host):'')+(server?(' Server='+server):'');
+  }
+
+  function looksLikeHTTP(b, off, end){ var s=asciiPrintable(b,off,Math.min(16,end-off)); return /^(GET|POST|HEAD|PUT|DELETE|OPTIONS|HTTP\/|M-SEARCH|NOTIFY|SUBSCRIBE|UNSUBSCRIBE)/.test(s); }
+  function parseHTTP(pkt, off, end, name){
+    var b=pkt.bytes, f=pkt.fields; var len=Math.max(0,Math.min(end,b.length)-off), text=asciiPrintable(b,off,len); var lines=text.split(/\r?\n/).filter(function(x){return x.length;});
+    add(f,true,off,len,name||t('ssdp'),lines[0]||'', name==='SSDP'?'Simple Service Discovery Protocol':'Text based application protocol');
+    add(f,false,off,Math.min(len,(lines[0]||'').length),'Start Line',lines[0]||'', 'Request/status line');
+    var cursor=off+(lines[0]||'').length+2; for(var i=1;i<Math.min(lines.length,20);i++){ var l=lines[i]; if(!l) break; add(f,false,Math.min(cursor,end),Math.min(l.length,Math.max(0,end-cursor)),'Header',l,'Application header line'); cursor += l.length+2; }
+    pkt.proto=name==='SSDP'?'SSDP':(name||'HTTP'); pkt.info=lines[0]||pkt.proto; pkt.appText=text;
+  }
+
+  function looksLikeTLS(b, off, end){ return off+5<=end && [20,21,22,23,24].indexOf(b[off])>=0 && b[off+1]===3 && b[off+2]>=0 && b[off+2]<=4 && u16(b,off+3)<=end-off-5; }
+  function parseTLSPayload(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); var len=Math.max(0,end-off);
+    add(f,true,off,len,t('tls'),'HTTPS/TLS payload','TCP port 443 data; not enough record header information for detailed TLS decoding');
+    add(f,false,off,len,t('payload'),len+' bytes','Encrypted or partial TLS application data');
+    pkt.proto='TLS'; pkt.info='HTTPS/TLS data Len='+len;
+  }
+  function parseTLS(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); add(f,true,off,end-off,t('tls'),'', 'Transport Layer Security records');
+    var p=off, first=''; for(var r=0;p+5<=end && r<20;r++){ var ctype=b[p], ver='0x'+('0'+b[p+1].toString(16)).slice(-2)+('0'+b[p+2].toString(16)).slice(-2), len=u16(b,p+3); var recEnd=Math.min(end,p+5+len); var label=tlsType(ctype); if(!first) first=label;
+      add(f,false,p,1,'TLS Content Type',ctype,label); add(f,false,p+1,2,'TLS Version',ver,ver==='0x0303'?'TLS 1.2':(ver==='0x0304'?'TLS 1.3':'SSL/TLS version')); add(f,false,p+3,2,'TLS Record Length',len+' bytes','Encrypted or handshake fragment length');
+      if(ctype===22 && p+9<=recEnd){ var hs=b[p+5], hsLen=u24(b,p+6); add(f,false,p+5,4,'Handshake',tlsHandshake(hs)+', '+hsLen+' bytes','TLS handshake message'); if(hs===1 || hs===2){ if(p+11<=recEnd){ var hv='0x'+('0'+b[p+9].toString(16)).slice(-2)+('0'+b[p+10].toString(16)).slice(-2); add(f,false,p+9,2,'Handshake Version',hv,hv==='0x0303'?'TLS 1.2':'Client/server offered version'); } } }
+      if(recEnd>p+5) add(f,false,p+5,recEnd-(p+5),'TLS Record Fragment',(recEnd-(p+5))+' bytes','Handshake/encrypted application data fragment');
+      if(len<=0) break; p=recEnd;
+    }
+    pkt.proto='TLS'; pkt.info=first || 'TLS data';
+  }
+
+  function renderAll(){
+    document.documentElement.lang = state.lang==='zh'?'zh-CN':'en';
+    document.querySelectorAll('[data-i18n]').forEach(function(n){ var k=n.getAttribute('data-i18n'); if(I18N[state.lang][k]) n.textContent=I18N[state.lang][k]; });
+    document.querySelectorAll('[data-lang]').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-lang')===state.lang); });
+    var pf=$('packetFilter'); if(pf) pf.placeholder=t('filterPh');
+    renderMetrics(); renderPackets(); renderDetails();
+  }
+  function renderMetrics(){ setText('mPackets', state.packets.length); setText('mBlocks', state.blocks.length); setText('mIfaces', state.interfaces.length); setText('mBytes', state.data ? fmtBytes(state.data.byteLength) : '0'); }
+  function filteredPackets(){ var q=(state.filter||'').toLowerCase(); if(!q) return state.packets; return state.packets.filter(function(p){ return [p.no,p.src,p.dst,p.proto,p.info].join(' ').toLowerCase().indexOf(q)>=0; }); }
+  function renderPackets(){
+    var tbody=$('packetRows'); tbody.innerHTML=''; var arr=filteredPackets();
+    if(!state.data){ var tr=document.createElement('tr'), td=document.createElement('td'); td.colSpan=7; td.className='empty'; td.textContent=t('emptyOpen'); tr.appendChild(td); tbody.appendChild(tr); return; }
+    if(!arr.length){ var tr2=document.createElement('tr'), td2=document.createElement('td'); td2.colSpan=7; td2.className='empty'; td2.textContent=t('noPackets'); tr2.appendChild(td2); tbody.appendChild(tr2); return; }
+    arr.forEach(function(p){ var tr=document.createElement('tr'); tr.className = p===state.packets[state.selected] ? 'active' : ''; tr.onclick=function(){ state.selected=state.packets.indexOf(p); renderPackets(); renderDetails(); };
+      [p.no, formatTime(p.timestamp), p.src, p.dst].forEach(function(v,idx){ var td=document.createElement('td'); td.textContent=v||''; if(idx===0||idx===1) td.className='nowrap mono'; tr.appendChild(td); });
+      var tdProto=document.createElement('td'), pill=document.createElement('span'); pill.className='proto'; pill.textContent=p.proto||''; tdProto.appendChild(pill); tr.appendChild(tdProto);
+      var tdLen=document.createElement('td'); tdLen.className='nowrap mono'; tdLen.textContent=p.capturedLength; tr.appendChild(tdLen);
+      var tdInfo=document.createElement('td'); tdInfo.textContent=p.info||''; tr.appendChild(tdInfo); tbody.appendChild(tr); });
+  }
+  function formatTime(sec){ if(!sec) return ''; var d=new Date(sec*1000); if(isNaN(d.getTime())) return sec.toFixed(6); return pad2(d.getHours())+':'+pad2(d.getMinutes())+':'+pad2(d.getSeconds())+'.'+String(Math.round((sec-Math.floor(sec))*1000000)).padStart(6,'0'); }
+
+  function renderDetails(){
+    document.querySelectorAll('.tab').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-tab')===state.tab); });
+    if(state.tab==='blocks'){ renderBlocks(); return; }
+    var p=state.packets[state.selected]; var tree=$('treeScroll'); if(!p){ tree.innerHTML='<div class="empty">'+t('emptyPacket')+'</div>'; $('hexDump').textContent=t('emptyHex'); return; }
+    renderFields(p); renderHex(p.bytes, -1, 0);
+  }
+  function renderFields(p){
+    var tree=$('treeScroll'); tree.innerHTML=''; var wrap=document.createElement('div'); wrap.className='tree'; var head=document.createElement('div'); head.className='field-row header'; [t('offset'),t('size'),t('field'),t('value'),t('meaning')].forEach(function(x){ var s=document.createElement('span'); s.textContent=x; head.appendChild(s); }); wrap.appendChild(head);
+    p.fields.forEach(function(row){ var r=document.createElement('div'); r.className='field-row'+(row.group?' group':''); r.onclick=function(){ renderHex(p.bytes, row.off, row.len); };
+      var vals=[hex(row.off,4), row.len, row.name, row.value, row.meaning]; vals.forEach(function(v,idx){ var s=document.createElement('span'); s.textContent=String(v==null?'':v); if(idx===0||idx===1) s.className='muted'; r.appendChild(s); }); wrap.appendChild(r); });
+    if(p.appText){ var pre=document.createElement('pre'); pre.className='apptext'; pre.textContent=p.appText; wrap.appendChild(pre); }
+    tree.appendChild(wrap);
+  }
+  function renderBlocks(){
+    var tree=$('treeScroll'); tree.innerHTML=''; var wrap=document.createElement('div'); wrap.className='block-list'; var h=document.createElement('div'); h.className='block-row head'; [t('offset'),t('blockType'),t('totalLength'),t('blockInfo')].forEach(function(x){var s=document.createElement('span');s.textContent=x;h.appendChild(s);}); wrap.appendChild(h);
+    if(!state.blocks.length){ var e=document.createElement('div'); e.className='empty'; e.textContent=t('emptyOpen'); wrap.appendChild(e); }
+    state.blocks.forEach(function(b){ var r=document.createElement('div'); r.className='block-row'; [hex(b.offset,6), blockTypeName(b.type), b.total, b.info].forEach(function(x){var s=document.createElement('span');s.textContent=String(x);r.appendChild(s);}); wrap.appendChild(r); });
+    tree.appendChild(wrap); var p=state.packets[state.selected]; if(p) renderHex(p.bytes,-1,0); else $('hexDump').textContent=t('emptyHex');
+  }
+  function blockTypeName(type){ var m={0x0A0D0D0A:'SHB',1:'IDB',2:'PB',3:'SPB',4:'NRB',5:'ISB',6:'EPB'}; return m[type] || hex(type,8); }
+  function renderHex(bytes, hlOff, hlLen){
+    var box=$('hexDump'); box.innerHTML=''; if(!bytes || !bytes.length){ box.textContent=t('emptyHex'); return; }
+    for(var off=0; off<bytes.length; off+=16){ var line=document.createElement('span'); line.className='hex-line'; var offSpan=document.createElement('span'); offSpan.className='hex-off'; offSpan.textContent=('00000000'+off.toString(16).toUpperCase()).slice(-8)+'  '; line.appendChild(offSpan);
+      var ascii=''; for(var i=0;i<16;i++){ if(off+i<bytes.length){ var bs=document.createElement('span'); bs.className='hex-byte'; if(hlLen>0 && off+i>=hlOff && off+i<hlOff+hlLen) bs.className+=' hl'; bs.textContent=('0'+bytes[off+i].toString(16).toUpperCase()).slice(-2); line.appendChild(bs); line.appendChild(document.createTextNode(' ')); var c=bytes[off+i]; ascii += (c>=32&&c<=126)?String.fromCharCode(c):'.'; }else{ line.appendChild(document.createTextNode('   ')); ascii+=' '; } }
+      var a=document.createElement('span'); a.className='hex-ascii'; a.textContent=' |'+ascii+'|'; line.appendChild(a); box.appendChild(line); }
+  }
+
+  function reset(){ state.fileName=''; state.data=null; state.blocks=[]; state.interfaces=[]; state.packets=[]; state.selected=0; setText('loadStatus',''); $('fileInput').value=''; renderAll(); }
+  function parseBuffer(buffer, name, source){
+    setText('loadStatus', t('loading'));
+    setTimeout(function(){
+      try{ var parsed=parsePcapng(buffer); state.data=buffer; state.blocks=parsed.blocks; state.interfaces=parsed.interfaces; state.packets=parsed.packets; state.selected=0; state.fileName=name||''; setText('loadStatus', t('loaded')+': '+(source?source+' · ':'')+name+' · '+state.packets.length+' '+t('packets')); renderAll(); }
+      catch(e){ console.error(e); setText('loadStatus', t('failed')+': '+(e && e.message ? e.message : e)); }
+    }, 20);
+  }
+  function loadExamples(){
+    var ex=$('examples'); ex.innerHTML='<span class="status">'+t('loadingExamples')+'</span>';
+    fetch('list.txt?ts='+Date.now()).then(function(r){ if(!r.ok) throw new Error('list.txt'); return r.text(); }).then(function(text){
+      var files=text.replace(/^\ufeff/,'').split(/\r?\n/).map(function(s){return s.trim();}).filter(function(s){return s && /\.pcapng$/i.test(s);});
+      ex.innerHTML=''; if(!files.length){ ex.innerHTML='<span class="status warn">'+t('noExample')+'</span>'; return; }
+      files.forEach(function(name){ var btn=document.createElement('button'); btn.type='button'; btn.className='example-btn'; btn.textContent=name; btn.onclick=function(){ loadExample(name); }; ex.appendChild(btn); });
+    }).catch(function(){ ex.innerHTML='<span class="status warn">'+t('noExample')+'</span>'; });
+  }
+  function loadExample(name){ setText('loadStatus', t('loading')+' '+name); fetch(encodeURI(name)+'?ts='+Date.now()).then(function(r){ if(!r.ok) throw new Error(name); return r.arrayBuffer(); }).then(function(buf){ parseBuffer(buf, name, t('exampleFile')); }).catch(function(e){ setText('loadStatus', t('failed')+': '+(e.message||e)); }); }
+
+  document.querySelectorAll('[data-lang]').forEach(function(btn){ btn.addEventListener('click',function(){ state.lang=btn.getAttribute('data-lang'); localStorage.setItem('NetDataParse.lang',state.lang); renderAll(); loadExamples(); }); });
+  document.querySelectorAll('.tab').forEach(function(btn){ btn.addEventListener('click',function(){ state.tab=btn.getAttribute('data-tab'); renderDetails(); }); });
+  $('fileInput').addEventListener('change', function(){ var f=this.files && this.files[0]; if(!f) return; var reader=new FileReader(); reader.onload=function(){ parseBuffer(reader.result, f.name, t('localFile')); }; reader.onerror=function(){ setText('loadStatus', t('failed')+': '+reader.error); }; reader.readAsArrayBuffer(f); });
+  $('clearBtn').addEventListener('click', reset); $('reloadExamples').addEventListener('click', loadExamples); $('packetFilter').addEventListener('input', function(){ state.filter=this.value; renderPackets(); });
+  renderAll(); loadExamples();
+})();
+</script>
+</body>
+</html>
