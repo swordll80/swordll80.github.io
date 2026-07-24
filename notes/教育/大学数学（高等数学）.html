@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>高等数学</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>大学数学·高等数学</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">21 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">高等数学（微积分）：极限连续、导数微分、积分、多元微积分、无穷级数与微分方程。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、极限与连续</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="极限概念 lim(x→x₀) f(x)=A：x 趋近 x₀ 时 f 趋近 A。 左右极限都存在且相等，极限才存在。 数列极限、函数极限、无穷大与无穷小。">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">极限概念</span>
+          </div>
+          <div class="card-code">lim(x→x₀) f(x)=A：x 趋近 x₀ 时 f 趋近 A。
+左右极限都存在且相等，极限才存在。
+数列极限、函数极限、无穷大与无穷小。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="两个重要极限 lim(x→0) sinx/x = 1 lim(x→∞) (1+1/x)ˣ = e，等价 lim(t→0)(1+t)^(1/t)=e。 应用：配凑成标准形式再求。">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">两个重要极限</span>
+          </div>
+          <div class="card-code">lim(x→0) sinx/x = 1
+lim(x→∞) (1+1/x)ˣ = e，等价 lim(t→0)(1+t)^(1/t)=e。
+应用：配凑成标准形式再求。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="等价无穷小 x→0 时：sinx~x，tanx~x，arcsinx~x， 1-cosx~x²/2，ln(1+x)~x，eˣ-1~x，(1+x)ᵃ-1~ax。 乘除因子可用等价替换，加减慎用。">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">等价无穷小</span>
+          </div>
+          <div class="card-code">x→0 时：sinx~x，tanx~x，arcsinx~x，
+1-cosx~x²/2，ln(1+x)~x，eˣ-1~x，(1+x)ᵃ-1~ax。
+乘除因子可用等价替换，加减慎用。</div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="连续与间断 连续：lim(x→x₀)f(x)=f(x₀)。 间断点：可去、跳跃(第一类)；无穷、振荡(第二类)。 闭区间连续函数：有界性、最值、介值、零点定理。">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">连续与间断</span>
+          </div>
+          <div class="card-code">连续：lim(x→x₀)f(x)=f(x₀)。
+间断点：可去、跳跃(第一类)；无穷、振荡(第二类)。
+闭区间连续函数：有界性、最值、介值、零点定理。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、导数与微分</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-5" data-keywords="导数定义 f&#x27;(x)=lim(Δx→0)[f(x+Δx)-f(x)]/Δx，几何意义为切线斜率，物理意义为变化率。 可导 ⇒ 连续；连续不一定可导（如 |x| 在 0 处）。">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">导数定义</span>
+          </div>
+          <div class="card-code">f&#x27;(x)=lim(Δx→0)[f(x+Δx)-f(x)]/Δx，几何意义为切线斜率，物理意义为变化率。
+可导 ⇒ 连续；连续不一定可导（如 |x| 在 0 处）。</div>
+        </div>
+        <div class="card" id="card-2-6" data-keywords="基本求导公式 (xⁿ)&#x27;=nxⁿ⁻¹，(eˣ)&#x27;=eˣ，(aˣ)&#x27;=aˣlna，(lnx)&#x27;=1/x。 (sinx)&#x27;=cosx，(cosx)&#x27;=-sinx，(tanx)&#x27;=sec²x。 (arctanx)&#x27;=1/(1+x²)，(arcsinx)&#x27;=1/√(1-x²)。">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">基本求导公式</span>
+          </div>
+          <div class="card-code">(xⁿ)&#x27;=nxⁿ⁻¹，(eˣ)&#x27;=eˣ，(aˣ)&#x27;=aˣlna，(lnx)&#x27;=1/x。
+(sinx)&#x27;=cosx，(cosx)&#x27;=-sinx，(tanx)&#x27;=sec²x。
+(arctanx)&#x27;=1/(1+x²)，(arcsinx)&#x27;=1/√(1-x²)。</div>
+        </div>
+        <div class="card" id="card-2-7" data-keywords="求导法则 四则：(uv)&#x27;=u&#x27;v+uv&#x27;，(u/v)&#x27;=(u&#x27;v-uv&#x27;)/v²。 链式：dy/dx=dy/du·du/dx。 隐函数、参数方程 dy/dx=(dy/dt)/(dx/dt)、对数求导法、高阶导数。">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">求导法则</span>
+          </div>
+          <div class="card-code">四则：(uv)&#x27;=u&#x27;v+uv&#x27;，(u/v)&#x27;=(u&#x27;v-uv&#x27;)/v²。
+链式：dy/dx=dy/du·du/dx。
+隐函数、参数方程 dy/dx=(dy/dt)/(dx/dt)、对数求导法、高阶导数。</div>
+        </div>
+        <div class="card" id="card-2-8" data-keywords="微分中值定理 罗尔、拉格朗日 f(b)-f(a)=f&#x27;(ξ)(b-a)、柯西。 洛必达法则：0/0、∞/∞ 型分子分母分别求导。 泰勒公式 f(x)=Σf⁽ⁿ⁾(x₀)/n!·(x-x₀)ⁿ+Rₙ。">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">微分中值定理</span>
+          </div>
+          <div class="card-code">罗尔、拉格朗日 f(b)-f(a)=f&#x27;(ξ)(b-a)、柯西。
+洛必达法则：0/0、∞/∞ 型分子分母分别求导。
+泰勒公式 f(x)=Σf⁽ⁿ⁾(x₀)/n!·(x-x₀)ⁿ+Rₙ。</div>
+        </div>
+        <div class="card" id="card-2-9" data-keywords="导数应用 单调性(f&#x27;符号)、极值(驻点两侧变号)、凹凸(f&#x27;&#x27;)与拐点。 最值：比较驻点、不可导点与端点。 曲率、渐近线、相关变化率。">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">导数应用</span>
+          </div>
+          <div class="card-code">单调性(f&#x27;符号)、极值(驻点两侧变号)、凹凸(f&#x27;&#x27;)与拐点。
+最值：比较驻点、不可导点与端点。
+曲率、渐近线、相关变化率。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、积分</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-10" data-keywords="不定积分 ∫xⁿdx=xⁿ⁺¹/(n+1)+C(n≠-1)，∫dx/x=ln|x|+C。 ∫eˣdx=eˣ+C，∫sinx dx=-cosx+C，∫cosx dx=sinx+C。 方法：凑微分/换元、分部积分 ∫udv=uv-∫vdu、有理函数部分分式。">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">不定积分</span>
+          </div>
+          <div class="card-code">∫xⁿdx=xⁿ⁺¹/(n+1)+C(n≠-1)，∫dx/x=ln|x|+C。
+∫eˣdx=eˣ+C，∫sinx dx=-cosx+C，∫cosx dx=sinx+C。
+方法：凑微分/换元、分部积分 ∫udv=uv-∫vdu、有理函数部分分式。</div>
+        </div>
+        <div class="card" id="card-3-11" data-keywords="定积分 牛顿-莱布尼茨 ∫ₐᵇf(x)dx=F(b)-F(a)。 性质：线性、区间可加、估值、积分中值定理。 变限积分求导 d/dx∫ₐˣf(t)dt=f(x)。">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">定积分</span>
+          </div>
+          <div class="card-code">牛顿-莱布尼茨 ∫ₐᵇf(x)dx=F(b)-F(a)。
+性质：线性、区间可加、估值、积分中值定理。
+变限积分求导 d/dx∫ₐˣf(t)dt=f(x)。</div>
+        </div>
+        <div class="card" id="card-3-12" data-keywords="定积分应用 面积、旋转体体积(圆盘 V=π∫y²dx；柱壳 2π∫x·y dx)。 弧长 ∫√(1+y&#x27;²)dx、旋转曲面面积、功、压力、平均值。">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">定积分应用</span>
+          </div>
+          <div class="card-code">面积、旋转体体积(圆盘 V=π∫y²dx；柱壳 2π∫x·y dx)。
+弧长 ∫√(1+y&#x27;²)dx、旋转曲面面积、功、压力、平均值。</div>
+        </div>
+        <div class="card" id="card-3-13" data-keywords="反常积分 无穷限 ∫ₐ^∞f dx=lim(b→∞)∫ₐᵇ；无界函数积分。 用极限判断收敛/发散；∫₁^∞ dx/xᵖ 当 p&gt;1 收敛。">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">反常积分</span>
+          </div>
+          <div class="card-code">无穷限 ∫ₐ^∞f dx=lim(b→∞)∫ₐᵇ；无界函数积分。
+用极限判断收敛/发散；∫₁^∞ dx/xᵖ 当 p&gt;1 收敛。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、多元函数微积分</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-14" data-keywords="偏导与全微分 ∂z/∂x：视 y 为常数对 x 求导。 全微分 dz=∂z/∂x·dx+∂z/∂y·dy。 多元复合与隐函数求导、方向导数与梯度 ∇f。">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">偏导与全微分</span>
+          </div>
+          <div class="card-code">∂z/∂x：视 y 为常数对 x 求导。
+全微分 dz=∂z/∂x·dx+∂z/∂y·dy。
+多元复合与隐函数求导、方向导数与梯度 ∇f。</div>
+        </div>
+        <div class="card" id="card-4-15" data-keywords="多元极值 驻点：一阶偏导全为 0。 二阶判别 A=fxx,B=fxy,C=fyy：AC-B²&gt;0 且 A&gt;0 极小，A&lt;0 极大；&lt;0 非极值。 条件极值用拉格朗日乘数法 L=f+λg。">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">多元极值</span>
+          </div>
+          <div class="card-code">驻点：一阶偏导全为 0。
+二阶判别 A=fxx,B=fxy,C=fyy：AC-B²&gt;0 且 A&gt;0 极小，A&lt;0 极大；&lt;0 非极值。
+条件极值用拉格朗日乘数法 L=f+λg。</div>
+        </div>
+        <div class="card" id="card-4-16" data-keywords="重积分 二重积分 ∬f dσ 算体积/质量，化累次积分，或用极坐标。 三重积分 ∭f dV，柱面/球面坐标。 应用：质心、转动惯量。">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">重积分</span>
+          </div>
+          <div class="card-code">二重积分 ∬f dσ 算体积/质量，化累次积分，或用极坐标。
+三重积分 ∭f dV，柱面/球面坐标。
+应用：质心、转动惯量。</div>
+        </div>
+        <div class="card" id="card-4-17" data-keywords="曲线曲面积分 对弧长/坐标的曲线积分；格林公式联系曲线积分与二重积分。 对面积/坐标的曲面积分；高斯公式(散度)、斯托克斯公式(旋度)。">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">曲线曲面积分</span>
+          </div>
+          <div class="card-code">对弧长/坐标的曲线积分；格林公式联系曲线积分与二重积分。
+对面积/坐标的曲面积分；高斯公式(散度)、斯托克斯公式(旋度)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、级数与微分方程</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-18" data-keywords="常数项级数 Σuₙ 收敛的必要条件 uₙ→0。 正项级数：比较、比值(达朗贝尔)、根值(柯西)判别。 交错级数莱布尼茨判别；绝对收敛与条件收敛。">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">常数项级数</span>
+          </div>
+          <div class="card-code">Σuₙ 收敛的必要条件 uₙ→0。
+正项级数：比较、比值(达朗贝尔)、根值(柯西)判别。
+交错级数莱布尼茨判别；绝对收敛与条件收敛。</div>
+        </div>
+        <div class="card" id="card-5-19" data-keywords="幂级数与展开 幂级数收敛半径 R=lim|aₙ/aₙ₊₁|。 常用麦克劳林展开：eˣ=Σxⁿ/n!， sinx=Σ(-1)ⁿx²ⁿ⁺¹/(2n+1)!，1/(1-x)=Σxⁿ(|x|&lt;1)。 傅里叶级数展开周期函数。">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">幂级数与展开</span>
+          </div>
+          <div class="card-code">幂级数收敛半径 R=lim|aₙ/aₙ₊₁|。
+常用麦克劳林展开：eˣ=Σxⁿ/n!，
+sinx=Σ(-1)ⁿx²ⁿ⁺¹/(2n+1)!，1/(1-x)=Σxⁿ(|x|&lt;1)。
+傅里叶级数展开周期函数。</div>
+        </div>
+        <div class="card" id="card-5-20" data-keywords="一阶微分方程 可分离变量 dy/dx=f(x)g(y)→∫dy/g=∫f dx。 齐次方程令 u=y/x。 一阶线性 y&#x27;+P(x)y=Q(x) 用积分因子 e^∫Pdx。">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">一阶微分方程</span>
+          </div>
+          <div class="card-code">可分离变量 dy/dx=f(x)g(y)→∫dy/g=∫f dx。
+齐次方程令 u=y/x。
+一阶线性 y&#x27;+P(x)y=Q(x) 用积分因子 e^∫Pdx。</div>
+        </div>
+        <div class="card" id="card-5-21" data-keywords="高阶微分方程 二阶常系数齐次 y&#x27;&#x27;+py&#x27;+qy=0：解特征方程 r²+pr+q=0， 两实根 C₁e^r₁x+C₂e^r₂x；重根 (C₁+C₂x)e^rx；共轭复根 e^αx(C₁cosβx+C₂sinβx)。 非齐次用待定系数或常数变易。">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title">高阶微分方程</span>
+          </div>
+          <div class="card-code">二阶常系数齐次 y&#x27;&#x27;+py&#x27;+qy=0：解特征方程 r²+pr+q=0，
+两实根 C₁e^r₁x+C₂e^r₂x；重根 (C₁+C₂x)e^rx；共轭复根 e^αx(C₁cosβx+C₂sinβx)。
+非齐次用待定系数或常数变易。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>

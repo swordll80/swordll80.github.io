@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>概率论与数理统计</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>大学数学·概率与统计</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">14 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">概率论与数理统计：随机事件、随机变量与分布、数字特征、极限定理、抽样估计与假设检验。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、随机事件与概率</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="概率基本公式 0≤P(A)≤1，P(Ω)=1。 加法 P(A∪B)=P(A)+P(B)-P(AB)；互斥则无交项。 条件概率 P(B|A)=P(AB)/P(A)。 乘法 P(AB)=P(A)P(B|A)。">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">概率基本公式</span>
+          </div>
+          <div class="card-code">0≤P(A)≤1，P(Ω)=1。
+加法 P(A∪B)=P(A)+P(B)-P(AB)；互斥则无交项。
+条件概率 P(B|A)=P(AB)/P(A)。
+乘法 P(AB)=P(A)P(B|A)。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="独立与全概率 独立事件 P(AB)=P(A)P(B)。 全概率公式 P(B)=ΣP(Aᵢ)P(B|Aᵢ)。 贝叶斯公式 P(Aⱼ|B)=P(Aⱼ)P(B|Aⱼ)/ΣP(Aᵢ)P(B|Aᵢ)。">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">独立与全概率</span>
+          </div>
+          <div class="card-code">独立事件 P(AB)=P(A)P(B)。
+全概率公式 P(B)=ΣP(Aᵢ)P(B|Aᵢ)。
+贝叶斯公式 P(Aⱼ|B)=P(Aⱼ)P(B|Aⱼ)/ΣP(Aᵢ)P(B|Aᵢ)。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="古典与几何概型 古典概型 P=有利结果数/等可能总数，配合排列组合。 几何概型 P=有利区域度量/总区域度量。">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">古典与几何概型</span>
+          </div>
+          <div class="card-code">古典概型 P=有利结果数/等可能总数，配合排列组合。
+几何概型 P=有利区域度量/总区域度量。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、随机变量与分布</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-4" data-keywords="分布函数与密度 分布函数 F(x)=P(X≤x)，单调不减、右连续。 离散型：分布律 P(X=xᵢ)=pᵢ。 连续型：密度 f(x)≥0，∫f=1，P(a&lt;X≤b)=∫ₐᵇf dx。">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">分布函数与密度</span>
+          </div>
+          <div class="card-code">分布函数 F(x)=P(X≤x)，单调不减、右连续。
+离散型：分布律 P(X=xᵢ)=pᵢ。
+连续型：密度 f(x)≥0，∫f=1，P(a&lt;X≤b)=∫ₐᵇf dx。</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="常见离散分布 0-1 分布；二项 B(n,p)：P(X=k)=Cₙᵏpᵏ(1-p)ⁿ⁻ᵏ，E=np，D=np(1-p)。 泊松 P(λ)：P(X=k)=λᵏe⁻λ/k!，E=D=λ。 几何分布：首次成功。">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">常见离散分布</span>
+          </div>
+          <div class="card-code">0-1 分布；二项 B(n,p)：P(X=k)=Cₙᵏpᵏ(1-p)ⁿ⁻ᵏ，E=np，D=np(1-p)。
+泊松 P(λ)：P(X=k)=λᵏe⁻λ/k!，E=D=λ。
+几何分布：首次成功。</div>
+        </div>
+        <div class="card" id="card-2-6" data-keywords="常见连续分布 均匀 U(a,b)：E=(a+b)/2，D=(b-a)²/12。 指数 E(λ)：f=λe⁻λˣ(x≥0)，E=1/λ，无记忆性。 正态 N(μ,σ²)：钟形对称，标准化 Z=(X-μ)/σ~N(0,1)。">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">常见连续分布</span>
+          </div>
+          <div class="card-code">均匀 U(a,b)：E=(a+b)/2，D=(b-a)²/12。
+指数 E(λ)：f=λe⁻λˣ(x≥0)，E=1/λ，无记忆性。
+正态 N(μ,σ²)：钟形对称，标准化 Z=(X-μ)/σ~N(0,1)。</div>
+        </div>
+        <div class="card" id="card-2-7" data-keywords="二维随机变量 联合分布、边缘分布、条件分布。 独立 ⇔ F(x,y)=Fx(x)Fy(y)(或密度可分离)。 随机变量函数的分布 Z=X+Y 等（卷积）。">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">二维随机变量</span>
+          </div>
+          <div class="card-code">联合分布、边缘分布、条件分布。
+独立 ⇔ F(x,y)=Fx(x)Fy(y)(或密度可分离)。
+随机变量函数的分布 Z=X+Y 等（卷积）。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、数字特征</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-8" data-keywords="期望与方差 E(X)=Σxᵢpᵢ 或 ∫xf dx。 E(aX+b)=aE(X)+b，E(X+Y)=E(X)+E(Y)。 D(X)=E(X²)-[E(X)]²，D(aX+b)=a²D(X)。 标准差 σ=√D(X)。">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">期望与方差</span>
+          </div>
+          <div class="card-code">E(X)=Σxᵢpᵢ 或 ∫xf dx。
+E(aX+b)=aE(X)+b，E(X+Y)=E(X)+E(Y)。
+D(X)=E(X²)-[E(X)]²，D(aX+b)=a²D(X)。
+标准差 σ=√D(X)。</div>
+        </div>
+        <div class="card" id="card-3-9" data-keywords="协方差与相关 Cov(X,Y)=E(XY)-E(X)E(Y)。 相关系数 ρ=Cov(X,Y)/(σxσy)，|ρ|≤1。 独立 ⇒ 不相关(ρ=0)，反之不一定。 D(X±Y)=D(X)+D(Y)±2Cov(X,Y)。">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">协方差与相关</span>
+          </div>
+          <div class="card-code">Cov(X,Y)=E(XY)-E(X)E(Y)。
+相关系数 ρ=Cov(X,Y)/(σxσy)，|ρ|≤1。
+独立 ⇒ 不相关(ρ=0)，反之不一定。
+D(X±Y)=D(X)+D(Y)±2Cov(X,Y)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、极限定理</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-10" data-keywords="大数定律 切比雪夫不等式 P(|X-μ|≥ε)≤D(X)/ε²。 大数定律：n 大时样本均值依概率收敛于期望， 即频率稳定于概率。">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">大数定律</span>
+          </div>
+          <div class="card-code">切比雪夫不等式 P(|X-μ|≥ε)≤D(X)/ε²。
+大数定律：n 大时样本均值依概率收敛于期望，
+即频率稳定于概率。</div>
+        </div>
+        <div class="card" id="card-4-11" data-keywords="中心极限定理 大量独立同分布随机变量之和近似服从正态分布： (ΣXᵢ-nμ)/(σ√n) → N(0,1)。 是抽样推断的理论基础。">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">中心极限定理</span>
+          </div>
+          <div class="card-code">大量独立同分布随机变量之和近似服从正态分布：
+(ΣXᵢ-nμ)/(σ√n) → N(0,1)。
+是抽样推断的理论基础。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、数理统计</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-12" data-keywords="抽样与统计量 总体、样本、简单随机样本。 样本均值 X̄=ΣXᵢ/n；样本方差 S²=Σ(Xᵢ-X̄)²/(n-1)。 抽样分布：χ²分布、t 分布、F 分布。">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">抽样与统计量</span>
+          </div>
+          <div class="card-code">总体、样本、简单随机样本。
+样本均值 X̄=ΣXᵢ/n；样本方差 S²=Σ(Xᵢ-X̄)²/(n-1)。
+抽样分布：χ²分布、t 分布、F 分布。</div>
+        </div>
+        <div class="card" id="card-5-13" data-keywords="参数估计 点估计：矩估计、最大似然估计(MLE)。 估计量评价：无偏性、有效性、一致性。 区间估计：置信区间，如正态均值 X̄±z_(α/2)·σ/√n。">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">参数估计</span>
+          </div>
+          <div class="card-code">点估计：矩估计、最大似然估计(MLE)。
+估计量评价：无偏性、有效性、一致性。
+区间估计：置信区间，如正态均值 X̄±z_(α/2)·σ/√n。</div>
+        </div>
+        <div class="card" id="card-5-14" data-keywords="假设检验 提出 H₀ 与 H₁，选统计量、定显著性水平 α。 两类错误：弃真(第一类)、取伪(第二类)。 均值 u 检验/t 检验、方差 χ² 检验、拟合优度检验。">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">假设检验</span>
+          </div>
+          <div class="card-code">提出 H₀ 与 H₁，选统计量、定显著性水平 α。
+两类错误：弃真(第一类)、取伪(第二类)。
+均值 u 检验/t 检验、方差 χ² 检验、拟合优度检验。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>
