@@ -25,7 +25,7 @@
       box-shadow:0 1px 6px rgba(0,0,0,.04); min-height:48px;
     }
     .topbar .brand { font-size:18px; font-weight:700; color:var(--accent); text-decoration:none; white-space:nowrap; }
-    .topbar .home-btn { display:inline-flex; align-items:center; gap:4px; font-size:13px; text-decoration:none; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:5px 10px; background:var(--card); white-space:nowrap; }
+    .topbar .home-btn { display:inline-flex; align-items:center; gap:4px; font-family:inherit; font-size:13px; text-decoration:none; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:5px 10px; background:var(--card); white-space:nowrap; cursor:pointer; }
     .topbar .home-btn:hover { border-color:var(--accent); color:var(--accent); }
     .topbar .spacer { flex:1; }
     .topbar .desc { color:var(--muted); font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
@@ -99,6 +99,7 @@
     <a class="brand" href="read.html">手册速查</a>
     <span class="desc" id="currentTitle">选择一个文件开始</span>
     <span class="spacer"></span>
+    <button type="button" class="home-btn" id="refreshBtn" title="重新加载最新目录 list.txt">&#8635; 刷新目录</button>
     <a class="home-btn" id="homeBtn" href="index.html" title="返回主页">&#8962; 返回主页</a>
   </div>
   <div class="main">
@@ -144,9 +145,10 @@
       console.error(msg);
     }
 
-    // Load list.txt and build tree
+    // Load list.txt and build tree\uFF08\u5E26\u7248\u672C\u53F7 + no-store\uFF0C\u7ED5\u8FC7\u6D4F\u89C8\u5668\u4E0E CDN \u7F13\u5B58\uFF0C\u786E\u4FDD\u62FF\u5230\u6700\u65B0 list.txt\uFF09
     function loadTree() {
-      fetch('notes/list.txt')
+      treePanel.innerHTML = '<div class="tree-loading" style="padding:20px 16px;color:#7d8599;font-size:13px">\u6B63\u5728\u52A0\u8F7D\u76EE\u5F55...</div>';
+      fetch('notes/list.txt?v=' + Date.now(), { cache: 'no-store' })
         .then(function(res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           return res.text();
@@ -157,6 +159,8 @@
             showLoadError('list.txt \u4E2D\u6CA1\u6709\u6587\u4EF6\u3002');
             return;
           }
+          treePanel.innerHTML = '';
+          activeRow = null;
           renderTree(tree, treePanel);
         })
         .catch(function(err) {
@@ -198,6 +202,15 @@
     }
 
     loadTree();
+
+    var refreshBtn = document.getElementById('refreshBtn');
+    if (refreshBtn) {
+      refreshBtn.addEventListener('click', function() {
+        loadTree();
+        currentTitle.textContent = '目录已刷新';
+        setTimeout(function() { if (currentTitle.textContent === '目录已刷新') currentTitle.textContent = '选择一个文件开始'; }, 1500);
+      });
+    }
 
     function renderTree(nodes, parent) {
       nodes.forEach(function(node) {
@@ -280,7 +293,7 @@
       placeholder.style.display = 'none';
 
       var iframe = document.createElement('iframe');
-      iframe.src = file;
+      iframe.src = file + (file.indexOf('?') >= 0 ? '&' : '?') + 'v=' + Date.now();
       iframe.title = title;
       viewPanel.appendChild(iframe);
       currentTitle.textContent = title;
