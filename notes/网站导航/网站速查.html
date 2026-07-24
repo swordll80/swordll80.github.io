@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>网站速查</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+      .card-head .card-title a { color:var(--accent); text-decoration:none; }
+    .card-head .card-title a:hover { text-decoration:underline; }
+    .card-url { margin-top:4px; }
+    .card-url a { font-size:12px; color:var(--muted); text-decoration:none; word-break:break-all; }
+    .card-url a:hover { color:var(--accent); text-decoration:underline; }
+    .card-desc { margin-top:6px; font-size:13px; color:#3a3f52; line-height:1.6; }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>常用好网站导航</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">51 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">精选实用网站合集：编程学习、在线工具与运行环境、代码托管、计算与科学、电子电力工程、AI 与效率工具。点击名称或网址在新标签打开。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、编程学习 / 文档</span>
+        <span class="count">8 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="菜鸟教程 https://www.runoob.com/ 中文最全的编程入门教程站，涵盖 Python/Java/C/JS/SQL/前端等，配在线实例。 中文">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title"><a href="https://www.runoob.com/" target="_blank" rel="noopener noreferrer">菜鸟教程</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://www.runoob.com/" target="_blank" rel="noopener noreferrer">www.runoob.com</a></div>
+          <div class="card-desc">中文最全的编程入门教程站，涵盖 Python/Java/C/JS/SQL/前端等，配在线实例。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="菜鸟在线工具 https://www.jyshare.com/ 菜鸟教程旗下在线编辑器与工具集合，可直接运行多语言代码、格式化 JSON 等。 在线">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title"><a href="https://www.jyshare.com/" target="_blank" rel="noopener noreferrer">菜鸟在线工具</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://www.jyshare.com/" target="_blank" rel="noopener noreferrer">www.jyshare.com</a></div>
+          <div class="card-desc">菜鸟教程旗下在线编辑器与工具集合，可直接运行多语言代码、格式化 JSON 等。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="MDN Web Docs https://developer.mozilla.org/zh-CN/ 前端权威文档：HTML/CSS/JavaScript/Web API，中英双语，标准准确。 中文">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title"><a href="https://developer.mozilla.org/zh-CN/" target="_blank" rel="noopener noreferrer">MDN Web Docs</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://developer.mozilla.org/zh-CN/" target="_blank" rel="noopener noreferrer">developer.mozilla.org/zh-CN</a></div>
+          <div class="card-desc">前端权威文档：HTML/CSS/JavaScript/Web API，中英双语，标准准确。</div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="W3School https://www.w3school.com.cn/ 老牌前端与 Web 技术教程，示例简单，适合快速查语法。 中文">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title"><a href="https://www.w3school.com.cn/" target="_blank" rel="noopener noreferrer">W3School</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://www.w3school.com.cn/" target="_blank" rel="noopener noreferrer">www.w3school.com.cn</a></div>
+          <div class="card-desc">老牌前端与 Web 技术教程，示例简单，适合快速查语法。</div>
+        </div>
+        <div class="card" id="card-1-5" data-keywords="廖雪峰的官方网站 https://liaoxuefeng.com/ 系统的 Python、JavaScript、Git、SQL 中文教程，讲解通俗。 中文">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title"><a href="https://liaoxuefeng.com/" target="_blank" rel="noopener noreferrer">廖雪峰的官方网站</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://liaoxuefeng.com/" target="_blank" rel="noopener noreferrer">liaoxuefeng.com</a></div>
+          <div class="card-desc">系统的 Python、JavaScript、Git、SQL 中文教程，讲解通俗。</div>
+        </div>
+        <div class="card" id="card-1-6" data-keywords="Stack Overflow https://stackoverflow.com/ 全球最大的程序员问答社区，报错基本都能搜到解决方案。 EN">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title"><a href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer">Stack Overflow</a></span>
+            <span class="card-ver">EN</span>
+          </div>
+          <div class="card-url"><a href="https://stackoverflow.com/" target="_blank" rel="noopener noreferrer">stackoverflow.com</a></div>
+          <div class="card-desc">全球最大的程序员问答社区，报错基本都能搜到解决方案。</div>
+        </div>
+        <div class="card" id="card-1-7" data-keywords="DevDocs https://devdocs.io/ 把上百种语言/框架文档聚合到一处，可离线，搜索极快。 工具">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title"><a href="https://devdocs.io/" target="_blank" rel="noopener noreferrer">DevDocs</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://devdocs.io/" target="_blank" rel="noopener noreferrer">devdocs.io</a></div>
+          <div class="card-desc">把上百种语言/框架文档聚合到一处，可离线，搜索极快。</div>
+        </div>
+        <div class="card" id="card-1-8" data-keywords="roadmap.sh https://roadmap.sh/ 各技术方向（前端/后端/DevOps 等）的学习路线图。 EN">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title"><a href="https://roadmap.sh/" target="_blank" rel="noopener noreferrer">roadmap.sh</a></span>
+            <span class="card-ver">EN</span>
+          </div>
+          <div class="card-url"><a href="https://roadmap.sh/" target="_blank" rel="noopener noreferrer">roadmap.sh</a></div>
+          <div class="card-desc">各技术方向（前端/后端/DevOps 等）的学习路线图。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、在线运行 / 编译环境</span>
+        <span class="count">8 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-9" data-keywords="Compiler Explorer (godbolt) https://godbolt.org/ 在线查看 C/C++/Rust 等源码编译出的汇编，对照优化效果，学底层神器。 在线">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title"><a href="https://godbolt.org/" target="_blank" rel="noopener noreferrer">Compiler Explorer (godbolt)</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://godbolt.org/" target="_blank" rel="noopener noreferrer">godbolt.org</a></div>
+          <div class="card-desc">在线查看 C/C++/Rust 等源码编译出的汇编，对照优化效果，学底层神器。</div>
+        </div>
+        <div class="card" id="card-2-10" data-keywords="JSLinux https://bellard.org/jslinux/ Fabrice Bellard 用 JS 实现的浏览器内 Linux/x86 模拟器，纯前端跑系统。 在线">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title"><a href="https://bellard.org/jslinux/" target="_blank" rel="noopener noreferrer">JSLinux</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://bellard.org/jslinux/" target="_blank" rel="noopener noreferrer">bellard.org/jslinux</a></div>
+          <div class="card-desc">Fabrice Bellard 用 JS 实现的浏览器内 Linux/x86 模拟器，纯前端跑系统。</div>
+        </div>
+        <div class="card" id="card-2-11" data-keywords="Replit https://replit.com/ 浏览器里的多语言在线 IDE，可运行、部署小项目。 在线">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title"><a href="https://replit.com/" target="_blank" rel="noopener noreferrer">Replit</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://replit.com/" target="_blank" rel="noopener noreferrer">replit.com</a></div>
+          <div class="card-desc">浏览器里的多语言在线 IDE，可运行、部署小项目。</div>
+        </div>
+        <div class="card" id="card-2-12" data-keywords="CodePen https://codepen.io/ 前端 HTML/CSS/JS 在线演练场，适合调试与分享片段。 在线">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title"><a href="https://codepen.io/" target="_blank" rel="noopener noreferrer">CodePen</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://codepen.io/" target="_blank" rel="noopener noreferrer">codepen.io</a></div>
+          <div class="card-desc">前端 HTML/CSS/JS 在线演练场，适合调试与分享片段。</div>
+        </div>
+        <div class="card" id="card-2-13" data-keywords="JSFiddle https://jsfiddle.net/ 轻量前端代码在线运行与分享。 在线">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title"><a href="https://jsfiddle.net/" target="_blank" rel="noopener noreferrer">JSFiddle</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://jsfiddle.net/" target="_blank" rel="noopener noreferrer">jsfiddle.net</a></div>
+          <div class="card-desc">轻量前端代码在线运行与分享。</div>
+        </div>
+        <div class="card" id="card-2-14" data-keywords="StackBlitz https://stackblitz.com/ 浏览器内运行 Node/前端框架（Vite/Angular/React）的在线 IDE。 在线">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title"><a href="https://stackblitz.com/" target="_blank" rel="noopener noreferrer">StackBlitz</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://stackblitz.com/" target="_blank" rel="noopener noreferrer">stackblitz.com</a></div>
+          <div class="card-desc">浏览器内运行 Node/前端框架（Vite/Angular/React）的在线 IDE。</div>
+        </div>
+        <div class="card" id="card-2-15" data-keywords="Wandbox https://wandbox.org/ 支持大量语言与编译器版本的在线运行平台。 在线">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title"><a href="https://wandbox.org/" target="_blank" rel="noopener noreferrer">Wandbox</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://wandbox.org/" target="_blank" rel="noopener noreferrer">wandbox.org</a></div>
+          <div class="card-desc">支持大量语言与编译器版本的在线运行平台。</div>
+        </div>
+        <div class="card" id="card-2-16" data-keywords="Programiz 在线编译 https://www.programiz.com/ 含多语言在线编译器与入门教程。 在线">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title"><a href="https://www.programiz.com/" target="_blank" rel="noopener noreferrer">Programiz 在线编译</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://www.programiz.com/" target="_blank" rel="noopener noreferrer">www.programiz.com</a></div>
+          <div class="card-desc">含多语言在线编译器与入门教程。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、开发工具 / 实用小工具</span>
+        <span class="count">9 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-17" data-keywords="Regex101 https://regex101.com/ 正则在线测试，实时高亮匹配并解释每一部分，支持多种语言方言。 工具">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title"><a href="https://regex101.com/" target="_blank" rel="noopener noreferrer">Regex101</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://regex101.com/" target="_blank" rel="noopener noreferrer">regex101.com</a></div>
+          <div class="card-desc">正则在线测试，实时高亮匹配并解释每一部分，支持多种语言方言。</div>
+        </div>
+        <div class="card" id="card-3-18" data-keywords="Crontab Guru https://crontab.guru/ 在线解释与校验 cron 定时表达式。 工具">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title"><a href="https://crontab.guru/" target="_blank" rel="noopener noreferrer">Crontab Guru</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://crontab.guru/" target="_blank" rel="noopener noreferrer">crontab.guru</a></div>
+          <div class="card-desc">在线解释与校验 cron 定时表达式。</div>
+        </div>
+        <div class="card" id="card-3-19" data-keywords="JSON 中文网 https://www.json.cn/ JSON 在线格式化、校验、压缩、转义与视图。 工具">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer">JSON 中文网</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://www.json.cn/" target="_blank" rel="noopener noreferrer">www.json.cn</a></div>
+          <div class="card-desc">JSON 在线格式化、校验、压缩、转义与视图。</div>
+        </div>
+        <div class="card" id="card-3-20" data-keywords="Excalidraw https://excalidraw.com/ 手绘风格白板/流程图，简洁好用，可导出 PNG/SVG。 工具">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title"><a href="https://excalidraw.com/" target="_blank" rel="noopener noreferrer">Excalidraw</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://excalidraw.com/" target="_blank" rel="noopener noreferrer">excalidraw.com</a></div>
+          <div class="card-desc">手绘风格白板/流程图，简洁好用，可导出 PNG/SVG。</div>
+        </div>
+        <div class="card" id="card-3-21" data-keywords="draw.io (diagrams.net) https://app.diagrams.net/ 免费在线画流程图、架构图、UML，可存本地或云端。 工具">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title"><a href="https://app.diagrams.net/" target="_blank" rel="noopener noreferrer">draw.io (diagrams.net)</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://app.diagrams.net/" target="_blank" rel="noopener noreferrer">app.diagrams.net</a></div>
+          <div class="card-desc">免费在线画流程图、架构图、UML，可存本地或云端。</div>
+        </div>
+        <div class="card" id="card-3-22" data-keywords="TinyPNG https://tinypng.com/ 在线压缩 PNG/JPG/WebP，明显减小体积、几乎无损。 工具">
+          <div class="card-head">
+            <span class="card-num">22</span>
+            <span class="card-title"><a href="https://tinypng.com/" target="_blank" rel="noopener noreferrer">TinyPNG</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://tinypng.com/" target="_blank" rel="noopener noreferrer">tinypng.com</a></div>
+          <div class="card-desc">在线压缩 PNG/JPG/WebP，明显减小体积、几乎无损。</div>
+        </div>
+        <div class="card" id="card-3-23" data-keywords="Carbon https://carbon.now.sh/ 把源代码渲染成漂亮的图片，适合分享与文档配图。 工具">
+          <div class="card-head">
+            <span class="card-num">23</span>
+            <span class="card-title"><a href="https://carbon.now.sh/" target="_blank" rel="noopener noreferrer">Carbon</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://carbon.now.sh/" target="_blank" rel="noopener noreferrer">carbon.now.sh</a></div>
+          <div class="card-desc">把源代码渲染成漂亮的图片，适合分享与文档配图。</div>
+        </div>
+        <div class="card" id="card-3-24" data-keywords="tldr pages https://tldr.inbrowser.app/ 命令行工具的极简用法示例，比 man 更直观。 工具">
+          <div class="card-head">
+            <span class="card-num">24</span>
+            <span class="card-title"><a href="https://tldr.inbrowser.app/" target="_blank" rel="noopener noreferrer">tldr pages</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://tldr.inbrowser.app/" target="_blank" rel="noopener noreferrer">tldr.inbrowser.app</a></div>
+          <div class="card-desc">命令行工具的极简用法示例，比 man 更直观。</div>
+        </div>
+        <div class="card" id="card-3-25" data-keywords="Can I use https://caniuse.com/ 查询各前端特性在各浏览器的兼容性。 工具">
+          <div class="card-head">
+            <span class="card-num">25</span>
+            <span class="card-title"><a href="https://caniuse.com/" target="_blank" rel="noopener noreferrer">Can I use</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://caniuse.com/" target="_blank" rel="noopener noreferrer">caniuse.com</a></div>
+          <div class="card-desc">查询各前端特性在各浏览器的兼容性。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、代码托管 / 开源生态</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-26" data-keywords="GitHub https://github.com/ 全球最大的代码托管与开源协作平台。 EN">
+          <div class="card-head">
+            <span class="card-num">26</span>
+            <span class="card-title"><a href="https://github.com/" target="_blank" rel="noopener noreferrer">GitHub</a></span>
+            <span class="card-ver">EN</span>
+          </div>
+          <div class="card-url"><a href="https://github.com/" target="_blank" rel="noopener noreferrer">github.com</a></div>
+          <div class="card-desc">全球最大的代码托管与开源协作平台。</div>
+        </div>
+        <div class="card" id="card-4-27" data-keywords="Gitee 码云 https://gitee.com/ 国内访问快的代码托管平台，含大量中文开源项目。 中文">
+          <div class="card-head">
+            <span class="card-num">27</span>
+            <span class="card-title"><a href="https://gitee.com/" target="_blank" rel="noopener noreferrer">Gitee 码云</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://gitee.com/" target="_blank" rel="noopener noreferrer">gitee.com</a></div>
+          <div class="card-desc">国内访问快的代码托管平台，含大量中文开源项目。</div>
+        </div>
+        <div class="card" id="card-4-28" data-keywords="GitLab https://gitlab.com/ 自带 CI/CD 的代码托管平台，也可私有部署。 EN">
+          <div class="card-head">
+            <span class="card-num">28</span>
+            <span class="card-title"><a href="https://gitlab.com/" target="_blank" rel="noopener noreferrer">GitLab</a></span>
+            <span class="card-ver">EN</span>
+          </div>
+          <div class="card-url"><a href="https://gitlab.com/" target="_blank" rel="noopener noreferrer">gitlab.com</a></div>
+          <div class="card-desc">自带 CI/CD 的代码托管平台，也可私有部署。</div>
+        </div>
+        <div class="card" id="card-4-29" data-keywords="npm https://www.npmjs.com/ JavaScript/Node 包仓库，查包与文档。 EN">
+          <div class="card-head">
+            <span class="card-num">29</span>
+            <span class="card-title"><a href="https://www.npmjs.com/" target="_blank" rel="noopener noreferrer">npm</a></span>
+            <span class="card-ver">EN</span>
+          </div>
+          <div class="card-url"><a href="https://www.npmjs.com/" target="_blank" rel="noopener noreferrer">www.npmjs.com</a></div>
+          <div class="card-desc">JavaScript/Node 包仓库，查包与文档。</div>
+        </div>
+        <div class="card" id="card-4-30" data-keywords="PyPI https://pypi.org/ Python 官方第三方包索引。 EN">
+          <div class="card-head">
+            <span class="card-num">30</span>
+            <span class="card-title"><a href="https://pypi.org/" target="_blank" rel="noopener noreferrer">PyPI</a></span>
+            <span class="card-ver">EN</span>
+          </div>
+          <div class="card-url"><a href="https://pypi.org/" target="_blank" rel="noopener noreferrer">pypi.org</a></div>
+          <div class="card-desc">Python 官方第三方包索引。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、计算 / 科学 / 学习</span>
+        <span class="count">8 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-31" data-keywords="Wolfram Alpha https://www.wolframalpha.com/ 计算知识引擎，能解方程、求导积分、单位换算、画函数图。 工具">
+          <div class="card-head">
+            <span class="card-num">31</span>
+            <span class="card-title"><a href="https://www.wolframalpha.com/" target="_blank" rel="noopener noreferrer">Wolfram Alpha</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://www.wolframalpha.com/" target="_blank" rel="noopener noreferrer">www.wolframalpha.com</a></div>
+          <div class="card-desc">计算知识引擎，能解方程、求导积分、单位换算、画函数图。</div>
+        </div>
+        <div class="card" id="card-5-32" data-keywords="Desmos 图形计算器 https://www.desmos.com/calculator 强大的在线函数作图与交互式数学工具。 工具">
+          <div class="card-head">
+            <span class="card-num">32</span>
+            <span class="card-title"><a href="https://www.desmos.com/calculator" target="_blank" rel="noopener noreferrer">Desmos 图形计算器</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://www.desmos.com/calculator" target="_blank" rel="noopener noreferrer">www.desmos.com/calculator</a></div>
+          <div class="card-desc">强大的在线函数作图与交互式数学工具。</div>
+        </div>
+        <div class="card" id="card-5-33" data-keywords="GeoGebra https://www.geogebra.org/ 几何、代数、微积分一体的动态数学软件。 工具">
+          <div class="card-head">
+            <span class="card-num">33</span>
+            <span class="card-title"><a href="https://www.geogebra.org/" target="_blank" rel="noopener noreferrer">GeoGebra</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://www.geogebra.org/" target="_blank" rel="noopener noreferrer">www.geogebra.org</a></div>
+          <div class="card-desc">几何、代数、微积分一体的动态数学软件。</div>
+        </div>
+        <div class="card" id="card-5-34" data-keywords="Khan Academy 可汗学院 https://zh.khanacademy.org/ 免费的数学、物理、化学等系统课程，中文版。 中文">
+          <div class="card-head">
+            <span class="card-num">34</span>
+            <span class="card-title"><a href="https://zh.khanacademy.org/" target="_blank" rel="noopener noreferrer">Khan Academy 可汗学院</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://zh.khanacademy.org/" target="_blank" rel="noopener noreferrer">zh.khanacademy.org</a></div>
+          <div class="card-desc">免费的数学、物理、化学等系统课程，中文版。</div>
+        </div>
+        <div class="card" id="card-5-35" data-keywords="OEIS 整数序列 https://oeis.org/ 在线整数序列大全，输入几项即可查出通项与规律。 EN">
+          <div class="card-head">
+            <span class="card-num">35</span>
+            <span class="card-title"><a href="https://oeis.org/" target="_blank" rel="noopener noreferrer">OEIS 整数序列</a></span>
+            <span class="card-ver">EN</span>
+          </div>
+          <div class="card-url"><a href="https://oeis.org/" target="_blank" rel="noopener noreferrer">oeis.org</a></div>
+          <div class="card-desc">在线整数序列大全，输入几项即可查出通项与规律。</div>
+        </div>
+        <div class="card" id="card-5-36" data-keywords="arXiv https://arxiv.org/ 物理、数学、计算机等领域论文预印本库。 EN">
+          <div class="card-head">
+            <span class="card-num">36</span>
+            <span class="card-title"><a href="https://arxiv.org/" target="_blank" rel="noopener noreferrer">arXiv</a></span>
+            <span class="card-ver">EN</span>
+          </div>
+          <div class="card-url"><a href="https://arxiv.org/" target="_blank" rel="noopener noreferrer">arxiv.org</a></div>
+          <div class="card-desc">物理、数学、计算机等领域论文预印本库。</div>
+        </div>
+        <div class="card" id="card-5-37" data-keywords="Google 学术 https://scholar.google.com/ 学术论文与引用检索。 EN">
+          <div class="card-head">
+            <span class="card-num">37</span>
+            <span class="card-title"><a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer">Google 学术</a></span>
+            <span class="card-ver">EN</span>
+          </div>
+          <div class="card-url"><a href="https://scholar.google.com/" target="_blank" rel="noopener noreferrer">scholar.google.com</a></div>
+          <div class="card-desc">学术论文与引用检索。</div>
+        </div>
+        <div class="card" id="card-5-38" data-keywords="Wikipedia 维基百科 https://zh.wikipedia.org/ 免费百科全书，概念查询首选。 中文">
+          <div class="card-head">
+            <span class="card-num">38</span>
+            <span class="card-title"><a href="https://zh.wikipedia.org/" target="_blank" rel="noopener noreferrer">Wikipedia 维基百科</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://zh.wikipedia.org/" target="_blank" rel="noopener noreferrer">zh.wikipedia.org</a></div>
+          <div class="card-desc">免费百科全书，概念查询首选。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、电子 / 电力 / 工程</span>
+        <span class="count">7 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-39" data-keywords="Falstad 电路模拟 https://www.falstad.com/circuit/ 浏览器内交互式电路仿真，直观展示电流电压，教学利器。 在线">
+          <div class="card-head">
+            <span class="card-num">39</span>
+            <span class="card-title"><a href="https://www.falstad.com/circuit/" target="_blank" rel="noopener noreferrer">Falstad 电路模拟</a></span>
+            <span class="card-ver">在线</span>
+          </div>
+          <div class="card-url"><a href="https://www.falstad.com/circuit/" target="_blank" rel="noopener noreferrer">www.falstad.com/circuit</a></div>
+          <div class="card-desc">浏览器内交互式电路仿真，直观展示电流电压，教学利器。</div>
+        </div>
+        <div class="card" id="card-6-40" data-keywords="立创EDA https://lceda.cn/ 国产在线 PCB 设计（原理图/PCB/仿真），配合嘉立创打样。 中文">
+          <div class="card-head">
+            <span class="card-num">40</span>
+            <span class="card-title"><a href="https://lceda.cn/" target="_blank" rel="noopener noreferrer">立创EDA</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://lceda.cn/" target="_blank" rel="noopener noreferrer">lceda.cn</a></div>
+          <div class="card-desc">国产在线 PCB 设计（原理图/PCB/仿真），配合嘉立创打样。</div>
+        </div>
+        <div class="card" id="card-6-41" data-keywords="立创商城 https://www.szlcsc.com/ 电子元器件在线选型与采购，含规格书。 中文">
+          <div class="card-head">
+            <span class="card-num">41</span>
+            <span class="card-title"><a href="https://www.szlcsc.com/" target="_blank" rel="noopener noreferrer">立创商城</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://www.szlcsc.com/" target="_blank" rel="noopener noreferrer">www.szlcsc.com</a></div>
+          <div class="card-desc">电子元器件在线选型与采购，含规格书。</div>
+        </div>
+        <div class="card" id="card-6-42" data-keywords="嘉立创 https://www.jlc.com/ PCB 打样、SMT 贴片与 3D 打印一站式。 中文">
+          <div class="card-head">
+            <span class="card-num">42</span>
+            <span class="card-title"><a href="https://www.jlc.com/" target="_blank" rel="noopener noreferrer">嘉立创</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://www.jlc.com/" target="_blank" rel="noopener noreferrer">www.jlc.com</a></div>
+          <div class="card-desc">PCB 打样、SMT 贴片与 3D 打印一站式。</div>
+        </div>
+        <div class="card" id="card-6-43" data-keywords="Digi-Key https://www.digikey.cn/ 全球电子元器件分销商，参数筛选与数据手册齐全。 中文">
+          <div class="card-head">
+            <span class="card-num">43</span>
+            <span class="card-title"><a href="https://www.digikey.cn/" target="_blank" rel="noopener noreferrer">Digi-Key</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://www.digikey.cn/" target="_blank" rel="noopener noreferrer">www.digikey.cn</a></div>
+          <div class="card-desc">全球电子元器件分销商，参数筛选与数据手册齐全。</div>
+        </div>
+        <div class="card" id="card-6-44" data-keywords="电子发烧友 https://www.elecfans.com/ 中文电子技术论坛与资料，电路、单片机、电源等。 中文">
+          <div class="card-head">
+            <span class="card-num">44</span>
+            <span class="card-title"><a href="https://www.elecfans.com/" target="_blank" rel="noopener noreferrer">电子发烧友</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://www.elecfans.com/" target="_blank" rel="noopener noreferrer">www.elecfans.com</a></div>
+          <div class="card-desc">中文电子技术论坛与资料，电路、单片机、电源等。</div>
+        </div>
+        <div class="card" id="card-6-45" data-keywords="全国标准信息公共服务平台 https://std.samr.gov.cn/ 查询国家标准（GB/GB-T）文本与状态。 中文">
+          <div class="card-head">
+            <span class="card-num">45</span>
+            <span class="card-title"><a href="https://std.samr.gov.cn/" target="_blank" rel="noopener noreferrer">全国标准信息公共服务平台</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://std.samr.gov.cn/" target="_blank" rel="noopener noreferrer">std.samr.gov.cn</a></div>
+          <div class="card-desc">查询国家标准（GB/GB-T）文本与状态。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-7">
+      <button class="section-head">
+        <span class="icon">7</span>
+        <span class="title">七、AI / 效率 / 其它</span>
+        <span class="count">6 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-7-46" data-keywords="Claude https://claude.ai/ Anthropic 的 AI 助手，擅长写作、编程与长文本分析。 AI">
+          <div class="card-head">
+            <span class="card-num">46</span>
+            <span class="card-title"><a href="https://claude.ai/" target="_blank" rel="noopener noreferrer">Claude</a></span>
+            <span class="card-ver">AI</span>
+          </div>
+          <div class="card-url"><a href="https://claude.ai/" target="_blank" rel="noopener noreferrer">claude.ai</a></div>
+          <div class="card-desc">Anthropic 的 AI 助手，擅长写作、编程与长文本分析。</div>
+        </div>
+        <div class="card" id="card-7-47" data-keywords="Hugging Face https://huggingface.co/ 开源 AI 模型与数据集社区，在线体验模型。 AI">
+          <div class="card-head">
+            <span class="card-num">47</span>
+            <span class="card-title"><a href="https://huggingface.co/" target="_blank" rel="noopener noreferrer">Hugging Face</a></span>
+            <span class="card-ver">AI</span>
+          </div>
+          <div class="card-url"><a href="https://huggingface.co/" target="_blank" rel="noopener noreferrer">huggingface.co</a></div>
+          <div class="card-desc">开源 AI 模型与数据集社区，在线体验模型。</div>
+        </div>
+        <div class="card" id="card-7-48" data-keywords="DeepL 翻译 https://www.deepl.com/translator 翻译质量高、语气自然的在线翻译。 工具">
+          <div class="card-head">
+            <span class="card-num">48</span>
+            <span class="card-title"><a href="https://www.deepl.com/translator" target="_blank" rel="noopener noreferrer">DeepL 翻译</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://www.deepl.com/translator" target="_blank" rel="noopener noreferrer">www.deepl.com/translator</a></div>
+          <div class="card-desc">翻译质量高、语气自然的在线翻译。</div>
+        </div>
+        <div class="card" id="card-7-49" data-keywords="Overleaf https://www.overleaf.com/ 在线 LaTeX 协作编辑器，写论文/公式排版。 工具">
+          <div class="card-head">
+            <span class="card-num">49</span>
+            <span class="card-title"><a href="https://www.overleaf.com/" target="_blank" rel="noopener noreferrer">Overleaf</a></span>
+            <span class="card-ver">工具</span>
+          </div>
+          <div class="card-url"><a href="https://www.overleaf.com/" target="_blank" rel="noopener noreferrer">www.overleaf.com</a></div>
+          <div class="card-desc">在线 LaTeX 协作编辑器，写论文/公式排版。</div>
+        </div>
+        <div class="card" id="card-7-50" data-keywords="阮一峰的网络日志 https://www.ruanyifeng.com/blog/ 技术博客与《科技爱好者周刊》，选题优质。 中文">
+          <div class="card-head">
+            <span class="card-num">50</span>
+            <span class="card-title"><a href="https://www.ruanyifeng.com/blog/" target="_blank" rel="noopener noreferrer">阮一峰的网络日志</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://www.ruanyifeng.com/blog/" target="_blank" rel="noopener noreferrer">www.ruanyifeng.com/blog</a></div>
+          <div class="card-desc">技术博客与《科技爱好者周刊》，选题优质。</div>
+        </div>
+        <div class="card" id="card-7-51" data-keywords="MDN HTTP 状态码 https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status 遇到 4xx/5xx 时的权威中文速查。 中文">
+          <div class="card-head">
+            <span class="card-num">51</span>
+            <span class="card-title"><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status" target="_blank" rel="noopener noreferrer">MDN HTTP 状态码</a></span>
+            <span class="card-ver">中文</span>
+          </div>
+          <div class="card-url"><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Status" target="_blank" rel="noopener noreferrer">developer.mozilla.org/zh-CN/docs/Web/HTTP/Status</a></div>
+          <div class="card-desc">遇到 4xx/5xx 时的权威中文速查。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>

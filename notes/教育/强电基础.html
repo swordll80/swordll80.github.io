@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>强电基础</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>强电基础（电工/电力）</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">14 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">强电（电力/电气）基础：电路定律、交流与三相、变压器电机、电力系统与安全用电。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、电路基础</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="基本物理量 电压U(V)、电流I(A)、电阻R(Ω)、功率P(W)、电能W(kW·h)。 欧姆定律 I=U/R。 电阻 R=ρL/S，随温度变化。">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">基本物理量</span>
+          </div>
+          <div class="card-code">电压U(V)、电流I(A)、电阻R(Ω)、功率P(W)、电能W(kW·h)。
+欧姆定律 I=U/R。
+电阻 R=ρL/S，随温度变化。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="基尔霍夫定律 KCL(节点电流定律)：流入=流出，ΣI=0。 KVL(回路电压定律)：闭合回路电压代数和为0，ΣU=0。 串联分压、并联分流。">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">基尔霍夫定律</span>
+          </div>
+          <div class="card-code">KCL(节点电流定律)：流入=流出，ΣI=0。
+KVL(回路电压定律)：闭合回路电压代数和为0，ΣU=0。
+串联分压、并联分流。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="功率与电能 直流 P=UI=I²R=U²/R。 电能 W=Pt，1度=1kW·h。 负载额定值：额定电压、电流、功率。">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">功率与电能</span>
+          </div>
+          <div class="card-code">直流 P=UI=I²R=U²/R。
+电能 W=Pt，1度=1kW·h。
+负载额定值：额定电压、电流、功率。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、交流电</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-4" data-keywords="正弦交流量 e=Eₘsin(ωt+φ)，角频率 ω=2πf，我国工频 f=50Hz。 有效值=峰值/√2，220V/380V 指有效值。 周期 T=1/f=0.02s。">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">正弦交流量</span>
+          </div>
+          <div class="card-code">e=Eₘsin(ωt+φ)，角频率 ω=2πf，我国工频 f=50Hz。
+有效值=峰值/√2，220V/380V 指有效值。
+周期 T=1/f=0.02s。</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="阻抗与相位 感抗 Xₗ=ωL(电流滞后电压90°)，容抗 Xc=1/(ωC)(电流超前90°)。 阻抗 Z=√(R²+(Xₗ-Xc)²)。 RLC 串联谐振 Xₗ=Xc 时阻抗最小。">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">阻抗与相位</span>
+          </div>
+          <div class="card-code">感抗 Xₗ=ωL(电流滞后电压90°)，容抗 Xc=1/(ωC)(电流超前90°)。
+阻抗 Z=√(R²+(Xₗ-Xc)²)。
+RLC 串联谐振 Xₗ=Xc 时阻抗最小。</div>
+        </div>
+        <div class="card" id="card-2-6" data-keywords="三相功率与功率因数 有功 P=√3·U线·I线·cosφ (W)。 无功 Q=√3·UI·sinφ (var)，视在 S=√3·UI (VA)。 功率因数 cosφ=P/S，提高 cosφ(并电容补偿)可减小线损。">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">三相功率与功率因数</span>
+          </div>
+          <div class="card-code">有功 P=√3·U线·I线·cosφ (W)。
+无功 Q=√3·UI·sinφ (var)，视在 S=√3·UI (VA)。
+功率因数 cosφ=P/S，提高 cosφ(并电容补偿)可减小线损。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、三相系统</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-7" data-keywords="三相电源 三相对称电动势相位互差120°。 星形(Y)接：线电压=√3×相电压，线电流=相电流。 三角形(Δ)接：线电压=相电压，线电流=√3×相电流。 我国低压 380V(线)/220V(相)。">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">三相电源</span>
+          </div>
+          <div class="card-code">三相对称电动势相位互差120°。
+星形(Y)接：线电压=√3×相电压，线电流=相电流。
+三角形(Δ)接：线电压=相电压，线电流=√3×相电流。
+我国低压 380V(线)/220V(相)。</div>
+        </div>
+        <div class="card" id="card-3-8" data-keywords="中性线与接地 三相四线制含中性线(N)，提供220V单相。 保护接地(PE)、保护接零；TN-S/TN-C-S系统。 三相不平衡时中性线有电流。">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">中性线与接地</span>
+          </div>
+          <div class="card-code">三相四线制含中性线(N)，提供220V单相。
+保护接地(PE)、保护接零；TN-S/TN-C-S系统。
+三相不平衡时中性线有电流。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、电机与变压器</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-9" data-keywords="变压器 原理：电磁感应，U₁/U₂=N₁/N₂=I₂/I₁。 升压减流(远距离输电)、降压供电。 损耗：铜损(绕组)+铁损(铁芯)；效率高。 三相变压器接线组别 Yyn0、Dyn11 等。">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">变压器</span>
+          </div>
+          <div class="card-code">原理：电磁感应，U₁/U₂=N₁/N₂=I₂/I₁。
+升压减流(远距离输电)、降压供电。
+损耗：铜损(绕组)+铁损(铁芯)；效率高。
+三相变压器接线组别 Yyn0、Dyn11 等。</div>
+        </div>
+        <div class="card" id="card-4-10" data-keywords="异步电动机 定子旋转磁场，转子感应电流受力转动。 同步转速 n₀=60f/p (p极对数)。 转差率 s=(n₀-n)/n₀，额定约1%~5%。 起动：直接、星-三角降压、软起动、变频。">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">异步电动机</span>
+          </div>
+          <div class="card-code">定子旋转磁场，转子感应电流受力转动。
+同步转速 n₀=60f/p (p极对数)。
+转差率 s=(n₀-n)/n₀，额定约1%~5%。
+起动：直接、星-三角降压、软起动、变频。</div>
+        </div>
+        <div class="card" id="card-4-11" data-keywords="直流与同步电机 直流电机调速好、起动转矩大。 同步电机转速恒定 n=60f/p，可调节励磁改善功率因数(调相机)。 发电机将机械能转为电能(切割磁感线)。">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">直流与同步电机</span>
+          </div>
+          <div class="card-code">直流电机调速好、起动转矩大。
+同步电机转速恒定 n=60f/p，可调节励磁改善功率因数(调相机)。
+发电机将机械能转为电能(切割磁感线)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、电力系统与安全</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-12" data-keywords="电力系统组成 发电→升压→输电(高压)→降压→配电→用户。 电压等级：380V/10kV/35kV/110kV/220kV/500kV… 提高电压可减小输电电流和线损 P损=I²R。">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">电力系统组成</span>
+          </div>
+          <div class="card-code">发电→升压→输电(高压)→降压→配电→用户。
+电压等级：380V/10kV/35kV/110kV/220kV/500kV…
+提高电压可减小输电电流和线损 P损=I²R。</div>
+        </div>
+        <div class="card" id="card-5-13" data-keywords="安全用电 安全电压≤36V(潮湿≤12V)。 触电：单相、两相、跨步电压；发现触电先断电源。 漏电保护器(RCD)、保险丝、断路器；接地电阻要求。 一停二验三挂接地线四挂标示牌。">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">安全用电</span>
+          </div>
+          <div class="card-code">安全电压≤36V(潮湿≤12V)。
+触电：单相、两相、跨步电压；发现触电先断电源。
+漏电保护器(RCD)、保险丝、断路器；接地电阻要求。
+一停二验三挂接地线四挂标示牌。</div>
+        </div>
+        <div class="card" id="card-5-14" data-keywords="常用低压电器 断路器(空开)：过载/短路保护。 接触器：远距离通断主电路。 热继电器：过载保护电机。 熔断器：短路保护。 继电器-接触器控制、PLC 控制。">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">常用低压电器</span>
+          </div>
+          <div class="card-code">断路器(空开)：过载/短路保护。
+接触器：远距离通断主电路。
+热继电器：过载保护电机。
+熔断器：短路保护。
+继电器-接触器控制、PLC 控制。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>

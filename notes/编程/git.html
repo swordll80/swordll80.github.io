@@ -1,0 +1,429 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Git 速查</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>Git 版本控制手册</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">18 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">分布式版本控制常用命令速查：仓库、提交、分支、合并、远程、撤销与排错。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、仓库与配置</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="初始化 / 克隆 git init            # 在当前目录建立仓库 git clone &lt;url&gt;     # 克隆远程仓库 git clone &lt;url&gt; dir # 克隆到指定目录 git clone --depth 1 &lt;url&gt;  # 浅克隆（只取最新提交）">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">初始化 / 克隆</span>
+          </div>
+          <div class="card-code">git init            # 在当前目录建立仓库
+git clone &lt;url&gt;     # 克隆远程仓库
+git clone &lt;url&gt; dir # 克隆到指定目录
+git clone --depth 1 &lt;url&gt;  # 浅克隆（只取最新提交）</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="身份与全局配置 git config --global user.name  &quot;你的名字&quot; git config --global user.email &quot;you@mail.com&quot; git config --global core.editor &quot;code --wait&quot; git config --list   # 查看所有配置">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">身份与全局配置</span>
+          </div>
+          <div class="card-code">git config --global user.name  &quot;你的名字&quot;
+git config --global user.email &quot;you@mail.com&quot;
+git config --global core.editor &quot;code --wait&quot;
+git config --list   # 查看所有配置</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="常用别名 git config --global alias.st status git config --global alias.co checkout git config --global alias.br branch git config --global alias.lg &quot;log --oneline --graph --all&quot;">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">常用别名</span>
+          </div>
+          <div class="card-code">git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.lg &quot;log --oneline --graph --all&quot;</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、日常提交</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-4" data-keywords="查看状态与差异 git status          # 工作区/暂存区状态 git diff            # 工作区 vs 暂存区 git diff --staged   # 暂存区 vs 上次提交 git diff HEAD~1     # 与上一版本比较">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">查看状态与差异</span>
+          </div>
+          <div class="card-code">git status          # 工作区/暂存区状态
+git diff            # 工作区 vs 暂存区
+git diff --staged   # 暂存区 vs 上次提交
+git diff HEAD~1     # 与上一版本比较</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="暂存与提交 git add file.txt    # 添加指定文件 git add .           # 添加全部改动 git add -p          # 交互式逐块添加 git commit -m &quot;信息&quot; git commit -am &quot;信息&quot;  # 跟踪文件的改动直接提交">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">暂存与提交</span>
+          </div>
+          <div class="card-code">git add file.txt    # 添加指定文件
+git add .           # 添加全部改动
+git add -p          # 交互式逐块添加
+git commit -m &quot;信息&quot;
+git commit -am &quot;信息&quot;  # 跟踪文件的改动直接提交</div>
+        </div>
+        <div class="card" id="card-2-6" data-keywords="修改上一次提交 git commit --amend -m &quot;新信息&quot;   # 改提交信息/追加改动 # 注意：已 push 的提交不要 amend">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">修改上一次提交</span>
+          </div>
+          <div class="card-code">git commit --amend -m &quot;新信息&quot;   # 改提交信息/追加改动
+# 注意：已 push 的提交不要 amend</div>
+        </div>
+        <div class="card" id="card-2-7" data-keywords=".gitignore # 忽略规则，一行一个 *.log          # 所有 .log build/         # build 目录 !keep.log      # 例外：不忽略 /root_only     # 仅根目录">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">.gitignore</span>
+          </div>
+          <div class="card-code"># 忽略规则，一行一个
+*.log          # 所有 .log
+build/         # build 目录
+!keep.log      # 例外：不忽略
+/root_only     # 仅根目录</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、分支与合并</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-8" data-keywords="分支操作 git branch              # 列出本地分支 git branch -a           # 含远程分支 git switch -c dev       # 新建并切换（等价 checkout -b） git switch main         # 切换分支 git branch -d dev       # 删除已合并分支 git branch -D dev       # 强制删除">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">分支操作</span>
+          </div>
+          <div class="card-code">git branch              # 列出本地分支
+git branch -a           # 含远程分支
+git switch -c dev       # 新建并切换（等价 checkout -b）
+git switch main         # 切换分支
+git branch -d dev       # 删除已合并分支
+git branch -D dev       # 强制删除</div>
+        </div>
+        <div class="card" id="card-3-9" data-keywords="合并 merge git switch main git merge dev           # 把 dev 合并进 main git merge --no-ff dev   # 保留合并提交节点 git merge --abort       # 冲突时放弃合并">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">合并 merge</span>
+          </div>
+          <div class="card-code">git switch main
+git merge dev           # 把 dev 合并进 main
+git merge --no-ff dev   # 保留合并提交节点
+git merge --abort       # 冲突时放弃合并</div>
+        </div>
+        <div class="card" id="card-3-10" data-keywords="变基 rebase git switch dev git rebase main         # 把 dev 接到 main 最新处 # 优点：历史线性；缺点：改写提交 # 黄金法则：不要 rebase 已共享(push)的提交">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">变基 rebase</span>
+          </div>
+          <div class="card-code">git switch dev
+git rebase main         # 把 dev 接到 main 最新处
+# 优点：历史线性；缺点：改写提交
+# 黄金法则：不要 rebase 已共享(push)的提交</div>
+        </div>
+        <div class="card" id="card-3-11" data-keywords="解决冲突 # 冲突文件中出现标记： &lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD 本分支内容 ======= 对方分支内容 &gt;&gt;&gt;&gt;&gt;&gt;&gt; dev # 手动编辑后： git add 冲突文件 git commit          # 或 git rebase --continue">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">解决冲突</span>
+          </div>
+          <div class="card-code"># 冲突文件中出现标记：
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+本分支内容
+=======
+对方分支内容
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; dev
+# 手动编辑后：
+git add 冲突文件
+git commit          # 或 git rebase --continue</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、远程协作</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-12" data-keywords="远程仓库 git remote -v                 # 查看远程 git remote add origin &lt;url&gt;   # 添加远程 git remote set-url origin &lt;url&gt;  # 修改地址">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">远程仓库</span>
+          </div>
+          <div class="card-code">git remote -v                 # 查看远程
+git remote add origin &lt;url&gt;   # 添加远程
+git remote set-url origin &lt;url&gt;  # 修改地址</div>
+        </div>
+        <div class="card" id="card-4-13" data-keywords="拉取与推送 git fetch            # 只下载不合并 git pull             # fetch + merge git pull --rebase    # fetch + rebase（历史更干净） git push origin main git push -u origin dev  # 首次推送并建立跟踪 git push --tags      # 推送标签">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">拉取与推送</span>
+          </div>
+          <div class="card-code">git fetch            # 只下载不合并
+git pull             # fetch + merge
+git pull --rebase    # fetch + rebase（历史更干净）
+git push origin main
+git push -u origin dev  # 首次推送并建立跟踪
+git push --tags      # 推送标签</div>
+        </div>
+        <div class="card" id="card-4-14" data-keywords="标签 tag git tag                   # 列出标签 git tag v1.0              # 轻量标签 git tag -a v1.0 -m &quot;发布&quot;  # 附注标签 git push origin v1.0">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">标签 tag</span>
+          </div>
+          <div class="card-code">git tag                   # 列出标签
+git tag v1.0              # 轻量标签
+git tag -a v1.0 -m &quot;发布&quot;  # 附注标签
+git push origin v1.0</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、撤销与排错</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-15" data-keywords="撤销工作区改动 git restore file.txt      # 丢弃工作区改动（新语法） git restore --staged file # 取消暂存（保留改动） git checkout -- file      # 旧语法，同上丢弃">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">撤销工作区改动</span>
+          </div>
+          <div class="card-code">git restore file.txt      # 丢弃工作区改动（新语法）
+git restore --staged file # 取消暂存（保留改动）
+git checkout -- file      # 旧语法，同上丢弃</div>
+        </div>
+        <div class="card" id="card-5-16" data-keywords="回退提交 git reset --soft HEAD~1   # 撤销提交，改动留暂存区 git reset --mixed HEAD~1  # 撤销提交+取消暂存（默认） git reset --hard HEAD~1   # 彻底丢弃提交与改动（危险） git revert &lt;commit&gt;       # 生成反向提交（安全，不改写历史）">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">回退提交</span>
+          </div>
+          <div class="card-code">git reset --soft HEAD~1   # 撤销提交，改动留暂存区
+git reset --mixed HEAD~1  # 撤销提交+取消暂存（默认）
+git reset --hard HEAD~1   # 彻底丢弃提交与改动（危险）
+git revert &lt;commit&gt;       # 生成反向提交（安全，不改写历史）</div>
+        </div>
+        <div class="card" id="card-5-17" data-keywords="查历史 / 找回 git log --oneline --graph git log -p file.txt       # 某文件的改动历史 git blame file.txt        # 每行由谁最后修改 git reflog                # 引用日志，找回丢失的提交 git reset --hard &lt;reflog里的哈希&gt;">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">查历史 / 找回</span>
+          </div>
+          <div class="card-code">git log --oneline --graph
+git log -p file.txt       # 某文件的改动历史
+git blame file.txt        # 每行由谁最后修改
+git reflog                # 引用日志，找回丢失的提交
+git reset --hard &lt;reflog里的哈希&gt;</div>
+        </div>
+        <div class="card" id="card-5-18" data-keywords="暂存现场 stash git stash            # 暂存当前改动 git stash list       # 查看栈 git stash pop        # 恢复并弹出 git stash apply      # 恢复但保留 git stash drop       # 丢弃">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">暂存现场 stash</span>
+          </div>
+          <div class="card-code">git stash            # 暂存当前改动
+git stash list       # 查看栈
+git stash pop        # 恢复并弹出
+git stash apply      # 恢复但保留
+git stash drop       # 丢弃</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>

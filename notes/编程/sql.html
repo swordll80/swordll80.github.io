@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SQL 速查</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>SQL 数据库手册</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">18 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">关系型数据库 SQL 速查：查询、连接、聚合、增删改、索引与事务，语法以标准 SQL/MySQL 为主。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、查询基础</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="SELECT SELECT id, name FROM users; SELECT * FROM users; SELECT DISTINCT city FROM users;   -- 去重 SELECT name AS 姓名 FROM users;    -- 别名">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">SELECT</span>
+          </div>
+          <div class="card-code">SELECT id, name FROM users;
+SELECT * FROM users;
+SELECT DISTINCT city FROM users;   -- 去重
+SELECT name AS 姓名 FROM users;    -- 别名</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="WHERE 条件 SELECT * FROM users WHERE age &gt;= 18   AND city = &#x27;BJ&#x27;   AND name LIKE &#x27;张%&#x27;      -- 张开头   AND age BETWEEN 20 AND 30   AND id IN (1,2,3)   AND phone IS NOT NULL;">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">WHERE 条件</span>
+          </div>
+          <div class="card-code">SELECT * FROM users
+WHERE age &gt;= 18
+  AND city = &#x27;BJ&#x27;
+  AND name LIKE &#x27;张%&#x27;      -- 张开头
+  AND age BETWEEN 20 AND 30
+  AND id IN (1,2,3)
+  AND phone IS NOT NULL;</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="排序与分页 SELECT * FROM users ORDER BY age DESC, name ASC LIMIT 10 OFFSET 20;   -- 跳过20取10 -- SQL Server: OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">排序与分页</span>
+          </div>
+          <div class="card-code">SELECT * FROM users
+ORDER BY age DESC, name ASC
+LIMIT 10 OFFSET 20;   -- 跳过20取10
+-- SQL Server: OFFSET 20 ROWS FETCH NEXT 10 ROWS ONLY</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、聚合与分组</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-4" data-keywords="聚合函数 SELECT COUNT(*), SUM(salary),        AVG(salary), MAX(age), MIN(age) FROM employees;">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">聚合函数</span>
+          </div>
+          <div class="card-code">SELECT COUNT(*), SUM(salary),
+       AVG(salary), MAX(age), MIN(age)
+FROM employees;</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="GROUP BY / HAVING SELECT dept, COUNT(*) AS n, AVG(salary) AS avg_s FROM employees GROUP BY dept HAVING COUNT(*) &gt; 5      -- 对分组结果过滤 ORDER BY n DESC;">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">GROUP BY / HAVING</span>
+          </div>
+          <div class="card-code">SELECT dept, COUNT(*) AS n, AVG(salary) AS avg_s
+FROM employees
+GROUP BY dept
+HAVING COUNT(*) &gt; 5      -- 对分组结果过滤
+ORDER BY n DESC;</div>
+        </div>
+        <div class="card" id="card-2-6" data-keywords="执行顺序 -- 书写：SELECT ... FROM ... WHERE ... GROUP BY ... HAVING ... ORDER BY ... LIMIT -- 执行：FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">执行顺序</span>
+          </div>
+          <div class="card-code">-- 书写：SELECT ... FROM ... WHERE ... GROUP BY ... HAVING ... ORDER BY ... LIMIT
+-- 执行：FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、多表连接</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-7" data-keywords="JOIN 类型 -- INNER JOIN：两表都匹配 SELECT u.name, o.amount FROM users u INNER JOIN orders o ON u.id = o.user_id;  -- LEFT JOIN：保留左表全部，右表无则 NULL -- RIGHT JOIN：保留右表全部 -- FULL JOIN：两表全部（MySQL 不支持，用 UNION 模拟）">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">JOIN 类型</span>
+          </div>
+          <div class="card-code">-- INNER JOIN：两表都匹配
+SELECT u.name, o.amount
+FROM users u
+INNER JOIN orders o ON u.id = o.user_id;
+
+-- LEFT JOIN：保留左表全部，右表无则 NULL
+-- RIGHT JOIN：保留右表全部
+-- FULL JOIN：两表全部（MySQL 不支持，用 UNION 模拟）</div>
+        </div>
+        <div class="card" id="card-3-8" data-keywords="子查询 SELECT * FROM users WHERE id IN (SELECT user_id FROM orders WHERE amount&gt;100);  SELECT name,   (SELECT COUNT(*) FROM orders o WHERE o.user_id=u.id) AS cnt FROM users u;">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">子查询</span>
+          </div>
+          <div class="card-code">SELECT * FROM users
+WHERE id IN (SELECT user_id FROM orders WHERE amount&gt;100);
+
+SELECT name,
+  (SELECT COUNT(*) FROM orders o WHERE o.user_id=u.id) AS cnt
+FROM users u;</div>
+        </div>
+        <div class="card" id="card-3-9" data-keywords="UNION SELECT name FROM a UNION      -- 去重合并 SELECT name FROM b; -- UNION ALL 不去重，更快">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">UNION</span>
+          </div>
+          <div class="card-code">SELECT name FROM a
+UNION      -- 去重合并
+SELECT name FROM b;
+-- UNION ALL 不去重，更快</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、增删改</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-10" data-keywords="INSERT INSERT INTO users (name, age) VALUES (&#x27;张三&#x27;, 20); INSERT INTO users (name, age) VALUES   (&#x27;李四&#x27;, 22), (&#x27;王五&#x27;, 25);   -- 批量">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">INSERT</span>
+          </div>
+          <div class="card-code">INSERT INTO users (name, age) VALUES (&#x27;张三&#x27;, 20);
+INSERT INTO users (name, age) VALUES
+  (&#x27;李四&#x27;, 22), (&#x27;王五&#x27;, 25);   -- 批量</div>
+        </div>
+        <div class="card" id="card-4-11" data-keywords="UPDATE UPDATE users SET age = age + 1 WHERE city = &#x27;BJ&#x27;; -- 注意：不加 WHERE 会更新全表！">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">UPDATE</span>
+          </div>
+          <div class="card-code">UPDATE users SET age = age + 1
+WHERE city = &#x27;BJ&#x27;;
+-- 注意：不加 WHERE 会更新全表！</div>
+        </div>
+        <div class="card" id="card-4-12" data-keywords="DELETE / TRUNCATE DELETE FROM users WHERE id = 5; TRUNCATE TABLE logs;   -- 清空全表，比 DELETE 快、不可回滚">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">DELETE / TRUNCATE</span>
+          </div>
+          <div class="card-code">DELETE FROM users WHERE id = 5;
+TRUNCATE TABLE logs;   -- 清空全表，比 DELETE 快、不可回滚</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、表结构与索引</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-13" data-keywords="建表 DDL CREATE TABLE users (   id INT PRIMARY KEY AUTO_INCREMENT,   name VARCHAR(50) NOT NULL,   age INT DEFAULT 0,   email VARCHAR(100) UNIQUE,   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP );">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">建表 DDL</span>
+          </div>
+          <div class="card-code">CREATE TABLE users (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  name VARCHAR(50) NOT NULL,
+  age INT DEFAULT 0,
+  email VARCHAR(100) UNIQUE,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);</div>
+        </div>
+        <div class="card" id="card-5-14" data-keywords="修改表 ALTER TABLE users ADD COLUMN phone VARCHAR(20); ALTER TABLE users DROP COLUMN phone; ALTER TABLE users MODIFY name VARCHAR(80); DROP TABLE users;">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">修改表</span>
+          </div>
+          <div class="card-code">ALTER TABLE users ADD COLUMN phone VARCHAR(20);
+ALTER TABLE users DROP COLUMN phone;
+ALTER TABLE users MODIFY name VARCHAR(80);
+DROP TABLE users;</div>
+        </div>
+        <div class="card" id="card-5-15" data-keywords="索引 CREATE INDEX idx_name ON users(name); CREATE UNIQUE INDEX idx_email ON users(email); -- 索引加速查询，但拖慢写入、占空间 -- WHERE/JOIN/ORDER BY 的列适合建索引 EXPLAIN SELECT * FROM users WHERE name=&#x27;张三&#x27;;  -- 看执行计划">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">索引</span>
+          </div>
+          <div class="card-code">CREATE INDEX idx_name ON users(name);
+CREATE UNIQUE INDEX idx_email ON users(email);
+-- 索引加速查询，但拖慢写入、占空间
+-- WHERE/JOIN/ORDER BY 的列适合建索引
+EXPLAIN SELECT * FROM users WHERE name=&#x27;张三&#x27;;  -- 看执行计划</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、事务与约束</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-16" data-keywords="事务 ACID BEGIN;   -- 或 START TRANSACTION UPDATE acct SET bal=bal-100 WHERE id=1; UPDATE acct SET bal=bal+100 WHERE id=2; COMMIT;  -- 提交；出错则 ROLLBACK -- ACID：原子性/一致性/隔离性/持久性">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">事务 ACID</span>
+          </div>
+          <div class="card-code">BEGIN;   -- 或 START TRANSACTION
+UPDATE acct SET bal=bal-100 WHERE id=1;
+UPDATE acct SET bal=bal+100 WHERE id=2;
+COMMIT;  -- 提交；出错则 ROLLBACK
+-- ACID：原子性/一致性/隔离性/持久性</div>
+        </div>
+        <div class="card" id="card-6-17" data-keywords="隔离级别 -- 由低到高： -- 读未提交 → 脏读 -- 读已提交 → 不可重复读 -- 可重复读 → 幻读（MySQL 默认） -- 串行化   → 最严格、最慢">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">隔离级别</span>
+          </div>
+          <div class="card-code">-- 由低到高：
+-- 读未提交 → 脏读
+-- 读已提交 → 不可重复读
+-- 可重复读 → 幻读（MySQL 默认）
+-- 串行化   → 最严格、最慢</div>
+        </div>
+        <div class="card" id="card-6-18" data-keywords="常用约束 PRIMARY KEY  主键，唯一且非空 FOREIGN KEY  外键，引用其他表 UNIQUE       唯一 NOT NULL     非空 CHECK(age&gt;0) 检查 DEFAULT      默认值">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">常用约束</span>
+          </div>
+          <div class="card-code">PRIMARY KEY  主键，唯一且非空
+FOREIGN KEY  外键，引用其他表
+UNIQUE       唯一
+NOT NULL     非空
+CHECK(age&gt;0) 检查
+DEFAULT      默认值</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>

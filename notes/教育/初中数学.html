@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>初中数学</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>初中数学知识手册</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">19 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">初中数学主干：有理数与实数、代数式与方程、函数、几何证明、圆与统计概率。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、数与式</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="有理数与绝对值 有理数：整数和分数(可写成分数的数)。 数轴：原点、正方向、单位长度。 相反数：a 与 -a；绝对值 |a| 表示到原点距离，|a|≥0。 乘方：aⁿ 表示 n 个 a 相乘；负数偶次方为正，奇次方为负。">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">有理数与绝对值</span>
+          </div>
+          <div class="card-code">有理数：整数和分数(可写成分数的数)。
+数轴：原点、正方向、单位长度。
+相反数：a 与 -a；绝对值 |a| 表示到原点距离，|a|≥0。
+乘方：aⁿ 表示 n 个 a 相乘；负数偶次方为正，奇次方为负。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="整式运算 同类项：字母及指数都相同，可合并。 幂运算：aᵐ·aⁿ=aᵐ⁺ⁿ，(aᵐ)ⁿ=aᵐⁿ，(ab)ⁿ=aⁿbⁿ，aᵐ÷aⁿ=aᵐ⁻ⁿ。 a⁰=1(a≠0)，a⁻ⁿ=1/aⁿ。">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">整式运算</span>
+          </div>
+          <div class="card-code">同类项：字母及指数都相同，可合并。
+幂运算：aᵐ·aⁿ=aᵐ⁺ⁿ，(aᵐ)ⁿ=aᵐⁿ，(ab)ⁿ=aⁿbⁿ，aᵐ÷aⁿ=aᵐ⁻ⁿ。
+a⁰=1(a≠0)，a⁻ⁿ=1/aⁿ。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="乘法公式 平方差：(a+b)(a-b) = a² - b² 完全平方：(a±b)² = a² ± 2ab + b² 立方和差：a³±b³ = (a±b)(a²∓ab+b²)">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">乘法公式</span>
+          </div>
+          <div class="card-code">平方差：(a+b)(a-b) = a² - b²
+完全平方：(a±b)² = a² ± 2ab + b²
+立方和差：a³±b³ = (a±b)(a²∓ab+b²)</div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="因式分解 提公因式法：ma + mb = m(a+b) 公式法：用平方差、完全平方逆用。 十字相乘：x²+(p+q)x+pq = (x+p)(x+q)。">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">因式分解</span>
+          </div>
+          <div class="card-code">提公因式法：ma + mb = m(a+b)
+公式法：用平方差、完全平方逆用。
+十字相乘：x²+(p+q)x+pq = (x+p)(x+q)。</div>
+        </div>
+        <div class="card" id="card-1-5" data-keywords="二次根式 √a (a≥0)，√(ab)=√a·√b，√(a/b)=√a/√b。 最简二次根式：被开方数不含分母、不含能开得尽的因数。 分母有理化：1/√2 = √2/2。">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">二次根式</span>
+          </div>
+          <div class="card-code">√a (a≥0)，√(ab)=√a·√b，√(a/b)=√a/√b。
+最简二次根式：被开方数不含分母、不含能开得尽的因数。
+分母有理化：1/√2 = √2/2。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、方程与不等式</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-6" data-keywords="一元一次方程 移项变号，合并同类项，系数化为1。 解 3x - 5 = 7 → 3x = 12 → x = 4。">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">一元一次方程</span>
+          </div>
+          <div class="card-code">移项变号，合并同类项，系数化为1。
+解 3x - 5 = 7 → 3x = 12 → x = 4。</div>
+        </div>
+        <div class="card" id="card-2-7" data-keywords="二元一次方程组 代入消元法、加减消元法。 {x+y=5; x-y=1} → 相加 2x=6 → x=3, y=2。">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">二元一次方程组</span>
+          </div>
+          <div class="card-code">代入消元法、加减消元法。
+{x+y=5; x-y=1} → 相加 2x=6 → x=3, y=2。</div>
+        </div>
+        <div class="card" id="card-2-8" data-keywords="一元二次方程 一般式 ax²+bx+c=0 (a≠0)。 求根公式：x = [-b ± √(b²-4ac)] / (2a)。 判别式 Δ=b²-4ac：Δ&gt;0两解，Δ=0一解，Δ&lt;0无实解。 韦达定理：x₁+x₂=-b/a，x₁x₂=c/a。">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">一元二次方程</span>
+          </div>
+          <div class="card-code">一般式 ax²+bx+c=0 (a≠0)。
+求根公式：x = [-b ± √(b²-4ac)] / (2a)。
+判别式 Δ=b²-4ac：Δ&gt;0两解，Δ=0一解，Δ&lt;0无实解。
+韦达定理：x₁+x₂=-b/a，x₁x₂=c/a。</div>
+        </div>
+        <div class="card" id="card-2-9" data-keywords="不等式 两边同乘/除以负数要变号！ 解集在数轴上表示； 不等式组取各解集的公共部分(同大取大、同小取小、大小小大取中间、大大小小无解)。">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">不等式</span>
+          </div>
+          <div class="card-code">两边同乘/除以负数要变号！
+解集在数轴上表示；
+不等式组取各解集的公共部分(同大取大、同小取小、大小小大取中间、大大小小无解)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、函数</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-10" data-keywords="一次函数 y = kx + b (k≠0)，图象是直线。 k&gt;0 递增，k&lt;0 递减；b 是与 y 轴交点。 k 为斜率(倾斜程度)，正比例函数是 b=0 的特例。">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">一次函数</span>
+          </div>
+          <div class="card-code">y = kx + b (k≠0)，图象是直线。
+k&gt;0 递增，k&lt;0 递减；b 是与 y 轴交点。
+k 为斜率(倾斜程度)，正比例函数是 b=0 的特例。</div>
+        </div>
+        <div class="card" id="card-3-11" data-keywords="反比例函数 y = k/x (k≠0)，图象是双曲线。 k&gt;0 在一、三象限，k&lt;0 在二、四象限。 矩形面积 |xy|=|k| 恒定。">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">反比例函数</span>
+          </div>
+          <div class="card-code">y = k/x (k≠0)，图象是双曲线。
+k&gt;0 在一、三象限，k&lt;0 在二、四象限。
+矩形面积 |xy|=|k| 恒定。</div>
+        </div>
+        <div class="card" id="card-3-12" data-keywords="二次函数 y = ax²+bx+c，图象是抛物线。 对称轴 x = -b/(2a)；顶点 (-b/2a, (4ac-b²)/4a)。 a&gt;0 开口向上有最小值，a&lt;0 开口向下有最大值。 顶点式 y=a(x-h)²+k。">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">二次函数</span>
+          </div>
+          <div class="card-code">y = ax²+bx+c，图象是抛物线。
+对称轴 x = -b/(2a)；顶点 (-b/2a, (4ac-b²)/4a)。
+a&gt;0 开口向上有最小值，a&lt;0 开口向下有最大值。
+顶点式 y=a(x-h)²+k。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、几何</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-13" data-keywords="三角形 内角和180°；外角等于不相邻两内角之和。 三边关系：任意两边之和&gt;第三边。 全等判定：SSS、SAS、ASA、AAS、HL(直角)。 相似判定：AA、SAS、SSS(对应成比例)，相似比² = 面积比。">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">三角形</span>
+          </div>
+          <div class="card-code">内角和180°；外角等于不相邻两内角之和。
+三边关系：任意两边之和&gt;第三边。
+全等判定：SSS、SAS、ASA、AAS、HL(直角)。
+相似判定：AA、SAS、SSS(对应成比例)，相似比² = 面积比。</div>
+        </div>
+        <div class="card" id="card-4-14" data-keywords="勾股定理 直角三角形：a² + b² = c²(c为斜边)。 逆定理：若 a²+b²=c² 则为直角三角形。 常见勾股数：3,4,5；5,12,13；8,15,17。">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">勾股定理</span>
+          </div>
+          <div class="card-code">直角三角形：a² + b² = c²(c为斜边)。
+逆定理：若 a²+b²=c² 则为直角三角形。
+常见勾股数：3,4,5；5,12,13；8,15,17。</div>
+        </div>
+        <div class="card" id="card-4-15" data-keywords="四边形 平行四边形：对边平行且相等，对角线互相平分。 矩形：有一个直角的平行四边形，对角线相等。 菱形：四边相等，对角线互相垂直平分。 正方形：既是矩形又是菱形。">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">四边形</span>
+          </div>
+          <div class="card-code">平行四边形：对边平行且相等，对角线互相平分。
+矩形：有一个直角的平行四边形，对角线相等。
+菱形：四边相等，对角线互相垂直平分。
+正方形：既是矩形又是菱形。</div>
+        </div>
+        <div class="card" id="card-4-16" data-keywords="圆 同弧所对圆周角 = 圆心角一半；直径所对圆周角=90°。 垂径定理：垂直于弦的直径平分弦及弧。 切线垂直于过切点的半径； 圆周长 2πr，面积 πr²，弧长 l=nπr/180，扇形面积 = 1/2·l·r。">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">圆</span>
+          </div>
+          <div class="card-code">同弧所对圆周角 = 圆心角一半；直径所对圆周角=90°。
+垂径定理：垂直于弦的直径平分弦及弧。
+切线垂直于过切点的半径；
+圆周长 2πr，面积 πr²，弧长 l=nπr/180，扇形面积 = 1/2·l·r。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、统计与概率</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-17" data-keywords="统计量 平均数、中位数(排序取中间)、众数(出现最多)。 方差衡量数据波动大小，方差越小越稳定。 极差 = 最大值 - 最小值。">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">统计量</span>
+          </div>
+          <div class="card-code">平均数、中位数(排序取中间)、众数(出现最多)。
+方差衡量数据波动大小，方差越小越稳定。
+极差 = 最大值 - 最小值。</div>
+        </div>
+        <div class="card" id="card-5-18" data-keywords="概率 P(事件) = 有利结果数 ÷ 所有等可能结果数，0≤P≤1。 必然事件 P=1，不可能事件 P=0。 用列表法或树状图求两步事件概率。">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">概率</span>
+          </div>
+          <div class="card-code">P(事件) = 有利结果数 ÷ 所有等可能结果数，0≤P≤1。
+必然事件 P=1，不可能事件 P=0。
+用列表法或树状图求两步事件概率。</div>
+        </div>
+        <div class="card" id="card-5-19" data-keywords="锐角三角函数 sinA = 对边/斜边，cosA = 邻边/斜边，tanA = 对边/邻边。 特殊值：sin30°=1/2，sin45°=√2/2，sin60°=√3/2。 tan45°=1，用于解直角三角形与测高。">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">锐角三角函数</span>
+          </div>
+          <div class="card-code">sinA = 对边/斜边，cosA = 邻边/斜边，tanA = 对边/邻边。
+特殊值：sin30°=1/2，sin45°=√2/2，sin60°=√3/2。
+tan45°=1，用于解直角三角形与测高。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>
