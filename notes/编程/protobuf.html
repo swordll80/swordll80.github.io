@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Protobuf 速查</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>Protocol Buffers 手册</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">16 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">Protocol Buffers (Protobuf) 是 Google 的语言/平台无关、可扩展的结构化数据序列化机制：用 .proto 定义结构，protoc 生成多语言代码，二进制紧凑高效，常配 gRPC。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、概念与流程</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="是什么 用 .proto 文件定义消息结构 → protoc 编译生成目标语言类 → 代码里序列化/反序列化。 特点：二进制紧凑、快、跨语言、向后/向前兼容。 对比 JSON/XML：更小更快但不可读，需 schema。">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">是什么</span>
+          </div>
+          <div class="card-code">用 .proto 文件定义消息结构 → protoc 编译生成目标语言类 → 代码里序列化/反序列化。
+特点：二进制紧凑、快、跨语言、向后/向前兼容。
+对比 JSON/XML：更小更快但不可读，需 schema。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="proto2 与 proto3 文件首行声明 syntax = &quot;proto3&quot;;(推荐) 或 &quot;proto2&quot;;。 proto3 简化：默认无 required、标量有默认值、去掉部分特性； proto3 也支持 optional(区分“未设置”)。">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">proto2 与 proto3</span>
+          </div>
+          <div class="card-code">文件首行声明 syntax = &quot;proto3&quot;;(推荐) 或 &quot;proto2&quot;;。
+proto3 简化：默认无 required、标量有默认值、去掉部分特性；
+proto3 也支持 optional(区分“未设置”)。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="编译命令 protoc --proto_path=. --cpp_out=. --python_out=. foo.proto 生成 C++/Python/Java/Go 等；gRPC 用 --grpc_out + 插件。">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">编译命令</span>
+          </div>
+          <div class="card-code">protoc --proto_path=. --cpp_out=. --python_out=. foo.proto
+生成 C++/Python/Java/Go 等；gRPC 用 --grpc_out + 插件。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、消息与字段</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-4" data-keywords="基本 message syntax = &quot;proto3&quot;; package demo; message Person {   string name = 1;   int32  age  = 2;   repeated string roles = 3; } 每个字段有唯一字段号(field number)，编码时用它而非名字。">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">基本 message</span>
+          </div>
+          <div class="card-code">syntax = &quot;proto3&quot;;
+package demo;
+message Person {
+  string name = 1;
+  int32  age  = 2;
+  repeated string roles = 3;
+}
+每个字段有唯一字段号(field number)，编码时用它而非名字。</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="字段规则 singular：0或1个(proto3 默认)。 optional：显式可选，可判断是否设置。 repeated：0或多个(数组/列表)。 字段号 1–15 占 1 字节(高频字段优先用)，16–2047 占 2 字节。">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">字段规则</span>
+          </div>
+          <div class="card-code">singular：0或1个(proto3 默认)。
+optional：显式可选，可判断是否设置。
+repeated：0或多个(数组/列表)。
+字段号 1–15 占 1 字节(高频字段优先用)，16–2047 占 2 字节。</div>
+        </div>
+        <div class="card" id="card-2-6" data-keywords="字段号规则 字段号一旦发布不可更改/复用；删除字段用 reserved 保留号与名： reserved 2, 15, 9 to 11; reserved &quot;foo&quot;, &quot;bar&quot;; 以保证向后兼容、防止误用。">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">字段号规则</span>
+          </div>
+          <div class="card-code">字段号一旦发布不可更改/复用；删除字段用 reserved 保留号与名：
+reserved 2, 15, 9 to 11;
+reserved &quot;foo&quot;, &quot;bar&quot;;
+以保证向后兼容、防止误用。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、数据类型</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-7" data-keywords="标量类型 整数：int32 int64 uint32 uint64 zigzag(负数高效)：sint32 sint64 定长：fixed32 fixed64 sfixed32 sfixed64 浮点：float double  布尔：bool 字符串：string(UTF-8)  字节：bytes 默认值：数值0、bool false、string &quot;&quot;、枚举首项。">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">标量类型</span>
+          </div>
+          <div class="card-code">整数：int32 int64 uint32 uint64
+zigzag(负数高效)：sint32 sint64
+定长：fixed32 fixed64 sfixed32 sfixed64
+浮点：float double  布尔：bool
+字符串：string(UTF-8)  字节：bytes
+默认值：数值0、bool false、string &quot;&quot;、枚举首项。</div>
+        </div>
+        <div class="card" id="card-3-8" data-keywords="枚举 enum enum Status {   UNKNOWN = 0;   // proto3 首项必须为0   ACTIVE  = 1;   CLOSED  = 2; } 未知枚举值在解码时保留(前向兼容)。">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">枚举 enum</span>
+          </div>
+          <div class="card-code">enum Status {
+  UNKNOWN = 0;   // proto3 首项必须为0
+  ACTIVE  = 1;
+  CLOSED  = 2;
+}
+未知枚举值在解码时保留(前向兼容)。</div>
+        </div>
+        <div class="card" id="card-3-9" data-keywords="嵌套 / oneof / map message 可嵌套定义；引用其它 message 作字段类型。 oneof：多字段互斥，只存其一(节省空间)。 map&lt;string, int32&gt; scores = 4;  键值对。">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">嵌套 / oneof / map</span>
+          </div>
+          <div class="card-code">message 可嵌套定义；引用其它 message 作字段类型。
+oneof：多字段互斥，只存其一(节省空间)。
+map&lt;string, int32&gt; scores = 4;  键值对。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、Wire Format 编码</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-10" data-keywords="字段键 Tag 每个字段前缀一个 key = (field_number &lt;&lt; 3) | wire_type。 wire_type：0=Varint, 1=64-bit, 2=Length-delimited, 5=32-bit(3/4 已弃用)。 key 本身以 varint 编码。">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">字段键 Tag</span>
+          </div>
+          <div class="card-code">每个字段前缀一个 key = (field_number &lt;&lt; 3) | wire_type。
+wire_type：0=Varint, 1=64-bit, 2=Length-delimited, 5=32-bit(3/4 已弃用)。
+key 本身以 varint 编码。</div>
+        </div>
+        <div class="card" id="card-4-11" data-keywords="Varint 变长整数：每字节低7位存数据，最高位(MSB)=1 表示后续还有字节，小端顺序。 小数值占 1 字节，非常省空间。 如 300 = 0xAC 0x02。">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">Varint</span>
+          </div>
+          <div class="card-code">变长整数：每字节低7位存数据，最高位(MSB)=1 表示后续还有字节，小端顺序。
+小数值占 1 字节，非常省空间。
+如 300 = 0xAC 0x02。</div>
+        </div>
+        <div class="card" id="card-4-12" data-keywords="ZigZag 有符号数直接 varint 会让负数很大(占10字节)。 sint32/sint64 用 zigzag 映射：0→0, -1→1, 1→2, -2→3 … 公式：(n &lt;&lt; 1) ^ (n &gt;&gt; 31)。">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">ZigZag</span>
+          </div>
+          <div class="card-code">有符号数直接 varint 会让负数很大(占10字节)。
+sint32/sint64 用 zigzag 映射：0→0, -1→1, 1→2, -2→3 …
+公式：(n &lt;&lt; 1) ^ (n &gt;&gt; 31)。</div>
+        </div>
+        <div class="card" id="card-4-13" data-keywords="长度分隔与解码 wire_type 2 (string/bytes/嵌套 message/packed repeated)：key 后跟 varint 长度再跟内容。 未知字段按 wire_type 跳过 → 前后兼容。 调试：protoc --decode_raw &lt; data.bin 或 protoscope。">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">长度分隔与解码</span>
+          </div>
+          <div class="card-code">wire_type 2 (string/bytes/嵌套 message/packed repeated)：key 后跟 varint 长度再跟内容。
+未知字段按 wire_type 跳过 → 前后兼容。
+调试：protoc --decode_raw &lt; data.bin 或 protoscope。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、服务与最佳实践</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-14" data-keywords="gRPC 服务定义 service Greeter {   rpc SayHello (HelloRequest) returns (HelloReply);   rpc Stream (Req) returns (stream Reply);   // 流式 } 结合 HTTP/2，支持一元/服务端流/客户端流/双向流。">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">gRPC 服务定义</span>
+          </div>
+          <div class="card-code">service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply);
+  rpc Stream (Req) returns (stream Reply);   // 流式
+}
+结合 HTTP/2，支持一元/服务端流/客户端流/双向流。</div>
+        </div>
+        <div class="card" id="card-5-15" data-keywords="兼容性最佳实践 只增不改：新增字段用新字段号；不改已用字段号/类型语义。 删除字段→reserved；用 optional/默认值平滑演进。 枚举保留 0 值为默认/未知。">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">兼容性最佳实践</span>
+          </div>
+          <div class="card-code">只增不改：新增字段用新字段号；不改已用字段号/类型语义。
+删除字段→reserved；用 optional/默认值平滑演进。
+枚举保留 0 值为默认/未知。</div>
+        </div>
+        <div class="card" id="card-5-16" data-keywords="与其它格式对比 Protobuf：需 schema、二进制、最快最小，适合内部 RPC/存储。 JSON：可读、免 schema、体积大。 FlatBuffers/Cap&#x27;n Proto：零拷贝，读极快。 Avro/Thrift：类似定位，各有生态。">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">与其它格式对比</span>
+          </div>
+          <div class="card-code">Protobuf：需 schema、二进制、最快最小，适合内部 RPC/存储。
+JSON：可读、免 schema、体积大。
+FlatBuffers/Cap&#x27;n Proto：零拷贝，读极快。
+Avro/Thrift：类似定位，各有生态。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>

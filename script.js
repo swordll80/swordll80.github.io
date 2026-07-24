@@ -5,8 +5,15 @@
   var MOBILE_QUERY = window.matchMedia('(max-width: 768px)');
   var navData = [
     { title: '工具', target: 'tools-overview' },
-    { title: '手册速查', href: 'read.html' }
+    { title: '常用好网站导航', href: 'notes/网站导航/网站速查.html' },
+    { title: '手册速查', href: 'read.html' },
+    { title: '大型系统软件设计', href: 'notes/系统软件设计/大型系统软件设计方法.html' }
   ];
+
+  /* 给外链追加版本号，绕过缓存以获取最新页面。 */
+  function withVersion(href) {
+    return href + (href.indexOf('?') >= 0 ? '&' : '?') + 'v=' + Date.now();
+  }
 
   var navTree = document.getElementById('navTree');
   var sidebarToggle = document.getElementById('sidebarToggle');
@@ -37,7 +44,10 @@
         titleBtn.setAttribute('data-nav-link', '');
         titleBtn.setAttribute('data-target', group.target);
       } else if (group.href) {
-        titleBtn.href = group.href;
+        titleBtn.href = withVersion(group.href);
+        (function (btn, base) {
+          btn.addEventListener('click', function () { btn.href = withVersion(base); });
+        })(titleBtn, group.href);
       } else {
         titleBtn.type = 'button';
       }

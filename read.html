@@ -25,6 +25,9 @@
       box-shadow:0 1px 6px rgba(0,0,0,.04); min-height:48px;
     }
     .topbar .brand { font-size:18px; font-weight:700; color:var(--accent); text-decoration:none; white-space:nowrap; }
+    .topbar .home-btn { display:inline-flex; align-items:center; gap:4px; font-size:13px; text-decoration:none; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:5px 10px; background:var(--card); white-space:nowrap; }
+    .topbar .home-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .topbar .spacer { flex:1; }
     .topbar .desc { color:var(--muted); font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
     .topbar .menu-btn {
       display:none; width:32px; height:32px; border:1px solid var(--line);
@@ -95,6 +98,8 @@
     <button class="menu-btn" id="menuBtn" aria-label="目录" title="目录">&#9776;</button>
     <a class="brand" href="read.html">手册速查</a>
     <span class="desc" id="currentTitle">选择一个文件开始</span>
+    <span class="spacer"></span>
+    <a class="home-btn" id="homeBtn" href="index.html" title="返回主页">&#8962; 返回主页</a>
   </div>
   <div class="main">
     <div class="tree-overlay" id="treeOverlay"></div>
@@ -104,6 +109,15 @@
     </section>
   </div>
 
+  <script>
+  /* 给主页/本页链接追加版本号，点击时刷新，确保获取最新页面。 */
+  (function() {
+    function withV(h){ return h + (h.indexOf('?') >= 0 ? '&' : '?') + 'v=' + Date.now(); }
+    function stamp(el){ if(!el) return; var base = el.getAttribute('href'); el.addEventListener('click', function(){ el.setAttribute('href', withV(base)); }); }
+    stamp(document.getElementById('homeBtn'));
+    stamp(document.querySelector('.topbar .brand'));
+  })();
+  </script>
   <script>
   (function() {
     var treePanel = document.getElementById('treePanel');

@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PEParse 在线 PE 文件解析工具，解析 EXE/DLL/LIB 的 DOS/PE/可选头/节区/导入导出，细化到 bit。">
+  <title>PEParse · PE 文件在线解析</title>
+  <style>
+    :root{
+      --bg:#f5f7fb;--panel:#fff;--panel2:#f9fafb;--line:#d8dee9;--text:#172033;--muted:#667085;
+      --accent:#2f6fed;--accent2:#ecf3ff;--good:#067647;--warn:#b54708;--bad:#b42318;--shadow:0 16px 40px rgba(16,24,40,.08);
+      --mono:Consolas,"SFMono-Regular","Liberation Mono",Menlo,monospace;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:linear-gradient(135deg,#f7f9ff 0,#f3fbf8 100%);color:var(--text);font:14px/1.55 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",Arial,sans-serif;overflow-x:hidden}
+    a{color:var(--accent);text-decoration:none}.page{min-height:100vh;display:flex;flex-direction:column}
+    header{position:sticky;top:0;z-index:20;min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 18px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.92);backdrop-filter:blur(12px)}
+    .brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-mark{width:42px;height:42px;border-radius:14px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:800;font-family:var(--mono)}
+    h1{font-size:18px;margin:0;line-height:1.2}.subtitle{margin:3px 0 0;color:var(--muted);font-size:12px}.top-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    button,.button,input[type=file],select{font:inherit}button,.button{border:1px solid var(--line);background:#fff;border-radius:11px;padding:8px 12px;min-height:36px;cursor:pointer;color:var(--text);display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+    button:hover,.button:hover{border-color:rgba(47,111,237,.35);background:var(--accent2)}button.primary,.button.primary{background:var(--accent);border-color:var(--accent);color:#fff}.lang button.active{background:var(--accent);border-color:var(--accent);color:#fff}
+    main{flex:1;padding:16px;display:grid;grid-template-columns:minmax(340px,40%) minmax(0,1fr);gap:14px;min-height:0}.card{background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}.card-head{padding:12px 14px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(249,250,251,.86)}.card-title{font-weight:750}.card-body{padding:14px}
+    .toolbar{display:grid;grid-template-columns:1fr;gap:12px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.filebox{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.filebox input{max-width:100%;border:1px dashed var(--line);border-radius:12px;background:#fff;padding:8px}.examples{display:flex;gap:8px;flex-wrap:wrap}.example-btn{font-family:var(--mono);font-size:12px;padding:6px 9px;min-height:30px}.hint{font-size:12px;color:var(--muted);margin:0}.summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--panel2)}.metric b{display:block;font-size:16px;line-height:1.2;word-break:break-all}.metric span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+    .left{display:flex;flex-direction:column;gap:14px;min-height:0}.right{display:grid;grid-template-rows:minmax(300px,1fr) minmax(220px,45%);gap:14px;min-height:0}.tree-card,.hex-card,.sec-card{min-height:0;display:flex;flex-direction:column}.scroll{overflow:auto;min-height:0}
+    .proto{display:inline-flex;border:1px solid #c7d7fe;background:#eef4ff;color:#1849a9;border-radius:999px;padding:1px 7px;font-weight:700;font-size:11px}
+    .filter{display:flex;gap:8px;align-items:center}.filter input{width:200px;max-width:100%;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:#fff}
+    .tree{font-family:var(--mono);font-size:12px}
+    .field-row{display:grid;grid-template-columns:90px 62px minmax(150px,230px) minmax(120px,1fr) minmax(150px,1fr);gap:8px;align-items:start;padding:6px 10px;border-bottom:1px solid #edf0f5;cursor:pointer}
+    .field-row:hover{background:#f5f9ff}.field-row.header{position:sticky;top:0;z-index:2;background:#f8fafc;color:#475467;font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",Arial,sans-serif;font-size:12px;font-weight:700}
+    .field-row.group{background:#eef3ff;font-weight:800;color:#1d2939}.field-row.sub{background:#fbfcff;font-weight:700;color:#1d2939}.field-row .muted{color:var(--muted)}
+    .field-row.bit{background:#fcfbff}.field-row.bit span:nth-child(3){color:#475467}.field-row.bit span:nth-child(4){color:#7c3aed;font-weight:700;letter-spacing:.5px}
+    .sec-list{font-family:var(--mono);font-size:12px}.sec-row{display:grid;grid-template-columns:90px 90px 90px 1fr;gap:8px;padding:6px 10px;border-bottom:1px solid #edf0f5;cursor:pointer}.sec-row.head{position:sticky;top:0;background:#f8fafc;font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",Arial,sans-serif;font-weight:700;color:#475467}.sec-row:hover{background:#f5f9ff}
+    .hex-wrap{font-family:var(--mono);font-size:12px;line-height:1.7;white-space:pre;overflow:auto;padding:12px;background:#0b1020;color:#d6e2ff;min-height:0}.hex-line{display:block}.hex-off{color:#8292bd}.hex-byte{display:inline-block;min-width:19px;text-align:center;border-radius:4px}.hex-byte.hl{background:#facc15;color:#101828}.hex-ascii{color:#a7b3d6;margin-left:10px}
+    .empty{padding:22px;color:var(--muted);text-align:center}.status{color:var(--muted);font-size:12px}.error{color:var(--bad)}.ok{color:var(--good)}.warn{color:var(--warn)}
+    .footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center;border-top:1px solid var(--line);background:rgba(255,255,255,.72)}
+    @media (max-width:1000px){main{grid-template-columns:1fr}.right{grid-template-rows:auto auto}.tree-card,.hex-card{min-height:320px}.field-row{grid-template-columns:78px 48px minmax(120px,1fr)}.field-row>span:nth-child(4),.field-row>span:nth-child(5){grid-column:3/-1}.field-row.header>span:nth-child(4),.field-row.header>span:nth-child(5){display:none}}
+    @media (max-width:640px){header{align-items:flex-start;flex-direction:column}.top-actions{justify-content:flex-start}.card-body{padding:11px}main{padding:10px}.brand-mark{width:38px;height:38px}.subtitle{display:none}.sec-row{grid-template-columns:80px 80px 1fr}.sec-row>span:nth-child(3){display:none}}
+  </style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="brand">
+      <div class="brand-mark">PE</div>
+      <div>
+        <h1 data-i18n="title">PE 文件在线解析工具</h1>
+        <p class="subtitle" data-i18n="subtitle">打开 EXE/DLL/SYS/LIB/OBJ，查看 DOS/PE 头、可选头、节区表、导入导出，字段细化到 bit。</p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <a class="button" href="../index.html" data-i18n="home">返回主页</a>
+      <div class="lang" aria-label="language">
+        <button type="button" data-lang="zh" class="active">中文</button>
+        <button type="button" data-lang="en">English</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="left">
+      <div class="card">
+        <div class="card-head"><span class="card-title" data-i18n="openTitle">打开文件</span><span id="loadStatus" class="status"></span></div>
+        <div class="card-body toolbar">
+          <div class="filebox">
+            <input id="fileInput" type="file" accept=".exe,.dll,.sys,.lib,.obj,.ocx,.scr,.efi,application/octet-stream">
+            <button id="clearBtn" type="button" data-i18n="clear">清空</button>
+          </div>
+          <p class="hint" data-i18n="openHint">本工具在浏览器本地解析文件，不上传数据。支持 PE32/PE32+（EXE/DLL/SYS）与 COFF 归档（LIB），解析 DOS 头、Rich 头、NT 头、可选头与数据目录、节区表、导入表、导出表，并把 Characteristics/DllCharacteristics/节区属性细化到 bit。</p>
+          <div>
+            <div class="row" style="justify-content:space-between;margin-bottom:8px">
+              <strong data-i18n="examples">在线示例</strong>
+              <button id="reloadExamples" type="button" data-i18n="reloadExamples">刷新列表</button>
+            </div>
+            <div id="examples" class="examples"><span class="status" data-i18n="loadingExamples">正在读取 list.txt...</span></div>
+          </div>
+          <div class="summary">
+            <div class="metric"><b id="mType">-</b><span data-i18n="fileType">文件类型</span></div>
+            <div class="metric"><b id="mMachine">-</b><span data-i18n="machine">机器架构</span></div>
+            <div class="metric"><b id="mSections">0</b><span data-i18n="sectionsN">节区数</span></div>
+            <div class="metric"><b id="mBytes">0</b><span data-i18n="bytes">文件大小</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card sec-card">
+        <div class="card-head"><span class="card-title" data-i18n="sectionTable">节区表 / 目录</span></div>
+        <div class="scroll" id="secScroll"><div class="empty" data-i18n="emptyOpen">请选择 PE/LIB 文件，或加载一个在线示例。</div></div>
+      </div>
+    </section>
+
+    <section class="right">
+      <div class="card tree-card">
+        <div class="card-head">
+          <span class="card-title" data-i18n="structure">结构与字段（bit 级）</span>
+          <div class="filter"><input id="fieldFilter" type="search" placeholder="过滤字段/含义"></div>
+        </div>
+        <div class="scroll" id="treeScroll"><div class="empty" data-i18n="emptyFile">打开文件后显示 PE 结构字段。</div></div>
+      </div>
+
+      <div class="card hex-card">
+        <div class="card-head">
+          <span class="card-title" data-i18n="hexTitle">十六进制数据</span>
+          <div class="hex-tools"><span id="hexHint" class="status" data-i18n="hexHint">点击字段可高亮对应字节。</span></div>
+        </div>
+        <div id="hexDump" class="hex-wrap"><span data-i18n="emptyHex">暂无数据</span></div>
+      </div>
+    </section>
+  </main>
+  <div class="footer" data-i18n="footer">静态前端 PE 解析器 · 可直接部署到 GitHub Pages · 不依赖服务器</div>
+</div>
+
+<script>
+(function(){
+  'use strict';
+  var I18N = {
+    zh:{ title:'PE 文件在线解析工具', subtitle:'打开 EXE/DLL/SYS/LIB/OBJ，查看 DOS/PE 头、可选头、节区表、导入导出，字段细化到 bit。', home:'返回主页', openTitle:'打开文件', clear:'清空', openHint:'本工具在浏览器本地解析文件，不上传数据。支持 PE32/PE32+（EXE/DLL/SYS）与 COFF 归档（LIB），解析 DOS 头、Rich 头、NT 头、可选头与数据目录、节区表、导入表、导出表，并把 Characteristics/DllCharacteristics/节区属性细化到 bit。', examples:'在线示例', reloadExamples:'刷新列表', loadingExamples:'正在读取 list.txt...', fileType:'文件类型', machine:'机器架构', sectionsN:'节区数', bytes:'文件大小', sectionTable:'节区表 / 目录', structure:'结构与字段（bit 级）', hexTitle:'十六进制数据', hexHint:'点击字段可高亮对应字节。', emptyOpen:'请选择 PE/LIB 文件，或加载一个在线示例。', emptyFile:'打开文件后显示 PE 结构字段。', emptyHex:'暂无数据', footer:'静态前端 PE 解析器 · 可直接部署到 GitHub Pages · 不依赖服务器', loading:'正在解析...', loaded:'已加载', failed:'解析失败', noExample:'未找到 list.txt 或示例文件', offset:'偏移', size:'长度', field:'字段', value:'值', meaning:'含义', localFile:'本地文件', exampleFile:'示例文件', notPE:'不是有效的 PE / LIB 文件（缺少 MZ / !<arch> 签名）', bytesUnit:'字节', filterPh:'过滤字段/含义', name:'名称', vaddr:'虚拟地址', rawsize:'原始大小' },
+    en:{ title:'Online PE File Parser', subtitle:'Open EXE/DLL/SYS/LIB/OBJ to inspect DOS/PE headers, optional header, sections, imports/exports down to the bit.', home:'Home', openTitle:'Open file', clear:'Clear', openHint:'Files are parsed locally in your browser and are not uploaded. Supports PE32/PE32+ (EXE/DLL/SYS) and COFF archives (LIB): DOS header, Rich header, NT headers, optional header + data directories, section table, import and export tables, with Characteristics/DllCharacteristics/section flags decoded to individual bits.', examples:'Online examples', reloadExamples:'Reload list', loadingExamples:'Reading list.txt...', fileType:'File type', machine:'Machine', sectionsN:'Sections', bytes:'File size', sectionTable:'Sections / Directories', structure:'Structure & fields (bit-level)', hexTitle:'Hex dump', hexHint:'Click a field to highlight bytes.', emptyOpen:'Choose a PE/LIB file or load an online example.', emptyFile:'Open a file to show PE structure fields.', emptyHex:'No data', footer:'Static front-end PE parser · GitHub Pages ready · No server required', loading:'Parsing...', loaded:'Loaded', failed:'Parse failed', noExample:'list.txt or example files not found', offset:'Offset', size:'Size', field:'Field', value:'Value', meaning:'Meaning', localFile:'Local file', exampleFile:'Example file', notPE:'Not a valid PE / LIB file (missing MZ / !<arch> signature)', bytesUnit:'bytes', filterPh:'Filter field/meaning', name:'Name', vaddr:'Virtual Addr', rawsize:'Raw size' }
+  };
+  var state={ lang:localStorage.getItem('PEParse.lang')||'zh', fileName:'', bytes:null, view:null, fields:[], sections:[], summary:{}, filter:'' };
+  var $=function(id){return document.getElementById(id);};
+  var t=function(k){return (I18N[state.lang]&&I18N[state.lang][k])||I18N.zh[k]||k;};
+  function setText(id,v){var n=$(id);if(n)n.textContent=v;}
+  function fmtBytes(n){ if(n<1024)return n+' B'; if(n<1048576)return (n/1024).toFixed(1)+' KB'; return (n/1048576).toFixed(2)+' MB'; }
+  function u8(o){return state.bytes[o];}
+  function u16(o){return o+1<state.bytes.length?(state.bytes[o]|(state.bytes[o+1]<<8)):0;}
+  function u32(o){return o+3<state.bytes.length?((state.bytes[o]|(state.bytes[o+1]<<8)|(state.bytes[o+2]<<16))+state.bytes[o+3]*0x1000000)>>>0:0;}
+  function hex(n,w){var s=(Number(n)>>>0).toString(16).toUpperCase();while(s.length<(w||2))s='0'+s;return '0x'+s;}
+  function hex64(o){var hi=u32(o+4),lo=u32(o);var s=hi.toString(16).toUpperCase();while(s.length<8)s='0'+s;var l=lo.toString(16).toUpperCase();while(l.length<8)l='0'+l;return '0x'+s+l;}
+  function bitStr(v,total,start,count){v=v>>>0;var s='';for(var i=0;i<total;i++){s+=(i>=start&&i<start+count)?String((v>>>(total-1-i))&1):'.';if((i+1)%4===0&&i+1<total)s+=' ';}return s;}
+  function ascii(o,len){var s='';for(var i=0;i<len&&o+i<state.bytes.length;i++){var c=state.bytes[o+i];s+=(c>=32&&c<=126)?String.fromCharCode(c):'.';}return s;}
+  function cstr(o,max){var s='';for(var i=0;i<(max||256)&&o+i<state.bytes.length;i++){var c=state.bytes[o+i];if(c===0)break;s+=String.fromCharCode(c);}return s;}
+  function add(off,len,name,value,meaning,cls){state.fields.push({off:off,len:len,name:name,value:value==null?'':String(value),meaning:meaning||'',cls:cls||''});}
+  function grp(off,len,name,value,meaning){add(off,len,name,value,meaning,'group');}
+  function sub(off,len,name,value,meaning){add(off,len,name,value,meaning,'sub');}
+  function addbit(off,byteLen,fullVal,total,start,count,name,meaning){state.fields.push({off:off,len:byteLen,bits:count,name:name,value:bitStr(fullVal,total,start,count),meaning:meaning||'',cls:'bit'});}
+
+  var MACHINE={0x0:'Unknown',0x14c:'Intel 386 (x86)',0x8664:'x64 (AMD64)',0x1c0:'ARM',0x1c4:'ARMv7 (Thumb-2)',0xaa64:'ARM64',0x200:'Intel Itanium',0x1c2:'ARM Thumb',0xebc:'EFI Byte Code',0x5032:'RISC-V 32',0x5064:'RISC-V 64'};
+  var SUBSYS={0:'Unknown',1:'Native',2:'Windows GUI',3:'Windows CUI (Console)',5:'OS/2 CUI',7:'POSIX CUI',9:'Windows CE GUI',10:'EFI Application',11:'EFI Boot Service Driver',12:'EFI Runtime Driver',13:'EFI ROM',14:'Xbox',16:'Windows Boot Application'};
+  var DIRNAMES=['Export','Import','Resource','Exception','Certificate','Base Relocation','Debug','Architecture','Global Ptr','TLS','Load Config','Bound Import','IAT','Delay Import','CLR Runtime','Reserved'];
+
+  function coffCharBits(o,v){
+    var b=[[0,'RELOCS_STRIPPED','已去除重定位'],[1,'EXECUTABLE_IMAGE','可执行映像'],[2,'LINE_NUMS_STRIPPED','已去除行号'],[3,'LOCAL_SYMS_STRIPPED','已去除本地符号'],[4,'AGGRESSIVE_WS_TRIM','积极裁剪工作集'],[5,'LARGE_ADDRESS_AWARE','支持>2GB地址'],[7,'BYTES_REVERSED_LO','小端(废弃)'],[8,'32BIT_MACHINE','32位机器'],[9,'DEBUG_STRIPPED','已去除调试信息'],[10,'REMOVABLE_RUN_FROM_SWAP','可移动介质则拷贝到交换区'],[11,'NET_RUN_FROM_SWAP','网络则拷贝到交换区'],[12,'SYSTEM','系统文件'],[13,'DLL','动态链接库'],[14,'UP_SYSTEM_ONLY','仅单处理器'],[15,'BYTES_REVERSED_HI','大端(废弃)']];
+    b.forEach(function(x){ addbit(o,2,v,16,15-x[0],1,x[1],((v>>x[0])&1)+' — '+x[2]); });
+  }
+  function dllCharBits(o,v){
+    var b=[[5,'HIGH_ENTROPY_VA','支持高熵64位ASLR'],[6,'DYNAMIC_BASE','ASLR 可重定位'],[7,'FORCE_INTEGRITY','强制完整性校验'],[8,'NX_COMPAT','DEP 数据执行保护'],[9,'NO_ISOLATION','不隔离'],[10,'NO_SEH','不使用SEH'],[11,'NO_BIND','不绑定'],[12,'APPCONTAINER','AppContainer'],[13,'WDM_DRIVER','WDM 驱动'],[14,'GUARD_CF','控制流保护CFG'],[15,'TERMINAL_SERVER_AWARE','终端服务兼容']];
+    b.forEach(function(x){ addbit(o,2,v,16,15-x[0],1,x[1],((v>>x[0])&1)+' — '+x[2]); });
+  }
+  function secCharBits(o,v){
+    var m=[[0x20,'CNT_CODE','含代码'],[0x40,'CNT_INITIALIZED_DATA','含已初始化数据'],[0x80,'CNT_UNINITIALIZED_DATA','含未初始化数据(BSS)'],[0x02000000,'MEM_DISCARDABLE','可丢弃'],[0x04000000,'MEM_NOT_CACHED','不可缓存'],[0x08000000,'MEM_NOT_PAGED','不可分页'],[0x10000000,'MEM_SHARED','可共享'],[0x20000000,'MEM_EXECUTE','可执行'],[0x40000000,'MEM_READ','可读'],[0x80000000,'MEM_WRITE','可写']];
+    var on=[]; m.forEach(function(x){ if((v>>>0)&x[0]) on.push(x[1]+'('+x[2]+')'); });
+    add(o,4,'Characteristics',hex(v,8),on.join(', ')||'-','sub');
+  }
+
+  function rvaToOff(rva){ for(var i=0;i<state.sections.length;i++){var s=state.sections[i];var vend=s.va+Math.max(s.vsize,s.rawsize);if(rva>=s.va&&rva<vend)return s.praw+(rva-s.va);} return -1; }
+
+  function parse(buffer,name){
+    state.bytes=new Uint8Array(buffer); state.fields=[]; state.sections=[]; state.summary={}; state.fileName=name||'';
+    var b=state.bytes;
+    if(b.length>=8 && b[0]===0x21&&b[1]===0x3C&&b[2]===0x61&&b[3]===0x72&&b[4]===0x63&&b[5]===0x68){ parseArchive(); return; } // "!<arch>"
+    if(b.length<64 || b[0]!==0x4D || b[1]!==0x5A){ throw new Error(t('notPE')); } // MZ
+    parsePE();
+  }
+
+  function parsePE(){
+    var b=state.bytes;
+    grp(0,64,'IMAGE_DOS_HEADER','MZ','DOS 头');
+    add(0,2,'e_magic',hex(u16(0),4),'MZ 签名 (0x5A4D)');
+    add(0x3C,4,'e_lfanew',hex(u32(0x3C),8),'PE 头文件偏移');
+    var peOff=u32(0x3C);
+    if(peOff>0x40){ var stubLen=peOff-0x40; grp(0x40,stubLen,'DOS Stub / Rich','','DOS 存根，常含 Rich 头');
+      // 查找 Rich 签名
+      for(var r=0x40;r+4<=peOff;r+=4){ if(b[r]===0x52&&b[r+1]===0x69&&b[r+2]===0x63&&b[r+3]===0x68){ add(r,4,'Rich signature','Rich','MSVC 编译器标记(Rich 头结尾)'); break; } }
+    }
+    if(peOff+24>b.length || u32(peOff)!==0x00004550){ throw new Error('PE signature (PE\\0\\0) not found'); }
+    grp(peOff,4,'IMAGE_NT_HEADERS · Signature','PE\\0\\0','NT 头签名 0x00004550');
+    // COFF File Header
+    var fh=peOff+4;
+    grp(fh,20,'IMAGE_FILE_HEADER','','COFF 文件头');
+    var machine=u16(fh); add(fh,2,'Machine',hex(machine,4),MACHINE[machine]||'Unknown');
+    var nsec=u16(fh+2); add(fh+2,2,'NumberOfSections',nsec,'节区数量');
+    var tds=u32(fh+4); var d=new Date(tds*1000); add(fh+4,4,'TimeDateStamp',hex(tds,8),isNaN(d.getTime())?'':d.toISOString().replace('T',' ').replace('.000Z',' UTC'));
+    add(fh+8,4,'PointerToSymbolTable',hex(u32(fh+8),8),'COFF 符号表偏移(通常0)');
+    add(fh+12,4,'NumberOfSymbols',u32(fh+12),'符号数量');
+    var optSize=u16(fh+16); add(fh+16,2,'SizeOfOptionalHeader',optSize,'可选头大小');
+    var chars=u16(fh+18); add(fh+18,2,'Characteristics',hex(chars,4),'文件属性位');
+    coffCharBits(fh+18,chars);
+    // Optional Header
+    var oh=fh+20; var isPE32Plus=false, magic=u16(oh);
+    if(optSize>0 && oh+2<=b.length){
+      isPE32Plus=(magic===0x20b);
+      grp(oh,optSize,'IMAGE_OPTIONAL_HEADER',(magic===0x10b?'PE32':(magic===0x20b?'PE32+':'?')),'可选头 ('+(isPE32Plus?'64位':'32位')+')');
+      add(oh,2,'Magic',hex(magic,4),magic===0x10b?'PE32 (32位)':(magic===0x20b?'PE32+ (64位)':'ROM/未知'));
+      add(oh+2,1,'MajorLinkerVersion',u8(oh+2),'链接器主版本'); add(oh+3,1,'MinorLinkerVersion',u8(oh+3),'链接器次版本');
+      add(oh+4,4,'SizeOfCode',u32(oh+4),'代码段总大小'); add(oh+8,4,'SizeOfInitializedData',u32(oh+8),'已初始化数据大小'); add(oh+12,4,'SizeOfUninitializedData',u32(oh+12),'未初始化数据大小(BSS)');
+      add(oh+16,4,'AddressOfEntryPoint',hex(u32(oh+16),8),'入口点 RVA'); add(oh+20,4,'BaseOfCode',hex(u32(oh+20),8),'代码段起始 RVA');
+      var p;
+      if(isPE32Plus){ add(oh+24,8,'ImageBase',hex64(oh+24),'首选加载基址(64位)'); p=oh+32; }
+      else { add(oh+24,4,'BaseOfData',hex(u32(oh+24),8),'数据段起始 RVA'); add(oh+28,4,'ImageBase',hex(u32(oh+28),8),'首选加载基址(32位)'); p=oh+32; }
+      add(p,4,'SectionAlignment',hex(u32(p),8),'内存对齐'); add(p+4,4,'FileAlignment',hex(u32(p+4),8),'文件对齐');
+      add(p+8,2,'MajorOSVersion',u16(p+8),''); add(p+10,2,'MinorOSVersion',u16(p+10),'');
+      add(p+12,2,'MajorImageVersion',u16(p+12),''); add(p+14,2,'MinorImageVersion',u16(p+14),'');
+      add(p+16,2,'MajorSubsystemVersion',u16(p+16),''); add(p+18,2,'MinorSubsystemVersion',u16(p+18),'');
+      add(p+20,4,'Win32VersionValue',u32(p+20),'保留(0)');
+      add(p+24,4,'SizeOfImage',hex(u32(p+24),8),'映像总大小(内存)'); add(p+28,4,'SizeOfHeaders',hex(u32(p+28),8),'所有头+节表大小');
+      add(p+32,4,'CheckSum',hex(u32(p+32),8),'映像校验和');
+      var subsys=u16(p+36); add(p+36,2,'Subsystem',subsys,SUBSYS[subsys]||'Unknown');
+      var dll=u16(p+38); add(p+38,2,'DllCharacteristics',hex(dll,4),'DLL/安全特性位'); dllCharBits(p+38,dll);
+      var q;
+      if(isPE32Plus){ add(p+40,8,'SizeOfStackReserve',hex64(p+40),''); add(p+48,8,'SizeOfStackCommit',hex64(p+48),''); add(p+56,8,'SizeOfHeapReserve',hex64(p+56),''); add(p+64,8,'SizeOfHeapCommit',hex64(p+64),''); q=p+72; }
+      else { add(p+40,4,'SizeOfStackReserve',hex(u32(p+40),8),''); add(p+44,4,'SizeOfStackCommit',hex(u32(p+44),8),''); add(p+48,4,'SizeOfHeapReserve',hex(u32(p+48),8),''); add(p+52,4,'SizeOfHeapCommit',hex(u32(p+52),8),''); q=p+56; }
+      add(q,4,'LoaderFlags',hex(u32(q),8),'保留'); var nrva=u32(q+4); add(q+4,4,'NumberOfRvaAndSizes',nrva,'数据目录项数');
+      var dd=q+8; var ndir=Math.min(nrva,16);
+      grp(dd,ndir*8,'DataDirectory','×'+ndir,'数据目录(RVA+大小)');
+      var dirs=[];
+      for(var i=0;i<ndir && dd+i*8+8<=b.length;i++){ var rva=u32(dd+i*8), sz=u32(dd+i*8+4); dirs.push({rva:rva,size:sz}); if(rva||sz) sub(dd+i*8,8,'['+i+'] '+(DIRNAMES[i]||('Dir'+i)),'RVA='+hex(rva,8)+' Size='+hex(sz,8),(DIRNAMES[i]||'')+' 目录'); }
+      state.summary.dirs=dirs;
+      // 节区表
+      var st=oh+optSize;
+      parseSections(st,nsec);
+      // 导入/导出（在节区解析之后，需 RVA 映射）
+      if(dirs[1] && dirs[1].rva) parseImports(dirs[1].rva,dirs[1].size,isPE32Plus);
+      if(dirs[0] && dirs[0].rva) parseExports(dirs[0].rva,dirs[0].size);
+      state.summary={type:isPE32Plus?'PE32+ (64-bit)':'PE32 (32-bit)', machine:MACHINE[machine]||('0x'+machine.toString(16)), sections:nsec, isDll:!!(chars&0x2000)};
+      state.summary.type += (chars&0x2000)?' DLL':(chars&0x0002?' EXE':'');
+    } else { state.summary={type:'PE (no optional header)', machine:MACHINE[machine]||'?', sections:nsec}; parseSections(oh+optSize,nsec); }
+  }
+
+  function parseSections(st,nsec){
+    if(nsec>96) nsec=96;
+    grp(st,nsec*40,'Section Table','×'+nsec,'节区头(每个40字节)');
+    for(var i=0;i<nsec;i++){ var s=st+i*40; if(s+40>state.bytes.length)break;
+      var nm=ascii(s,8).replace(/\.+$/,'').replace(/\0/g,''); var vsize=u32(s+8), va=u32(s+12), rsize=u32(s+16), praw=u32(s+20), chars=u32(s+32);
+      state.sections.push({name:nm,vsize:vsize,va:va,rawsize:rsize,praw:praw,chars:chars,off:s});
+      sub(s,40,'Section: '+nm,'VA='+hex(va,8)+' Raw='+hex(rsize,8),'节区 #'+(i+1));
+      add(s,8,'  Name',nm,'节区名(8字节)'); add(s+8,4,'  VirtualSize',hex(vsize,8),'内存中大小'); add(s+12,4,'  VirtualAddress',hex(va,8),'内存 RVA');
+      add(s+16,4,'  SizeOfRawData',hex(rsize,8),'文件中大小'); add(s+20,4,'  PointerToRawData',hex(praw,8),'文件偏移');
+      secCharBits(s+32,chars);
+    }
+  }
+
+  function parseImports(rva,size,plus){
+    var base=rvaToOff(rva); if(base<0)return; grp(base,Math.min(size,0x2000),'Import Directory','','导入表(IMAGE_IMPORT_DESCRIPTOR[])');
+    for(var i=0;i<64;i++){ var e=base+i*20; if(e+20>state.bytes.length)break; var oft=u32(e),nameRva=u32(e+12),ft=u32(e+16); if(oft===0&&nameRva===0&&ft===0)break;
+      var noff=rvaToOff(nameRva); var dll=noff>=0?cstr(noff,64):'?'; sub(e,20,'Import: '+dll,'','导入自 '+dll);
+      // 遍历 INT/thunk 读取函数名
+      var thunkRva=oft||ft; var toff=rvaToOff(thunkRva); if(toff<0)continue; var step=plus?8:4; var shown=0;
+      for(var j=0;j<400 && shown<40;j++){ var to=toff+j*step; if(to+step>state.bytes.length)break; var lo=u32(to), hi=plus?u32(to+4):0; if(lo===0&&hi===0)break;
+        var byOrdinal=plus?((hi&0x80000000)!==0):((lo&0x80000000)!==0);
+        if(byOrdinal){ add(to,step,'  #'+(lo&0xffff),'Ordinal '+(lo&0xffff),'按序号导入'); }
+        else { var hnRva=lo>>>0; var hno=rvaToOff(hnRva); if(hno>=0){ var fn=cstr(hno+2,96); add(hno,2+fn.length+1,'  '+fn,'Hint='+u16(hno),'导入函数'); } }
+        shown++;
+      }
+    }
+  }
+
+  function parseExports(rva,size){
+    var base=rvaToOff(rva); if(base<0)return; grp(base,40,'Export Directory','','导出表(IMAGE_EXPORT_DIRECTORY)');
+    var nameRva=u32(base+12), ordBase=u32(base+16), nfunc=u32(base+20), nnames=u32(base+24), addrFuncs=u32(base+28), addrNames=u32(base+32), addrOrd=u32(base+36);
+    var noff=rvaToOff(nameRva); add(base,4,'Characteristics',hex(u32(base),8),''); add(base+12,4,'Name',noff>=0?cstr(noff,64):hex(nameRva,8),'导出模块名'); add(base+16,4,'Base',ordBase,'序号基'); add(base+20,4,'NumberOfFunctions',nfunc,'导出函数数'); add(base+24,4,'NumberOfNames',nnames,'具名导出数');
+    var namesOff=rvaToOff(addrNames); if(namesOff<0)return; var shown=0;
+    for(var i=0;i<nnames && shown<200;i++){ var nrva=u32(namesOff+i*4); var fo=rvaToOff(nrva); if(fo<0)continue; var fn=cstr(fo,96); add(fo,fn.length+1,'  '+fn,'','导出函数名'); shown++; }
+  }
+
+  function parseArchive(){
+    var b=state.bytes; grp(0,8,'Archive Header','!<arch>','COFF 归档(.lib/.a)');
+    add(0,8,'Signature','!<arch>\\n','归档签名');
+    var p=8, idx=0;
+    while(p+60<=b.length && idx<400){
+      var nm=ascii(p,16).trim(); var sz=parseInt(ascii(p+48,10).trim(),10)||0; var end=p+60;
+      var label=(nm==='/'?'Linker Symbols (1st)':(nm==='//'?'Long Names':nm));
+      sub(p,60+sz,'Member: '+label,'size='+sz,'归档成员 #'+(idx+1));
+      add(p,16,'  Name',nm,'成员名'); add(p+48,10,'  Size',sz+' '+t('bytesUnit'),'成员数据大小');
+      // 若成员本身是 COFF 对象，显示其机器类型
+      if(sz>=20 && end+2<=b.length){ var mm=u16(end); if(MACHINE[mm]) add(end,2,'  (COFF) Machine',hex(mm,4),MACHINE[mm]); }
+      state.sections.push({name:label,vsize:0,va:0,rawsize:sz,praw:end,chars:0,off:p});
+      p=end+sz; if(p%2===1)p++; idx++;
+    }
+    var mm2=null; for(var i=0;i<state.sections.length;i++){var s=state.sections[i];if(s.rawsize>=20){var m=u16(s.praw);if(MACHINE[m]){mm2=MACHINE[m];break;}}}
+    state.summary={type:'COFF Archive (LIB)', machine:mm2||'-', sections:state.sections.length};
+  }
+
+  // ---------- 渲染 ----------
+  function renderAll(){
+    document.documentElement.lang=state.lang==='zh'?'zh-CN':'en';
+    document.querySelectorAll('[data-i18n]').forEach(function(n){var k=n.getAttribute('data-i18n');if(I18N[state.lang][k])n.textContent=I18N[state.lang][k];});
+    document.querySelectorAll('[data-lang]').forEach(function(bn){bn.classList.toggle('active',bn.getAttribute('data-lang')===state.lang);});
+    var ff=$('fieldFilter'); if(ff)ff.placeholder=t('filterPh');
+    renderSummary(); renderSections(); renderFields(); renderHex(-1,0);
+  }
+  function renderSummary(){ setText('mType',state.summary.type||'-'); setText('mMachine',state.summary.machine||'-'); setText('mSections',state.summary.sections||0); setText('mBytes',state.bytes?fmtBytes(state.bytes.length):'0'); }
+  function renderSections(){
+    var box=$('secScroll'); box.innerHTML='';
+    if(!state.bytes){ box.innerHTML='<div class="empty">'+t('emptyOpen')+'</div>'; return; }
+    var wrap=document.createElement('div'); wrap.className='sec-list';
+    var h=document.createElement('div'); h.className='sec-row head'; [t('name'),t('vaddr'),t('rawsize'),t('meaning')].forEach(function(x){var s=document.createElement('span');s.textContent=x;h.appendChild(s);}); wrap.appendChild(h);
+    state.sections.forEach(function(s){ var r=document.createElement('div'); r.className='sec-row'; r.onclick=function(){ renderHex(s.praw, Math.min(s.rawsize||0,4096)); };
+      [s.name||'-', s.va?hex(s.va,8):'-', hex(s.rawsize,8), flagsText(s.chars)].forEach(function(v){var sp=document.createElement('span');sp.textContent=v;r.appendChild(sp);}); wrap.appendChild(r); });
+    box.appendChild(wrap);
+  }
+  function flagsText(c){ if(!c)return ''; var o=[]; if(c&0x20)o.push('CODE'); if(c&0x40)o.push('DATA'); if(c&0x80)o.push('BSS'); if((c>>>0)&0x20000000)o.push('X'); if((c>>>0)&0x40000000)o.push('R'); if((c>>>0)&0x80000000)o.push('W'); return o.join('/'); }
+  function filteredFields(){ var q=(state.filter||'').toLowerCase(); if(!q)return state.fields; return state.fields.filter(function(f){return (f.name+' '+f.value+' '+f.meaning).toLowerCase().indexOf(q)>=0;}); }
+  function renderFields(){
+    var tree=$('treeScroll'); tree.innerHTML='';
+    if(!state.bytes){ tree.innerHTML='<div class="empty">'+t('emptyFile')+'</div>'; return; }
+    var wrap=document.createElement('div'); wrap.className='tree';
+    var head=document.createElement('div'); head.className='field-row header'; [t('offset'),t('size'),t('field'),t('value'),t('meaning')].forEach(function(x){var s=document.createElement('span');s.textContent=x;head.appendChild(s);}); wrap.appendChild(head);
+    filteredFields().forEach(function(f){ var r=document.createElement('div'); r.className='field-row'+(f.cls?(' '+f.cls):''); r.onclick=function(){ renderHex(f.off,f.len); };
+      var sz=f.cls==='bit'?(f.bits+' bit'):f.len; var vals=[hex(f.off,4),sz,f.name,f.value,f.meaning];
+      vals.forEach(function(v,idx){var s=document.createElement('span');s.textContent=String(v==null?'':v);if(idx===0||idx===1)s.className='muted';r.appendChild(s);}); wrap.appendChild(r); });
+    tree.appendChild(wrap);
+  }
+  function renderHex(hlOff,hlLen){
+    var box=$('hexDump'); var b=state.bytes; if(!b||!b.length){box.textContent=t('emptyHex');return;}
+    var start=0, end=b.length; if(end>65536){ // 大文件只显示高亮附近或前 64K
+      if(hlOff>=0){ start=Math.max(0,(hlOff-256)&~0xF); end=Math.min(b.length,start+8192); } else { end=8192; }
+    }
+    box.innerHTML=''; var frag=document.createDocumentFragment();
+    for(var off=start; off<end; off+=16){ var line=document.createElement('span'); line.className='hex-line'; var os=document.createElement('span'); os.className='hex-off'; os.textContent=('00000000'+off.toString(16).toUpperCase()).slice(-8)+'  '; line.appendChild(os);
+      var asc=''; for(var i=0;i<16;i++){ if(off+i<end){ var bs=document.createElement('span'); bs.className='hex-byte'; if(hlLen>0&&off+i>=hlOff&&off+i<hlOff+hlLen)bs.className+=' hl'; bs.textContent=('0'+b[off+i].toString(16).toUpperCase()).slice(-2); line.appendChild(bs); line.appendChild(document.createTextNode(' ')); var c=b[off+i]; asc+=(c>=32&&c<=126)?String.fromCharCode(c):'.'; } else { line.appendChild(document.createTextNode('   ')); asc+=' '; } }
+      var a=document.createElement('span'); a.className='hex-ascii'; a.textContent=' |'+asc+'|'; line.appendChild(a); frag.appendChild(line); }
+    box.appendChild(frag);
+    if(hlLen>0){ var hl=box.querySelector('.hex-byte.hl'); if(hl&&hl.scrollIntoView) hl.scrollIntoView({block:'nearest'}); }
+  }
+
+  function reset(){ state.bytes=null; state.fields=[]; state.sections=[]; state.summary={}; setText('loadStatus',''); $('fileInput').value=''; renderAll(); }
+  function loadBuffer(buffer,name,source){ setText('loadStatus',t('loading')); setTimeout(function(){ try{ parse(buffer,name); setText('loadStatus',t('loaded')+': '+(source?source+' · ':'')+name+' · '+fmtBytes(buffer.byteLength)); renderAll(); }catch(e){ console.error(e); state.bytes=new Uint8Array(buffer); state.fields=[]; state.sections=[]; state.summary={type:'?',machine:'-',sections:0}; setText('loadStatus',t('failed')+': '+(e&&e.message?e.message:e)); renderAll(); } },20); }
+  function loadExamples(){ var ex=$('examples'); ex.innerHTML='<span class="status">'+t('loadingExamples')+'</span>';
+    fetch('list.txt?ts='+Date.now()).then(function(r){if(!r.ok)throw 0;return r.text();}).then(function(txt){ var files=txt.replace(/^﻿/,'').split(/\r?\n/).map(function(s){return s.trim();}).filter(function(s){return s&&/\.(exe|dll|sys|lib|obj|ocx|scr|efi)$/i.test(s);});
+      ex.innerHTML=''; if(!files.length){ex.innerHTML='<span class="status warn">'+t('noExample')+'</span>';return;} files.forEach(function(n){var btn=document.createElement('button');btn.type='button';btn.className='example-btn';btn.textContent=n;btn.onclick=function(){loadExample(n);};ex.appendChild(btn);}); }).catch(function(){ex.innerHTML='<span class="status warn">'+t('noExample')+'</span>';}); }
+  function loadExample(name){ setText('loadStatus',t('loading')+' '+name); fetch(encodeURI(name)+'?ts='+Date.now()).then(function(r){if(!r.ok)throw new Error(name);return r.arrayBuffer();}).then(function(buf){loadBuffer(buf,name,t('exampleFile'));}).catch(function(e){setText('loadStatus',t('failed')+': '+(e.message||e));}); }
+
+  document.querySelectorAll('[data-lang]').forEach(function(btn){btn.addEventListener('click',function(){state.lang=btn.getAttribute('data-lang');localStorage.setItem('PEParse.lang',state.lang);renderAll();});});
+  $('fileInput').addEventListener('change',function(){var f=this.files&&this.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){loadBuffer(rd.result,f.name,t('localFile'));};rd.readAsArrayBuffer(f);});
+  $('clearBtn').addEventListener('click',reset); $('reloadExamples').addEventListener('click',loadExamples); $('fieldFilter').addEventListener('input',function(){state.filter=this.value;renderFields();});
+  renderAll(); loadExamples();
+})();
+</script>
+</body>
+</html>

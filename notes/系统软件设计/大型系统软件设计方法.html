@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>大型系统软件设计方法</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+      .np-home{order:99;margin-left:auto;display:inline-flex;align-items:center;gap:4px;font-size:13px;text-decoration:none;color:#1a1a2e;border:1px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--card);white-space:nowrap;}
+    .np-home:hover{border-color:var(--accent);color:var(--accent);}
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <a class="np-home" href="../../index.html" title="返回主页">&#8962; 返回主页</a>
+  <h1>大型 C/C++/Qt 系统软件设计方法</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">46 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">面向大型工业/系统软件（C、C++、Qt）的架构与工程方法总结，借鉴 Oracle 数据库、Windows/Linux 操作系统、编译器、MATLAB 与工业软件的成熟设计，可作为指导 AI 编写大型工业软件的检查清单与提示词依据。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、总体架构与分层</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="分层与内核/外壳分离 把系统分为稳定的“内核层”和多变的“外壳层”：内核只暴露稳定接口，外壳承载业务与 UI。 参考：Windows 的 Executive/内核态与用户态分离；Linux 的内核 + 用户空间；Oracle 的实例(内存/进程) + 数据库(存储)。 收益：核心稳定、上层可快速演进，故障边界清晰。">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">分层与内核/外壳分离</span>
+          </div>
+          <div class="card-code">把系统分为稳定的“内核层”和多变的“外壳层”：内核只暴露稳定接口，外壳承载业务与 UI。
+参考：Windows 的 Executive/内核态与用户态分离；Linux 的内核 + 用户空间；Oracle 的实例(内存/进程) + 数据库(存储)。
+收益：核心稳定、上层可快速演进，故障边界清晰。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="分层依赖单向化 严格自上而下依赖：UI → 应用服务 → 领域/引擎 → 基础设施(存储/OS 抽象)。 禁止反向依赖与跨层调用，用接口(抽象)在层间解耦。 参考：编译器的经典流水线 词法→语法→语义→IR→优化→代码生成，每阶段只依赖上一阶段产物。">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">分层依赖单向化</span>
+          </div>
+          <div class="card-code">严格自上而下依赖：UI → 应用服务 → 领域/引擎 → 基础设施(存储/OS 抽象)。
+禁止反向依赖与跨层调用，用接口(抽象)在层间解耦。
+参考：编译器的经典流水线 词法→语法→语义→IR→优化→代码生成，每阶段只依赖上一阶段产物。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="平台抽象层 (PAL/HAL) 把 OS/硬件相关代码收敛到一层(文件、线程、时间、网络、图形)，上层只用抽象接口。 参考：MATLAB 跨平台内核、Qt 的 QPA(平台抽象)；工业软件需跨 Windows/Linux/嵌入式时尤为关键。 收益：可移植、易测试(可注入 Mock)。">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">平台抽象层 (PAL/HAL)</span>
+          </div>
+          <div class="card-code">把 OS/硬件相关代码收敛到一层(文件、线程、时间、网络、图形)，上层只用抽象接口。
+参考：MATLAB 跨平台内核、Qt 的 QPA(平台抽象)；工业软件需跨 Windows/Linux/嵌入式时尤为关键。
+收益：可移植、易测试(可注入 Mock)。</div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="进程/线程/模块的边界划分 按“失败域”和“性能域”切分：可独立崩溃恢复的用大进程隔离；高频交互的放同进程多线程。 参考：Chrome 多进程隔离；Oracle 后台进程(DBWn/LGWR/SMON)各司其职；PLC/SCADA 采集与显示分离。">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">进程/线程/模块的边界划分</span>
+          </div>
+          <div class="card-code">按“失败域”和“性能域”切分：可独立崩溃恢复的用大进程隔离；高频交互的放同进程多线程。
+参考：Chrome 多进程隔离；Oracle 后台进程(DBWn/LGWR/SMON)各司其职；PLC/SCADA 采集与显示分离。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、模块化、接口与插件</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-5" data-keywords="面向接口编程 模块间只依赖抽象接口(纯虚类/头文件)，不依赖实现；用工厂/依赖注入创建实例。 C++：稳定的抽象基类 + PIMPL 隐藏实现，降低编译耦合与 ABI 波动。 收益：可替换、可测试、可并行开发。">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">面向接口编程</span>
+          </div>
+          <div class="card-code">模块间只依赖抽象接口(纯虚类/头文件)，不依赖实现；用工厂/依赖注入创建实例。
+C++：稳定的抽象基类 + PIMPL 隐藏实现，降低编译耦合与 ABI 波动。
+收益：可替换、可测试、可并行开发。</div>
+        </div>
+        <div class="card" id="card-2-6" data-keywords="插件化架构 把可选/第三方功能做成插件(DLL/.so)，主程序通过注册表/清单发现并加载。 参考：Qt Plugin、MATLAB 工具箱、编译器的 Pass 插件、工业软件的驱动/算法插件。 关键：稳定的插件 ABI、版本协商、加载失败隔离。">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">插件化架构</span>
+          </div>
+          <div class="card-code">把可选/第三方功能做成插件(DLL/.so)，主程序通过注册表/清单发现并加载。
+参考：Qt Plugin、MATLAB 工具箱、编译器的 Pass 插件、工业软件的驱动/算法插件。
+关键：稳定的插件 ABI、版本协商、加载失败隔离。</div>
+        </div>
+        <div class="card" id="card-2-7" data-keywords="稳定 ABI 与版本管理 跨 DLL 边界避免传 STL 容器/异常/内联布局敏感类型；用 C 风格或 COM 风格接口，或保证同编译器同版本。 参考：Windows COM 的 IUnknown/接口不变原则、语义化版本(SemVer)。 收益：二进制兼容、可独立升级组件。">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">稳定 ABI 与版本管理</span>
+          </div>
+          <div class="card-code">跨 DLL 边界避免传 STL 容器/异常/内联布局敏感类型；用 C 风格或 COM 风格接口，或保证同编译器同版本。
+参考：Windows COM 的 IUnknown/接口不变原则、语义化版本(SemVer)。
+收益：二进制兼容、可独立升级组件。</div>
+        </div>
+        <div class="card" id="card-2-8" data-keywords="最小暴露与信息隐藏 头文件只暴露必要声明，实现细节用 PIMPL/匿名命名空间隐藏，减少重编译与耦合。 Parnas 信息隐藏原则：模块围绕“可能变化的决策”封装。">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">最小暴露与信息隐藏</span>
+          </div>
+          <div class="card-code">头文件只暴露必要声明，实现细节用 PIMPL/匿名命名空间隐藏，减少重编译与耦合。
+Parnas 信息隐藏原则：模块围绕“可能变化的决策”封装。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、内存与资源管理</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-9" data-keywords="RAII 与所有权 一切资源(内存/文件/锁/句柄)用对象生命周期管理(RAII)；用 unique_ptr 表达独占、shared_ptr 表达共享、weak_ptr 断环。 明确所有权归属，避免裸 new/delete 与悬垂指针。">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">RAII 与所有权</span>
+          </div>
+          <div class="card-code">一切资源(内存/文件/锁/句柄)用对象生命周期管理(RAII)；用 unique_ptr 表达独占、shared_ptr 表达共享、weak_ptr 断环。
+明确所有权归属，避免裸 new/delete 与悬垂指针。</div>
+        </div>
+        <div class="card" id="card-3-10" data-keywords="自定义分配器与内存池 高频小对象用对象池/arena 分配，降低碎片与 malloc 开销；大块用预分配。 参考：Oracle SGA/PGA 内存管理、操作系统的 slab 分配器、游戏/实时系统的帧分配器。 工业实时场景避免运行期动态分配以防抖动。">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">自定义分配器与内存池</span>
+          </div>
+          <div class="card-code">高频小对象用对象池/arena 分配，降低碎片与 malloc 开销；大块用预分配。
+参考：Oracle SGA/PGA 内存管理、操作系统的 slab 分配器、游戏/实时系统的帧分配器。
+工业实时场景避免运行期动态分配以防抖动。</div>
+        </div>
+        <div class="card" id="card-3-11" data-keywords="零拷贝与缓冲管理 数据通路尽量零拷贝(视图/切片/引用计数缓冲)；用环形缓冲对接采集/网络。 参考：Linux sendfile/mmap、数据库缓冲池(Buffer Cache)、DPDK。">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">零拷贝与缓冲管理</span>
+          </div>
+          <div class="card-code">数据通路尽量零拷贝(视图/切片/引用计数缓冲)；用环形缓冲对接采集/网络。
+参考：Linux sendfile/mmap、数据库缓冲池(Buffer Cache)、DPDK。</div>
+        </div>
+        <div class="card" id="card-3-12" data-keywords="确定性与资源上限 为长运行系统设置资源上限与回收策略，防泄漏累积；关键路径避免不可控 GC/分配停顿。 工业软件要求 7×24 稳定，须做内存/句柄泄漏长测。">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">确定性与资源上限</span>
+          </div>
+          <div class="card-code">为长运行系统设置资源上限与回收策略，防泄漏累积；关键路径避免不可控 GC/分配停顿。
+工业软件要求 7×24 稳定，须做内存/句柄泄漏长测。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、并发、实时与事件模型</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-13" data-keywords="并发模型选择 IO 密集用事件循环/异步(reactor)；CPU 密集用线程池 + 任务队列；界面用单一 UI 线程 + 工作线程。 参考：Qt 事件循环 + QThread/信号槽跨线程、Nginx/Node 的事件驱动、Windows IOCP。">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">并发模型选择</span>
+          </div>
+          <div class="card-code">IO 密集用事件循环/异步(reactor)；CPU 密集用线程池 + 任务队列；界面用单一 UI 线程 + 工作线程。
+参考：Qt 事件循环 + QThread/信号槽跨线程、Nginx/Node 的事件驱动、Windows IOCP。</div>
+        </div>
+        <div class="card" id="card-4-14" data-keywords="同步与无锁 优先用消息传递/队列而非共享内存；必须共享时用细粒度锁、读写锁或无锁结构，注意锁顺序防死锁。 参考：数据库 latch/lock 分级、Linux RCU、无锁队列。">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">同步与无锁</span>
+          </div>
+          <div class="card-code">优先用消息传递/队列而非共享内存；必须共享时用细粒度锁、读写锁或无锁结构，注意锁顺序防死锁。
+参考：数据库 latch/lock 分级、Linux RCU、无锁队列。</div>
+        </div>
+        <div class="card" id="card-4-15" data-keywords="实时性与确定性 硬实时任务与非实时任务分离；关键控制回路固定周期、绑定 CPU、提升优先级，避免优先级反转。 参考：RTOS、EtherCAT 周期任务、工业运动控制。">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">实时性与确定性</span>
+          </div>
+          <div class="card-code">硬实时任务与非实时任务分离；关键控制回路固定周期、绑定 CPU、提升优先级，避免优先级反转。
+参考：RTOS、EtherCAT 周期任务、工业运动控制。</div>
+        </div>
+        <div class="card" id="card-4-16" data-keywords="Qt 信号槽与线程亲和 对象有线程亲和性；跨线程用队列连接(Queued Connection)通信，耗时任务放 worker，不阻塞 UI。 大型 Qt 应用用 Model/View 分离数据与显示，QAbstractItemModel 承载大数据集。">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">Qt 信号槽与线程亲和</span>
+          </div>
+          <div class="card-code">对象有线程亲和性；跨线程用队列连接(Queued Connection)通信，耗时任务放 worker，不阻塞 UI。
+大型 Qt 应用用 Model/View 分离数据与显示，QAbstractItemModel 承载大数据集。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、数据管理与持久化</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-17" data-keywords="存储引擎思想 分层：内存缓冲(热) → 日志(WAL) → 数据文件(冷)；先写日志后落盘保证可恢复。 参考：Oracle Redo Log/Undo、SQLite/InnoDB 的 WAL 与 B+ 树、文件系统日志。">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">存储引擎思想</span>
+          </div>
+          <div class="card-code">分层：内存缓冲(热) → 日志(WAL) → 数据文件(冷)；先写日志后落盘保证可恢复。
+参考：Oracle Redo Log/Undo、SQLite/InnoDB 的 WAL 与 B+ 树、文件系统日志。</div>
+        </div>
+        <div class="card" id="card-5-18" data-keywords="事务与一致性 (ACID) 关键数据更新用事务保证原子性、一致性、隔离性、持久性；并发用 MVCC/锁控制隔离级别。 工业软件的配方/工艺参数变更应事务化、可回滚、可审计。">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">事务与一致性 (ACID)</span>
+          </div>
+          <div class="card-code">关键数据更新用事务保证原子性、一致性、隔离性、持久性；并发用 MVCC/锁控制隔离级别。
+工业软件的配方/工艺参数变更应事务化、可回滚、可审计。</div>
+        </div>
+        <div class="card" id="card-5-19" data-keywords="缓存与一致性 多级缓存(内存/本地/远端)配合失效策略(TTL/版本/写回)，注意缓存一致性与雪崩。 参考：数据库 Buffer Cache、CPU 缓存一致性协议(MESI)。">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">缓存与一致性</span>
+          </div>
+          <div class="card-code">多级缓存(内存/本地/远端)配合失效策略(TTL/版本/写回)，注意缓存一致性与雪崩。
+参考：数据库 Buffer Cache、CPU 缓存一致性协议(MESI)。</div>
+        </div>
+        <div class="card" id="card-5-20" data-keywords="序列化与数据格式 对外数据用带版本、可向后兼容的格式(Protobuf/FlatBuffers/自定义二进制)；避免直接 dump 内存布局。 历史数据/时序数据用列式或时序库；配置用结构化文本(XML/JSON/INI)。">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">序列化与数据格式</span>
+          </div>
+          <div class="card-code">对外数据用带版本、可向后兼容的格式(Protobuf/FlatBuffers/自定义二进制)；避免直接 dump 内存布局。
+历史数据/时序数据用列式或时序库；配置用结构化文本(XML/JSON/INI)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、可靠性、容错与可观测性</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-21" data-keywords="错误处理策略 区分可恢复错误(返回码/Result/异常)与不可恢复(断言/快速失败)；跨模块边界统一错误码与上下文。 参考：Rust Result、Google 的 error 处理规范；工业软件宁可安全停机也不带病运行。">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title">错误处理策略</span>
+          </div>
+          <div class="card-code">区分可恢复错误(返回码/Result/异常)与不可恢复(断言/快速失败)；跨模块边界统一错误码与上下文。
+参考：Rust Result、Google 的 error 处理规范；工业软件宁可安全停机也不带病运行。</div>
+        </div>
+        <div class="card" id="card-6-22" data-keywords="故障隔离与恢复 用进程/看门狗/监督树隔离故障，单点故障不拖垮系统；支持自动重启、状态重建、热备切换。 参考：Erlang/OTP 监督树、Linux systemd 守护、SCADA 双机热备、数据库实例恢复。">
+          <div class="card-head">
+            <span class="card-num">22</span>
+            <span class="card-title">故障隔离与恢复</span>
+          </div>
+          <div class="card-code">用进程/看门狗/监督树隔离故障，单点故障不拖垮系统；支持自动重启、状态重建、热备切换。
+参考：Erlang/OTP 监督树、Linux systemd 守护、SCADA 双机热备、数据库实例恢复。</div>
+        </div>
+        <div class="card" id="card-6-23" data-keywords="日志、追踪与指标 分级日志(DEBUG/INFO/WARN/ERROR)、结构化日志、分布式追踪、运行指标(内存/延迟/队列长度)。 参考：Windows ETW、Linux perf/eBPF、数据库 AWR 报告；工业软件加故障录波与事件顺序记录(SOE)。">
+          <div class="card-head">
+            <span class="card-num">23</span>
+            <span class="card-title">日志、追踪与指标</span>
+          </div>
+          <div class="card-code">分级日志(DEBUG/INFO/WARN/ERROR)、结构化日志、分布式追踪、运行指标(内存/延迟/队列长度)。
+参考：Windows ETW、Linux perf/eBPF、数据库 AWR 报告；工业软件加故障录波与事件顺序记录(SOE)。</div>
+        </div>
+        <div class="card" id="card-6-24" data-keywords="安全与权限 最小权限、输入校验、边界检查、加固反注入；关键操作审计留痕。 工业软件注意功能安全(IEC 61508/62443)、访问控制与操作确认。">
+          <div class="card-head">
+            <span class="card-num">24</span>
+            <span class="card-title">安全与权限</span>
+          </div>
+          <div class="card-code">最小权限、输入校验、边界检查、加固反注入；关键操作审计留痕。
+工业软件注意功能安全(IEC 61508/62443)、访问控制与操作确认。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-7">
+      <button class="section-head">
+        <span class="icon">7</span>
+        <span class="title">七、性能与可伸缩性</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-7-25" data-keywords="先测量后优化 用性能剖析定位热点(采样/插桩)，优化 20% 的热路径；避免过早优化。 参考：perf/VTune/gprof、火焰图；编译器优化 Pass 的度量驱动。">
+          <div class="card-head">
+            <span class="card-num">25</span>
+            <span class="card-title">先测量后优化</span>
+          </div>
+          <div class="card-code">用性能剖析定位热点(采样/插桩)，优化 20% 的热路径；避免过早优化。
+参考：perf/VTune/gprof、火焰图；编译器优化 Pass 的度量驱动。</div>
+        </div>
+        <div class="card" id="card-7-26" data-keywords="缓存友好与数据布局 结构体按访问模式布局(SoA vs AoS)、对齐、减少指针跳转与伪共享；批处理提升吞吐。 参考：数据库列存、数值计算的分块(BLAS/MATLAB 底层)、SIMD 向量化。">
+          <div class="card-head">
+            <span class="card-num">26</span>
+            <span class="card-title">缓存友好与数据布局</span>
+          </div>
+          <div class="card-code">结构体按访问模式布局(SoA vs AoS)、对齐、减少指针跳转与伪共享；批处理提升吞吐。
+参考：数据库列存、数值计算的分块(BLAS/MATLAB 底层)、SIMD 向量化。</div>
+        </div>
+        <div class="card" id="card-7-27" data-keywords="可伸缩性设计 无共享/分区/分片扩展；异步与批量摊薄开销；避免全局锁成为瓶颈。 纵向(单机多核)与横向(多机)伸缩策略分开设计。">
+          <div class="card-head">
+            <span class="card-num">27</span>
+            <span class="card-title">可伸缩性设计</span>
+          </div>
+          <div class="card-code">无共享/分区/分片扩展；异步与批量摊薄开销；避免全局锁成为瓶颈。
+纵向(单机多核)与横向(多机)伸缩策略分开设计。</div>
+        </div>
+        <div class="card" id="card-7-28" data-keywords="编译期与运行期权衡 模板/常量折叠把计算前移编译期；热路径可用 JIT/代码生成。 参考：C++ 模板元编程、MATLAB JIT、数据库执行计划编译。">
+          <div class="card-head">
+            <span class="card-num">28</span>
+            <span class="card-title">编译期与运行期权衡</span>
+          </div>
+          <div class="card-code">模板/常量折叠把计算前移编译期；热路径可用 JIT/代码生成。
+参考：C++ 模板元编程、MATLAB JIT、数据库执行计划编译。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-8">
+      <button class="section-head">
+        <span class="icon">8</span>
+        <span class="title">八、工程化与可维护性</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-8-29" data-keywords="构建系统与依赖管理 用 CMake 组织跨平台构建，明确目标依赖与可见性(PUBLIC/PRIVATE)；三方库用包管理(vcpkg/conan)锁版本。 大型工程分模块、增量编译、Unity/预编译头加速。">
+          <div class="card-head">
+            <span class="card-num">29</span>
+            <span class="card-title">构建系统与依赖管理</span>
+          </div>
+          <div class="card-code">用 CMake 组织跨平台构建，明确目标依赖与可见性(PUBLIC/PRIVATE)；三方库用包管理(vcpkg/conan)锁版本。
+大型工程分模块、增量编译、Unity/预编译头加速。</div>
+        </div>
+        <div class="card" id="card-8-30" data-keywords="测试体系 单元测试(GoogleTest/QtTest) + 集成测试 + 端到端 + 性能/长稳测试；关键模块高覆盖。 工业软件加硬件在环(HIL)、故障注入、回归基线对比。">
+          <div class="card-head">
+            <span class="card-num">30</span>
+            <span class="card-title">测试体系</span>
+          </div>
+          <div class="card-code">单元测试(GoogleTest/QtTest) + 集成测试 + 端到端 + 性能/长稳测试；关键模块高覆盖。
+工业软件加硬件在环(HIL)、故障注入、回归基线对比。</div>
+        </div>
+        <div class="card" id="card-8-31" data-keywords="代码规范与静态分析 统一编码规范(命名/头文件/所有权约定)，用 clang-format/clang-tidy、Cppcheck、地址消毒器(ASan/UBSan)。 开启高告警级别并当作错误处理。">
+          <div class="card-head">
+            <span class="card-num">31</span>
+            <span class="card-title">代码规范与静态分析</span>
+          </div>
+          <div class="card-code">统一编码规范(命名/头文件/所有权约定)，用 clang-format/clang-tidy、Cppcheck、地址消毒器(ASan/UBSan)。
+开启高告警级别并当作错误处理。</div>
+        </div>
+        <div class="card" id="card-8-32" data-keywords="持续集成与发布 CI 自动构建/测试/静态分析/打包；语义化版本、变更日志、可回滚发布、灰度上线。 配置与代码分离，环境用配置驱动。">
+          <div class="card-head">
+            <span class="card-num">32</span>
+            <span class="card-title">持续集成与发布</span>
+          </div>
+          <div class="card-code">CI 自动构建/测试/静态分析/打包；语义化版本、变更日志、可回滚发布、灰度上线。
+配置与代码分离，环境用配置驱动。</div>
+        </div>
+        <div class="card" id="card-8-33" data-keywords="文档与可维护性 架构决策记录(ADR)、接口文档、模块职责说明；代码即文档，复杂处写“为什么”。 降低卡车因子：知识不集中于个人。">
+          <div class="card-head">
+            <span class="card-num">33</span>
+            <span class="card-title">文档与可维护性</span>
+          </div>
+          <div class="card-code">架构决策记录(ADR)、接口文档、模块职责说明；代码即文档，复杂处写“为什么”。
+降低卡车因子：知识不集中于个人。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-9">
+      <button class="section-head">
+        <span class="icon">9</span>
+        <span class="title">九、GUI 与大型交互应用 (Qt)</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-9-34" data-keywords="Document/View 与 MVC 数据模型与视图分离，多个视图共享一份文档模型;命令模式支持撤销/重做(QUndoStack)。 参考：MFC/Qt 文档视图、MATLAB 图形对象树。">
+          <div class="card-head">
+            <span class="card-num">34</span>
+            <span class="card-title">Document/View 与 MVC</span>
+          </div>
+          <div class="card-code">数据模型与视图分离，多个视图共享一份文档模型;命令模式支持撤销/重做(QUndoStack)。
+参考：MFC/Qt 文档视图、MATLAB 图形对象树。</div>
+        </div>
+        <div class="card" id="card-9-35" data-keywords="大数据量界面 虚拟化列表/表格(按需取数)、分页、惰性加载、后台线程算数据，UI 只渲染可见部分。 QAbstractItemModel + 代理模型做过滤排序，避免一次性载入。">
+          <div class="card-head">
+            <span class="card-num">35</span>
+            <span class="card-title">大数据量界面</span>
+          </div>
+          <div class="card-code">虚拟化列表/表格(按需取数)、分页、惰性加载、后台线程算数据，UI 只渲染可见部分。
+QAbstractItemModel + 代理模型做过滤排序，避免一次性载入。</div>
+        </div>
+        <div class="card" id="card-9-36" data-keywords="响应式与不阻塞 UI 耗时任务异步化，用进度与可取消；界面状态机管理复杂交互。 国际化(i18n)、高 DPI、主题与可访问性从一开始规划。">
+          <div class="card-head">
+            <span class="card-num">36</span>
+            <span class="card-title">响应式与不阻塞 UI</span>
+          </div>
+          <div class="card-code">耗时任务异步化，用进度与可取消；界面状态机管理复杂交互。
+国际化(i18n)、高 DPI、主题与可访问性从一开始规划。</div>
+        </div>
+        <div class="card" id="card-9-37" data-keywords="插件式 UI 与可配置 面板/工具/菜单可由插件贡献；界面布局可保存恢复(QSettings)。 工业组态软件常需用户自定义画面与控件库。">
+          <div class="card-head">
+            <span class="card-num">37</span>
+            <span class="card-title">插件式 UI 与可配置</span>
+          </div>
+          <div class="card-code">面板/工具/菜单可由插件贡献；界面布局可保存恢复(QSettings)。
+工业组态软件常需用户自定义画面与控件库。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-10">
+      <button class="section-head">
+        <span class="icon">10</span>
+        <span class="title">十、借鉴大型系统的设计经验</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-10-38" data-keywords="Oracle 数据库 实例(内存 SGA + 后台进程) 与 数据库(文件) 分离；Redo/Undo 保证恢复与一致性； 共享池缓存执行计划;后台进程分工(写脏页/写日志/检查点/监控)。 启示：清晰的持久化与恢复模型、内存分区、后台任务解耦。">
+          <div class="card-head">
+            <span class="card-num">38</span>
+            <span class="card-title">Oracle 数据库</span>
+          </div>
+          <div class="card-code">实例(内存 SGA + 后台进程) 与 数据库(文件) 分离；Redo/Undo 保证恢复与一致性；
+共享池缓存执行计划;后台进程分工(写脏页/写日志/检查点/监控)。
+启示：清晰的持久化与恢复模型、内存分区、后台任务解耦。</div>
+        </div>
+        <div class="card" id="card-10-39" data-keywords="Windows / Linux 操作系统 用户态/内核态隔离、系统调用边界、驱动模型、调度与内存管理; Linux 一切皆文件、模块化内核、RCU 并发。 启示：稳定的 ABI/系统调用、分层与抽象、资源与权限管理。">
+          <div class="card-head">
+            <span class="card-num">39</span>
+            <span class="card-title">Windows / Linux 操作系统</span>
+          </div>
+          <div class="card-code">用户态/内核态隔离、系统调用边界、驱动模型、调度与内存管理;
+Linux 一切皆文件、模块化内核、RCU 并发。
+启示：稳定的 ABI/系统调用、分层与抽象、资源与权限管理。</div>
+        </div>
+        <div class="card" id="card-10-40" data-keywords="编译器 (GCC/LLVM) 多阶段流水线 + 中间表示(IR) 解耦前后端;优化以 Pass 组织、可插拔； 数据结构以性能与可扩展为核心。 启示：用中间表示解耦、阶段化处理、以度量驱动优化。">
+          <div class="card-head">
+            <span class="card-num">40</span>
+            <span class="card-title">编译器 (GCC/LLVM)</span>
+          </div>
+          <div class="card-code">多阶段流水线 + 中间表示(IR) 解耦前后端;优化以 Pass 组织、可插拔；
+数据结构以性能与可扩展为核心。
+启示：用中间表示解耦、阶段化处理、以度量驱动优化。</div>
+        </div>
+        <div class="card" id="card-10-41" data-keywords="MATLAB / 数值与工业软件 跨平台内核 + 工具箱(插件)生态;向量化与 JIT 提升数值性能; 面向工程师的脚本/建模层 + 高性能底层。 工业软件启示：稳定内核 + 可扩展算法库 + 组态/脚本层、确定性与长稳、功能安全。">
+          <div class="card-head">
+            <span class="card-num">41</span>
+            <span class="card-title">MATLAB / 数值与工业软件</span>
+          </div>
+          <div class="card-code">跨平台内核 + 工具箱(插件)生态;向量化与 JIT 提升数值性能;
+面向工程师的脚本/建模层 + 高性能底层。
+工业软件启示：稳定内核 + 可扩展算法库 + 组态/脚本层、确定性与长稳、功能安全。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-11">
+      <button class="section-head">
+        <span class="icon">11</span>
+        <span class="title">十一、指导 AI 编写大型工业软件的要点</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-11-42" data-keywords="先定架构与接口 让 AI 先产出：分层架构图、模块边界、关键接口(头文件)、数据模型与错误约定，再写实现。 避免一上来堆细节;以接口契约驱动分工。">
+          <div class="card-head">
+            <span class="card-num">42</span>
+            <span class="card-title">先定架构与接口</span>
+          </div>
+          <div class="card-code">让 AI 先产出：分层架构图、模块边界、关键接口(头文件)、数据模型与错误约定，再写实现。
+避免一上来堆细节;以接口契约驱动分工。</div>
+        </div>
+        <div class="card" id="card-11-43" data-keywords="增量演进与可测 按模块小步交付，每步配单元测试与示例;先跑通最小可用骨架(端到端)，再逐层充实。 每次变更保持可编译、可测试、可回滚。">
+          <div class="card-head">
+            <span class="card-num">43</span>
+            <span class="card-title">增量演进与可测</span>
+          </div>
+          <div class="card-code">按模块小步交付，每步配单元测试与示例;先跑通最小可用骨架(端到端)，再逐层充实。
+每次变更保持可编译、可测试、可回滚。</div>
+        </div>
+        <div class="card" id="card-11-44" data-keywords="约束与非功能需求显式化 把性能、实时性、内存上限、可靠性、可移植性、安全合规作为硬约束写进需求，让 AI 据此取舍。 明确目标平台、编译器、C++ 标准、依赖白名单。">
+          <div class="card-head">
+            <span class="card-num">44</span>
+            <span class="card-title">约束与非功能需求显式化</span>
+          </div>
+          <div class="card-code">把性能、实时性、内存上限、可靠性、可移植性、安全合规作为硬约束写进需求，让 AI 据此取舍。
+明确目标平台、编译器、C++ 标准、依赖白名单。</div>
+        </div>
+        <div class="card" id="card-11-45" data-keywords="复用成熟范式 优先套用本手册的成熟范式(RAII、PAL、插件、WAL、监督树、Model/View)，而非临时发明； 引用参考实现(Qt/数据库/OS)的做法降低风险。">
+          <div class="card-head">
+            <span class="card-num">45</span>
+            <span class="card-title">复用成熟范式</span>
+          </div>
+          <div class="card-code">优先套用本手册的成熟范式(RAII、PAL、插件、WAL、监督树、Model/View)，而非临时发明；
+引用参考实现(Qt/数据库/OS)的做法降低风险。</div>
+        </div>
+        <div class="card" id="card-11-46" data-keywords="审查清单 每个模块过一遍：所有权是否清晰？失败如何隔离恢复？是否线程安全？接口是否稳定可测？资源是否有上限？日志与错误是否可诊断？是否跨平台？ 用清单驱动 AI 自查与人工评审。">
+          <div class="card-head">
+            <span class="card-num">46</span>
+            <span class="card-title">审查清单</span>
+          </div>
+          <div class="card-code">每个模块过一遍：所有权是否清晰？失败如何隔离恢复？是否线程安全？接口是否稳定可测？资源是否有上限？日志与错误是否可诊断？是否跨平台？
+用清单驱动 AI 自查与人工评审。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>
