@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IEC 61850 报文详解</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>IEC 61850 报文详解(MMS/GOOSE/SV)</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">27 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">基于《61850报文浅析》整理。IEC 61850 站控层用 MMS(客户/服务器)，过程层用 GOOSE(快速事件)与 SV(采样值)。注：来源未涉及“CMS”，本文对 MMS/GOOSE/SV 详解，并在末节说明 CMS/对时等。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、通信分层与协议栈</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="A-Profile 与 T-Profile 61850 把 OSI 分为应用协议集 A-Profile(上3层)与传输协议集 T-Profile(下4层)。 8-1 规定 4 类通信：客户/服务器(MMS)、GSE(GOOSE)与管理、GSSE、时间同步。 实用方案：OSI 上三层 + TCP/IP + 以太网。">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">A-Profile 与 T-Profile</span>
+          </div>
+          <div class="card-code">61850 把 OSI 分为应用协议集 A-Profile(上3层)与传输协议集 T-Profile(下4层)。
+8-1 规定 4 类通信：客户/服务器(MMS)、GSE(GOOSE)与管理、GSSE、时间同步。
+实用方案：OSI 上三层 + TCP/IP + 以太网。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="MMS 协议栈(站控层) 自上而下：MMS → ACSE(关联控制, ISO 8650) → 表示层(ISO 8823) → 会话层(ISO 8327) → RFC1006(在 TCP 上承载 OSI 传输) → TPKT/COTP → TCP(端口 102) → IP → 以太网。 TPKT: 版本3+长度; COTP: ISO 8073 面向连接传输, 分包(&gt;1500B), 末字节含结束标志。">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">MMS 协议栈(站控层)</span>
+          </div>
+          <div class="card-code">自上而下：MMS → ACSE(关联控制, ISO 8650) → 表示层(ISO 8823) → 会话层(ISO 8327) → RFC1006(在 TCP 上承载 OSI 传输) → TPKT/COTP → TCP(端口 102) → IP → 以太网。
+TPKT: 版本3+长度; COTP: ISO 8073 面向连接传输, 分包(&gt;1500B), 末字节含结束标志。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="过程层协议栈(GOOSE/SV) GOOSE/SV 为实时性直接映射到数据链路层(以太网)，不经 TCP/IP。 用组播 MAC + VLAN + APPID 标识，采用 ASN.1/BER 编码，延时要求极低(GOOSE&lt;4ms, SV 严格同步)。">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">过程层协议栈(GOOSE/SV)</span>
+          </div>
+          <div class="card-code">GOOSE/SV 为实时性直接映射到数据链路层(以太网)，不经 TCP/IP。
+用组播 MAC + VLAN + APPID 标识，采用 ASN.1/BER 编码，延时要求极低(GOOSE&lt;4ms, SV 严格同步)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、MMS 概念与编码</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-4" data-keywords="MMS 与 61850 映射 MMS(制造报文规范, ISO 9506)是通用工业通信协议，61850-8-1 只映射其一部分。 MMS 数据模型最多 3 层隶属，而 61850 层次更深：用命名分层解决——LD 与 LN 间加 &#x27;/&#x27;，其余层次间加 &#x27;$&#x27;，如 LD0/LLN0$RP$urcbMonS。">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">MMS 与 61850 映射</span>
+          </div>
+          <div class="card-code">MMS(制造报文规范, ISO 9506)是通用工业通信协议，61850-8-1 只映射其一部分。
+MMS 数据模型最多 3 层隶属，而 61850 层次更深：用命名分层解决——LD 与 LN 间加 &#x27;/&#x27;，其余层次间加 &#x27;$&#x27;，如 LD0/LLN0$RP$urcbMonS。</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="ASN.1 / BER 编码 MMS 用 ASN.1 抽象语法 + BER 编码，报文为 TLV(标签-长度-内容)： 标识符字节含 类别(2位)+构造/基本(1位)+标签号(5位)。 长度：≤127 短式(1字节)；&gt;127 长式(首字节 bit7=1, 低7位为后续长度字节数)；构造类型可用不定长(0x80…0x0000)。 内容可嵌套(构造型), 61850 报文常嵌套十几层。">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">ASN.1 / BER 编码</span>
+          </div>
+          <div class="card-code">MMS 用 ASN.1 抽象语法 + BER 编码，报文为 TLV(标签-长度-内容)：
+标识符字节含 类别(2位)+构造/基本(1位)+标签号(5位)。
+长度：≤127 短式(1字节)；&gt;127 长式(首字节 bit7=1, 低7位为后续长度字节数)；构造类型可用不定长(0x80…0x0000)。
+内容可嵌套(构造型), 61850 报文常嵌套十几层。</div>
+        </div>
+        <div class="card" id="card-2-6" data-keywords="PDU 与分析方法 MMS 报文由 PDU 组成，用 TAG 区分功能(如 Confirmed-Request/Response、Unconfirmed)。 分析：取最外层 TAG+长度→判 PDU 类型→若为构造型则递归解析内层。常用 Wireshark/“MMS Ethereal”工具。">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">PDU 与分析方法</span>
+          </div>
+          <div class="card-code">MMS 报文由 PDU 组成，用 TAG 区分功能(如 Confirmed-Request/Response、Unconfirmed)。
+分析：取最外层 TAG+长度→判 PDU 类型→若为构造型则递归解析内层。常用 Wireshark/“MMS Ethereal”工具。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、MMS 关联与初始化</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-7" data-keywords="建立关联 Initiate-Request(关联请求)/Initiate-Response(关联响应)完成握手，建立客户端与 IED 的连接。 服务端 TCP 端口 102；连不上可 telnet &lt;ip&gt; 102 测试端口是否开启。">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">建立关联</span>
+          </div>
+          <div class="card-code">Initiate-Request(关联请求)/Initiate-Response(关联响应)完成握手，建立客户端与 IED 的连接。
+服务端 TCP 端口 102；连不上可 telnet &lt;ip&gt; 102 测试端口是否开启。</div>
+        </div>
+        <div class="card" id="card-3-8" data-keywords="读取模型信息 初始化时子系统依次： GetNameList 读对象名列表； GetNamedVariableListAttributes 读数据集成员(须与 ICD 静态一致, 比对 FCDA 个数与名称)； GetVariableAccessAttributes 读每个 DO/DA 的数据类型，供后续报文解析。">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">读取模型信息</span>
+          </div>
+          <div class="card-code">初始化时子系统依次：
+GetNameList 读对象名列表；
+GetNamedVariableListAttributes 读数据集成员(须与 ICD 静态一致, 比对 FCDA 个数与名称)；
+GetVariableAccessAttributes 读每个 DO/DA 的数据类型，供后续报文解析。</div>
+        </div>
+        <div class="card" id="card-3-9" data-keywords="控制模式读取 读各控点 ctlModel：1=直接控制(如复归 LEDRs)，4=带预置(SBO)的控制(如压板、开关)。 模型中 FC=CO 的数据即控制对象。">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">控制模式读取</span>
+          </div>
+          <div class="card-code">读各控点 ctlModel：1=直接控制(如复归 LEDRs)，4=带预置(SBO)的控制(如压板、开关)。
+模型中 FC=CO 的数据即控制对象。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、MMS 报告(核心)</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-10" data-keywords="报告控制块 BRCB/URCB 报告上送数据集中的数据；由报告控制块控制。 BRCB 缓存报告：内部事件先缓存/立即发送，连接断开不丢数据，具时间顺序(SOE)。 URCB 非缓存报告：立即发送，关联不存在或过慢则丢事件。 触发方式：定时(周期)、预设(数据/品质变化)、客户端定制。">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">报告控制块 BRCB/URCB</span>
+          </div>
+          <div class="card-code">报告上送数据集中的数据；由报告控制块控制。
+BRCB 缓存报告：内部事件先缓存/立即发送，连接断开不丢数据，具时间顺序(SOE)。
+URCB 非缓存报告：立即发送，关联不存在或过慢则丢事件。
+触发方式：定时(周期)、预设(数据/品质变化)、客户端定制。</div>
+        </div>
+        <div class="card" id="card-4-11" data-keywords="触发条件 TrgOps TrgOps 设置何时触发：数据变化(dchg)、品质变化(qchg)、数据刷新(dupd)、周期(period)、总召(gi)。">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">触发条件 TrgOps</span>
+          </div>
+          <div class="card-code">TrgOps 设置何时触发：数据变化(dchg)、品质变化(qchg)、数据刷新(dupd)、周期(period)、总召(gi)。</div>
+        </div>
+        <div class="card" id="card-4-12" data-keywords="任选域 OptFlds OptFlds(2字节)规定报告含哪些字段(从高位起)： 4000 序号、2000 报告生成时标、1000 原因、0800 数据集名、0400 数据集路径、0200 缓冲溢出、0100 条目号(entryID)、0080 配置号。 常用默认如 7900/7F80。">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">任选域 OptFlds</span>
+          </div>
+          <div class="card-code">OptFlds(2字节)规定报告含哪些字段(从高位起)：
+4000 序号、2000 报告生成时标、1000 原因、0800 数据集名、0400 数据集路径、0200 缓冲溢出、0100 条目号(entryID)、0080 配置号。
+常用默认如 7900/7F80。</div>
+        </div>
+        <div class="card" id="card-4-13" data-keywords="总召 GI 与 Inclusion 连接成功后写 GI(General Interrogation)=TRUE 做一次总召，装置上送数据集全部数据。 报告中 Inclusion 位串指示数据集哪些成员发生变化(某位=1 即该序号数据变化)； reason-for-inclusion 指示上送原因；品质 q 随数据上送。">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">总召 GI 与 Inclusion</span>
+          </div>
+          <div class="card-code">连接成功后写 GI(General Interrogation)=TRUE 做一次总召，装置上送数据集全部数据。
+报告中 Inclusion 位串指示数据集哪些成员发生变化(某位=1 即该序号数据变化)；
+reason-for-inclusion 指示上送原因；品质 q 随数据上送。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、MMS 控制</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-14" data-keywords="预置与执行 ctlModel=4(SBO)：client 先发 Select/预置(write)再发 Oper/执行(write)；IED 预置通过合法性检查(是否已达目标态/是否正在执行)即回响应。 ctlModel=1(直控)：无预置，直接写 Oper 执行。">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">预置与执行</span>
+          </div>
+          <div class="card-code">ctlModel=4(SBO)：client 先发 Select/预置(write)再发 Oper/执行(write)；IED 预置通过合法性检查(是否已达目标态/是否正在执行)即回响应。
+ctlModel=1(直控)：无预置，直接写 Oper 执行。</div>
+        </div>
+        <div class="card" id="card-5-15" data-keywords="控制结束报告 ctlModel=4 每次操作结束，IED 主动发 InformationReport 通知最终结果(据目标是否正确变位判断成功与否)； 子系统收到才认为控制结束；ctlModel=1 不发此报文。">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">控制结束报告</span>
+          </div>
+          <div class="card-code">ctlModel=4 每次操作结束，IED 主动发 InformationReport 通知最终结果(据目标是否正确变位判断成功与否)；
+子系统收到才认为控制结束；ctlModel=1 不发此报文。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、MMS 定值与文件传输</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-16" data-keywords="定值区操作 读定值区个数、读当前运行区号、读当前区定值(FC=SG，不可写)。 改非当前区：先 write 切编辑区区号→写 FC=SE 定值→固化。 切当前运行区、切编辑区均为 write。">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">定值区操作</span>
+          </div>
+          <div class="card-code">读定值区个数、读当前运行区号、读当前区定值(FC=SG，不可写)。
+改非当前区：先 write 切编辑区区号→写 FC=SE 定值→固化。
+切当前运行区、切编辑区均为 write。</div>
+        </div>
+        <div class="card" id="card-6-17" data-keywords="录波文件传输 IED 录波完成主动上报(录波完成数据集/报告)→client 可自动召唤。 读文件列表 FileDirectory(指定目录, 如 /COMTRADE/)； 读文件内容三步：FileOpen → FileRead(大文件多次) → FileClose。 波形为 COMTRADE 格式。">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">录波文件传输</span>
+          </div>
+          <div class="card-code">IED 录波完成主动上报(录波完成数据集/报告)→client 可自动召唤。
+读文件列表 FileDirectory(指定目录, 如 /COMTRADE/)；
+读文件内容三步：FileOpen → FileRead(大文件多次) → FileClose。
+波形为 COMTRADE 格式。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-7">
+      <button class="section-head">
+        <span class="icon">7</span>
+        <span class="title">七、GOOSE 报文</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-7-18" data-keywords="GOOSE 概念 GOOSE = Generic Object Oriented Substation Events，面向通用对象的变电站事件，满足快速报文需求。 主要用于保护跳闸、测控五防联闭锁等过程层实时信号。">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">GOOSE 概念</span>
+          </div>
+          <div class="card-code">GOOSE = Generic Object Oriented Substation Events，面向通用对象的变电站事件，满足快速报文需求。
+主要用于保护跳闸、测控五防联闭锁等过程层实时信号。</div>
+        </div>
+        <div class="card" id="card-7-19" data-keywords="关键字段 GoCBRef：GOOSE 控制块引用(如 JFZ600FRPIT/LLN0$GO$Pub_OPST)。 DatSetRef：引用的数据集。GOOSEID：应用标识。 Test：检修位(TRUE=投检修压板)。ConfRev：配置版本号。NdsCom：需重新配置标志。 NumDatSetEntries：数据条目数(须与模型数据集一致)。">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">关键字段</span>
+          </div>
+          <div class="card-code">GoCBRef：GOOSE 控制块引用(如 JFZ600FRPIT/LLN0$GO$Pub_OPST)。
+DatSetRef：引用的数据集。GOOSEID：应用标识。
+Test：检修位(TRUE=投检修压板)。ConfRev：配置版本号。NdsCom：需重新配置标志。
+NumDatSetEntries：数据条目数(须与模型数据集一致)。</div>
+        </div>
+        <div class="card" id="card-7-20" data-keywords="StNum / SqNum StNum 状态号：数据集中检出值改变→报文重发并 StNum+1。 SqNum 序号：每发一帧+1，用于检测漏包；StNum 变化时 SqNum 清零重新计数。 二者是 GOOSE 两个重要标志。">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">StNum / SqNum</span>
+          </div>
+          <div class="card-code">StNum 状态号：数据集中检出值改变→报文重发并 StNum+1。
+SqNum 序号：每发一帧+1，用于检测漏包；StNum 变化时 SqNum 清零重新计数。
+二者是 GOOSE 两个重要标志。</div>
+        </div>
+        <div class="card" id="card-7-21" data-keywords="重传机制与 TTL 即使状态不变也周期重发(心跳)。T0=心跳间隔(MaxTime, 如5000ms)，突发事件用最短重传 T1(MinTime, 如2ms)，逐步回到 T0。 TTL(报文允许生存时间)=2×T0；超过 TTL 未收到有效报文则判通信中断。">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title">重传机制与 TTL</span>
+          </div>
+          <div class="card-code">即使状态不变也周期重发(心跳)。T0=心跳间隔(MaxTime, 如5000ms)，突发事件用最短重传 T1(MinTime, 如2ms)，逐步回到 T0。
+TTL(报文允许生存时间)=2×T0；超过 TTL 未收到有效报文则判通信中断。</div>
+        </div>
+        <div class="card" id="card-7-22" data-keywords="数据类型 BOOLEAN：00=FALSE、01=TRUE(单点)。 位串(双点)：00 无效、01 分位、10 合位。">
+          <div class="card-head">
+            <span class="card-num">22</span>
+            <span class="card-title">数据类型</span>
+          </div>
+          <div class="card-code">BOOLEAN：00=FALSE、01=TRUE(单点)。
+位串(双点)：00 无效、01 分位、10 合位。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-8">
+      <button class="section-head">
+        <span class="icon">8</span>
+        <span class="title">八、SV 采样值报文</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-8-23" data-keywords="SV 与合并单元 SV = Sampled Value，智能站用电子式互感器数字采样替代电缆模拟量。 合并单元 MU 对多路采样做同步合并，按 IEC 61850-9-1/9-2 输出以太网数据到过程层。 同步对象：三相电压电流、变压器/母线差动多间隔、线路纵差两端。输入可为 FT3，输出统一 9-2。">
+          <div class="card-head">
+            <span class="card-num">23</span>
+            <span class="card-title">SV 与合并单元</span>
+          </div>
+          <div class="card-code">SV = Sampled Value，智能站用电子式互感器数字采样替代电缆模拟量。
+合并单元 MU 对多路采样做同步合并，按 IEC 61850-9-1/9-2 输出以太网数据到过程层。
+同步对象：三相电压电流、变压器/母线差动多间隔、线路纵差两端。输入可为 FT3，输出统一 9-2。</div>
+        </div>
+        <div class="card" id="card-8-24" data-keywords="SV 关键字段 APPID：应用标识，选择采样值并区分关联，全站唯一；工程常令 APPID=目标组播MAC低16位(如 01-0C-CD-04-40-12 → 4012)。 SVID：采样值标识字符串(标识名, 报文必含)。 SmpCnt(采样计数)：每帧+1, 从0循环, 用于判丢包。 SmpSynch(同步标志)：TRUE 同步/FALSE 未同步。">
+          <div class="card-head">
+            <span class="card-num">24</span>
+            <span class="card-title">SV 关键字段</span>
+          </div>
+          <div class="card-code">APPID：应用标识，选择采样值并区分关联，全站唯一；工程常令 APPID=目标组播MAC低16位(如 01-0C-CD-04-40-12 → 4012)。
+SVID：采样值标识字符串(标识名, 报文必含)。
+SmpCnt(采样计数)：每帧+1, 从0循环, 用于判丢包。
+SmpSynch(同步标志)：TRUE 同步/FALSE 未同步。</div>
+        </div>
+        <div class="card" id="card-8-25" data-keywords="数据与品质 Sequence of Data：一个通道 8 字节 = 4 字节采样值 + 4 字节品质； 品质 4 字节中后 2 字节有效(16位中14位有效)。 例：品质 00 03 → 低两位=11 表示 questionable(可疑数据)。 编码同样用 ASN.1/BER。">
+          <div class="card-head">
+            <span class="card-num">25</span>
+            <span class="card-title">数据与品质</span>
+          </div>
+          <div class="card-code">Sequence of Data：一个通道 8 字节 = 4 字节采样值 + 4 字节品质；
+品质 4 字节中后 2 字节有效(16位中14位有效)。
+例：品质 00 03 → 低两位=11 表示 questionable(可疑数据)。
+编码同样用 ASN.1/BER。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-9">
+      <button class="section-head">
+        <span class="icon">9</span>
+        <span class="title">九、链路层与 CMS 说明</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-9-26" data-keywords="以太网映射 GOOSE(EtherType 0x88B8)、SV(0x88BA)直接封装于以太网, 带 VLAN(0x8100)标签(优先级+VLAN-ID)与 APPID。 目标为组播 MAC(可配置, 非硬件地址, 便于更换硬件不改配置)。不经 IP/TCP, 保证实时。">
+          <div class="card-head">
+            <span class="card-num">26</span>
+            <span class="card-title">以太网映射</span>
+          </div>
+          <div class="card-code">GOOSE(EtherType 0x88B8)、SV(0x88BA)直接封装于以太网, 带 VLAN(0x8100)标签(优先级+VLAN-ID)与 APPID。
+目标为组播 MAC(可配置, 非硬件地址, 便于更换硬件不改配置)。不经 IP/TCP, 保证实时。</div>
+        </div>
+        <div class="card" id="card-9-27" data-keywords="关于 CMS 与其他服务 来源资料未定义“CMS”协议。IEC 61850 站控层客户/服务器(ACSI 核心服务)映射为 MMS； 若指其他：GSSE(早期二进制状态事件)、时间同步用 SNTP(简单网络时间协议)。 如需特定 CMS(如某厂私有/新版 8-2 MMS-over-XMPP)请另行指明。">
+          <div class="card-head">
+            <span class="card-num">27</span>
+            <span class="card-title">关于 CMS 与其他服务</span>
+          </div>
+          <div class="card-code">来源资料未定义“CMS”协议。IEC 61850 站控层客户/服务器(ACSI 核心服务)映射为 MMS；
+若指其他：GSSE(早期二进制状态事件)、时间同步用 SNTP(简单网络时间协议)。
+如需特定 CMS(如某厂私有/新版 8-2 MMS-over-XMPP)请另行指明。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>

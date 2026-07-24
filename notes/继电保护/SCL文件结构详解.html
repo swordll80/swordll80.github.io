@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCL 文件结构详解</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>IEC 61850 SCL 文件结构详解</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">22 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">基于《61850模型说明》整理。SCL(变电站配置描述语言, IEC 61850-6) 基于 XML，用于描述 IED 模型、通信参数与变电站结构。含 ICD/SSD/SCD/CID 等文件类型。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、SCL 与文件类型</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="SCL 是什么 SCL = Substation Configuration description Language(IEC 61850-6)，基于 XML。 用面向对象方式对变电站、IED 设备、通信系统统一建模，实现装置能力的自我描述与工具间互操作。 遵循 XML 1.0 语法，用 XML Schema(SCL.xsd 等 8 个 xsd) 校验结构。">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">SCL 是什么</span>
+          </div>
+          <div class="card-code">SCL = Substation Configuration description Language(IEC 61850-6)，基于 XML。
+用面向对象方式对变电站、IED 设备、通信系统统一建模，实现装置能力的自我描述与工具间互操作。
+遵循 XML 1.0 语法，用 XML Schema(SCL.xsd 等 8 个 xsd) 校验结构。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="四种模型文件 ICD (IED Capability Description)：厂家提供的装置能力描述，含逻辑节点/数据对象/属性，不含实例名与通信参数。 SSD (System Specification Description)：一次系统结构与关联逻辑节点，最终并入 SCD。 SCD (Substation Configuration Description)：全站唯一的系统配置文件，集成所有 IED 模型+通信+变电站描述。 CID (Configured IED Description)：某台 IED 的实例配置(ICD 实例化)，含通信参数，装置最终配置。">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">四种模型文件</span>
+          </div>
+          <div class="card-code">ICD (IED Capability Description)：厂家提供的装置能力描述，含逻辑节点/数据对象/属性，不含实例名与通信参数。
+SSD (System Specification Description)：一次系统结构与关联逻辑节点，最终并入 SCD。
+SCD (Substation Configuration Description)：全站唯一的系统配置文件，集成所有 IED 模型+通信+变电站描述。
+CID (Configured IED Description)：某台 IED 的实例配置(ICD 实例化)，含通信参数，装置最终配置。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="配置流程 厂家出 ICD → 系统集成商用 SSD + 各 ICD 配置成 SCD → 由 SCD 导出每台装置的 CID/下装。 (第2版新增 IID 实例化 IED、SED 系统交换文件)。">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">配置流程</span>
+          </div>
+          <div class="card-code">厂家出 ICD → 系统集成商用 SSD + 各 ICD 配置成 SCD → 由 SCD 导出每台装置的 CID/下装。
+(第2版新增 IID 实例化 IED、SED 系统交换文件)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、SCL 根与五大子元素</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-4" data-keywords="SCL 根元素 &lt;SCL xmlns=&quot;http://www.iec.ch/61850/2003/SCL&quot;      xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;      xsi:schemaLocation=&quot;...SCL.xsd&quot;&gt; xmlns 定义命名空间，schemaLocation 指明 Schema 位置，可加私有扩展命名空间。">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">SCL 根元素</span>
+          </div>
+          <div class="card-code">&lt;SCL xmlns=&quot;http://www.iec.ch/61850/2003/SCL&quot;
+     xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+     xsi:schemaLocation=&quot;...SCL.xsd&quot;&gt;
+xmlns 定义命名空间，schemaLocation 指明 Schema 位置，可加私有扩展命名空间。</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="五个子元素 SCL 由 5 个子元素构成： 1) Header  文件标识与版本 2) Substation  变电站一次系统结构 3) Communication  通信系统配置 4) IED  智能电子设备模型 5) DataTypeTemplates  数据类型模板 其中 IED 与 DataTypeTemplates 是装置建模核心。">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">五个子元素</span>
+          </div>
+          <div class="card-code">SCL 由 5 个子元素构成：
+1) Header  文件标识与版本
+2) Substation  变电站一次系统结构
+3) Communication  通信系统配置
+4) IED  智能电子设备模型
+5) DataTypeTemplates  数据类型模板
+其中 IED 与 DataTypeTemplates 是装置建模核心。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、Header 与 Substation</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-6" data-keywords="Header 元素 标识 SCL 文件：id(唯一标识)、version、revision、toolID(生成工具)、nameStructure(命名结构，IEDName)。 子元素 History/Hitem 记录版本修改历史。">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">Header 元素</span>
+          </div>
+          <div class="card-code">标识 SCL 文件：id(唯一标识)、version、revision、toolID(生成工具)、nameStructure(命名结构，IEDName)。
+子元素 History/Hitem 记录版本修改历史。</div>
+        </div>
+        <div class="card" id="card-3-7" data-keywords="Substation 元素 描述一次系统层次： Substation → VoltageLevel(电压等级) → Bay(间隔) → ConductingEquipment(一次设备,如断路器CBR/隔离刀闸DIS)。 各层可含 LNode(引用逻辑节点，把一次设备关联到 IED 的 LN) 与 Function/SubFunction。">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">Substation 元素</span>
+          </div>
+          <div class="card-code">描述一次系统层次：
+Substation → VoltageLevel(电压等级) → Bay(间隔) → ConductingEquipment(一次设备,如断路器CBR/隔离刀闸DIS)。
+各层可含 LNode(引用逻辑节点，把一次设备关联到 IED 的 LN) 与 Function/SubFunction。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、Communication 通信配置</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-8" data-keywords="SubNetwork / ConnectedAP Communication 含必选子元素 SubNetwork(子网, 如 MMS 站控层网、GOOSE/SV 过程层网)。 SubNetwork → ConnectedAP(连接访问点, 由 iedName+apName 定位某 IED 的通信接入点)。">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">SubNetwork / ConnectedAP</span>
+          </div>
+          <div class="card-code">Communication 含必选子元素 SubNetwork(子网, 如 MMS 站控层网、GOOSE/SV 过程层网)。
+SubNetwork → ConnectedAP(连接访问点, 由 iedName+apName 定位某 IED 的通信接入点)。</div>
+        </div>
+        <div class="card" id="card-4-9" data-keywords="Address 与 P 类型 ConnectedAP 的 Address 用若干 &lt;P&gt; 描述地址： P type=&quot;IP&quot;、&quot;IP-SUBNET&quot;、&quot;IP-GATEWAY&quot;(站控层 MMS)、 P type=&quot;MAC-Address&quot;、&quot;APPID&quot;、&quot;VLAN-ID&quot;、&quot;VLAN-PRIORITY&quot;(过程层 GOOSE/SV)。">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">Address 与 P 类型</span>
+          </div>
+          <div class="card-code">ConnectedAP 的 Address 用若干 &lt;P&gt; 描述地址：
+P type=&quot;IP&quot;、&quot;IP-SUBNET&quot;、&quot;IP-GATEWAY&quot;(站控层 MMS)、
+P type=&quot;MAC-Address&quot;、&quot;APPID&quot;、&quot;VLAN-ID&quot;、&quot;VLAN-PRIORITY&quot;(过程层 GOOSE/SV)。</div>
+        </div>
+        <div class="card" id="card-4-10" data-keywords="GSE 与 SMV ConnectedAP 下： GSE(对应 GOOSE 控制块通信参数)：含 Address(组播MAC/APPID/VLAN)、MinTime(GOOSE T1 最快重传, 如2ms)、MaxTime(T0 心跳, 如5000ms)。 SMV(对应采样值控制块通信参数)：含 Address(组播MAC/APPID)。 ldInst/cbName 关联到 IED 内的控制块。">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">GSE 与 SMV</span>
+          </div>
+          <div class="card-code">ConnectedAP 下：
+GSE(对应 GOOSE 控制块通信参数)：含 Address(组播MAC/APPID/VLAN)、MinTime(GOOSE T1 最快重传, 如2ms)、MaxTime(T0 心跳, 如5000ms)。
+SMV(对应采样值控制块通信参数)：含 Address(组播MAC/APPID)。
+ldInst/cbName 关联到 IED 内的控制块。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、IED 结构</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-11" data-keywords="IED / AccessPoint / Server IED 属性：name(实例名)、type、manufacturer、configVersion。 IED → AccessPoint(访问点) → Server(服务器) → Authentication(鉴别) + 若干 LDevice。">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">IED / AccessPoint / Server</span>
+          </div>
+          <div class="card-code">IED 属性：name(实例名)、type、manufacturer、configVersion。
+IED → AccessPoint(访问点) → Server(服务器) → Authentication(鉴别) + 若干 LDevice。</div>
+        </div>
+        <div class="card" id="card-5-12" data-keywords="LDevice 与 LN0/LN LDevice(逻辑设备, 属性 inst 实例号)。 每个 LDevice 必含一个 LLN0(LN0, 逻辑节点零, 承载数据集/控制块/定值组) 和一个 LPHD, 以及若干 LN(逻辑节点)。 LN 属性：lnClass(如 PDIF/PTOC/XCBR/MMXU)、inst、prefix、lnType(引用 LNodeType)。">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">LDevice 与 LN0/LN</span>
+          </div>
+          <div class="card-code">LDevice(逻辑设备, 属性 inst 实例号)。
+每个 LDevice 必含一个 LLN0(LN0, 逻辑节点零, 承载数据集/控制块/定值组) 和一个 LPHD, 以及若干 LN(逻辑节点)。
+LN 属性：lnClass(如 PDIF/PTOC/XCBR/MMXU)、inst、prefix、lnType(引用 LNodeType)。</div>
+        </div>
+        <div class="card" id="card-5-13" data-keywords="逻辑节点命名 LN 名 = prefix + lnClass + inst，如 Q0XCBR1。 对象引用路径：LDName/LN.DO.DA，如 CL2007ProtCTRL/PTRC1.Tr.general。 逻辑节点按首字母分组(P 保护、M 测量、C 控制、X 开关、T 互感器、G 通用 GGIO 等)。">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">逻辑节点命名</span>
+          </div>
+          <div class="card-code">LN 名 = prefix + lnClass + inst，如 Q0XCBR1。
+对象引用路径：LDName/LN.DO.DA，如 CL2007ProtCTRL/PTRC1.Tr.general。
+逻辑节点按首字母分组(P 保护、M 测量、C 控制、X 开关、T 互感器、G 通用 GGIO 等)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、数据集与控制块</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-14" data-keywords="DataSet / FCDA DataSet(数据集, 定义于 LN0/LN)：一组数据的集合，报告/GOOSE/SV 引用它上送。 成员 FCDA 用 ldInst/prefix/lnClass/lnInst/doName/daName/fc 定位一个数据(功能约束数据属性)。">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">DataSet / FCDA</span>
+          </div>
+          <div class="card-code">DataSet(数据集, 定义于 LN0/LN)：一组数据的集合，报告/GOOSE/SV 引用它上送。
+成员 FCDA 用 ldInst/prefix/lnClass/lnInst/doName/daName/fc 定位一个数据(功能约束数据属性)。</div>
+        </div>
+        <div class="card" id="card-6-15" data-keywords="ReportControl(报告控制块) 缓存报告 BRCB 与非缓存报告 URCB。 属性：name、datSet(引用数据集)、rptID、confRev、buffered、intgPd(周期)、 TrgOps(触发条件: dchg 数据变化/qchg 品质变化/dupd 更新/period 周期/gi 总召)、 OptFlds(任选域: 序号/时标/原因/数据集名/数据路径/缓冲溢出/条目号/配置号)。">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">ReportControl(报告控制块)</span>
+          </div>
+          <div class="card-code">缓存报告 BRCB 与非缓存报告 URCB。
+属性：name、datSet(引用数据集)、rptID、confRev、buffered、intgPd(周期)、
+TrgOps(触发条件: dchg 数据变化/qchg 品质变化/dupd 更新/period 周期/gi 总召)、
+OptFlds(任选域: 序号/时标/原因/数据集名/数据路径/缓冲溢出/条目号/配置号)。</div>
+        </div>
+        <div class="card" id="card-6-16" data-keywords="LogControl / GSEControl / SVControl LogControl：日志控制块(记录到日志)。 GSEControl：GOOSE 控制块(type=GOOSE/GSSE)，属性 appID、datSet、confRev。 SampledValueControl：采样值控制块(SMV)，属性 smvID、datSet、smpRate、nofASDU、confRev。 SettingControl：定值组控制块，属性 numOfSGs(定值区数)、actSG(当前运行区)。">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">LogControl / GSEControl / SVControl</span>
+          </div>
+          <div class="card-code">LogControl：日志控制块(记录到日志)。
+GSEControl：GOOSE 控制块(type=GOOSE/GSSE)，属性 appID、datSet、confRev。
+SampledValueControl：采样值控制块(SMV)，属性 smvID、datSet、smpRate、nofASDU、confRev。
+SettingControl：定值组控制块，属性 numOfSGs(定值区数)、actSG(当前运行区)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-7">
+      <button class="section-head">
+        <span class="icon">7</span>
+        <span class="title">七、实例值与虚端子</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-7-17" data-keywords="DOI / SDI / DAI 在 LN 内对数据对象/属性赋实例值： DOI(数据对象实例, name=DO 名) → SDI(子数据实例, 结构嵌套) → DAI(数据属性实例) → Val(具体值)。 如给 ctlModel、定值、描述等赋值。">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">DOI / SDI / DAI</span>
+          </div>
+          <div class="card-code">在 LN 内对数据对象/属性赋实例值：
+DOI(数据对象实例, name=DO 名) → SDI(子数据实例, 结构嵌套) → DAI(数据属性实例) → Val(具体值)。
+如给 ctlModel、定值、描述等赋值。</div>
+        </div>
+        <div class="card" id="card-7-18" data-keywords="Inputs / ExtRef(虚端子) Inputs 描述本 LN 订阅的外部信号(GOOSE/SV 接收)。 ExtRef 用 iedName/ldInst/lnClass/doName/daName 指向源信号(发布方)。 SCD 中的 ExtRef 连线即“虚端子”，是过程层 GOOSE/SV 联系的配置核心。">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">Inputs / ExtRef(虚端子)</span>
+          </div>
+          <div class="card-code">Inputs 描述本 LN 订阅的外部信号(GOOSE/SV 接收)。
+ExtRef 用 iedName/ldInst/lnClass/doName/daName 指向源信号(发布方)。
+SCD 中的 ExtRef 连线即“虚端子”，是过程层 GOOSE/SV 联系的配置核心。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-8">
+      <button class="section-head">
+        <span class="icon">8</span>
+        <span class="title">八、DataTypeTemplates 数据类型模板</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-8-19" data-keywords="四类模板 DataTypeTemplates 含： LNodeType(逻辑节点类型, 必选)、DOType(数据对象类型, 必选)、DAType(数据属性类型)、EnumType(枚举类型)。 LN 的 lnType 引用 LNodeType，逐层引用形成完整类型定义。">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">四类模板</span>
+          </div>
+          <div class="card-code">DataTypeTemplates 含：
+LNodeType(逻辑节点类型, 必选)、DOType(数据对象类型, 必选)、DAType(数据属性类型)、EnumType(枚举类型)。
+LN 的 lnType 引用 LNodeType，逐层引用形成完整类型定义。</div>
+        </div>
+        <div class="card" id="card-8-20" data-keywords="LNodeType / DOType LNodeType：属性 id、lnClass；子元素 DO(数据对象, name+type 引用 DOType)。 DOType：属性 id、cdc(公共数据类, 如 SPS/DPS/MV/ACT/SPC…, 见 IEC 61850-7-3)； 子元素 SDO(子数据对象)、DA(数据属性)。">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">LNodeType / DOType</span>
+          </div>
+          <div class="card-code">LNodeType：属性 id、lnClass；子元素 DO(数据对象, name+type 引用 DOType)。
+DOType：属性 id、cdc(公共数据类, 如 SPS/DPS/MV/ACT/SPC…, 见 IEC 61850-7-3)；
+子元素 SDO(子数据对象)、DA(数据属性)。</div>
+        </div>
+        <div class="card" id="card-8-21" data-keywords="DAType / EnumType DAType：结构化数据属性类型，子元素 BDA(基础数据属性)。 EnumType：枚举类型，子元素 EnumVal(ord+文本)。 DA/BDA 属性：name、bType(基本类型: BOOLEAN/INT32/FLOAT32/Enum/Struct/Timestamp/Quality…)、fc(功能约束)、type。">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title">DAType / EnumType</span>
+          </div>
+          <div class="card-code">DAType：结构化数据属性类型，子元素 BDA(基础数据属性)。
+EnumType：枚举类型，子元素 EnumVal(ord+文本)。
+DA/BDA 属性：name、bType(基本类型: BOOLEAN/INT32/FLOAT32/Enum/Struct/Timestamp/Quality…)、fc(功能约束)、type。</div>
+        </div>
+        <div class="card" id="card-8-22" data-keywords="公共数据类 CDC 与 FC CDC(Common Data Class)规定 DO 的结构，如 SPS 单点状态、DPS 双点、MV 测量值、SPC 单点控制、ACT 保护动作。 FC(功能约束)标记 DA 用途：ST 状态、MX 测量、CO 控制、SP 定值(运行区)、SE 定值(编辑区)、SG 定值组、DC 描述、CF 配置、EX 扩展。">
+          <div class="card-head">
+            <span class="card-num">22</span>
+            <span class="card-title">公共数据类 CDC 与 FC</span>
+          </div>
+          <div class="card-code">CDC(Common Data Class)规定 DO 的结构，如 SPS 单点状态、DPS 双点、MV 测量值、SPC 单点控制、ACT 保护动作。
+FC(功能约束)标记 DA 用途：ST 状态、MX 测量、CO 控制、SP 定值(运行区)、SE 定值(编辑区)、SG 定值组、DC 描述、CF 配置、EX 扩展。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>
