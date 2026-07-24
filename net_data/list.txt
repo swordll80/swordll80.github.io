@@ -1,6 +1,12 @@
 ﻿arp01.pcapng
 dhcp01.pcapng
 dns01.pcapng
+http01.pcapng
+icmp_ping.pcapng
+icmpv6_ndp.pcapng
+igmp.pcapng
+mdns.pcapng
+ntp.pcapng
 ssdp.pcapng
 tcp01.pcapng
 tcp02.pcapng
