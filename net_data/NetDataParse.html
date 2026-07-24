@@ -23,7 +23,7 @@
     .toolbar{display:grid;grid-template-columns:1fr;gap:12px}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.filebox{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.filebox input{max-width:100%;border:1px dashed var(--line);border-radius:12px;background:#fff;padding:8px}.examples{display:flex;gap:8px;flex-wrap:wrap}.example-btn{font-family:var(--mono);font-size:12px;padding:6px 9px;min-height:30px}.hint{font-size:12px;color:var(--muted);margin:0}.summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.metric{padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--panel2)}.metric b{display:block;font-size:20px;line-height:1.1}.metric span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
     .left{display:flex;flex-direction:column;gap:14px;min-height:0}.right{display:grid;grid-template-rows:minmax(260px,45%) minmax(260px,1fr);gap:14px;min-height:0}.packet-card,.tree-card,.hex-card{min-height:0;display:flex;flex-direction:column}.scroll{overflow:auto;min-height:0}.packet-table{width:100%;border-collapse:collapse;font-size:13px}.packet-table th,.packet-table td{border-bottom:1px solid var(--line);padding:8px 9px;text-align:left;vertical-align:top}.packet-table th{position:sticky;top:0;background:#f8fafc;z-index:1;color:#475467;font-size:12px}.packet-table tr{cursor:pointer}.packet-table tr:hover{background:#f4f8ff}.packet-table tr.active{background:#eaf2ff}.nowrap{white-space:nowrap}.mono{font-family:var(--mono)}.proto{display:inline-flex;border:1px solid #c7d7fe;background:#eef4ff;color:#1849a9;border-radius:999px;padding:1px 7px;font-weight:700;font-size:11px}
     .tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{padding:6px 10px;min-height:30px}.tab.active{background:var(--accent);border-color:var(--accent);color:#fff}.filter{display:flex;gap:8px;align-items:center}.filter input{width:220px;max-width:100%;border:1px solid var(--line);border-radius:10px;padding:7px 10px;background:#fff}
-    .tree{font-family:var(--mono);font-size:12px}.field-row{display:grid;grid-template-columns:82px 54px minmax(120px,210px) minmax(120px,1fr) minmax(160px,1fr);gap:8px;align-items:start;padding:6px 10px;border-bottom:1px solid #edf0f5;cursor:pointer}.field-row:hover{background:#f5f9ff}.field-row.header{position:sticky;top:0;z-index:2;background:#f8fafc;color:#475467;font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",Arial,sans-serif;font-size:12px;font-weight:700}.field-row.group{background:#fbfcff;font-weight:800;color:#1d2939}.field-row .muted{color:var(--muted)}
+    .tree{font-family:var(--mono);font-size:12px}.field-row{display:grid;grid-template-columns:82px 54px minmax(120px,210px) minmax(120px,1fr) minmax(160px,1fr);gap:8px;align-items:start;padding:6px 10px;border-bottom:1px solid #edf0f5;cursor:pointer}.field-row:hover{background:#f5f9ff}.field-row.header{position:sticky;top:0;z-index:2;background:#f8fafc;color:#475467;font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",Arial,sans-serif;font-size:12px;font-weight:700}.field-row.group{background:#fbfcff;font-weight:800;color:#1d2939}.field-row .muted{color:var(--muted)}.field-row.bit{background:#fcfbff}.field-row.bit span:nth-child(3){color:#475467}.field-row.bit span:nth-child(4){color:#7c3aed;font-weight:700;letter-spacing:.5px}
     .hex-tools{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.hex-wrap{font-family:var(--mono);font-size:12px;line-height:1.7;white-space:pre;overflow:auto;padding:12px;background:#0b1020;color:#d6e2ff;min-height:0}.hex-line{display:block}.hex-off{color:#8292bd}.hex-byte{display:inline-block;min-width:19px;text-align:center;border-radius:4px}.hex-byte.hl{background:#facc15;color:#101828}.hex-ascii{color:#a7b3d6;margin-left:10px}.empty{padding:22px;color:var(--muted);text-align:center}.status{color:var(--muted);font-size:12px}.error{color:var(--bad)}.ok{color:var(--good)}.warn{color:var(--warn)}
     .block-list{font-family:var(--mono);font-size:12px}.block-row{display:grid;grid-template-columns:82px 90px 80px 1fr;gap:8px;padding:6px 10px;border-bottom:1px solid #edf0f5}.block-row.head{position:sticky;top:0;background:#f8fafc;font-family:system-ui,-apple-system,"Segoe UI","Microsoft YaHei",Arial,sans-serif;font-weight:700;color:#475467}.pill{display:inline-block;border-radius:999px;padding:1px 7px;background:#eef4ff;color:#1849a9;font-size:11px;border:1px solid #c7d7fe}.apptext{font-family:var(--mono);font-size:12px;white-space:pre-wrap;padding:10px;margin:0;background:#f8fafc;border:1px solid var(--line);border-radius:12px;max-height:220px;overflow:auto}.footer{padding:10px 16px;color:var(--muted);font-size:12px;text-align:center;border-top:1px solid var(--line);background:rgba(255,255,255,.72)}
     @media (max-width:1000px){main{grid-template-columns:1fr}.right{grid-template-rows:auto auto}.tree-card,.hex-card{min-height:320px}.summary{grid-template-columns:repeat(2,minmax(0,1fr))}.field-row{grid-template-columns:70px 44px minmax(110px,1fr);}.field-row>span:nth-child(4),.field-row>span:nth-child(5){grid-column:3/-1}.field-row.header>span:nth-child(4),.field-row.header>span:nth-child(5){display:none}}
@@ -58,7 +58,7 @@
             <input id="fileInput" type="file" accept=".pcapng,application/octet-stream">
             <button id="clearBtn" type="button" data-i18n="clear">清空</button>
           </div>
-          <p class="hint" data-i18n="openHint">本工具在浏览器本地解析文件，不上传数据。当前重点支持 PCAPNG + Ethernet/IPv4/ARP/TCP/UDP/DNS/DHCP/SSDP/TLS 基础解析。</p>
+          <p class="hint" data-i18n="openHint">本工具在浏览器本地解析文件，不上传数据。支持 PCAPNG + Ethernet/VLAN、IPv4/IPv6、ARP、ICMP/ICMPv6、IGMP、TCP(选项)/UDP、DNS/mDNS、DHCP、NTP、HTTP、SSDP、TLS，并将 IP/TCP/IPv6/DNS/DHCP/NTP 首部细化到 bit 级。</p>
           <div>
             <div class="row" style="justify-content:space-between;margin-bottom:8px">
               <strong data-i18n="examples">在线示例</strong>
@@ -119,9 +119,9 @@
 
   var I18N = {
     zh: {
-      title:'网络数据在线解析工具', subtitle:'打开 .pcapng，按 Wireshark 风格查看包列表、协议字段、十六进制数据与字段含义。', home:'返回主页', openTitle:'打开数据', clear:'清空', openHint:'本工具在浏览器本地解析文件，不上传数据。当前重点支持 PCAPNG + Ethernet/IPv4/ARP/TCP/UDP/DNS/DHCP/SSDP/TLS 基础解析。', examples:'在线示例', reloadExamples:'刷新列表', loadingExamples:'正在读取 list.txt...', packets:'数据包', blocks:'PCAPNG 块', ifaces:'接口', bytes:'字节', packetList:'数据包列表', time:'时间', src:'源', dst:'目的', proto:'协议', len:'长度', info:'信息', emptyOpen:'请选择 .pcapng 文件，或加载一个在线示例。', structure:'二进制结构与字段含义', fields:'字段', pcapBlocks:'PCAPNG块', emptyPacket:'选择一个数据包后显示字段结构。', hexTitle:'十六进制数据', hexHint:'点击字段可高亮对应字节。', emptyHex:'暂无数据', footer:'静态前端解析器 · 可直接部署到 GitHub Pages · 不依赖服务器', loading:'正在解析...', loaded:'已加载', failed:'解析失败', noExample:'未找到 list.txt 或示例文件', offset:'偏移', size:'长度', field:'字段', value:'值', meaning:'含义', packetData:'Packet 数据', noPackets:'未发现可解析的数据包', blockType:'块类型', totalLength:'总长度', blockInfo:'说明', filterPh:'过滤协议/地址/说明', unsupportedLink:'暂仅支持以太网链路层', localFile:'本地文件', exampleFile:'示例文件', bytesUnit:'字节', frame:'帧', pcapng:'PCAPNG', ethernet:'以太网 II', ipv4:'IPv4', ipv6:'IPv6', arp:'ARP', tcp:'TCP', udp:'UDP', dns:'DNS', dhcp:'DHCP/BOOTP', tls:'TLS', ssdp:'SSDP/HTTP', unknown:'未知', options:'选项', payload:'负载', rawData:'原始数据', malformed:'结构异常或长度不足', checksum:'校验和', yes:'是', no:'否' },
+      title:'网络数据在线解析工具', subtitle:'打开 .pcapng，按 Wireshark 风格查看包列表、协议字段、十六进制数据与字段含义。', home:'返回主页', openTitle:'打开数据', clear:'清空', openHint:'本工具在浏览器本地解析文件，不上传数据。支持 PCAPNG + Ethernet/VLAN、IPv4/IPv6、ARP、ICMP/ICMPv6、IGMP、TCP(选项)/UDP、DNS/mDNS、DHCP、NTP、HTTP、SSDP、TLS，并将 IP/TCP/IPv6/DNS/DHCP/NTP 首部细化到 bit 级（版本、标志位、DSCP/ECN、QR/RD 等逐位解读，点击可高亮对应字节）。', examples:'在线示例', reloadExamples:'刷新列表', loadingExamples:'正在读取 list.txt...', packets:'数据包', blocks:'PCAPNG 块', ifaces:'接口', bytes:'字节', packetList:'数据包列表', time:'时间', src:'源', dst:'目的', proto:'协议', len:'长度', info:'信息', emptyOpen:'请选择 .pcapng 文件，或加载一个在线示例。', structure:'二进制结构（bit 级）与字段含义', fields:'字段', pcapBlocks:'PCAPNG块', emptyPacket:'选择一个数据包后显示字段结构。', hexTitle:'十六进制数据', hexHint:'点击字段可高亮对应字节。', emptyHex:'暂无数据', footer:'静态前端解析器 · 可直接部署到 GitHub Pages · 不依赖服务器', loading:'正在解析...', loaded:'已加载', failed:'解析失败', noExample:'未找到 list.txt 或示例文件', offset:'偏移', size:'长度', field:'字段', value:'值', meaning:'含义', packetData:'Packet 数据', noPackets:'未发现可解析的数据包', blockType:'块类型', totalLength:'总长度', blockInfo:'说明', filterPh:'过滤协议/地址/说明', unsupportedLink:'暂仅支持以太网链路层', localFile:'本地文件', exampleFile:'示例文件', bytesUnit:'字节', frame:'帧', pcapng:'PCAPNG', ethernet:'以太网 II', ipv4:'IPv4', ipv6:'IPv6', arp:'ARP', tcp:'TCP', udp:'UDP', dns:'DNS', dhcp:'DHCP/BOOTP', tls:'TLS', ssdp:'SSDP/HTTP', unknown:'未知', options:'选项', payload:'负载', rawData:'原始数据', malformed:'结构异常或长度不足', checksum:'校验和', yes:'是', no:'否' },
       en: {
-      title:'Online Network Data Parser', subtitle:'Open .pcapng and inspect packet list, protocol fields, hex bytes and meanings in a Wireshark-like view.', home:'Home', openTitle:'Open data', clear:'Clear', openHint:'Files are parsed locally in your browser and are not uploaded. This version focuses on PCAPNG + Ethernet/IPv4/ARP/TCP/UDP/DNS/DHCP/SSDP/TLS basics.', examples:'Online examples', reloadExamples:'Reload list', loadingExamples:'Reading list.txt...', packets:'Packets', blocks:'PCAPNG blocks', ifaces:'Interfaces', bytes:'Bytes', packetList:'Packet list', time:'Time', src:'Source', dst:'Destination', proto:'Protocol', len:'Length', info:'Info', emptyOpen:'Choose a .pcapng file or load an online example.', structure:'Binary structure and field meanings', fields:'Fields', pcapBlocks:'PCAPNG blocks', emptyPacket:'Select a packet to show decoded fields.', hexTitle:'Hex dump', hexHint:'Click a field to highlight corresponding bytes.', emptyHex:'No data', footer:'Static front-end parser · GitHub Pages ready · No server required', loading:'Parsing...', loaded:'Loaded', failed:'Parse failed', noExample:'list.txt or example files not found', offset:'Offset', size:'Size', field:'Field', value:'Value', meaning:'Meaning', packetData:'Packet data', noPackets:'No parseable packets found', blockType:'Block type', totalLength:'Total length', blockInfo:'Info', filterPh:'Filter protocol/address/info', unsupportedLink:'Only Ethernet link layer is supported currently', localFile:'Local file', exampleFile:'Example file', bytesUnit:'bytes', frame:'Frame', pcapng:'PCAPNG', ethernet:'Ethernet II', ipv4:'IPv4', ipv6:'IPv6', arp:'ARP', tcp:'TCP', udp:'UDP', dns:'DNS', dhcp:'DHCP/BOOTP', tls:'TLS', ssdp:'SSDP/HTTP', unknown:'Unknown', options:'Options', payload:'Payload', rawData:'Raw data', malformed:'Malformed or truncated structure', checksum:'Checksum', yes:'Yes', no:'No' }
+      title:'Online Network Data Parser', subtitle:'Open .pcapng and inspect packet list, protocol fields, hex bytes and meanings in a Wireshark-like view.', home:'Home', openTitle:'Open data', clear:'Clear', openHint:'Files are parsed locally in your browser and are not uploaded. Supports PCAPNG + Ethernet/VLAN, IPv4/IPv6, ARP, ICMP/ICMPv6, IGMP, TCP (with options)/UDP, DNS/mDNS, DHCP, NTP, HTTP, SSDP, TLS, and decodes IP/TCP/IPv6/DNS/DHCP/NTP headers down to individual bits (version, flag bits, DSCP/ECN, QR/RD, …; click to highlight the bytes).', examples:'Online examples', reloadExamples:'Reload list', loadingExamples:'Reading list.txt...', packets:'Packets', blocks:'PCAPNG blocks', ifaces:'Interfaces', bytes:'Bytes', packetList:'Packet list', time:'Time', src:'Source', dst:'Destination', proto:'Protocol', len:'Length', info:'Info', emptyOpen:'Choose a .pcapng file or load an online example.', structure:'Binary structure (bit-level) and field meanings', fields:'Fields', pcapBlocks:'PCAPNG blocks', emptyPacket:'Select a packet to show decoded fields.', hexTitle:'Hex dump', hexHint:'Click a field to highlight corresponding bytes.', emptyHex:'No data', footer:'Static front-end parser · GitHub Pages ready · No server required', loading:'Parsing...', loaded:'Loaded', failed:'Parse failed', noExample:'list.txt or example files not found', offset:'Offset', size:'Size', field:'Field', value:'Value', meaning:'Meaning', packetData:'Packet data', noPackets:'No parseable packets found', blockType:'Block type', totalLength:'Total length', blockInfo:'Info', filterPh:'Filter protocol/address/info', unsupportedLink:'Only Ethernet link layer is supported currently', localFile:'Local file', exampleFile:'Example file', bytesUnit:'bytes', frame:'Frame', pcapng:'PCAPNG', ethernet:'Ethernet II', ipv4:'IPv4', ipv6:'IPv6', arp:'ARP', tcp:'TCP', udp:'UDP', dns:'DNS', dhcp:'DHCP/BOOTP', tls:'TLS', ssdp:'SSDP/HTTP', unknown:'Unknown', options:'Options', payload:'Payload', rawData:'Raw data', malformed:'Malformed or truncated structure', checksum:'Checksum', yes:'Yes', no:'No' }
   };
 
   var state = { lang: localStorage.getItem('NetDataParse.lang') || 'zh', fileName:'', data:null, blocks:[], interfaces:[], packets:[], selected:0, tab:'fields', filter:'' };
@@ -154,6 +154,15 @@
   function dnsType(v){ return ({1:'A',2:'NS',5:'CNAME',6:'SOA',12:'PTR',15:'MX',16:'TXT',28:'AAAA',33:'SRV',41:'OPT',65:'HTTPS',255:'ANY'})[v] || String(v); }
   function dhcpMessage(v){ return ({1:'Discover',2:'Offer',3:'Request',4:'Decline',5:'ACK',6:'NAK',7:'Release',8:'Inform'})[v] || String(v); }
   function add(fields, group, off, len, name, value, meaning){ fields.push({group:!!group, off:off, len:len, name:name, value:value, meaning:meaning||''}); }
+  function bitStr(v, total, start, count){ v=v>>>0; var s=''; for(var i=0;i<total;i++){ s += (i>=start && i<start+count) ? String((v>>>(total-1-i))&1) : '.'; if((i+1)%4===0 && i+1<total) s+=' '; } return s; }
+  function addbit(f, off, byteLen, fullVal, total, start, count, name, decoded, meaning){ f.push({bit:true, off:off, len:byteLen, bits:count, name:name, value:bitStr(fullVal,total,start,count), meaning:((decoded!=null&&decoded!=='')?('= '+decoded):'')+(meaning?('  '+meaning):'')}); }
+  function icmpTypeName(v){ return ({0:'Echo Reply',3:'Destination Unreachable',4:'Source Quench',5:'Redirect',8:'Echo Request',9:'Router Advertisement',10:'Router Solicitation',11:'Time Exceeded',12:'Parameter Problem',13:'Timestamp',14:'Timestamp Reply'})[v] || ('Type '+v); }
+  function icmp6TypeName(v){ return ({1:'Destination Unreachable',2:'Packet Too Big',3:'Time Exceeded',4:'Parameter Problem',128:'Echo Request',129:'Echo Reply',130:'MLD Query',131:'MLD Report',133:'Router Solicitation',134:'Router Advertisement',135:'Neighbor Solicitation',136:'Neighbor Advertisement',137:'Redirect'})[v] || ('Type '+v); }
+  function igmpTypeName(v){ return ({0x11:'Membership Query',0x12:'v1 Membership Report',0x16:'v2 Membership Report',0x17:'Leave Group',0x22:'v3 Membership Report'})[v] || ('Type '+hex(v,2)); }
+  function ntpMode(v){ return ({0:'reserved',1:'Symmetric Active',2:'Symmetric Passive',3:'Client',4:'Server',5:'Broadcast',6:'Control',7:'Private'})[v] || String(v); }
+  function ntpLeap(v){ return ({0:'no warning',1:'last minute has 61s',2:'last minute has 59s',3:'unsynchronized'})[v] || String(v); }
+  function ntpStratum(v){ if(v===0) return 'unspecified / kiss-o’-death'; if(v===1) return 'primary reference'; if(v<=15) return 'secondary reference'; return 'reserved'; }
+  function ntpTs(b, off){ var sec=u32(b,off); if(sec===0) return '(not set)'; var unix=sec-2208988800, frac=u32(b,off+4)/4294967296; var d=new Date((unix+frac)*1000); return isNaN(d.getTime())?hex(sec,8):d.toISOString().replace('T',' ').replace('Z',' UTC'); }
 
   function parseOptions(view, start, end, little){
     var opts=[]; var p=start;
@@ -268,9 +277,17 @@
     var ver=b[off]>>4, ihl=(b[off]&0x0f)*4, total=u16(b,off+2), proto=b[off+9], src=ip4(b,off+12), dst=ip4(b,off+16), flagsFrag=u16(b,off+6);
     if(ihl<20 || off+ihl>b.length){ add(f,false,off,Math.max(0,b.length-off),t('ipv4'),'',t('malformed')); return; }
     add(f,true,off,ihl,t('ipv4'),src+' → '+dst,'Internet Protocol version 4');
-    add(f,false,off,1,'Version / IHL',ver+' / '+ihl+' bytes','IP version and header length');
-    add(f,false,off+1,1,'DSCP / ECN',hex(b[off+1],2),'Traffic class fields'); add(f,false,off+2,2,'Total Length',total+' bytes','IPv4 datagram length');
-    add(f,false,off+4,2,'Identification',hex(u16(b,off+4),4),'Fragment identification'); add(f,false,off+6,2,'Flags / Fragment Offset',hex(flagsFrag,4),'DF=' + ((flagsFrag&0x4000)?t('yes'):t('no')) + ', MF=' + ((flagsFrag&0x2000)?t('yes'):t('no')) + ', offset=' + (flagsFrag&0x1fff));
+    var ipb0=b[off], ipb1=b[off+1];
+    addbit(f,off,1,ipb0,8,0,4,'Version',ver,'IP version');
+    addbit(f,off,1,ipb0,8,4,4,'Header Length',ihl+' bytes ('+(ihl/4)+' words)','IHL × 4');
+    addbit(f,off+1,1,ipb1,8,0,6,'DSCP',hex(ipb1>>2,2),'Differentiated Services Code Point');
+    addbit(f,off+1,1,ipb1,8,6,2,'ECN',(ipb1&3),'Explicit Congestion Notification');
+    add(f,false,off+2,2,'Total Length',total+' bytes','IPv4 datagram length');
+    add(f,false,off+4,2,'Identification',hex(u16(b,off+4),4),'Fragment identification');
+    addbit(f,off+6,2,flagsFrag,16,0,1,'Reserved bit',(flagsFrag>>15)&1,'must be 0');
+    addbit(f,off+6,2,flagsFrag,16,1,1,"Don't Fragment (DF)",(flagsFrag>>14)&1,(flagsFrag&0x4000)?'set':'not set');
+    addbit(f,off+6,2,flagsFrag,16,2,1,'More Fragments (MF)',(flagsFrag>>13)&1,(flagsFrag&0x2000)?'set':'last fragment');
+    addbit(f,off+6,2,flagsFrag,16,3,13,'Fragment Offset',(flagsFrag&0x1fff),'in 8-byte units');
     add(f,false,off+8,1,'TTL',b[off+8],'Time to live'); add(f,false,off+9,1,'Protocol',proto,protocolName(proto)); add(f,false,off+10,2,t('checksum'),hex(u16(b,off+10),4),'IPv4 header checksum');
     add(f,false,off+12,4,'Source IP',src,'Sender IP address'); add(f,false,off+16,4,'Destination IP',dst,'Receiver IP address');
     if(ihl>20) add(f,false,off+20,ihl-20,'IPv4 Options',ihl-20+' bytes','Optional header fields');
@@ -279,6 +296,7 @@
     if(proto===6) parseTCP(pkt,payloadOff,ipEnd);
     else if(proto===17) parseUDP(pkt,payloadOff,ipEnd);
     else if(proto===1) parseICMP(pkt,payloadOff,ipEnd);
+    else if(proto===2) parseIGMP(pkt,payloadOff,ipEnd);
     else add(f,false,payloadOff,Math.max(0,ipEnd-payloadOff),t('payload'),Math.max(0,ipEnd-payloadOff)+' bytes','IPv4 payload');
   }
 
@@ -286,11 +304,13 @@
     var b=pkt.bytes, f=pkt.fields; if(off+40>b.length){ add(f,false,off,Math.max(0,b.length-off),t('ipv6'),'',t('malformed')); return; }
     var payloadLen=u16(b,off+4), next=b[off+6], hop=b[off+7], src=ip6(b,off+8), dst=ip6(b,off+24);
     add(f,true,off,40,t('ipv6'),src+' → '+dst,'Internet Protocol version 6');
-    add(f,false,off,4,'Version / Traffic Class / Flow Label',hex(u32(b,off),8),'IPv6 header first 32 bits'); add(f,false,off+4,2,'Payload Length',payloadLen+' bytes','IPv6 payload length');
+    var v32=u32(b,off);
+    addbit(f,off,4,v32,32,0,4,'Version',(v32>>>28)&0xf,'IP version'); addbit(f,off,4,v32,32,4,8,'Traffic Class',hex((v32>>>20)&0xff,2),'DSCP + ECN'); addbit(f,off,4,v32,32,12,20,'Flow Label',hex(v32&0xfffff,5),'flow identifier');
+    add(f,false,off+4,2,'Payload Length',payloadLen+' bytes','IPv6 payload length');
     add(f,false,off+6,1,'Next Header',next,protocolName(next)); add(f,false,off+7,1,'Hop Limit',hop,'Maximum hops'); add(f,false,off+8,16,'Source IPv6',src,'Sender IPv6 address'); add(f,false,off+24,16,'Destination IPv6',dst,'Receiver IPv6 address');
     pkt.src=src; pkt.dst=dst; pkt.proto=protocolName(next); pkt.info=src+' → '+dst+', '+protocolName(next);
     var payloadOff=off+40, end=Math.min(b.length,payloadOff+payloadLen);
-    if(next===6) parseTCP(pkt,payloadOff,end); else if(next===17) parseUDP(pkt,payloadOff,end); else add(f,false,payloadOff,Math.max(0,end-payloadOff),t('payload'),Math.max(0,end-payloadOff)+' bytes','IPv6 payload');
+    if(next===6) parseTCP(pkt,payloadOff,end); else if(next===17) parseUDP(pkt,payloadOff,end); else if(next===58) parseICMPv6(pkt,payloadOff,end); else add(f,false,payloadOff,Math.max(0,end-payloadOff),t('payload'),Math.max(0,end-payloadOff)+' bytes','IPv6 payload');
   }
 
   function parseTCP(pkt, off, end){
@@ -298,8 +318,20 @@
     var sp=u16(b,off), dp=u16(b,off+2), seq=u32(b,off+4), ack=u32(b,off+8), hlen=(b[off+12]>>4)*4, flags=((b[off+12]&1)<<8)|b[off+13], win=u16(b,off+14);
     add(f,true,off,Math.min(hlen,end-off),t('tcp'),sp+' → '+dp,'Transmission Control Protocol');
     add(f,false,off,2,'Source Port',sp,portHint(sp)); add(f,false,off+2,2,'Destination Port',dp,portHint(dp)); add(f,false,off+4,4,'Sequence Number',seq,'TCP stream byte sequence'); add(f,false,off+8,4,'Acknowledgment Number',ack,'Next expected byte when ACK is set');
-    add(f,false,off+12,1,'Header Length',hlen+' bytes','TCP data offset'); add(f,false,off+13,1,'Flags',tcpFlagText(flags),'TCP control bits'); add(f,false,off+14,2,'Window',win,'Receive window size'); add(f,false,off+16,2,t('checksum'),hex(u16(b,off+16),4),'TCP checksum'); add(f,false,off+18,2,'Urgent Pointer',u16(b,off+18),'Used when URG flag is set');
-    if(hlen>20 && off+hlen<=end) add(f,false,off+20,hlen-20,'TCP Options',hlen-20+' bytes','Options such as MSS, SACK, timestamp');
+    var w=u16(b,off+12);
+    addbit(f,off+12,2,w,16,0,4,'Data Offset',hlen+' bytes ('+(hlen/4)+' words)','header length');
+    addbit(f,off+12,2,w,16,4,3,'Reserved',(w>>9)&7,'must be 0');
+    addbit(f,off+12,2,w,16,7,1,'NS',(w>>8)&1,'ECN nonce');
+    addbit(f,off+12,2,w,16,8,1,'CWR',(w>>7)&1,'Congestion Window Reduced');
+    addbit(f,off+12,2,w,16,9,1,'ECE',(w>>6)&1,'ECN-Echo');
+    addbit(f,off+12,2,w,16,10,1,'URG',(w>>5)&1,'Urgent pointer valid');
+    addbit(f,off+12,2,w,16,11,1,'ACK',(w>>4)&1,'Acknowledgment valid');
+    addbit(f,off+12,2,w,16,12,1,'PSH',(w>>3)&1,'Push buffered data');
+    addbit(f,off+12,2,w,16,13,1,'RST',(w>>2)&1,'Reset connection');
+    addbit(f,off+12,2,w,16,14,1,'SYN',(w>>1)&1,'Synchronize sequence');
+    addbit(f,off+12,2,w,16,15,1,'FIN',w&1,'No more data');
+    add(f,false,off+14,2,'Window',win,'Receive window size'); add(f,false,off+16,2,t('checksum'),hex(u16(b,off+16),4),'TCP checksum'); add(f,false,off+18,2,'Urgent Pointer',u16(b,off+18),'Used when URG flag is set');
+    if(hlen>20 && off+hlen<=end) parseTCPOptions(f,b,off+20,off+hlen);
     var payloadOff=off+hlen, payLen=Math.max(0,end-payloadOff); pkt.proto='TCP'; pkt.info=sp+' → '+dp+' ['+tcpFlagText(flags)+'] Len='+payLen;
     if(payLen>0){ if(looksLikeTLS(b,payloadOff,end)) parseTLS(pkt,payloadOff,end); else if(sp===443 || dp===443) parseTLSPayload(pkt,payloadOff,end); else if(looksLikeHTTP(b,payloadOff,end)) parseHTTP(pkt,payloadOff,end,'HTTP'); else add(f,false,payloadOff,payLen,t('payload'),payLen+' bytes','TCP application data'); }
   }
@@ -310,8 +342,9 @@
     add(f,true,off,8,t('udp'),sp+' → '+dp,'User Datagram Protocol');
     add(f,false,off,2,'Source Port',sp,portHint(sp)); add(f,false,off+2,2,'Destination Port',dp,portHint(dp)); add(f,false,off+4,2,'Length',len+' bytes','UDP header + payload'); add(f,false,off+6,2,t('checksum'),hex(u16(b,off+6),4),'UDP checksum');
     pkt.proto='UDP'; pkt.info=sp+' → '+dp+', Len='+payLen;
-    if(sp===53||dp===53) parseDNS(pkt,payloadOff,udpEnd);
+    if(sp===53||dp===53||sp===5353||dp===5353||sp===5355||dp===5355) parseDNS(pkt,payloadOff,udpEnd);
     else if(sp===67||sp===68||dp===67||dp===68) parseDHCP(pkt,payloadOff,udpEnd);
+    else if(sp===123||dp===123) parseNTP(pkt,payloadOff,udpEnd);
     else if(sp===1900||dp===1900) parseHTTP(pkt,payloadOff,udpEnd,'SSDP');
     else if(looksLikeHTTP(b,payloadOff,udpEnd)) parseHTTP(pkt,payloadOff,udpEnd,'HTTP-like');
     else add(f,false,payloadOff,payLen,t('payload'),payLen+' bytes','UDP payload');
@@ -319,7 +352,62 @@
 
   function parseICMP(pkt, off, end){
     var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+4>end){ add(f,false,off,Math.max(0,end-off),'ICMP','',t('malformed')); return; }
-    var type=b[off], code=b[off+1]; add(f,true,off,end-off,'ICMP','Type '+type+', Code '+code,'Internet Control Message Protocol'); add(f,false,off,1,'Type',type,'ICMP message type'); add(f,false,off+1,1,'Code',code,'ICMP subtype'); add(f,false,off+2,2,t('checksum'),hex(u16(b,off+2),4),'ICMP checksum'); pkt.proto='ICMP'; pkt.info='Type '+type+', Code '+code;
+    var type=b[off], code=b[off+1], tn=icmpTypeName(type); add(f,true,off,end-off,'ICMP',tn,'Internet Control Message Protocol'); add(f,false,off,1,'Type',type,tn); add(f,false,off+1,1,'Code',code,'ICMP subtype'); add(f,false,off+2,2,t('checksum'),hex(u16(b,off+2),4),'ICMP checksum');
+    if(type===0||type===8){ if(off+8<=end){ add(f,false,off+4,2,'Identifier',u16(b,off+4),'echo identifier'); add(f,false,off+6,2,'Sequence Number',u16(b,off+6),'echo sequence'); var dlen=Math.max(0,end-(off+8)); if(dlen>0) add(f,false,off+8,dlen,'Data',dlen+' '+t('bytesUnit'),'echo payload'); } }
+    else if((type===3||type===11) && off+8<=end){ add(f,false,off+4,4,'Unused',hex(u32(b,off+4),8),'zero'); if(end-(off+8)>0) add(f,false,off+8,end-(off+8),'Original Datagram',(end-(off+8))+' '+t('bytesUnit'),'IP header + first 8 bytes'); }
+    pkt.proto='ICMP'; pkt.info=tn+((type===0||type===8)?(' id='+u16(b,off+4)+' seq='+u16(b,off+6)):(' code='+code));
+  }
+  function parseIGMP(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+8>end){ add(f,false,off,Math.max(0,end-off),'IGMP','',t('malformed')); return; }
+    var type=b[off], mrt=b[off+1], grp=ip4(b,off+4), tn=igmpTypeName(type);
+    add(f,true,off,end-off,'IGMP',tn,'Internet Group Management Protocol');
+    add(f,false,off,1,'Type',hex(type,2),tn); add(f,false,off+1,1,'Max Resp Time',mrt,(mrt/10)+' s (units of 0.1s)'); add(f,false,off+2,2,t('checksum'),hex(u16(b,off+2),4),'IGMP checksum'); add(f,false,off+4,4,'Group Address',grp,'multicast group');
+    pkt.proto='IGMP'; pkt.info=tn+' '+grp;
+  }
+  function parseNTP(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+4>end){ add(f,false,off,Math.max(0,end-off),'NTP','',t('malformed')); return; }
+    var b0=b[off], li=(b0>>6)&3, vn=(b0>>3)&7, mode=b0&7;
+    add(f,true,off,Math.min(48,end-off),'NTP','v'+vn+' '+ntpMode(mode),'Network Time Protocol');
+    addbit(f,off,1,b0,8,0,2,'Leap Indicator',li,ntpLeap(li));
+    addbit(f,off,1,b0,8,2,3,'Version',vn,'NTP version');
+    addbit(f,off,1,b0,8,5,3,'Mode',mode,ntpMode(mode));
+    if(off+48<=end){
+      var stratum=b[off+1], prec=b[off+3]; if(prec>127) prec-=256;
+      add(f,false,off+1,1,'Stratum',stratum,ntpStratum(stratum));
+      add(f,false,off+2,1,'Poll Interval',b[off+2],'2^'+b[off+2]+' s'); add(f,false,off+3,1,'Precision',prec,'2^'+prec+' s');
+      add(f,false,off+4,4,'Root Delay',hex(u32(b,off+4),8),'round-trip to reference clock'); add(f,false,off+8,4,'Root Dispersion',hex(u32(b,off+8),8),'nominal error');
+      var refid=(stratum<=1)?(asciiPrintable(b,off+12,4).replace(/\.+$/,'')||hex(u32(b,off+12),8)):ip4(b,off+12);
+      add(f,false,off+12,4,'Reference ID',refid,'clock source identifier');
+      add(f,false,off+16,8,'Reference Timestamp',ntpTs(b,off+16),'time system clock last set'); add(f,false,off+24,8,'Origin Timestamp',ntpTs(b,off+24),'client transmit time'); add(f,false,off+32,8,'Receive Timestamp',ntpTs(b,off+32),'server receive time'); add(f,false,off+40,8,'Transmit Timestamp',ntpTs(b,off+40),'server transmit time');
+    }
+    pkt.proto='NTP'; pkt.info='NTP '+ntpMode(mode)+' v'+vn+', stratum '+b[off+1];
+  }
+  function parseICMPv6(pkt, off, end){
+    var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+4>end){ add(f,false,off,Math.max(0,end-off),'ICMPv6','',t('malformed')); return; }
+    var type=b[off], code=b[off+1], tn=icmp6TypeName(type);
+    add(f,true,off,end-off,'ICMPv6',tn,'ICMP for IPv6 (RFC 4443)');
+    add(f,false,off,1,'Type',type,tn); add(f,false,off+1,1,'Code',code,'ICMPv6 subtype'); add(f,false,off+2,2,t('checksum'),hex(u16(b,off+2),4),'ICMPv6 checksum');
+    if((type===135||type===136) && off+24<=end){ add(f,false,off+4,4,'Flags / Reserved',hex(u32(b,off+4),8),type===136?'R/S/O flags':'reserved'); add(f,false,off+8,16,'Target Address',ip6(b,off+8),type===135?'address being resolved':'advertised address'); if(off+26<=end && (b[off+24]===1||b[off+24]===2)){ add(f,false,off+24,1,'Option Type',b[off+24],b[off+24]===1?'Source Link-Layer Addr':'Target Link-Layer Addr'); add(f,false,off+25,1,'Option Length',b[off+25],'in units of 8 bytes'); if(off+32<=end) add(f,false,off+26,6,'Link-Layer Address',mac(b,off+26),'MAC address'); } }
+    else if((type===128||type===129) && off+8<=end){ add(f,false,off+4,2,'Identifier',u16(b,off+4),'echo id'); add(f,false,off+6,2,'Sequence Number',u16(b,off+6),'echo seq'); }
+    else if((type===133||type===134) && off+8<=end){ add(f,false,off+4,Math.max(0,end-(off+4)),'Message Body',(end-(off+4))+' '+t('bytesUnit'),type===133?'router solicitation':'router advertisement'); }
+    pkt.proto='ICMPv6'; pkt.info=tn;
+  }
+  function parseTCPOptions(f, b, off, end){
+    var p=off, guard=0;
+    while(p<end && guard++<40){
+      var kind=b[p];
+      if(kind===0){ add(f,false,p,1,'TCP Option: End of List',0,'kind=0'); break; }
+      if(kind===1){ add(f,false,p,1,'TCP Option: No-Op',1,'kind=1, alignment padding'); p++; continue; }
+      if(p+1>=end) break; var len=b[p+1]; if(len<2 || p+len>end) break;
+      var nm=({2:'Maximum Segment Size',3:'Window Scale',4:'SACK Permitted',5:'SACK',8:'Timestamps',28:'User Timeout',29:'TCP-AO'})[kind] || ('kind '+kind);
+      var val='';
+      if(kind===2 && len===4) val=u16(b,p+2)+' bytes';
+      else if(kind===3 && len===3) val='shift count '+b[p+2]+' (× '+(1<<b[p+2])+')';
+      else if(kind===8 && len===10) val='TSval='+u32(b,p+2)+', TSecr='+u32(b,p+6);
+      else if(kind===4 && len===2) val='(enabled)';
+      else val=bytesHex(b,p+2,Math.min(len-2,16));
+      add(f,false,p,len,'TCP Option: '+nm,val,'kind='+kind+', len='+len); p+=len;
+    }
   }
 
   function readDNSName(b, off, end, depth){
@@ -340,7 +428,9 @@
     var b=pkt.bytes, f=pkt.fields; end=Math.min(end||b.length,b.length); if(off+12>end){ add(f,false,off,Math.max(0,end-off),t('dns'),'',t('malformed')); return; }
     var id=u16(b,off), flags=u16(b,off+2), qd=u16(b,off+4), an=u16(b,off+6), ns=u16(b,off+8), ar=u16(b,off+10), qr=(flags&0x8000)?'Response':'Query';
     add(f,true,off,end-off,t('dns'),qr+' id='+hex(id,4),'Domain Name System');
-    add(f,false,off,2,'Transaction ID',hex(id,4),'DNS request/response identifier'); add(f,false,off+2,2,'Flags',hex(flags,4),qr+', opcode='+((flags>>11)&15)+', rcode='+(flags&15));
+    add(f,false,off,2,'Transaction ID',hex(id,4),'DNS request/response identifier');
+    add(f,false,off+2,2,'Flags',hex(flags,4),qr+', opcode='+((flags>>11)&15)+', rcode='+(flags&15));
+    addbit(f,off+2,2,flags,16,0,1,'QR',(flags>>15)&1,qr); addbit(f,off+2,2,flags,16,1,4,'Opcode',(flags>>11)&15,'0=standard query'); addbit(f,off+2,2,flags,16,5,1,'AA',(flags>>10)&1,'Authoritative Answer'); addbit(f,off+2,2,flags,16,6,1,'TC',(flags>>9)&1,'Truncated'); addbit(f,off+2,2,flags,16,7,1,'RD',(flags>>8)&1,'Recursion Desired'); addbit(f,off+2,2,flags,16,8,1,'RA',(flags>>7)&1,'Recursion Available'); addbit(f,off+2,2,flags,16,9,3,'Z',(flags>>4)&7,'reserved'); addbit(f,off+2,2,flags,16,12,4,'Rcode',(flags&15),'response code');
     add(f,false,off+4,2,'Questions',qd,'QDCOUNT'); add(f,false,off+6,2,'Answer RRs',an,'ANCOUNT'); add(f,false,off+8,2,'Authority RRs',ns,'NSCOUNT'); add(f,false,off+10,2,'Additional RRs',ar,'ARCOUNT');
     var p=off+12, firstName='';
     for(var i=0;i<qd && p<end;i++){ var q=readDNSName(b,p,end); if(!firstName) firstName=q.name; add(f,false,p,q.length,'Question Name',q.name,'Queried domain name'); p += q.length; if(p+4<=end){ var qt=u16(b,p), qc=u16(b,p+2); add(f,false,p,2,'Question Type',dnsType(qt), 'QTYPE'); add(f,false,p+2,2,'Question Class',qc===1?'IN':String(qc),'QCLASS'); p += 4; } }
@@ -358,7 +448,7 @@
     add(f,true,off,end-off,t('dhcp'),'BOOTP/DHCP','Dynamic Host Configuration Protocol');
     var op=b[off], htype=b[off+1], hlen=b[off+2], xid=u32(b,off+4); var ci=ip4(b,off+12), yi=ip4(b,off+16), si=ip4(b,off+20), gi=ip4(b,off+24), ch=mac(b,off+28);
     add(f,false,off,1,'Message op',op,op===1?'Boot Request':(op===2?'Boot Reply':'')); add(f,false,off+1,1,'Hardware type',htype,htype===1?'Ethernet':''); add(f,false,off+2,1,'Hardware length',hlen,'Client hardware address length'); add(f,false,off+4,4,'Transaction ID',hex(xid,8),'DHCP transaction identifier');
-    add(f,false,off+10,2,'Flags',hex(u16(b,off+10),4),'Broadcast flag and reserved bits'); add(f,false,off+12,4,'Client IP',ci,'ciaddr'); add(f,false,off+16,4,'Your IP',yi,'yiaddr'); add(f,false,off+20,4,'Server IP',si,'siaddr'); add(f,false,off+24,4,'Relay IP',gi,'giaddr'); add(f,false,off+28,16,'Client MAC',ch,'chaddr');
+    var dflags=u16(b,off+10); add(f,false,off+10,2,'Flags',hex(dflags,4),'Broadcast flag and reserved bits'); addbit(f,off+10,2,dflags,16,0,1,'Broadcast',(dflags>>15)&1,(dflags&0x8000)?'reply must be broadcast':'unicast OK'); addbit(f,off+10,2,dflags,16,1,15,'Reserved',(dflags&0x7fff),'must be 0'); add(f,false,off+12,4,'Client IP',ci,'ciaddr'); add(f,false,off+16,4,'Your IP',yi,'yiaddr'); add(f,false,off+20,4,'Server IP',si,'siaddr'); add(f,false,off+24,4,'Relay IP',gi,'giaddr'); add(f,false,off+28,16,'Client MAC',ch,'chaddr');
     add(f,false,off+236,4,'Magic Cookie',hex(u32(b,off+236),8),'DHCP option marker 0x63825363');
     var p=off+240, msg='', server='', host='';
     while(p<end){ var code=b[p++]; if(code===255){ add(f,false,p-1,1,'Option 255','End','End of options'); break; } if(code===0){ add(f,false,p-1,1,'Option 0','Pad','Padding'); continue; } if(p>=end) break; var len=b[p++]; if(p+len>end) break; var val='';
@@ -430,8 +520,9 @@
   }
   function renderFields(p){
     var tree=$('treeScroll'); tree.innerHTML=''; var wrap=document.createElement('div'); wrap.className='tree'; var head=document.createElement('div'); head.className='field-row header'; [t('offset'),t('size'),t('field'),t('value'),t('meaning')].forEach(function(x){ var s=document.createElement('span'); s.textContent=x; head.appendChild(s); }); wrap.appendChild(head);
-    p.fields.forEach(function(row){ var r=document.createElement('div'); r.className='field-row'+(row.group?' group':''); r.onclick=function(){ renderHex(p.bytes, row.off, row.len); };
-      var vals=[hex(row.off,4), row.len, row.name, row.value, row.meaning]; vals.forEach(function(v,idx){ var s=document.createElement('span'); s.textContent=String(v==null?'':v); if(idx===0||idx===1) s.className='muted'; r.appendChild(s); }); wrap.appendChild(r); });
+    p.fields.forEach(function(row){ var r=document.createElement('div'); r.className='field-row'+(row.group?' group':'')+(row.bit?' bit':''); r.onclick=function(){ renderHex(p.bytes, row.off, row.len); };
+      var sz=row.bit?(row.bits+' bit'):row.len; var nm=row.bit?('· '+row.name):row.name;
+      var vals=[hex(row.off,4), sz, nm, row.value, row.meaning]; vals.forEach(function(v,idx){ var s=document.createElement('span'); s.textContent=String(v==null?'':v); if(idx===0||idx===1) s.className='muted'; r.appendChild(s); }); wrap.appendChild(r); });
     if(p.appText){ var pre=document.createElement('pre'); pre.className='apptext'; pre.textContent=p.appText; wrap.appendChild(pre); }
     tree.appendChild(wrap);
   }
