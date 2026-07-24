@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>设计模式速查</title>
+  <style>
+    :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif; background:var(--bg); color:var(--text); line-height:1.7; min-height:100vh; }
+    .topbar { position:sticky; top:0; z-index:10; background:rgba(255,255,255,.92); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; align-items:center; gap:10px; }
+    .topbar h1 { font-size:17px; white-space:nowrap; background:linear-gradient(135deg,#356ae6,#5a4de0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+    .search-wrap { flex:1; position:relative; max-width:400px; }
+    .search-wrap input { width:100%; height:36px; padding:0 36px 0 14px; border:1px solid var(--line); border-radius:20px; font-size:14px; background:var(--bg); outline:none; transition:border-color .2s,box-shadow .2s; }
+    .search-wrap input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .search-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); width:26px; height:26px; border-radius:50%; border:0; background:transparent; font-size:16px; color:var(--muted); cursor:pointer; display:none; align-items:center; justify-content:center; }
+    .search-clear.visible { display:flex; }
+    .search-clear:hover { background:var(--line); color:var(--text); }
+    .result-count { font-size:13px; color:var(--muted); white-space:nowrap; }
+    .container { max-width:900px; margin:0 auto; padding:14px; }
+    .intro { background:var(--card); border-radius:var(--radius); box-shadow:0 2px 12px rgba(0,0,0,.04); padding:14px 16px; margin-bottom:14px; font-size:13.5px; color:var(--muted); }
+    .section { margin-bottom:14px; border-radius:var(--radius); background:var(--card); box-shadow:0 2px 12px rgba(0,0,0,.04); overflow:hidden; }
+    .section-head { display:flex; align-items:center; gap:10px; padding:13px 16px; cursor:pointer; user-select:none; -webkit-tap-highlight-color:transparent; transition:background .15s; border:0; width:100%; text-align:left; font:inherit; color:inherit; background:none; }
+    .section-head:hover { background:#f8f9fd; }
+    .section-head .icon { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; background:linear-gradient(135deg,#356ae6,#5a4de0); color:#fff; font-weight:700; }
+    .section-head .title { flex:1; font-size:15px; font-weight:700; }
+    .section-head .count { font-size:12px; color:var(--muted); background:var(--bg); padding:2px 10px; border-radius:10px; }
+    .section-head .arrow { font-size:12px; color:var(--muted); transition:transform .25s; }
+    .section.open .section-head .arrow { transform:rotate(180deg); }
+    .section-body { display:none; border-top:1px solid var(--line); }
+    .section.open .section-body { display:block; }
+    .card { padding:12px 16px; border-bottom:1px solid var(--line); transition:background .15s; }
+    .card:last-child { border-bottom:0; }
+    .card.hidden { display:none; }
+    .card-head { display:flex; align-items:flex-start; gap:10px; margin-bottom:5px; }
+    .card-num { font-size:11px; color:var(--muted); font-weight:700; min-width:26px; text-align:right; padding-top:2px; }
+    .card-title { flex:1; font-weight:700; font-size:14px; }
+    .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
+    .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
+    .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
+    .back-top.visible { display:flex; }
+    .back-top:active { transform:scale(.92); }
+    .no-result { text-align:center; padding:40px 20px; color:var(--muted); font-size:15px; }
+    @media (max-width:600px) {
+      .topbar { padding:8px 10px; gap:6px; flex-wrap:wrap; }
+      .topbar h1 { font-size:15px; }
+      .search-wrap { max-width:none; flex:1 1 160px; }
+      .search-wrap input { height:32px; font-size:13px; }
+      .result-count { font-size:11px; }
+      .container { padding:8px; }
+      .section { margin-bottom:10px; border-radius:10px; }
+      .section-head { padding:10px 12px; }
+      .section-head .icon { width:28px; height:28px; font-size:14px; border-radius:7px; }
+      .section-head .title { font-size:13px; }
+      .card { padding:10px 12px; }
+      .card-title { font-size:13px; }
+      .card-code { padding:8px 10px; font-size:12px; border-radius:6px; }
+      .back-top { bottom:14px; right:14px; width:36px; height:36px; font-size:16px; }
+    }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <h1>设计模式学习笔记 (C++)</h1>
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="搜索知识点...">
+    <button class="search-clear" id="searchClear" title="清除">✕</button>
+  </div>
+  <span class="result-count" id="resultCount">30 条</span>
+</div>
+<div class="container" id="cardContainer">
+    <div class="intro">GoF 23 种设计模式 + SOLID 原则，每种配最简洁的 C++ 代码辅助理解。分创建型、结构型、行为型三类。</div>
+    <div class="section open" id="sect-1">
+      <button class="section-head">
+        <span class="icon">1</span>
+        <span class="title">一、设计原则 SOLID</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-1-1" data-keywords="单一职责 SRP 一个类只负责一件事，只有一个引起它变化的原因。 // 拆分：数据存储、格式化、打印各自成类，而非塞进一个 God 类。">
+          <div class="card-head">
+            <span class="card-num">1</span>
+            <span class="card-title">单一职责 SRP</span>
+          </div>
+          <div class="card-code">一个类只负责一件事，只有一个引起它变化的原因。
+// 拆分：数据存储、格式化、打印各自成类，而非塞进一个 God 类。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="开闭原则 OCP 对扩展开放、对修改关闭。用抽象/多态新增行为，而非改旧代码。 struct Shape { virtual double area() const = 0; }; // 新增形状只需派生，不改已有代码。">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">开闭原则 OCP</span>
+          </div>
+          <div class="card-code">对扩展开放、对修改关闭。用抽象/多态新增行为，而非改旧代码。
+struct Shape { virtual double area() const = 0; };
+// 新增形状只需派生，不改已有代码。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="里氏替换 LSP 子类对象可替换父类而不破坏正确性。派生类不削弱前置条件、不违背基类契约。">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">里氏替换 LSP</span>
+          </div>
+          <div class="card-code">子类对象可替换父类而不破坏正确性。派生类不削弱前置条件、不违背基类契约。</div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="接口隔离 ISP 不强迫客户依赖它不用的接口。宁可多个小接口，不要一个胖接口。">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">接口隔离 ISP</span>
+          </div>
+          <div class="card-code">不强迫客户依赖它不用的接口。宁可多个小接口，不要一个胖接口。</div>
+        </div>
+        <div class="card" id="card-1-5" data-keywords="依赖倒置 DIP 高层与低层都依赖抽象，而非具体实现。 class Engine { public: virtual void start()=0; }; class Car { Engine&amp; e; public: Car(Engine&amp; e):e(e){} };  // 注入抽象">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">依赖倒置 DIP</span>
+          </div>
+          <div class="card-code">高层与低层都依赖抽象，而非具体实现。
+class Engine { public: virtual void start()=0; };
+class Car { Engine&amp; e; public: Car(Engine&amp; e):e(e){} };  // 注入抽象</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-2">
+      <button class="section-head">
+        <span class="icon">2</span>
+        <span class="title">二、创建型模式</span>
+        <span class="count">5 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-2-6" data-keywords="单例 Singleton 保证一个类只有一个实例并提供全局访问点。 class Log { public:   static Log&amp; inst(){ static Log s; return s; } // C++11 线程安全   void write(const std::string&amp; m){ /* ... */ } private:   Log() = default;   Log(const Log&amp;) = delete;   Log&amp; operator=(const Log&amp;) = delete; };">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">单例 Singleton</span>
+          </div>
+          <div class="card-code">保证一个类只有一个实例并提供全局访问点。
+class Log {
+public:
+  static Log&amp; inst(){ static Log s; return s; } // C++11 线程安全
+  void write(const std::string&amp; m){ /* ... */ }
+private:
+  Log() = default;
+  Log(const Log&amp;) = delete;
+  Log&amp; operator=(const Log&amp;) = delete;
+};</div>
+        </div>
+        <div class="card" id="card-2-7" data-keywords="工厂方法 Factory Method 定义创建接口，由子类决定实例化哪个类。 struct Product { virtual ~Product()=default; virtual void use()=0; }; struct A : Product { void use() override {} }; struct Creator { virtual std::unique_ptr&lt;Product&gt; create()=0; }; struct CreatorA : Creator {   std::unique_ptr&lt;Product&gt; create() override { return std::make_unique&lt;A&gt;(); } };">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">工厂方法 Factory Method</span>
+          </div>
+          <div class="card-code">定义创建接口，由子类决定实例化哪个类。
+struct Product { virtual ~Product()=default; virtual void use()=0; };
+struct A : Product { void use() override {} };
+struct Creator { virtual std::unique_ptr&lt;Product&gt; create()=0; };
+struct CreatorA : Creator {
+  std::unique_ptr&lt;Product&gt; create() override { return std::make_unique&lt;A&gt;(); }
+};</div>
+        </div>
+        <div class="card" id="card-2-8" data-keywords="抽象工厂 Abstract Factory 创建一系列相关产品，而不指定具体类。 struct Button{virtual ~Button()=default;}; struct CheckBox{virtual ~CheckBox()=default;}; struct GUIFactory {   virtual std::unique_ptr&lt;Button&gt; button()=0;   virtual std::unique_ptr&lt;CheckBox&gt; check()=0; }; // WinFactory / MacFactory 分别产出成套控件">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">抽象工厂 Abstract Factory</span>
+          </div>
+          <div class="card-code">创建一系列相关产品，而不指定具体类。
+struct Button{virtual ~Button()=default;};
+struct CheckBox{virtual ~CheckBox()=default;};
+struct GUIFactory {
+  virtual std::unique_ptr&lt;Button&gt; button()=0;
+  virtual std::unique_ptr&lt;CheckBox&gt; check()=0;
+};
+// WinFactory / MacFactory 分别产出成套控件</div>
+        </div>
+        <div class="card" id="card-2-9" data-keywords="建造者 Builder 分步构造复杂对象，同一构造过程生成不同表示。 struct Pizza { std::string dough, sauce; }; class Builder {   Pizza p; public:   Builder&amp; dough(std::string d){ p.dough=std::move(d); return *this; }   Builder&amp; sauce(std::string s){ p.sauce=std::move(s); return *this; }   Pizza build(){ return p; } }; // auto pz = Builder().dough(&quot;thin&quot;).sauce(&quot;tomato&quot;).build();">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">建造者 Builder</span>
+          </div>
+          <div class="card-code">分步构造复杂对象，同一构造过程生成不同表示。
+struct Pizza { std::string dough, sauce; };
+class Builder {
+  Pizza p;
+public:
+  Builder&amp; dough(std::string d){ p.dough=std::move(d); return *this; }
+  Builder&amp; sauce(std::string s){ p.sauce=std::move(s); return *this; }
+  Pizza build(){ return p; }
+};
+// auto pz = Builder().dough(&quot;thin&quot;).sauce(&quot;tomato&quot;).build();</div>
+        </div>
+        <div class="card" id="card-2-10" data-keywords="原型 Prototype 通过克隆已有对象创建新对象。 struct Shape {   virtual ~Shape()=default;   virtual std::unique_ptr&lt;Shape&gt; clone() const = 0; }; struct Circle : Shape {   int r;   std::unique_ptr&lt;Shape&gt; clone() const override {     return std::make_unique&lt;Circle&gt;(*this);   } };">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">原型 Prototype</span>
+          </div>
+          <div class="card-code">通过克隆已有对象创建新对象。
+struct Shape {
+  virtual ~Shape()=default;
+  virtual std::unique_ptr&lt;Shape&gt; clone() const = 0;
+};
+struct Circle : Shape {
+  int r;
+  std::unique_ptr&lt;Shape&gt; clone() const override {
+    return std::make_unique&lt;Circle&gt;(*this);
+  }
+};</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-3">
+      <button class="section-head">
+        <span class="icon">3</span>
+        <span class="title">三、结构型模式</span>
+        <span class="count">7 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-3-11" data-keywords="适配器 Adapter 把一个接口转换成客户期望的另一个接口。 struct Target { virtual void request()=0; }; struct Adaptee { void specific(){} }; struct Adapter : Target {   Adaptee a;   void request() override { a.specific(); }  // 转接 };">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">适配器 Adapter</span>
+          </div>
+          <div class="card-code">把一个接口转换成客户期望的另一个接口。
+struct Target { virtual void request()=0; };
+struct Adaptee { void specific(){} };
+struct Adapter : Target {
+  Adaptee a;
+  void request() override { a.specific(); }  // 转接
+};</div>
+        </div>
+        <div class="card" id="card-3-12" data-keywords="桥接 Bridge 抽象与实现分离，各自独立变化。 struct Device { virtual void on()=0; virtual ~Device()=default; }; struct TV : Device { void on() override {} }; struct Remote {                       // 抽象持有实现指针   Device&amp; d;   Remote(Device&amp; d):d(d){}   void power(){ d.on(); } };">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">桥接 Bridge</span>
+          </div>
+          <div class="card-code">抽象与实现分离，各自独立变化。
+struct Device { virtual void on()=0; virtual ~Device()=default; };
+struct TV : Device { void on() override {} };
+struct Remote {                       // 抽象持有实现指针
+  Device&amp; d;
+  Remote(Device&amp; d):d(d){}
+  void power(){ d.on(); }
+};</div>
+        </div>
+        <div class="card" id="card-3-13" data-keywords="组合 Composite 把对象组成树形结构，统一处理叶子与容器。 struct Node { virtual int size()=0; virtual ~Node()=default; }; struct File : Node { int size() override { return 1; } }; struct Dir : Node {   std::vector&lt;std::unique_ptr&lt;Node&gt;&gt; kids;   int size() override { int s=0; for(auto&amp; k:kids) s+=k-&gt;size(); return s; } };">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">组合 Composite</span>
+          </div>
+          <div class="card-code">把对象组成树形结构，统一处理叶子与容器。
+struct Node { virtual int size()=0; virtual ~Node()=default; };
+struct File : Node { int size() override { return 1; } };
+struct Dir : Node {
+  std::vector&lt;std::unique_ptr&lt;Node&gt;&gt; kids;
+  int size() override { int s=0; for(auto&amp; k:kids) s+=k-&gt;size(); return s; }
+};</div>
+        </div>
+        <div class="card" id="card-3-14" data-keywords="装饰器 Decorator 动态给对象叠加职责，替代继承扩展。 struct Coffee { virtual int cost()=0; virtual ~Coffee()=default; }; struct Base : Coffee { int cost() override { return 5; } }; struct Milk : Coffee {   std::unique_ptr&lt;Coffee&gt; c;   Milk(std::unique_ptr&lt;Coffee&gt; c):c(std::move(c)){}   int cost() override { return c-&gt;cost()+2; } };">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">装饰器 Decorator</span>
+          </div>
+          <div class="card-code">动态给对象叠加职责，替代继承扩展。
+struct Coffee { virtual int cost()=0; virtual ~Coffee()=default; };
+struct Base : Coffee { int cost() override { return 5; } };
+struct Milk : Coffee {
+  std::unique_ptr&lt;Coffee&gt; c;
+  Milk(std::unique_ptr&lt;Coffee&gt; c):c(std::move(c)){}
+  int cost() override { return c-&gt;cost()+2; }
+};</div>
+        </div>
+        <div class="card" id="card-3-15" data-keywords="外观 Facade 为子系统提供一个统一的高层接口。 struct CPU{void run(){}}; struct Disk{void load(){}}; class Computer {          // 外观封装复杂子系统   CPU cpu; Disk disk; public:   void start(){ disk.load(); cpu.run(); } };">
+          <div class="card-head">
+            <span class="card-num">15</span>
+            <span class="card-title">外观 Facade</span>
+          </div>
+          <div class="card-code">为子系统提供一个统一的高层接口。
+struct CPU{void run(){}}; struct Disk{void load(){}};
+class Computer {          // 外观封装复杂子系统
+  CPU cpu; Disk disk;
+public:
+  void start(){ disk.load(); cpu.run(); }
+};</div>
+        </div>
+        <div class="card" id="card-3-16" data-keywords="享元 Flyweight 共享细粒度对象，节省内存(内蕴状态共享，外蕴状态传入)。 struct Glyph { char c; };  // 内蕴状态 std::map&lt;char,Glyph&gt; pool; Glyph&amp; get(char c){ return pool.emplace(c,Glyph{c}).first-&gt;second; }">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">享元 Flyweight</span>
+          </div>
+          <div class="card-code">共享细粒度对象，节省内存(内蕴状态共享，外蕴状态传入)。
+struct Glyph { char c; };  // 内蕴状态
+std::map&lt;char,Glyph&gt; pool;
+Glyph&amp; get(char c){ return pool.emplace(c,Glyph{c}).first-&gt;second; }</div>
+        </div>
+        <div class="card" id="card-3-17" data-keywords="代理 Proxy 为对象提供替身以控制访问(远程/虚拟/保护/缓存)。 struct Image { virtual void draw()=0; virtual ~Image()=default; }; struct Real : Image { Real(){/*重加载*/} void draw() override {} }; struct Proxy : Image {                 // 延迟加载   std::unique_ptr&lt;Real&gt; real;   void draw() override { if(!real) real=std::make_unique&lt;Real&gt;(); real-&gt;draw(); } };">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">代理 Proxy</span>
+          </div>
+          <div class="card-code">为对象提供替身以控制访问(远程/虚拟/保护/缓存)。
+struct Image { virtual void draw()=0; virtual ~Image()=default; };
+struct Real : Image { Real(){/*重加载*/} void draw() override {} };
+struct Proxy : Image {                 // 延迟加载
+  std::unique_ptr&lt;Real&gt; real;
+  void draw() override { if(!real) real=std::make_unique&lt;Real&gt;(); real-&gt;draw(); }
+};</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、行为型模式</span>
+        <span class="count">11 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-18" data-keywords="策略 Strategy 封装可互换的算法，运行时切换。 struct Sort { virtual void run()=0; virtual ~Sort()=default; }; struct Quick : Sort { void run() override {} }; struct Ctx {                           // 持有策略   Sort* s;   void exec(){ s-&gt;run(); } };">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">策略 Strategy</span>
+          </div>
+          <div class="card-code">封装可互换的算法，运行时切换。
+struct Sort { virtual void run()=0; virtual ~Sort()=default; };
+struct Quick : Sort { void run() override {} };
+struct Ctx {                           // 持有策略
+  Sort* s;
+  void exec(){ s-&gt;run(); }
+};</div>
+        </div>
+        <div class="card" id="card-4-19" data-keywords="观察者 Observer 一对多依赖，主题变化时自动通知观察者。 struct Obs { virtual void update(int)=0; virtual ~Obs()=default; }; struct Subject {   std::vector&lt;Obs*&gt; obs;   void attach(Obs* o){ obs.push_back(o); }   void notify(int v){ for(auto* o:obs) o-&gt;update(v); } };">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">观察者 Observer</span>
+          </div>
+          <div class="card-code">一对多依赖，主题变化时自动通知观察者。
+struct Obs { virtual void update(int)=0; virtual ~Obs()=default; };
+struct Subject {
+  std::vector&lt;Obs*&gt; obs;
+  void attach(Obs* o){ obs.push_back(o); }
+  void notify(int v){ for(auto* o:obs) o-&gt;update(v); }
+};</div>
+        </div>
+        <div class="card" id="card-4-20" data-keywords="命令 Command 把请求封装成对象，支持排队、撤销、日志。 struct Cmd { virtual void exec()=0; virtual ~Cmd()=default; }; struct Light { void on(){} }; struct OnCmd : Cmd {   Light&amp; l; OnCmd(Light&amp; l):l(l){}   void exec() override { l.on(); } }; // Invoker 持有 Cmd 列表依次 exec">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">命令 Command</span>
+          </div>
+          <div class="card-code">把请求封装成对象，支持排队、撤销、日志。
+struct Cmd { virtual void exec()=0; virtual ~Cmd()=default; };
+struct Light { void on(){} };
+struct OnCmd : Cmd {
+  Light&amp; l; OnCmd(Light&amp; l):l(l){}
+  void exec() override { l.on(); }
+};
+// Invoker 持有 Cmd 列表依次 exec</div>
+        </div>
+        <div class="card" id="card-4-21" data-keywords="状态 State 对象内部状态改变时改变其行为(消除大量 if/switch)。 struct State { virtual void handle()=0; virtual ~State()=default; }; struct On : State { void handle() override {} }; struct Machine {   State* st;   void request(){ st-&gt;handle(); }       // 行为随状态变化 };">
+          <div class="card-head">
+            <span class="card-num">21</span>
+            <span class="card-title">状态 State</span>
+          </div>
+          <div class="card-code">对象内部状态改变时改变其行为(消除大量 if/switch)。
+struct State { virtual void handle()=0; virtual ~State()=default; };
+struct On : State { void handle() override {} };
+struct Machine {
+  State* st;
+  void request(){ st-&gt;handle(); }       // 行为随状态变化
+};</div>
+        </div>
+        <div class="card" id="card-4-22" data-keywords="模板方法 Template Method 父类定义算法骨架，子类重写某些步骤。 struct Game {   void play(){ init(); start(); end(); } // 骨架固定   virtual void init()=0; virtual void start()=0;   virtual void end(){}   virtual ~Game()=default; };">
+          <div class="card-head">
+            <span class="card-num">22</span>
+            <span class="card-title">模板方法 Template Method</span>
+          </div>
+          <div class="card-code">父类定义算法骨架，子类重写某些步骤。
+struct Game {
+  void play(){ init(); start(); end(); } // 骨架固定
+  virtual void init()=0; virtual void start()=0;
+  virtual void end(){}
+  virtual ~Game()=default;
+};</div>
+        </div>
+        <div class="card" id="card-4-23" data-keywords="迭代器 Iterator 顺序访问聚合元素而不暴露内部结构。 template&lt;class T&gt; struct Vec {   std::vector&lt;T&gt; d;   auto begin(){ return d.begin(); }   auto end(){ return d.end(); }        // 复用 STL 迭代器 }; // for(auto&amp; x : vec) ...">
+          <div class="card-head">
+            <span class="card-num">23</span>
+            <span class="card-title">迭代器 Iterator</span>
+          </div>
+          <div class="card-code">顺序访问聚合元素而不暴露内部结构。
+template&lt;class T&gt;
+struct Vec {
+  std::vector&lt;T&gt; d;
+  auto begin(){ return d.begin(); }
+  auto end(){ return d.end(); }        // 复用 STL 迭代器
+};
+// for(auto&amp; x : vec) ...</div>
+        </div>
+        <div class="card" id="card-4-24" data-keywords="中介者 Mediator 用中介对象封装一组对象的交互，降低耦合。 struct Mediator { virtual void notify(const std::string&amp;)=0; }; struct Component {   Mediator* m;   void changed(){ m-&gt;notify(&quot;ev&quot;); }   // 不直接引用其它组件 };">
+          <div class="card-head">
+            <span class="card-num">24</span>
+            <span class="card-title">中介者 Mediator</span>
+          </div>
+          <div class="card-code">用中介对象封装一组对象的交互，降低耦合。
+struct Mediator { virtual void notify(const std::string&amp;)=0; };
+struct Component {
+  Mediator* m;
+  void changed(){ m-&gt;notify(&quot;ev&quot;); }   // 不直接引用其它组件
+};</div>
+        </div>
+        <div class="card" id="card-4-25" data-keywords="职责链 Chain of Responsibility 请求沿处理者链传递，直到被处理。 struct Handler {   Handler* next=nullptr;   virtual bool can(int)=0;   void handle(int r){ if(can(r)){/*处理*/} else if(next) next-&gt;handle(r); }   virtual ~Handler()=default; };">
+          <div class="card-head">
+            <span class="card-num">25</span>
+            <span class="card-title">职责链 Chain of Responsibility</span>
+          </div>
+          <div class="card-code">请求沿处理者链传递，直到被处理。
+struct Handler {
+  Handler* next=nullptr;
+  virtual bool can(int)=0;
+  void handle(int r){ if(can(r)){/*处理*/} else if(next) next-&gt;handle(r); }
+  virtual ~Handler()=default;
+};</div>
+        </div>
+        <div class="card" id="card-4-26" data-keywords="访问者 Visitor 在不改元素类的前提下定义作用于其上的新操作(双分派)。 struct Circle; struct Square; struct Visitor { virtual void visit(Circle&amp;)=0; virtual void visit(Square&amp;)=0; }; struct Shape { virtual void accept(Visitor&amp;)=0; virtual ~Shape()=default; }; struct Circle : Shape { void accept(Visitor&amp; v) override { v.visit(*this); } };">
+          <div class="card-head">
+            <span class="card-num">26</span>
+            <span class="card-title">访问者 Visitor</span>
+          </div>
+          <div class="card-code">在不改元素类的前提下定义作用于其上的新操作(双分派)。
+struct Circle; struct Square;
+struct Visitor { virtual void visit(Circle&amp;)=0; virtual void visit(Square&amp;)=0; };
+struct Shape { virtual void accept(Visitor&amp;)=0; virtual ~Shape()=default; };
+struct Circle : Shape { void accept(Visitor&amp; v) override { v.visit(*this); } };</div>
+        </div>
+        <div class="card" id="card-4-27" data-keywords="备忘录 Memento 在不破坏封装的前提下保存/恢复对象状态。 struct Memento { int state; }; struct Originator {   int state=0;   Memento save(){ return {state}; }   void restore(const Memento&amp; m){ state=m.state; } };">
+          <div class="card-head">
+            <span class="card-num">27</span>
+            <span class="card-title">备忘录 Memento</span>
+          </div>
+          <div class="card-code">在不破坏封装的前提下保存/恢复对象状态。
+struct Memento { int state; };
+struct Originator {
+  int state=0;
+  Memento save(){ return {state}; }
+  void restore(const Memento&amp; m){ state=m.state; }
+};</div>
+        </div>
+        <div class="card" id="card-4-28" data-keywords="解释器 Interpreter 为语言定义文法并解释其中的句子。 struct Expr { virtual int eval()=0; virtual ~Expr()=default; }; struct Num : Expr { int v; int eval() override { return v; } }; struct Add : Expr {   Expr* l; Expr* r;   int eval() override { return l-&gt;eval()+r-&gt;eval(); } };">
+          <div class="card-head">
+            <span class="card-num">28</span>
+            <span class="card-title">解释器 Interpreter</span>
+          </div>
+          <div class="card-code">为语言定义文法并解释其中的句子。
+struct Expr { virtual int eval()=0; virtual ~Expr()=default; };
+struct Num : Expr { int v; int eval() override { return v; } };
+struct Add : Expr {
+  Expr* l; Expr* r;
+  int eval() override { return l-&gt;eval()+r-&gt;eval(); }
+};</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、使用建议</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-29" data-keywords="如何选择 先满足 SOLID 与 KISS，模式是为解决具体问题而用，切忌为用而用(过度设计)。 创建型:解耦对象创建;结构型:组织类与对象;行为型:分配职责与交互。">
+          <div class="card-head">
+            <span class="card-num">29</span>
+            <span class="card-title">如何选择</span>
+          </div>
+          <div class="card-code">先满足 SOLID 与 KISS，模式是为解决具体问题而用，切忌为用而用(过度设计)。
+创建型:解耦对象创建;结构型:组织类与对象;行为型:分配职责与交互。</div>
+        </div>
+        <div class="card" id="card-5-30" data-keywords="现代 C++ 提示 多用 std::unique_ptr/shared_ptr 管理所有权; 用 std::function/lambda 可替代部分策略/命令模式; 模板与 CRTP 可实现编译期多态(静态策略),避免虚函数开销。">
+          <div class="card-head">
+            <span class="card-num">30</span>
+            <span class="card-title">现代 C++ 提示</span>
+          </div>
+          <div class="card-code">多用 std::unique_ptr/shared_ptr 管理所有权;
+用 std::function/lambda 可替代部分策略/命令模式;
+模板与 CRTP 可实现编译期多态(静态策略),避免虚函数开销。</div>
+        </div>
+      </div>
+    </div>
+</div>
+<button class="back-top" id="backTop" title="回到顶部">↑</button>
+<div class="no-result" id="noResult" style="display:none">没有找到匹配的知识点</div>
+<script>
+(function() {
+  var container = document.getElementById('cardContainer');
+  var sections = container.querySelectorAll('.section');
+  var totalCards = container.querySelectorAll('.card').length;
+  var searchInput = document.getElementById('searchInput');
+  var searchClear = document.getElementById('searchClear');
+  var resultCount = document.getElementById('resultCount');
+  var backTop = document.getElementById('backTop');
+  var firstSection = sections[0];
+
+  resultCount.textContent = totalCards + ' 条';
+
+  container.addEventListener('click', function(e) {
+    var head = e.target.closest('.section-head');
+    if (!head) return;
+    var section = head.closest('.section');
+    if (!section) return;
+    if (searchInput.value.trim()) return;
+    section.classList.toggle('open');
+  });
+
+  function doSearch() {
+    var q = searchInput.value.trim().toLowerCase();
+    var visible = 0;
+    if (q) { searchClear.classList.add('visible'); } else { searchClear.classList.remove('visible'); }
+    var sections = container.querySelectorAll('.section');
+    sections.forEach(function(section) {
+      var cards = section.querySelectorAll('.card');
+      var sectionVisible = 0;
+      cards.forEach(function(card) {
+        var title = card.querySelector('.card-title');
+        var code = card.querySelector('.card-code');
+        var keywords = card.getAttribute('data-keywords') || '';
+        var text = (title ? title.textContent : '') + ' ' + (code ? code.textContent : '') + ' ' + keywords;
+        text = text.toLowerCase();
+        if (!q || text.indexOf(q) >= 0) {
+          card.classList.remove('hidden');
+          sectionVisible++;
+          if (q) { highlightText(card, q); } else { removeHighlights(card); }
+        } else {
+          card.classList.add('hidden');
+          removeHighlights(card);
+        }
+      });
+      if (q && sectionVisible === 0) { section.classList.remove('open'); }
+      else if (q) { section.classList.add('open'); }
+      else { if (section === firstSection) section.classList.add('open'); else section.classList.remove('open'); }
+      visible += sectionVisible;
+    });
+    resultCount.textContent = q ? (visible + ' / ' + totalCards + ' 条') : (totalCards + ' 条');
+    document.getElementById('noResult').style.display = (q && visible === 0) ? 'block' : 'none';
+  }
+
+  function highlightText(el, q) {
+    removeHighlights(el);
+    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+    nodes.forEach(function(node) {
+      var parent = node.parentNode;
+      if (parent.tagName === 'MARK') return;
+      var text = node.textContent;
+      var lower = text.toLowerCase();
+      var idx = lower.indexOf(q);
+      if (idx < 0) return;
+      var frag = document.createDocumentFragment();
+      var last = 0;
+      while (idx >= 0) {
+        if (idx > last) frag.appendChild(document.createTextNode(text.substring(last, idx)));
+        var mark = document.createElement('mark');
+        mark.textContent = text.substring(idx, idx + q.length);
+        frag.appendChild(mark);
+        last = idx + q.length;
+        var rest = lower.substring(last);
+        idx = rest.indexOf(q);
+        if (idx >= 0) idx += last;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.substring(last)));
+      parent.replaceChild(frag, node);
+    });
+  }
+
+  function removeHighlights(el) {
+    var marks = el.querySelectorAll('mark');
+    marks.forEach(function(m) { m.replaceWith(document.createTextNode(m.textContent)); });
+  }
+
+  searchInput.addEventListener('input', function() {
+    clearTimeout(searchInput._timer);
+    searchInput._timer = setTimeout(doSearch, 150);
+  });
+  searchClear.addEventListener('click', function() {
+    searchInput.value = '';
+    doSearch();
+    searchInput.focus();
+  });
+
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 400) backTop.classList.add('visible');
+    else backTop.classList.remove('visible');
+  });
+  backTop.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === '/' && document.activeElement !== searchInput && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+      e.preventDefault();
+      searchInput.focus();
+    }
+  });
+})();
+</script>
+</body></html>
