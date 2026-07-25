@@ -27,8 +27,12 @@
     .topbar .brand { font-size:18px; font-weight:700; color:var(--accent); text-decoration:none; white-space:nowrap; }
     .topbar .home-btn { display:inline-flex; align-items:center; gap:4px; font-family:inherit; font-size:13px; text-decoration:none; color:var(--text); border:1px solid var(--line); border-radius:8px; padding:5px 10px; background:var(--card); white-space:nowrap; cursor:pointer; }
     .topbar .home-btn:hover { border-color:var(--accent); color:var(--accent); }
-    .topbar .spacer { flex:1; }
-    .topbar .desc { color:var(--muted); font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .topbar .tree-search { flex:1; min-width:120px; max-width:340px; position:relative; }
+    .topbar .tree-search input { width:100%; height:34px; padding:0 30px 0 12px; border:1px solid var(--line); border-radius:20px; font-size:13px; background:var(--bg); outline:none; font-family:inherit; color:var(--text); }
+    .topbar .tree-search input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(53,106,230,.12); }
+    .topbar .ts-clear { position:absolute; right:8px; top:50%; transform:translateY(-50%); border:0; background:none; color:var(--muted); cursor:pointer; font-size:13px; display:none; padding:2px; line-height:1; }
+    .topbar .desc { color:var(--muted); font-size:13px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; flex-shrink:1; min-width:0; max-width:240px; }
+    @media (max-width:1000px){ .topbar .desc { display:none; } }
     .topbar .menu-btn {
       display:none; width:32px; height:32px; border:1px solid var(--line);
       border-radius:8px; background:var(--card); cursor:pointer; flex-shrink:0;
@@ -71,7 +75,9 @@
     }
     .tree-row .icon.folder { background:#e8ecf9; color:var(--accent); }
     .tree-row .icon.file { background:#f0f2f5; color:var(--muted); font-size:11px; }
+    .tree-row .icon.pdf { background:#fdeaea; color:#b42318; font-size:9px; font-weight:800; }
     .tree-row .label { flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .tree-row .label mark { background:#fde047; color:#101828; border-radius:2px; padding:0 1px; }
     .tree-children { overflow:hidden; transition:max-height .3s; }
     .tree-children.collapsed { max-height:0; }
     .tree-children .tree-row { padding-left:38px; }
@@ -97,8 +103,11 @@
   <div class="topbar">
     <button class="menu-btn" id="menuBtn" aria-label="目录" title="目录">&#9776;</button>
     <a class="brand" href="read.html">手册速查</a>
+    <div class="tree-search">
+      <input id="treeSearch" type="search" placeholder="模糊检索文件/PDF…" autocomplete="off">
+      <button class="ts-clear" id="tsClear" type="button" title="清除">&#10005;</button>
+    </div>
     <span class="desc" id="currentTitle">选择一个文件开始</span>
-    <span class="spacer"></span>
     <button type="button" class="home-btn" id="refreshBtn" title="重新加载最新目录 list.txt">&#8635; 刷新目录</button>
     <a class="home-btn" id="homeBtn" href="index.html" title="返回主页">&#8962; 返回主页</a>
   </div>
@@ -137,6 +146,64 @@
     });
     treeOverlay.addEventListener('click', closeTree);
 
+    // ---- 顶部模糊检索：过滤目录树（空格分词，需全部命中；匹配处高亮，自动展开匹配分类） ----
+    var treeSearch = document.getElementById('treeSearch');
+    var tsClear = document.getElementById('tsClear');
+
+    function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+    function hlLabel(label, terms){
+      var base = label.getAttribute('data-t');
+      if (base === null) { base = label.textContent; label.setAttribute('data-t', base); }
+      if (!terms.length){ label.textContent = base; return; }
+      var low = base.toLowerCase(), ranges = [];
+      terms.forEach(function(t){ var i = low.indexOf(t), from = 0; while (i >= 0){ ranges.push([i, i + t.length]); from = i + t.length; i = low.indexOf(t, from); } });
+      if (!ranges.length){ label.textContent = base; return; }
+      ranges.sort(function(a,b){ return a[0]-b[0]; });
+      var merged = [], last = null;
+      ranges.forEach(function(r){ if (last && r[0] <= last[1]) last[1] = Math.max(last[1], r[1]); else { last = r.slice(); merged.push(last); } });
+      var html = '', pos = 0;
+      merged.forEach(function(r){ html += escHtml(base.slice(pos, r[0])) + '<mark>' + escHtml(base.slice(r[0], r[1])) + '</mark>'; pos = r[1]; });
+      html += escHtml(base.slice(pos));
+      label.innerHTML = html;
+    }
+    function filterTree(q){
+      q = (q || '').trim();
+      tsClear.style.display = q ? 'block' : 'none';
+      var terms = q ? q.toLowerCase().split(/\s+/).filter(Boolean) : [];
+      var folderNodes = treePanel.querySelectorAll(':scope > .tree-node');
+      folderNodes.forEach(function(fn){
+        var frow = fn.querySelector(':scope > .tree-row');
+        var flabel = frow.querySelector('.label');
+        var fname = flabel.getAttribute('data-t'); if (fname === null){ fname = flabel.textContent; flabel.setAttribute('data-t', fname); }
+        var fnameLow = fname.toLowerCase();
+        var childrenDiv = fn.querySelector(':scope > .tree-children');
+        var fileNodes = childrenDiv ? childrenDiv.querySelectorAll(':scope > .tree-node') : [];
+        var folderMatch = terms.length && terms.every(function(t){ return fnameLow.indexOf(t) >= 0; });
+        var anyVisible = false;
+        fileNodes.forEach(function(cn){
+          var clabel = cn.querySelector('.label');
+          var ctitle = clabel.getAttribute('data-t'); if (ctitle === null){ ctitle = clabel.textContent; clabel.setAttribute('data-t', ctitle); }
+          var hay = fnameLow + '/' + ctitle.toLowerCase();
+          var ok = !terms.length || folderMatch || terms.every(function(t){ return hay.indexOf(t) >= 0; });
+          cn.style.display = ok ? '' : 'none';
+          hlLabel(clabel, ok ? terms : []);
+          if (ok) anyVisible = true;
+        });
+        hlLabel(flabel, folderMatch ? terms : []);
+        fn.style.display = (!terms.length || anyVisible) ? '' : 'none';
+        var arrow = frow.querySelector('.arrow');
+        if (terms.length){ if (childrenDiv) childrenDiv.classList.remove('collapsed'); arrow.classList.add('open'); }
+        else { if (childrenDiv) childrenDiv.classList.add('collapsed'); arrow.classList.remove('open'); }
+      });
+    }
+    var tsTimer = 0;
+    if (treeSearch){
+      treeSearch.addEventListener('input', function(){ clearTimeout(tsTimer); tsTimer = setTimeout(function(){ filterTree(treeSearch.value); }, 120); });
+    }
+    if (tsClear){
+      tsClear.addEventListener('click', function(){ treeSearch.value = ''; filterTree(''); treeSearch.focus(); });
+    }
+
     function showLoadError(msg) {
       treePanel.innerHTML = '<div style="padding:24px 16px;color:#c0392b;font-size:14px;line-height:1.8">' +
         '<strong>\u26A0 \u76EE\u5F55\u52A0\u8F7D\u5931\u8D25</strong><br><small>' +
@@ -162,6 +229,7 @@
           treePanel.innerHTML = '';
           activeRow = null;
           renderTree(tree, treePanel);
+          if (treeSearch && treeSearch.value.trim()) filterTree(treeSearch.value);
         })
         .catch(function(err) {
           showLoadError('\u65E0\u6CD5\u52A0\u8F7D notes/list.txt\uFF1A' + err.message);
@@ -179,11 +247,12 @@
         var parts = line.split('/');
         var folderName = parts[0];
         var fileName = parts.slice(1).join('/');
-        var title = fileName.replace(/\.html?$/i, '');
+        var title = fileName.replace(/\.(html?|pdf)$/i, '');
+        var isPdf = /\.pdf$/i.test(fileName);
         if (!folders[folderName]) {
           folders[folderName] = [];
         }
-        folders[folderName].push({ title: title, file: 'notes/' + line });
+        folders[folderName].push({ title: title, file: 'notes/' + line, pdf: isPdf });
       });
 
       var tree = [];
@@ -231,8 +300,8 @@
         row.appendChild(arrow);
 
         var icon = document.createElement('span');
-        icon.className = 'icon ' + (hasChildren ? 'folder' : 'file');
-        icon.textContent = hasChildren ? '\uD83D\uDCC1' : '\uD83D\uDCC4';
+        icon.className = 'icon ' + (hasChildren ? 'folder' : (node.pdf ? 'pdf' : 'file'));
+        icon.textContent = hasChildren ? '\uD83D\uDCC1' : (node.pdf ? 'PDF' : '\uD83D\uDCC4');
         row.appendChild(icon);
 
         var label = document.createElement('span');
@@ -293,7 +362,9 @@
       placeholder.style.display = 'none';
 
       var iframe = document.createElement('iframe');
-      iframe.src = file + (file.indexOf('?') >= 0 ? '&' : '?') + 'v=' + Date.now();
+      // PDF \u76F4\u63A5\u6253\u5F00\uFF08\u6D4F\u89C8\u5668\u5185\u7F6E\u9605\u8BFB\u5668\uFF0C\u5E26\u67E5\u627E\uFF09\uFF1BHTML \u8FFD\u52A0\u7248\u672C\u53F7\u7ED5\u7F13\u5B58
+      var isPdf = /\.pdf$/i.test(file);
+      iframe.src = isPdf ? file : (file + (file.indexOf('?') >= 0 ? '&' : '?') + 'v=' + Date.now());
       iframe.title = title;
       viewPanel.appendChild(iframe);
       currentTitle.textContent = title;
