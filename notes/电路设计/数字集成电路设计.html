@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,10 +69,10 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">6 条</span>
+  <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">CMOS 逻辑、时序、功耗与数字后端。</div>
+    <div class="intro">CMOS 逻辑、时序、功耗与后端,配 CMOS 反相器图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,19 +81,21 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="反相器与门 CMOS 反相器 VTC、噪声容限;组合逻辑(静态 CMOS/传输门/动态逻辑);扇入扇出。">
+        <div class="card" id="card-1-1" data-keywords="CMOS 反相器 上 PMOS 下 NMOS,输入低→PMOS 导通输出高,输入高→NMOS 导通输出低; 静态功耗极低;组合逻辑用静态 CMOS/传输门/动态逻辑。 CMOS 反相器">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">反相器与门</span>
+            <span class="card-title">CMOS 反相器</span>
           </div>
-          <div class="card-code">CMOS 反相器 VTC、噪声容限;组合逻辑(静态 CMOS/传输门/动态逻辑);扇入扇出。</div>
+          <div class="card-code">上 PMOS 下 NMOS,输入低→PMOS 导通输出高,输入高→NMOS 导通输出低;
+静态功耗极低;组合逻辑用静态 CMOS/传输门/动态逻辑。</div>
+          <div class="card-fig"><svg viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><line x1="110" y1="10" x2="110" y2="30" stroke="#1a1a2e"/><text x="90" y="12">VDD</text><rect x="90" y="30" width="40" height="26" rx="3" fill="#fdeaea" stroke="#b42318"/><text x="98" y="47">PMOS</text><rect x="90" y="90" width="40" height="26" rx="3" fill="#eef3ff" stroke="#356ae6"/><text x="98" y="107">NMOS</text><line x1="110" y1="56" x2="110" y2="90" stroke="#1a1a2e"/><line x1="130" y1="73" x2="175" y2="73" stroke="#1a1a2e"/><text x="178" y="77">Vout</text><line x1="40" y1="73" x2="90" y2="73" stroke="#1a1a2e"/><text x="10" y="77">Vin</text><line x1="110" y1="116" x2="110" y2="140" stroke="#1a1a2e"/><line x1="100" y1="140" x2="120" y2="140" stroke="#1a1a2e"/><text x="130" y="155" fill="#7d8599" font-size="9">CMOS 反相器:输入低→输出高</text></svg><div class="cap">CMOS 反相器</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="延迟与驱动 RC 延迟模型、逻辑努力(logical effort)、缓冲器链。">
+        <div class="card" id="card-1-2" data-keywords="延迟与驱动 RC 延迟、逻辑努力、缓冲器链、扇入扇出。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">延迟与驱动</span>
           </div>
-          <div class="card-code">RC 延迟模型、逻辑努力(logical effort)、缓冲器链。</div>
+          <div class="card-code">RC 延迟、逻辑努力、缓冲器链、扇入扇出。</div>
         </div>
       </div>
     </div>
@@ -98,23 +103,16 @@
       <button class="section-head">
         <span class="icon">2</span>
         <span class="title">二、时序电路</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="触发器与时序 锁存器/触发器、建立/保持时间;时钟树、时钟偏斜与抖动;流水线。">
+        <div class="card" id="card-2-3" data-keywords="触发器与时序 锁存器/触发器、建立/保持时间;时钟树、时钟偏斜与抖动;静态时序分析 STA、关键路径。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">触发器与时序</span>
           </div>
-          <div class="card-code">锁存器/触发器、建立/保持时间;时钟树、时钟偏斜与抖动;流水线。</div>
-        </div>
-        <div class="card" id="card-2-4" data-keywords="时序分析 静态时序分析 STA;关键路径、时序收敛。">
-          <div class="card-head">
-            <span class="card-num">4</span>
-            <span class="card-title">时序分析</span>
-          </div>
-          <div class="card-code">静态时序分析 STA;关键路径、时序收敛。</div>
+          <div class="card-code">锁存器/触发器、建立/保持时间;时钟树、时钟偏斜与抖动;静态时序分析 STA、关键路径。</div>
         </div>
       </div>
     </div>
@@ -126,19 +124,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="功耗 动态功耗 P=αCV²f、短路与漏电功耗;低功耗(时钟门控/电压岛/DVFS)。">
+        <div class="card" id="card-3-4" data-keywords="功耗 动态 P=αCV²f、短路与漏电;低功耗(时钟门控/电压岛/DVFS)。 ">
           <div class="card-head">
-            <span class="card-num">5</span>
+            <span class="card-num">4</span>
             <span class="card-title">功耗</span>
           </div>
-          <div class="card-code">动态功耗 P=αCV²f、短路与漏电功耗;低功耗(时钟门控/电压岛/DVFS)。</div>
+          <div class="card-code">动态 P=αCV²f、短路与漏电;低功耗(时钟门控/电压岛/DVFS)。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="数字后端 综合(RTL→门级)、布局布线、时钟树综合、DRC/LVS、签核。">
+        <div class="card" id="card-3-5" data-keywords="数字后端 综合(RTL→门级)、布局布线、时钟树、DRC/LVS、签核。 ">
           <div class="card-head">
-            <span class="card-num">6</span>
+            <span class="card-num">5</span>
             <span class="card-title">数字后端</span>
           </div>
-          <div class="card-code">综合(RTL→门级)、布局布线、时钟树综合、DRC/LVS、签核。</div>
+          <div class="card-code">综合(RTL→门级)、布局布线、时钟树、DRC/LVS、签核。</div>
         </div>
       </div>
     </div>

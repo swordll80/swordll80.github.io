@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,23 +72,25 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">马尔可夫决策过程、价值与策略方法、深度强化学习。</div>
+    <div class="intro">MDP、价值与策略方法、深度强化学习,配智能体-环境交互图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、基本框架</span>
+        <span class="title">一、框架</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="MDP 状态/动作/奖励/转移/折扣;策略 π、价值函数 V/Q、贝尔曼方程;探索与利用。">
+        <div class="card" id="card-1-1" data-keywords="MDP 与交互 智能体在环境中执行动作 a、获得状态 s 与奖励 r,目标最大化累计回报; 策略 π、价值 V/Q、贝尔曼方程;探索与利用。 智能体-环境交互">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">MDP</span>
+            <span class="card-title">MDP 与交互</span>
           </div>
-          <div class="card-code">状态/动作/奖励/转移/折扣;策略 π、价值函数 V/Q、贝尔曼方程;探索与利用。</div>
+          <div class="card-code">智能体在环境中执行动作 a、获得状态 s 与奖励 r,目标最大化累计回报;
+策略 π、价值 V/Q、贝尔曼方程;探索与利用。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><defs><marker id="rl" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#356ae6"/></marker></defs><rect x="30" y="40" width="80" height="34" rx="5" fill="#eef3ff" stroke="#356ae6"/><text x="52" y="61">智能体</text><rect x="190" y="40" width="80" height="34" rx="5" fill="#e8f7ee" stroke="#067647"/><text x="212" y="61">环境</text><path d="M110,48 L188,48" fill="none" stroke="#356ae6" marker-end="url(#rl)"/><text x="120" y="42" fill="#7d8599" font-size="9">动作 a</text><path d="M190,66 L112,66" fill="none" stroke="#356ae6" marker-end="url(#rl)"/><text x="118" y="80" fill="#7d8599" font-size="9">状态 s / 奖励 r</text><text x="55" y="108" fill="#7d8599" font-size="9">强化学习:交互中最大化累计奖励</text></svg><div class="cap">智能体-环境交互</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="动态规划 已知模型:策略迭代、价值迭代。">
+        <div class="card" id="card-1-2" data-keywords="动态规划 已知模型:策略迭代、价值迭代。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">动态规划</span>
@@ -102,14 +107,14 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="价值方法 蒙特卡洛、时序差分 TD、Q-learning、SARSA;函数逼近。">
+        <div class="card" id="card-2-3" data-keywords="价值方法 蒙特卡洛、TD、Q-learning、SARSA;函数逼近。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">价值方法</span>
           </div>
-          <div class="card-code">蒙特卡洛、时序差分 TD、Q-learning、SARSA;函数逼近。</div>
+          <div class="card-code">蒙特卡洛、TD、Q-learning、SARSA;函数逼近。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="策略方法 策略梯度(REINFORCE)、Actor-Critic、A2C/A3C、PPO、DDPG。">
+        <div class="card" id="card-2-4" data-keywords="策略方法 策略梯度(REINFORCE)、Actor-Critic、A2C/A3C、PPO、DDPG。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">策略方法</span>
@@ -126,13 +131,12 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="DRL DQN(经验回放+目标网络);AlphaGo/AlphaZero(MCTS+网络); 应用:游戏、机器人、控制、对齐(RLHF)。">
+        <div class="card" id="card-3-5" data-keywords="DRL DQN(经验回放+目标网络);AlphaGo/AlphaZero;应用游戏/机器人/控制/RLHF。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">DRL</span>
           </div>
-          <div class="card-code">DQN(经验回放+目标网络);AlphaGo/AlphaZero(MCTS+网络);
-应用:游戏、机器人、控制、对齐(RLHF)。</div>
+          <div class="card-code">DQN(经验回放+目标网络);AlphaGo/AlphaZero;应用游戏/机器人/控制/RLHF。</div>
         </div>
       </div>
     </div>

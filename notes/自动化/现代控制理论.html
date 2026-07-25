@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,105 +69,91 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">7 条</span>
+  <span class="result-count" id="resultCount">6 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">状态空间描述、能控能观、状态反馈与观测器、李雅普诺夫稳定性、最优控制入门。</div>
+    <div class="intro">状态空间、能控能观、状态反馈与观测器、稳定性与最优控制,配状态空间框图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、状态空间模型</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="状态方程 ẋ=Ax+Bu, y=Cx+Du。 状态变量、状态向量、状态空间；由微分方程/传递函数/物理建立。 传递函数 G(s)=C(sI-A)⁻¹B+D。">
+        <div class="card" id="card-1-1" data-keywords="状态方程 ẋ=Ax+Bu, y=Cx+Du;由物理/微分方程/传函建立; 传函 G(s)=C(sI−A)⁻¹B+D;解含状态转移矩阵 e^(At)。 状态空间描述">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">状态方程</span>
           </div>
-          <div class="card-code">ẋ=Ax+Bu, y=Cx+Du。
-状态变量、状态向量、状态空间；由微分方程/传递函数/物理建立。
-传递函数 G(s)=C(sI-A)⁻¹B+D。</div>
-        </div>
-        <div class="card" id="card-1-2" data-keywords="状态转移 解 x(t)=e^(At)x(0)+∫e^(A(t-τ))Bu(τ)dτ。 状态转移矩阵 Φ(t)=e^(At)(可用拉氏反变换或级数)。">
-          <div class="card-head">
-            <span class="card-num">2</span>
-            <span class="card-title">状态转移</span>
-          </div>
-          <div class="card-code">解 x(t)=e^(At)x(0)+∫e^(A(t-τ))Bu(τ)dτ。
-状态转移矩阵 Φ(t)=e^(At)(可用拉氏反变换或级数)。</div>
+          <div class="card-code">ẋ=Ax+Bu, y=Cx+Du;由物理/微分方程/传函建立;
+传函 G(s)=C(sI−A)⁻¹B+D;解含状态转移矩阵 e^(At)。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 88" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11"><defs><marker id="ss" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#1a1a2e"/></marker></defs><text x="8" y="45" fill="#1849a9">u</text><line x1="22" y1="40" x2="90" y2="40" stroke="#1a1a2e" marker-end="url(#ss)"/><rect x="92" y="20" width="120" height="40" rx="5" fill="#eef3ff" stroke="#356ae6"/><text x="102" y="37" font-size="10">ẋ=Ax+Bu</text><text x="102" y="52" font-size="10">y=Cx+Du</text><line x1="212" y1="40" x2="280" y2="40" stroke="#1a1a2e" marker-end="url(#ss)"/><text x="284" y="45" fill="#1849a9">y</text><text x="70" y="82" fill="#7d8599" font-size="10">状态空间:用内部状态 x 描述系统</text></svg><div class="cap">状态空间描述</div></div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、能控性与能观性</span>
+        <span class="title">二、能控能观</span>
         <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="判据 能控性矩阵 Qc=[B AB … Aⁿ⁻¹B] 满秩⇔能控。 能观性矩阵 Qo=[C; CA; …; CAⁿ⁻¹] 满秩⇔能观。 对偶原理；能控/能观标准型。">
+        <div class="card" id="card-2-2" data-keywords="判据 能控矩阵 [B AB…Aⁿ⁻¹B] 满秩⇔能控;能观矩阵满秩⇔能观;对偶原理。 ">
           <div class="card-head">
-            <span class="card-num">3</span>
+            <span class="card-num">2</span>
             <span class="card-title">判据</span>
           </div>
-          <div class="card-code">能控性矩阵 Qc=[B AB … Aⁿ⁻¹B] 满秩⇔能控。
-能观性矩阵 Qo=[C; CA; …; CAⁿ⁻¹] 满秩⇔能观。
-对偶原理；能控/能观标准型。</div>
+          <div class="card-code">能控矩阵 [B AB…Aⁿ⁻¹B] 满秩⇔能控;能观矩阵满秩⇔能观;对偶原理。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、状态反馈与观测器</span>
+        <span class="title">三、反馈与观测器</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="极点配置 状态反馈 u=-Kx，闭环 A-BK；系统能控则极点可任意配置。 用期望特征多项式求 K(Ackermann 公式)。">
+        <div class="card" id="card-3-3" data-keywords="极点配置 状态反馈 u=−Kx,能控则极点任意配置(Ackermann)。 ">
           <div class="card-head">
-            <span class="card-num">4</span>
+            <span class="card-num">3</span>
             <span class="card-title">极点配置</span>
           </div>
-          <div class="card-code">状态反馈 u=-Kx，闭环 A-BK；系统能控则极点可任意配置。
-用期望特征多项式求 K(Ackermann 公式)。</div>
+          <div class="card-code">状态反馈 u=−Kx,能控则极点任意配置(Ackermann)。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="状态观测器 状态不可测时用观测器估计 x̂：x̂̇=Ax̂+Bu+L(y-Cx̂)。 能观则观测器极点可配置；分离原理(反馈与观测器独立设计)。">
+        <div class="card" id="card-3-4" data-keywords="观测器 x̂̇=Ax̂+Bu+L(y−Cx̂),能观则极点可配置;分离原理。 ">
           <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">状态观测器</span>
+            <span class="card-num">4</span>
+            <span class="card-title">观测器</span>
           </div>
-          <div class="card-code">状态不可测时用观测器估计 x̂：x̂̇=Ax̂+Bu+L(y-Cx̂)。
-能观则观测器极点可配置；分离原理(反馈与观测器独立设计)。</div>
+          <div class="card-code">x̂̇=Ax̂+Bu+L(y−Cx̂),能观则极点可配置;分离原理。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-4">
       <button class="section-head">
         <span class="icon">4</span>
-        <span class="title">四、稳定性与最优</span>
+        <span class="title">四、稳定与最优</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-6" data-keywords="李雅普诺夫稳定性 第二法：找正定 V(x)，若 V̇(x)负定则渐近稳定。 线性系统：AᵀP+PA=-Q，Q 正定则解 P 正定⇔稳定。">
+        <div class="card" id="card-4-5" data-keywords="李雅普诺夫 第二法:V(x)正定且 V̇ 负定则渐近稳定;AᵀP+PA=−Q。 ">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">李雅普诺夫</span>
+          </div>
+          <div class="card-code">第二法:V(x)正定且 V̇ 负定则渐近稳定;AᵀP+PA=−Q。</div>
+        </div>
+        <div class="card" id="card-4-6" data-keywords="LQR J=∫(xᵀQx+uᵀRu)dt 最小;u=−Kx,K=R⁻¹BᵀP,P 解黎卡提方程。 ">
           <div class="card-head">
             <span class="card-num">6</span>
-            <span class="card-title">李雅普诺夫稳定性</span>
+            <span class="card-title">LQR</span>
           </div>
-          <div class="card-code">第二法：找正定 V(x)，若 V̇(x)负定则渐近稳定。
-线性系统：AᵀP+PA=-Q，Q 正定则解 P 正定⇔稳定。</div>
-        </div>
-        <div class="card" id="card-4-7" data-keywords="最优控制(LQR) 性能指标 J=∫(xᵀQx+uᵀRu)dt 最小。 最优状态反馈 u=-Kx，K=R⁻¹BᵀP，P 解黎卡提(Riccati)方程。">
-          <div class="card-head">
-            <span class="card-num">7</span>
-            <span class="card-title">最优控制(LQR)</span>
-          </div>
-          <div class="card-code">性能指标 J=∫(xᵀQx+uᵀRu)dt 最小。
-最优状态反馈 u=-Kx，K=R⁻¹BᵀP，P 解黎卡提(Riccati)方程。</div>
+          <div class="card-code">J=∫(xᵀQx+uᵀRu)dt 最小;u=−Kx,K=R⁻¹BᵀP,P 解黎卡提方程。</div>
         </div>
       </div>
     </div>

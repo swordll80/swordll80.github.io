@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,35 +69,24 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">12 条</span>
+  <span class="result-count" id="resultCount">8 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">高中化学：物质的量、结构与周期律、化学反应原理(能量/速率/平衡)、电化学与有机基础。</div>
+    <div class="intro">物质的量、结构周期律、反应原理、电化学与有机基础,配化学平衡图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、物质的量</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="摩尔与基本量 阿伏加德罗常数 Nₐ≈6.02×10²³ /mol。 n=N/Nₐ=m/M=V/Vₘ。 标准状况气体摩尔体积 Vₘ=22.4 L/mol。 物质的量浓度 c=n/V(mol/L)。">
+        <div class="card" id="card-1-1" data-keywords="摩尔 Nₐ≈6.02×10²³;n=N/Nₐ=m/M=V/Vₘ;标况 Vₘ=22.4L/mol;浓度 c=n/V;稀释 c₁V₁=c₂V₂。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">摩尔与基本量</span>
+            <span class="card-title">摩尔</span>
           </div>
-          <div class="card-code">阿伏加德罗常数 Nₐ≈6.02×10²³ /mol。
-n=N/Nₐ=m/M=V/Vₘ。
-标准状况气体摩尔体积 Vₘ=22.4 L/mol。
-物质的量浓度 c=n/V(mol/L)。</div>
-        </div>
-        <div class="card" id="card-1-2" data-keywords="溶液配制 c=n/V；稀释 c₁V₁=c₂V₂。 阿伏加德罗定律：同温同压同体积气体含相同分子数。">
-          <div class="card-head">
-            <span class="card-num">2</span>
-            <span class="card-title">溶液配制</span>
-          </div>
-          <div class="card-code">c=n/V；稀释 c₁V₁=c₂V₂。
-阿伏加德罗定律：同温同压同体积气体含相同分子数。</div>
+          <div class="card-code">Nₐ≈6.02×10²³;n=N/Nₐ=m/M=V/Vₘ;标况 Vₘ=22.4L/mol;浓度 c=n/V;稀释 c₁V₁=c₂V₂。</div>
         </div>
       </div>
     </div>
@@ -102,36 +94,23 @@ n=N/Nₐ=m/M=V/Vₘ。
       <button class="section-head">
         <span class="icon">2</span>
         <span class="title">二、结构与周期律</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="原子结构 核外电子排布(能层能级)，最外层≤8。 同位素：质子数同、中子数不同。 元素周期表：7周期18族。">
+        <div class="card" id="card-2-2" data-keywords="原子结构与周期律 电子排布、同位素;同周期从左到右半径减小、非金属性增强;同主族从上到下金属性增强;最高正价=主族序数。 ">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">原子结构与周期律</span>
+          </div>
+          <div class="card-code">电子排布、同位素;同周期从左到右半径减小、非金属性增强;同主族从上到下金属性增强;最高正价=主族序数。</div>
+        </div>
+        <div class="card" id="card-2-3" data-keywords="化学键 离子键、共价键(极性/非极性)、金属键;范德华力、氢键影响熔沸点。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">原子结构</span>
-          </div>
-          <div class="card-code">核外电子排布(能层能级)，最外层≤8。
-同位素：质子数同、中子数不同。
-元素周期表：7周期18族。</div>
-        </div>
-        <div class="card" id="card-2-4" data-keywords="周期律 同周期从左到右：原子半径减小，金属性减弱、非金属性增强。 同主族从上到下：半径增大，金属性增强。 最高正价=主族序数(O、F除外)。">
-          <div class="card-head">
-            <span class="card-num">4</span>
-            <span class="card-title">周期律</span>
-          </div>
-          <div class="card-code">同周期从左到右：原子半径减小，金属性减弱、非金属性增强。
-同主族从上到下：半径增大，金属性增强。
-最高正价=主族序数(O、F除外)。</div>
-        </div>
-        <div class="card" id="card-2-5" data-keywords="化学键 离子键(金属+非金属)、共价键(非金属间)、金属键。 极性/非极性键与分子。 范德华力、氢键影响物质熔沸点。">
-          <div class="card-head">
-            <span class="card-num">5</span>
             <span class="card-title">化学键</span>
           </div>
-          <div class="card-code">离子键(金属+非金属)、共价键(非金属间)、金属键。
-极性/非极性键与分子。
-范德华力、氢键影响物质熔沸点。</div>
+          <div class="card-code">离子键、共价键(极性/非极性)、金属键;范德华力、氢键影响熔沸点。</div>
         </div>
       </div>
     </div>
@@ -139,48 +118,38 @@ n=N/Nₐ=m/M=V/Vₘ。
       <button class="section-head">
         <span class="icon">3</span>
         <span class="title">三、反应原理</span>
-        <span class="count">4 条</span>
+        <span class="count">3 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-6" data-keywords="反应热 放热 ΔH&lt;0，吸热 ΔH&gt;0。 热化学方程式注明状态与 ΔH。 盖斯定律：反应热只与始末状态有关，可叠加。 燃烧热、中和热。">
+        <div class="card" id="card-3-4" data-keywords="反应热 放热 ΔH&lt;0、吸热 ΔH&gt;0;盖斯定律(反应热可叠加);燃烧热、中和热。 ">
           <div class="card-head">
-            <span class="card-num">6</span>
+            <span class="card-num">4</span>
             <span class="card-title">反应热</span>
           </div>
-          <div class="card-code">放热 ΔH&lt;0，吸热 ΔH&gt;0。
-热化学方程式注明状态与 ΔH。
-盖斯定律：反应热只与始末状态有关，可叠加。
-燃烧热、中和热。</div>
+          <div class="card-code">放热 ΔH&lt;0、吸热 ΔH&gt;0;盖斯定律(反应热可叠加);燃烧热、中和热。</div>
         </div>
-        <div class="card" id="card-3-7" data-keywords="化学反应速率 v=Δc/Δt。 影响因素：浓度、温度、压强、催化剂、接触面积。 温度每升10℃速率约增2~4倍。">
+        <div class="card" id="card-3-5" data-keywords="化学平衡 可逆反应 v正=v逆 达动态平衡;勒夏特列原理:改变条件平衡向减弱该改变方向移动; 平衡常数 K=生成物幂积/反应物幂积(只随温度变)。 可逆反应达到动态平衡">
           <div class="card-head">
-            <span class="card-num">7</span>
-            <span class="card-title">化学反应速率</span>
-          </div>
-          <div class="card-code">v=Δc/Δt。
-影响因素：浓度、温度、压强、催化剂、接触面积。
-温度每升10℃速率约增2~4倍。</div>
-        </div>
-        <div class="card" id="card-3-8" data-keywords="化学平衡 可逆反应达到 v正=v逆。 勒夏特列原理：改变条件平衡向减弱该改变的方向移动。 平衡常数 K=生成物幂积/反应物幂积(只随温度变)。 增大压强平衡向气体分子数减小方向移动。">
-          <div class="card-head">
-            <span class="card-num">8</span>
+            <span class="card-num">5</span>
             <span class="card-title">化学平衡</span>
           </div>
-          <div class="card-code">可逆反应达到 v正=v逆。
-勒夏特列原理：改变条件平衡向减弱该改变的方向移动。
-平衡常数 K=生成物幂积/反应物幂积(只随温度变)。
-增大压强平衡向气体分子数减小方向移动。</div>
+          <div class="card-code">可逆反应 v正=v逆 达动态平衡;勒夏特列原理:改变条件平衡向减弱该改变方向移动;
+平衡常数 K=生成物幂积/反应物幂积(只随温度变)。</div>
+          <div class="card-fig"><svg viewBox="0 0 260 110" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11">
+<defs><marker id="ea" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs>
+<text x="30" y="55">反应物</text><text x="180" y="55">生成物</text>
+<line x1="95" y1="45" x2="175" y2="45" stroke="#356ae6" marker-end="url(#ea)"/><text x="120" y="40" fill="#356ae6" font-size="9">正</text>
+<line x1="175" y1="62" x2="95" y2="62" stroke="#b54708" marker-end="url(#ea)"/><text x="120" y="78" fill="#b54708" font-size="9">逆</text>
+<text x="35" y="100" fill="#7d8599" font-size="9">v正=v逆 时达动态平衡，K=生成物/反应物</text>
+</svg><div class="cap">可逆反应达到动态平衡</div></div>
         </div>
-        <div class="card" id="card-3-9" data-keywords="水溶液平衡 水的离子积 Kw=[H⁺][OH⁻]=10⁻¹⁴(25℃)。 pH=-lg[H⁺]。 弱电解质电离平衡、盐类水解(谁弱谁水解，越热越水解)。 难溶物溶度积 Ksp。">
+        <div class="card" id="card-3-6" data-keywords="水溶液 Kw=[H⁺][OH⁻]=10⁻¹⁴;pH=−lg[H⁺];弱电解质电离、盐类水解、溶度积 Ksp。 ">
           <div class="card-head">
-            <span class="card-num">9</span>
-            <span class="card-title">水溶液平衡</span>
+            <span class="card-num">6</span>
+            <span class="card-title">水溶液</span>
           </div>
-          <div class="card-code">水的离子积 Kw=[H⁺][OH⁻]=10⁻¹⁴(25℃)。
-pH=-lg[H⁺]。
-弱电解质电离平衡、盐类水解(谁弱谁水解，越热越水解)。
-难溶物溶度积 Ksp。</div>
+          <div class="card-code">Kw=[H⁺][OH⁻]=10⁻¹⁴;pH=−lg[H⁺];弱电解质电离、盐类水解、溶度积 Ksp。</div>
         </div>
       </div>
     </div>
@@ -188,37 +157,24 @@ pH=-lg[H⁺]。
       <button class="section-head">
         <span class="icon">4</span>
         <span class="title">四、电化学与有机</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-10" data-keywords="原电池与电解 原电池(化学能→电能)：负极氧化(失电子)，正极还原。 电解池(电能→化学能)：阳极氧化接正极，阴极还原接负极。 电极反应式、电子守恒；金属腐蚀与防护。">
+        <div class="card" id="card-4-7" data-keywords="原电池电解 原电池(化学→电能):负极氧化、正极还原;电解池(电能→化学):阳极氧化、阴极还原;电子守恒配平氧化还原。 ">
           <div class="card-head">
-            <span class="card-num">10</span>
-            <span class="card-title">原电池与电解</span>
+            <span class="card-num">7</span>
+            <span class="card-title">原电池电解</span>
           </div>
-          <div class="card-code">原电池(化学能→电能)：负极氧化(失电子)，正极还原。
-电解池(电能→化学能)：阳极氧化接正极，阴极还原接负极。
-电极反应式、电子守恒；金属腐蚀与防护。</div>
+          <div class="card-code">原电池(化学→电能):负极氧化、正极还原;电解池(电能→化学):阳极氧化、阴极还原;电子守恒配平氧化还原。</div>
         </div>
-        <div class="card" id="card-4-11" data-keywords="氧化还原 化合价升高=失电子=被氧化=还原剂。 化合价降低=得电子=被还原=氧化剂。 电子守恒配平：得失电子总数相等。">
+        <div class="card" id="card-4-8" data-keywords="有机基础 烷CₙH₂ₙ₊₂/烯CₙH₂ₙ/炔/苯;官能团 −OH/−CHO/−COOH/−COO−; 取代、加成、消去、酯化、聚合;同分异构。 ">
           <div class="card-head">
-            <span class="card-num">11</span>
-            <span class="card-title">氧化还原</span>
+            <span class="card-num">8</span>
+            <span class="card-title">有机基础</span>
           </div>
-          <div class="card-code">化合价升高=失电子=被氧化=还原剂。
-化合价降低=得电子=被还原=氧化剂。
-电子守恒配平：得失电子总数相等。</div>
-        </div>
-        <div class="card" id="card-4-12" data-keywords="有机化学基础 烃：烷CₙH₂ₙ₊₂(饱和)、烯CₙH₂ₙ(含C=C)、炔、苯。 官能团：-OH醇、-CHO醛、-COOH羧酸、-COO-酯。 反应类型：取代、加成、消去、酯化、氧化、聚合。 同分异构体：分子式同结构不同。">
-          <div class="card-head">
-            <span class="card-num">12</span>
-            <span class="card-title">有机化学基础</span>
-          </div>
-          <div class="card-code">烃：烷CₙH₂ₙ₊₂(饱和)、烯CₙH₂ₙ(含C=C)、炔、苯。
-官能团：-OH醇、-CHO醛、-COOH羧酸、-COO-酯。
-反应类型：取代、加成、消去、酯化、氧化、聚合。
-同分异构体：分子式同结构不同。</div>
+          <div class="card-code">烷CₙH₂ₙ₊₂/烯CₙH₂ₙ/炔/苯;官能团 −OH/−CHO/−COOH/−COO−;
+取代、加成、消去、酯化、聚合;同分异构。</div>
         </div>
       </div>
     </div>

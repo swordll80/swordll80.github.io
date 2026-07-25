@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">指令集、流水线、存储层次、并行与性能量化方法。</div>
+    <div class="intro">指令集、流水线、并行、存储层次与性能,配流水线图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,12 +81,12 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="ISA RISC vs CISC;指令格式、寻址方式;性能公式 CPU时间=指令数×CPI×周期;Amdahl 定律。">
+        <div class="card" id="card-1-1" data-keywords="ISA RISC vs CISC;指令格式、寻址方式;CPU时间=指令数×CPI×周期;Amdahl 定律(加速比受限于串行部分)。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">ISA</span>
           </div>
-          <div class="card-code">RISC vs CISC;指令格式、寻址方式;性能公式 CPU时间=指令数×CPI×周期;Amdahl 定律。</div>
+          <div class="card-code">RISC vs CISC;指令格式、寻址方式;CPU时间=指令数×CPI×周期;Amdahl 定律(加速比受限于串行部分)。</div>
         </div>
       </div>
     </div>
@@ -95,19 +98,22 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="流水线 流水段、冒险(结构/数据/控制)、转发与停顿、分支预测;超标量与乱序执行。">
+        <div class="card" id="card-2-2" data-keywords="指令流水线 把指令分成取指/译码/执行/访存/写回等级,多条指令重叠执行以提高吞吐; 冒险(结构/数据/控制)用转发、停顿、分支预测解决。 五级流水线：指令重叠执行">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">流水线</span>
+            <span class="card-title">指令流水线</span>
           </div>
-          <div class="card-code">流水段、冒险(结构/数据/控制)、转发与停顿、分支预测;超标量与乱序执行。</div>
+          <div class="card-code">把指令分成取指/译码/执行/访存/写回等级,多条指令重叠执行以提高吞吐;
+冒险(结构/数据/控制)用转发、停顿、分支预测解决。</div>
+          <div class="card-fig"><svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9">
+<rect x="10" y="20" width="38" height="18" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="14" y="33">取指</text><rect x="50" y="38" width="38" height="18" rx="2" fill="#e8f7ee" stroke="#356ae6"/><text x="54" y="51">译码</text><rect x="90" y="56" width="38" height="18" rx="2" fill="#fff4e6" stroke="#356ae6"/><text x="94" y="69">执行</text><rect x="130" y="74" width="38" height="18" rx="2" fill="#f3f0ff" stroke="#356ae6"/><text x="134" y="87">访存</text><rect x="170" y="92" width="38" height="18" rx="2" fill="#fdeaea" stroke="#356ae6"/><text x="174" y="105">写回</text><text x="10" y="105" fill="#7d8599">流水线：多条指令重叠执行(每级并行)</text></svg><div class="cap">五级流水线：指令重叠执行</div></div>
         </div>
-        <div class="card" id="card-2-3" data-keywords="并行 指令级/线程级/数据级并行;SIMD/向量、多核、SMT;Flynn 分类。">
+        <div class="card" id="card-2-3" data-keywords="并行 指令级(超标量/乱序)、线程级(多核/SMT)、数据级(SIMD/向量/GPU);Flynn 分类。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">并行</span>
           </div>
-          <div class="card-code">指令级/线程级/数据级并行;SIMD/向量、多核、SMT;Flynn 分类。</div>
+          <div class="card-code">指令级(超标量/乱序)、线程级(多核/SMT)、数据级(SIMD/向量/GPU);Flynn 分类。</div>
         </div>
       </div>
     </div>
@@ -119,19 +125,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="存储层次 多级 Cache、一致性(MESI)、一致性与内存模型。">
+        <div class="card" id="card-3-4" data-keywords="存储与一致性 多级 Cache、缓存一致性 MESI、内存模型。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">存储层次</span>
+            <span class="card-title">存储与一致性</span>
           </div>
-          <div class="card-code">多级 Cache、一致性(MESI)、一致性与内存模型。</div>
+          <div class="card-code">多级 Cache、缓存一致性 MESI、内存模型。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="多处理器 共享内存 vs 消息传递;GPU/众核;互连网络;性能与功耗。">
+        <div class="card" id="card-3-5" data-keywords="多处理器 共享内存 vs 消息传递;互连网络;性能功耗权衡。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">多处理器</span>
           </div>
-          <div class="card-code">共享内存 vs 消息传递;GPU/众核;互连网络;性能与功耗。</div>
+          <div class="card-code">共享内存 vs 消息传递;互连网络;性能功耗权衡。</div>
         </div>
       </div>
     </div>

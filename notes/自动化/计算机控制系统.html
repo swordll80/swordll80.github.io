@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,34 +69,26 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">5 条</span>
+  <span class="result-count" id="resultCount">4 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">采样控制、离散化、数字 PID、z 域设计与控制系统实现。</div>
+    <div class="intro">采样控制、离散化、数字 PID 与 z 域设计,配采样示意。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、采样系统</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="采样与保持 A/D 采样、零阶保持器 ZOH、D/A 输出。 采样周期 T 选择(香农定理与工程经验)。 采样系统结构:计算机+接口+被控对象。">
+        <div class="card" id="card-1-1" data-keywords="采样与保持 A/D 采样、零阶保持器 ZOH、D/A 输出;采样周期 T 选择; 离散化(前后向差分/双线性 Tustin)得脉冲传函 G(z)。 连续信号按周期采样">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">采样与保持</span>
           </div>
-          <div class="card-code">A/D 采样、零阶保持器 ZOH、D/A 输出。
-采样周期 T 选择(香农定理与工程经验)。
-采样系统结构:计算机+接口+被控对象。</div>
-        </div>
-        <div class="card" id="card-1-2" data-keywords="离散化 连续模型离散化(前向/后向差分、双线性 Tustin、零极点匹配)。 差分方程、脉冲传递函数 G(z)。">
-          <div class="card-head">
-            <span class="card-num">2</span>
-            <span class="card-title">离散化</span>
-          </div>
-          <div class="card-code">连续模型离散化(前向/后向差分、双线性 Tustin、零极点匹配)。
-差分方程、脉冲传递函数 G(z)。</div>
+          <div class="card-code">A/D 采样、零阶保持器 ZOH、D/A 输出;采样周期 T 选择;
+离散化(前后向差分/双线性 Tustin)得脉冲传函 G(z)。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 125" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><line x1="20" y1="70" x2="285" y2="70" stroke="#7d8599"/><path d="M20,70 Q60,20 100,70 Q140,120 180,70 Q220,20 260,70" fill="none" stroke="#356ae6" stroke-width="1.4"/><line x1="40" y1="70" x2="40" y2="52" stroke="#b42318"/><circle cx="40" cy="52" r="2.5" fill="#b42318"/><line x1="70" y1="70" x2="70" y2="42" stroke="#b42318"/><circle cx="70" cy="42" r="2.5" fill="#b42318"/><line x1="100" y1="70" x2="100" y2="70" stroke="#b42318"/><circle cx="100" cy="70" r="2.5" fill="#b42318"/><line x1="130" y1="70" x2="130" y2="92" stroke="#b42318"/><circle cx="130" cy="92" r="2.5" fill="#b42318"/><line x1="160" y1="70" x2="160" y2="80" stroke="#b42318"/><circle cx="160" cy="80" r="2.5" fill="#b42318"/><line x1="190" y1="70" x2="190" y2="48" stroke="#b42318"/><circle cx="190" cy="48" r="2.5" fill="#b42318"/><line x1="220" y1="70" x2="220" y2="44" stroke="#b42318"/><circle cx="220" cy="44" r="2.5" fill="#b42318"/><line x1="250" y1="70" x2="250" y2="66" stroke="#b42318"/><circle cx="250" cy="66" r="2.5" fill="#b42318"/><text x="30" y="118" fill="#7d8599">采样:按周期 T 取离散值(A/D)</text></svg><div class="cap">连续信号按周期采样</div></div>
         </div>
       </div>
     </div>
@@ -105,40 +100,36 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="数字 PID 位置式与增量式 PID: u(k)=Kp·e(k)+Ki·Σe+Kd·[e(k)-e(k-1)]。 增量式便于无扰切换、抗饱和;改进(积分分离、微分先行)。">
+        <div class="card" id="card-2-2" data-keywords="数字 PID 位置式/增量式 u(k)=Kp·e+Ki·Σe+Kd·[e(k)−e(k−1)];增量式便于无扰切换;积分分离、微分先行。 ">
           <div class="card-head">
-            <span class="card-num">3</span>
+            <span class="card-num">2</span>
             <span class="card-title">数字 PID</span>
           </div>
-          <div class="card-code">位置式与增量式 PID:
-u(k)=Kp·e(k)+Ki·Σe+Kd·[e(k)-e(k-1)]。
-增量式便于无扰切换、抗饱和;改进(积分分离、微分先行)。</div>
+          <div class="card-code">位置式/增量式 u(k)=Kp·e+Ki·Σe+Kd·[e(k)−e(k−1)];增量式便于无扰切换;积分分离、微分先行。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="z 域设计 根轨迹/频域法在 z 域设计; 最少拍控制、大林算法(Dahlin)处理时滞。稳定域为单位圆内。">
+        <div class="card" id="card-2-3" data-keywords="z 域设计 根轨迹/频域在 z 域设计;最少拍、大林算法(时滞);稳定域为单位圆内。 ">
           <div class="card-head">
-            <span class="card-num">4</span>
+            <span class="card-num">3</span>
             <span class="card-title">z 域设计</span>
           </div>
-          <div class="card-code">根轨迹/频域法在 z 域设计;
-最少拍控制、大林算法(Dahlin)处理时滞。稳定域为单位圆内。</div>
+          <div class="card-code">根轨迹/频域在 z 域设计;最少拍、大林算法(时滞);稳定域为单位圆内。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、系统实现</span>
+        <span class="title">三、实现</span>
         <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="硬件与软件 工控机/单片机/PLC/DSP;数据采集、抗干扰(隔离、滤波、接地)。 实时性、软件抗干扰(看门狗、数字滤波)、控制算法编程。">
+        <div class="card" id="card-3-4" data-keywords="硬件软件 工控机/单片机/PLC/DSP;抗干扰(隔离/滤波/接地)、看门狗、数字滤波、实时性。 ">
           <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">硬件与软件</span>
+            <span class="card-num">4</span>
+            <span class="card-title">硬件软件</span>
           </div>
-          <div class="card-code">工控机/单片机/PLC/DSP;数据采集、抗干扰(隔离、滤波、接地)。
-实时性、软件抗干扰(看门狗、数字滤波)、控制算法编程。</div>
+          <div class="card-code">工控机/单片机/PLC/DSP;抗干扰(隔离/滤波/接地)、看门狗、数字滤波、实时性。</div>
         </div>
       </div>
     </div>

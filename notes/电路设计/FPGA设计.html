@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">FPGA 结构、开发流程、时序约束与常用 IP。</div>
+    <div class="intro">FPGA 结构、流程、时序约束与 IP,配 FPGA 阵列图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,19 +81,20 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="FPGA 结构 查找表 LUT、触发器、可编程互连、块 RAM、DSP、时钟管理(PLL/MMCM)、IO。">
+        <div class="card" id="card-1-1" data-keywords="FPGA 结构 查找表 LUT + 触发器 + 可编程互连 + 块 RAM + DSP + 时钟管理(PLL) + IO。 FPGA 逻辑阵列">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">FPGA 结构</span>
           </div>
-          <div class="card-code">查找表 LUT、触发器、可编程互连、块 RAM、DSP、时钟管理(PLL/MMCM)、IO。</div>
+          <div class="card-code">查找表 LUT + 触发器 + 可编程互连 + 块 RAM + DSP + 时钟管理(PLL) + IO。</div>
+          <div class="card-fig"><svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="8"><line x1="30" y1="18" x2="30" y2="140" stroke="#e2e5ee"/><line x1="75" y1="18" x2="75" y2="140" stroke="#e2e5ee"/><line x1="120" y1="18" x2="120" y2="140" stroke="#e2e5ee"/><line x1="165" y1="18" x2="165" y2="140" stroke="#e2e5ee"/><line x1="20" y1="30" x2="200" y2="30" stroke="#e2e5ee"/><line x1="20" y1="70" x2="200" y2="70" stroke="#e2e5ee"/><line x1="20" y1="110" x2="200" y2="110" stroke="#e2e5ee"/><rect x="40" y="25" width="24" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="44" y="39">LUT</text><rect x="90" y="25" width="24" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="94" y="39">LUT</text><rect x="140" y="25" width="24" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="144" y="39">LUT</text><rect x="40" y="65" width="24" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="44" y="79">LUT</text><rect x="90" y="65" width="24" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="94" y="79">LUT</text><rect x="140" y="65" width="24" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="144" y="79">LUT</text><rect x="40" y="105" width="24" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="44" y="119">LUT</text><rect x="90" y="105" width="24" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="94" y="119">LUT</text><rect x="140" y="105" width="24" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="144" y="119">LUT</text><text x="35" y="14" fill="#7d8599">FPGA:LUT+触发器+可编程互连</text></svg><div class="cap">FPGA 逻辑阵列</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="开发流程 设计输入(HDL)→综合→实现(布局布线)→时序分析→生成比特流→下载;工具 Vivado/Quartus。">
+        <div class="card" id="card-1-2" data-keywords="流程 HDL→综合→实现(布局布线)→时序分析→比特流→下载;Vivado/Quartus。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">开发流程</span>
+            <span class="card-title">流程</span>
           </div>
-          <div class="card-code">设计输入(HDL)→综合→实现(布局布线)→时序分析→生成比特流→下载;工具 Vivado/Quartus。</div>
+          <div class="card-code">HDL→综合→实现(布局布线)→时序分析→比特流→下载;Vivado/Quartus。</div>
         </div>
       </div>
     </div>
@@ -102,19 +106,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="约束 引脚约束、时钟约束(create_clock)、时序例外;SDC/XDC。">
+        <div class="card" id="card-2-3" data-keywords="约束 引脚/时钟约束(create_clock)、时序例外;SDC/XDC。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">约束</span>
           </div>
-          <div class="card-code">引脚约束、时钟约束(create_clock)、时序例外;SDC/XDC。</div>
+          <div class="card-code">引脚/时钟约束(create_clock)、时序例外;SDC/XDC。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="时序收敛 跨时钟域 CDC(同步器/异步FIFO)、亚稳态;流水线与重定时。">
+        <div class="card" id="card-2-4" data-keywords="时序收敛 跨时钟域 CDC(同步器/异步FIFO)、亚稳态;流水线、重定时。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">时序收敛</span>
           </div>
-          <div class="card-code">跨时钟域 CDC(同步器/异步FIFO)、亚稳态;流水线与重定时。</div>
+          <div class="card-code">跨时钟域 CDC(同步器/异步FIFO)、亚稳态;流水线、重定时。</div>
         </div>
       </div>
     </div>
@@ -126,13 +130,12 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="IP 与接口 FIFO/RAM/DSP IP;高速接口(DDR、以太网、PCIe、SerDes); 应用:通信、图像、加速、原型验证。">
+        <div class="card" id="card-3-5" data-keywords="IP 与接口 FIFO/RAM/DSP IP;高速接口(DDR/以太网/PCIe/SerDes);通信/图像/加速/原型验证。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">IP 与接口</span>
           </div>
-          <div class="card-code">FIFO/RAM/DSP IP;高速接口(DDR、以太网、PCIe、SerDes);
-应用:通信、图像、加速、原型验证。</div>
+          <div class="card-code">FIFO/RAM/DSP IP;高速接口(DDR/以太网/PCIe/SerDes);通信/图像/加速/原型验证。</div>
         </div>
       </div>
     </div>

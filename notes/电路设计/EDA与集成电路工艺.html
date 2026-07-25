@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,22 +72,23 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">IC 设计流程中的 EDA 工具与半导体制造工艺基础。</div>
+    <div class="intro">IC 设计 EDA 流程与半导体工艺,配设计流程图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、EDA 设计流程</span>
+        <span class="title">一、EDA 流程</span>
         <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="流程与工具 前端:综合、仿真、形式验证;后端:布局布线、STA、寄生提取、DRC/LVS; 厂商 Synopsys/Cadence/Mentor。">
+        <div class="card" id="card-1-1" data-keywords="设计流程 前端:综合、仿真、形式验证;后端:布局布线、STA、寄生提取、DRC/LVS、签核; 厂商 Synopsys/Cadence/Mentor。 IC 设计 EDA 流程">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">流程与工具</span>
+            <span class="card-title">设计流程</span>
           </div>
-          <div class="card-code">前端:综合、仿真、形式验证;后端:布局布线、STA、寄生提取、DRC/LVS;
+          <div class="card-code">前端:综合、仿真、形式验证;后端:布局布线、STA、寄生提取、DRC/LVS、签核;
 厂商 Synopsys/Cadence/Mentor。</div>
+          <div class="card-fig"><svg viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><defs><marker id="if2" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs><rect x="6" y="30" width="58" height="26" rx="3" fill="#eef3ff" stroke="#356ae6"/><text x="12" y="47">RTL</text><rect x="76" y="30" width="58" height="26" rx="3" fill="#eef3ff" stroke="#356ae6"/><text x="82" y="47">综合</text><rect x="146" y="30" width="58" height="26" rx="3" fill="#e8f7ee" stroke="#356ae6"/><text x="152" y="47">布局布线</text><rect x="216" y="30" width="58" height="26" rx="3" fill="#fff4e6" stroke="#356ae6"/><text x="222" y="47">STA</text><rect x="286" y="30" width="58" height="26" rx="3" fill="#f3f0ff" stroke="#356ae6"/><text x="292" y="47">签核</text><line x1="64" y1="43" x2="76" y2="43" stroke="#356ae6" marker-end="url(#if2)"/><line x1="134" y1="43" x2="146" y2="43" stroke="#356ae6" marker-end="url(#if2)"/><line x1="204" y1="43" x2="216" y2="43" stroke="#356ae6" marker-end="url(#if2)"/><line x1="274" y1="43" x2="286" y2="43" stroke="#356ae6" marker-end="url(#if2)"/></svg><div class="cap">IC 设计 EDA 流程</div></div>
         </div>
       </div>
     </div>
@@ -96,43 +100,43 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="制造流程 晶圆、光刻、刻蚀、掺杂(离子注入/扩散)、氧化、薄膜沉积(CVD/PVD)、CMP、金属互连。">
+        <div class="card" id="card-2-2" data-keywords="制造 晶圆、光刻、刻蚀、掺杂、氧化、薄膜沉积、CMP、金属互连。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">制造流程</span>
+            <span class="card-title">制造</span>
           </div>
-          <div class="card-code">晶圆、光刻、刻蚀、掺杂(离子注入/扩散)、氧化、薄膜沉积(CVD/PVD)、CMP、金属互连。</div>
+          <div class="card-code">晶圆、光刻、刻蚀、掺杂、氧化、薄膜沉积、CMP、金属互连。</div>
         </div>
-        <div class="card" id="card-2-3" data-keywords="工艺节点 特征尺寸(nm)、多重曝光、EUV;良率与工艺偏差。">
+        <div class="card" id="card-2-3" data-keywords="工艺节点 特征尺寸(nm)、多重曝光、EUV;良率与偏差。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">工艺节点</span>
           </div>
-          <div class="card-code">特征尺寸(nm)、多重曝光、EUV;良率与工艺偏差。</div>
+          <div class="card-code">特征尺寸(nm)、多重曝光、EUV;良率与偏差。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、版图与封装</span>
+        <span class="title">三、版图封装</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="版图设计 版图层、设计规则 DRC、LVS、天线效应;标准单元库、IP 复用。">
+        <div class="card" id="card-3-4" data-keywords="版图 版图层、DRC/LVS、天线效应;标准单元库、IP 复用。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">版图设计</span>
+            <span class="card-title">版图</span>
           </div>
-          <div class="card-code">版图层、设计规则 DRC、LVS、天线效应;标准单元库、IP 复用。</div>
+          <div class="card-code">版图层、DRC/LVS、天线效应;标准单元库、IP 复用。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="封装测试 封装(引线键合/倒装/SiP/2.5D/3D)、测试(晶圆测试/成品测试)、可测性设计 DFT。">
+        <div class="card" id="card-3-5" data-keywords="封装测试 引线键合/倒装/SiP/2.5D/3D;晶圆/成品测试、DFT。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">封装测试</span>
           </div>
-          <div class="card-code">封装(引线键合/倒装/SiP/2.5D/3D)、测试(晶圆测试/成品测试)、可测性设计 DFT。</div>
+          <div class="card-code">引线键合/倒装/SiP/2.5D/3D;晶圆/成品测试、DFT。</div>
         </div>
       </div>
     </div>

@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,10 +69,10 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">7 条</span>
+  <span class="result-count" id="resultCount">6 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">半导体器件、放大电路、集成运放、反馈、信号运算与电源。</div>
+    <div class="intro">半导体器件、放大电路、集成运放、反馈与电源,配运放符号图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,21 +81,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="二极管 PN 结单向导电，硅管导通压降约 0.7V。 应用：整流、限幅、稳压(齐纳)、检波。">
+        <div class="card" id="card-1-1" data-keywords="二极管 PN 结单向导电(硅0.7V);整流/限幅/稳压/检波。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">二极管</span>
           </div>
-          <div class="card-code">PN 结单向导电，硅管导通压降约 0.7V。
-应用：整流、限幅、稳压(齐纳)、检波。</div>
+          <div class="card-code">PN 结单向导电(硅0.7V);整流/限幅/稳压/检波。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="三极管与场效应管 BJT：电流控制，Ic=β·Ib，三区(截止/放大/饱和)。 MOSFET：电压控制，输入阻抗高；用于放大与开关。">
+        <div class="card" id="card-1-2" data-keywords="三极管与场效应管 BJT 电流控制 Ic=β·Ib(截止/放大/饱和);MOSFET 电压控制,高输入阻抗。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">三极管与场效应管</span>
           </div>
-          <div class="card-code">BJT：电流控制，Ic=β·Ib，三区(截止/放大/饱和)。
-MOSFET：电压控制，输入阻抗高；用于放大与开关。</div>
+          <div class="card-code">BJT 电流控制 Ic=β·Ib(截止/放大/饱和);MOSFET 电压控制,高输入阻抗。</div>
         </div>
       </div>
     </div>
@@ -104,55 +105,45 @@ MOSFET：电压控制，输入阻抗高；用于放大与开关。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="基本放大 共射(电压增益大)、共集/射随(缓冲)、共基(高频)。 静态工作点 Q(直流分析)+ 微变等效(交流分析)。">
+        <div class="card" id="card-2-3" data-keywords="基本放大 共射(增益大)、共集(缓冲)、共基(高频);静态工作点 Q + 微变等效。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">基本放大</span>
           </div>
-          <div class="card-code">共射(电压增益大)、共集/射随(缓冲)、共基(高频)。
-静态工作点 Q(直流分析)+ 微变等效(交流分析)。</div>
+          <div class="card-code">共射(增益大)、共集(缓冲)、共基(高频);静态工作点 Q + 微变等效。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="频率与多级 低频/高频响应、上下限截止频率、带宽。 多级放大增益相乘(dB 相加)；差分放大抑制共模(CMRR)。">
+        <div class="card" id="card-2-4" data-keywords="频率与多级 上下限截止频率、带宽;差分放大抑共模(CMRR)。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">频率与多级</span>
           </div>
-          <div class="card-code">低频/高频响应、上下限截止频率、带宽。
-多级放大增益相乘(dB 相加)；差分放大抑制共模(CMRR)。</div>
+          <div class="card-code">上下限截止频率、带宽;差分放大抑共模(CMRR)。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、运放与应用</span>
-        <span class="count">3 条</span>
+        <span class="title">三、运放与反馈</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="集成运放 理想运放：开环增益∞、输入阻抗∞、虚短(u+=u-)、虚断(i=0)。 同相/反相放大、加法、减法、积分、微分电路。">
+        <div class="card" id="card-3-5" data-keywords="集成运放 理想运放:增益∞、输入阻抗∞、虚短(u+=u−)、虚断(i=0); 构成同相/反相/加法/减法/积分/微分电路。 运算放大器:虚短虚断">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">集成运放</span>
           </div>
-          <div class="card-code">理想运放：开环增益∞、输入阻抗∞、虚短(u+=u-)、虚断(i=0)。
-同相/反相放大、加法、减法、积分、微分电路。</div>
+          <div class="card-code">理想运放:增益∞、输入阻抗∞、虚短(u+=u−)、虚断(i=0);
+构成同相/反相/加法/减法/积分/微分电路。</div>
+          <div class="card-fig"><svg viewBox="0 0 260 120" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11"><polygon points="90,20 90,100 180,60" fill="#eef3ff" stroke="#356ae6"/><text x="70" y="43">−</text><text x="70" y="87">+</text><line x1="40" y1="37" x2="90" y2="37" stroke="#1a1a2e"/><line x1="40" y1="83" x2="90" y2="83" stroke="#1a1a2e"/><line x1="180" y1="60" x2="230" y2="60" stroke="#1a1a2e"/><text x="205" y="55">Vo</text><text x="55" y="115" fill="#7d8599" font-size="10">运放:虚短(u+=u−)、虚断(i=0)</text></svg><div class="cap">运算放大器:虚短虚断</div></div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="反馈 负反馈：稳定增益、展宽频带、降低失真、改变阻抗。 四种组态(电压/电流×串联/并联)；正反馈用于振荡。">
+        <div class="card" id="card-3-6" data-keywords="反馈与波形 负反馈稳增益、展带宽、降失真;正反馈振荡;整流→滤波→稳压(78xx)。 ">
           <div class="card-head">
             <span class="card-num">6</span>
-            <span class="card-title">反馈</span>
+            <span class="card-title">反馈与波形</span>
           </div>
-          <div class="card-code">负反馈：稳定增益、展宽频带、降低失真、改变阻抗。
-四种组态(电压/电流×串联/并联)；正反馈用于振荡。</div>
-        </div>
-        <div class="card" id="card-3-7" data-keywords="波形与电源 RC/LC 正弦振荡(相位条件+幅值条件)、方波/三角波发生。 整流→滤波→稳压(串联型/三端稳压 78xx)。">
-          <div class="card-head">
-            <span class="card-num">7</span>
-            <span class="card-title">波形与电源</span>
-          </div>
-          <div class="card-code">RC/LC 正弦振荡(相位条件+幅值条件)、方波/三角波发生。
-整流→滤波→稳压(串联型/三端稳压 78xx)。</div>
+          <div class="card-code">负反馈稳增益、展带宽、降失真;正反馈振荡;整流→滤波→稳压(78xx)。</div>
         </div>
       </div>
     </div>

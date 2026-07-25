@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,68 +72,54 @@
   <span class="result-count" id="resultCount">4 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">过程建模、PID 调节、复杂控制结构与先进过程控制。</div>
+    <div class="intro">过程建模、PID、复杂控制与先进控制,配串级控制图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、过程与被控对象</span>
-        <span class="count">1 条</span>
+        <span class="title">一、对象与 PID</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="对象特性 温度/流量/压力/液位/成分等过程；一阶+纯滞后(FOPDT)建模 K,T,τ。 自衡与非自衡、时滞、非线性。">
+        <div class="card" id="card-1-1" data-keywords="对象特性 温度/流量/压力/液位;一阶+纯滞后(FOPDT)K,T,τ;自衡/非自衡、时滞。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">对象特性</span>
           </div>
-          <div class="card-code">温度/流量/压力/液位/成分等过程；一阶+纯滞后(FOPDT)建模 K,T,τ。
-自衡与非自衡、时滞、非线性。</div>
+          <div class="card-code">温度/流量/压力/液位;一阶+纯滞后(FOPDT)K,T,τ;自衡/非自衡、时滞。</div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="PID 调节 比例带/积分时间/微分时间;整定(临界比例度/衰减曲线/Z-N);抗积分饱和。 ">
+          <div class="card-head">
+            <span class="card-num">2</span>
+            <span class="card-title">PID 调节</span>
+          </div>
+          <div class="card-code">比例带/积分时间/微分时间;整定(临界比例度/衰减曲线/Z-N);抗积分饱和。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、PID 调节</span>
-        <span class="count">1 条</span>
-        <span class="arrow">▼</span>
-      </button>
-      <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="单回路控制 PID 调节器:比例带、积分时间、微分时间。 整定:经验法、临界比例度法、衰减曲线法、Z-N 法。 正反作用、抗积分饱和。">
-          <div class="card-head">
-            <span class="card-num">2</span>
-            <span class="card-title">单回路控制</span>
-          </div>
-          <div class="card-code">PID 调节器:比例带、积分时间、微分时间。
-整定:经验法、临界比例度法、衰减曲线法、Z-N 法。
-正反作用、抗积分饱和。</div>
-        </div>
-      </div>
-    </div>
-    <div class="section" id="sect-3">
-      <button class="section-head">
-        <span class="icon">3</span>
-        <span class="title">三、复杂控制</span>
+        <span class="title">二、复杂控制</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-3" data-keywords="串级/前馈/比值 串级控制:主副回路抑制内扰。 前馈控制:按扰动直接补偿。 比值控制、均匀控制、分程控制、选择性控制。">
+        <div class="card" id="card-2-3" data-keywords="串级控制 主副两个回路,副回路先抑制内扰,主回路保证精度; 还有前馈、比值、均匀、分程、选择性控制。 串级控制结构">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">串级/前馈/比值</span>
+            <span class="card-title">串级控制</span>
           </div>
-          <div class="card-code">串级控制:主副回路抑制内扰。
-前馈控制:按扰动直接补偿。
-比值控制、均匀控制、分程控制、选择性控制。</div>
+          <div class="card-code">主副两个回路,副回路先抑制内扰,主回路保证精度;
+还有前馈、比值、均匀、分程、选择性控制。</div>
+          <div class="card-fig"><svg viewBox="0 0 340 96" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><defs><marker id="cs" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs><rect x="20" y="30" width="52" height="26" rx="4" fill="#eef3ff" stroke="#356ae6"/><text x="28" y="47">主调节</text><rect x="100" y="30" width="52" height="26" rx="4" fill="#e8f7ee" stroke="#067647"/><text x="108" y="47">副调节</text><rect x="180" y="30" width="52" height="26" rx="4" fill="#fff4e6" stroke="#b54708"/><text x="190" y="47">副对象</text><rect x="260" y="30" width="52" height="26" rx="4" fill="#f3f0ff" stroke="#7c3aed"/><text x="270" y="47">主对象</text><line x1="72" y1="43" x2="98" y2="43" stroke="#356ae6" marker-end="url(#cs)"/><line x1="152" y1="43" x2="178" y2="43" stroke="#356ae6" marker-end="url(#cs)"/><line x1="232" y1="43" x2="258" y2="43" stroke="#356ae6" marker-end="url(#cs)"/><text x="30" y="88" fill="#7d8599">串级:副回路抑内扰,主回路保精度</text></svg><div class="cap">串级控制结构</div></div>
         </div>
-        <div class="card" id="card-3-4" data-keywords="先进控制 解耦控制(多变量)、Smith 预估器(大时滞)、模型预测控制 MPC、自适应控制。 控制系统:DCS/PLC/现场总线。">
+        <div class="card" id="card-2-4" data-keywords="先进控制 解耦、Smith 预估器(大时滞)、模型预测 MPC、自适应;DCS/PLC/现场总线。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">先进控制</span>
           </div>
-          <div class="card-code">解耦控制(多变量)、Smith 预估器(大时滞)、模型预测控制 MPC、自适应控制。
-控制系统:DCS/PLC/现场总线。</div>
+          <div class="card-code">解耦、Smith 预估器(大时滞)、模型预测 MPC、自适应;DCS/PLC/现场总线。</div>
         </div>
       </div>
     </div>

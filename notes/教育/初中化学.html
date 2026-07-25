@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,46 +69,39 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">12 条</span>
+  <span class="result-count" id="resultCount">8 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">初中化学入门：物质构成、常见气体、酸碱盐、化学方程式与基本计算。</div>
+    <div class="intro">物质构成、常见气体、酸碱盐、化学方程式与计算,配原子结构图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、物质的构成</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="分子、原子、离子 分子：保持物质化学性质的最小粒子。 原子：化学变化中的最小粒子，由质子、中子、电子构成。 离子：得失电子形成，阳离子(失)带正电，阴离子(得)带负电。 元素：质子数(核电荷数)相同的一类原子总称。">
+        <div class="card" id="card-1-1" data-keywords="分子原子离子 分子:保持化学性质的最小粒子;原子:化学变化中最小粒子(质子+中子+电子); 离子:得失电子形成(阳离子失、阴离子得);元素:质子数相同的一类原子。 原子结构：核+分层电子">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">分子、原子、离子</span>
+            <span class="card-title">分子原子离子</span>
           </div>
-          <div class="card-code">分子：保持物质化学性质的最小粒子。
-原子：化学变化中的最小粒子，由质子、中子、电子构成。
-离子：得失电子形成，阳离子(失)带正电，阴离子(得)带负电。
-元素：质子数(核电荷数)相同的一类原子总称。</div>
+          <div class="card-code">分子:保持化学性质的最小粒子;原子:化学变化中最小粒子(质子+中子+电子);
+离子:得失电子形成(阳离子失、阴离子得);元素:质子数相同的一类原子。</div>
+          <div class="card-fig"><svg viewBox="0 0 200 160" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
+<circle cx="100" cy="80" r="60" fill="none" stroke="#c7d0e0"/><circle cx="100" cy="80" r="38" fill="none" stroke="#c7d0e0"/>
+<circle cx="100" cy="80" r="12" fill="#fdeaea" stroke="#b42318"/><text x="92" y="84" fill="#b42318">核</text>
+<circle cx="138" cy="80" r="4" fill="#356ae6"/><circle cx="62" cy="80" r="4" fill="#356ae6"/><circle cx="100" cy="20" r="4" fill="#356ae6"/><circle cx="100" cy="140" r="4" fill="#356ae6"/>
+<text x="30" y="150" fill="#7d8599">质子+中子居核心，电子分层绕核</text>
+</svg><div class="cap">原子结构：核+分层电子</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="物质分类 纯净物：单质(同种元素)、化合物(不同元素)。 混合物：空气、溶液、合金。 氧化物、酸、碱、盐。 有机物含碳(CO、CO₂、碳酸盐除外)。">
+        <div class="card" id="card-1-2" data-keywords="物质分类与化合价 纯净物(单质/化合物)、混合物;常见化合价 H⁺¹O⁻²Na⁺¹Ca⁺²Al⁺³; 化合物正负价代数和为0,交叉写化学式。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">物质分类</span>
+            <span class="card-title">物质分类与化合价</span>
           </div>
-          <div class="card-code">纯净物：单质(同种元素)、化合物(不同元素)。
-混合物：空气、溶液、合金。
-氧化物、酸、碱、盐。
-有机物含碳(CO、CO₂、碳酸盐除外)。</div>
-        </div>
-        <div class="card" id="card-1-3" data-keywords="化合价 常见：H⁺¹ O⁻² Na⁺¹ Ca⁺² Al⁺³ Cl⁻¹。 化合物中正负化合价代数和为0。 书写化学式：正价在前，交叉约简。">
-          <div class="card-head">
-            <span class="card-num">3</span>
-            <span class="card-title">化合价</span>
-          </div>
-          <div class="card-code">常见：H⁺¹ O⁻² Na⁺¹ Ca⁺² Al⁺³ Cl⁻¹。
-化合物中正负化合价代数和为0。
-书写化学式：正价在前，交叉约简。</div>
+          <div class="card-code">纯净物(单质/化合物)、混合物;常见化合价 H⁺¹O⁻²Na⁺¹Ca⁺²Al⁺³;
+化合物正负价代数和为0,交叉写化学式。</div>
         </div>
       </div>
     </div>
@@ -113,36 +109,24 @@
       <button class="section-head">
         <span class="icon">2</span>
         <span class="title">二、常见物质</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="氧气与二氧化碳 O₂：助燃、供呼吸，实验室加热KMnO₄或分解H₂O₂制取，用带火星木条检验。 CO₂：不燃不助燃、密度比空气大，使澄清石灰水变浑浊 CO₂+Ca(OH)₂→CaCO₃↓+H₂O。 光合与呼吸中的碳氧循环。">
+        <div class="card" id="card-2-3" data-keywords="氧气二氧化碳 O₂ 助燃供呼吸,带火星木条检验;CO₂ 使澄清石灰水变浑浊 CO₂+Ca(OH)₂→CaCO₃↓+H₂O。 ">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">氧气二氧化碳</span>
+          </div>
+          <div class="card-code">O₂ 助燃供呼吸,带火星木条检验;CO₂ 使澄清石灰水变浑浊 CO₂+Ca(OH)₂→CaCO₃↓+H₂O。</div>
+        </div>
+        <div class="card" id="card-2-4" data-keywords="水氢气碳 水电解 2H₂O→2H₂↑+O₂↑(负极氢正极氧,体积2:1);H₂ 最轻可燃(先验纯); 碳还原 C+2CuO→2Cu+CO₂↑;CO 有毒。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">氧气与二氧化碳</span>
+            <span class="card-title">水氢气碳</span>
           </div>
-          <div class="card-code">O₂：助燃、供呼吸，实验室加热KMnO₄或分解H₂O₂制取，用带火星木条检验。
-CO₂：不燃不助燃、密度比空气大，使澄清石灰水变浑浊 CO₂+Ca(OH)₂→CaCO₃↓+H₂O。
-光合与呼吸中的碳氧循环。</div>
-        </div>
-        <div class="card" id="card-2-5" data-keywords="水与氢气 水 H₂O 电解生成 H₂(负极)和 O₂(正极)，体积比2:1。 H₂：最轻、可燃(点燃前验纯)，还原剂。 硬水软化：煮沸或蒸馏。">
-          <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">水与氢气</span>
-          </div>
-          <div class="card-code">水 H₂O 电解生成 H₂(负极)和 O₂(正极)，体积比2:1。
-H₂：最轻、可燃(点燃前验纯)，还原剂。
-硬水软化：煮沸或蒸馏。</div>
-        </div>
-        <div class="card" id="card-2-6" data-keywords="碳及其化合物 金刚石、石墨、C₆₀是碳的单质(同素异形体)。 碳还原氧化铜 C+2CuO→2Cu+CO₂↑。 CO 有毒(煤气中毒)、可燃、还原性。">
-          <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">碳及其化合物</span>
-          </div>
-          <div class="card-code">金刚石、石墨、C₆₀是碳的单质(同素异形体)。
-碳还原氧化铜 C+2CuO→2Cu+CO₂↑。
-CO 有毒(煤气中毒)、可燃、还原性。</div>
+          <div class="card-code">水电解 2H₂O→2H₂↑+O₂↑(负极氢正极氧,体积2:1);H₂ 最轻可燃(先验纯);
+碳还原 C+2CuO→2Cu+CO₂↑;CO 有毒。</div>
         </div>
       </div>
     </div>
@@ -150,73 +134,49 @@ CO 有毒(煤气中毒)、可燃、还原性。</div>
       <button class="section-head">
         <span class="icon">3</span>
         <span class="title">三、酸碱盐</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-7" data-keywords="酸的性质 盐酸HCl、硫酸H₂SO₄。 酸+金属→盐+H₂↑；酸+金属氧化物→盐+水； 酸+碱→盐+水(中和)；酸+盐→新酸+新盐。 使紫色石蕊变红。">
+        <div class="card" id="card-3-5" data-keywords="酸碱性质 酸(HCl/H₂SO₄):使石蕊变红,+金属→盐+H₂↑,+碱→盐+水(中和); 碱(NaOH/Ca(OH)₂):使石蕊变蓝、酚酞变红。pH&lt;7 酸、=7 中、&gt;7 碱。 ">
           <div class="card-head">
-            <span class="card-num">7</span>
-            <span class="card-title">酸的性质</span>
+            <span class="card-num">5</span>
+            <span class="card-title">酸碱性质</span>
           </div>
-          <div class="card-code">盐酸HCl、硫酸H₂SO₄。
-酸+金属→盐+H₂↑；酸+金属氧化物→盐+水；
-酸+碱→盐+水(中和)；酸+盐→新酸+新盐。
-使紫色石蕊变红。</div>
+          <div class="card-code">酸(HCl/H₂SO₄):使石蕊变红,+金属→盐+H₂↑,+碱→盐+水(中和);
+碱(NaOH/Ca(OH)₂):使石蕊变蓝、酚酞变红。pH&lt;7 酸、=7 中、&gt;7 碱。</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="碱的性质 NaOH(火碱)、Ca(OH)₂(熟石灰)。 碱+酸→盐+水；碱+非金属氧化物→盐+水；碱+盐→新碱+新盐。 使石蕊变蓝、酚酞变红。">
+        <div class="card" id="card-3-6" data-keywords="复分解反应 AB+CD→AD+CB;发生条件:生成沉淀、气体或水。常见盐 NaCl、Na₂CO₃、CaCO₃。 ">
           <div class="card-head">
-            <span class="card-num">8</span>
-            <span class="card-title">碱的性质</span>
+            <span class="card-num">6</span>
+            <span class="card-title">复分解反应</span>
           </div>
-          <div class="card-code">NaOH(火碱)、Ca(OH)₂(熟石灰)。
-碱+酸→盐+水；碱+非金属氧化物→盐+水；碱+盐→新碱+新盐。
-使石蕊变蓝、酚酞变红。</div>
-        </div>
-        <div class="card" id="card-3-9" data-keywords="pH与盐 pH&lt;7 酸性，=7 中性，&gt;7 碱性。 复分解反应发生条件：生成沉淀、气体或水。 常见盐：NaCl、Na₂CO₃(纯碱)、CaCO₃(石灰石)。">
-          <div class="card-head">
-            <span class="card-num">9</span>
-            <span class="card-title">pH与盐</span>
-          </div>
-          <div class="card-code">pH&lt;7 酸性，=7 中性，&gt;7 碱性。
-复分解反应发生条件：生成沉淀、气体或水。
-常见盐：NaCl、Na₂CO₃(纯碱)、CaCO₃(石灰石)。</div>
+          <div class="card-code">AB+CD→AD+CB;发生条件:生成沉淀、气体或水。常见盐 NaCl、Na₂CO₃、CaCO₃。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-4">
       <button class="section-head">
         <span class="icon">4</span>
-        <span class="title">四、化学反应与计算</span>
-        <span class="count">3 条</span>
+        <span class="title">四、反应与计算</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-10" data-keywords="质量守恒定律 参加反应各物质质量总和 = 生成各物质质量总和。 微观：原子种类、数目、质量都不变。 配平化学方程式两边原子守恒。">
+        <div class="card" id="card-4-7" data-keywords="质量守恒 参加反应各物质质量和=生成各物质质量和(原子种类数目质量不变);配平方程式。 ">
           <div class="card-head">
-            <span class="card-num">10</span>
-            <span class="card-title">质量守恒定律</span>
+            <span class="card-num">7</span>
+            <span class="card-title">质量守恒</span>
           </div>
-          <div class="card-code">参加反应各物质质量总和 = 生成各物质质量总和。
-微观：原子种类、数目、质量都不变。
-配平化学方程式两边原子守恒。</div>
+          <div class="card-code">参加反应各物质质量和=生成各物质质量和(原子种类数目质量不变);配平方程式。</div>
         </div>
-        <div class="card" id="card-4-11" data-keywords="基本反应类型 化合 A+B→AB；分解 AB→A+B； 置换 A+BC→AC+B；复分解 AB+CD→AD+CB。 氧化反应(得氧)、还原反应(失氧)。">
+        <div class="card" id="card-4-8" data-keywords="反应类型与计算 化合/分解/置换/复分解; 按方程式:相对分子质量×系数比列比例求解;溶质质量分数=溶质/溶液×100%。 ">
           <div class="card-head">
-            <span class="card-num">11</span>
-            <span class="card-title">基本反应类型</span>
+            <span class="card-num">8</span>
+            <span class="card-title">反应类型与计算</span>
           </div>
-          <div class="card-code">化合 A+B→AB；分解 AB→A+B；
-置换 A+BC→AC+B；复分解 AB+CD→AD+CB。
-氧化反应(得氧)、还原反应(失氧)。</div>
-        </div>
-        <div class="card" id="card-4-12" data-keywords="根据方程式计算 步骤：写方程式→找已知与未知的质量比(相对分子质量×系数)→列比例→求解。 溶质质量分数 = 溶质质量/溶液质量 ×100%。">
-          <div class="card-head">
-            <span class="card-num">12</span>
-            <span class="card-title">根据方程式计算</span>
-          </div>
-          <div class="card-code">步骤：写方程式→找已知与未知的质量比(相对分子质量×系数)→列比例→求解。
-溶质质量分数 = 溶质质量/溶液质量 ×100%。</div>
+          <div class="card-code">化合/分解/置换/复分解;
+按方程式:相对分子质量×系数比列比例求解;溶质质量分数=溶质/溶液×100%。</div>
         </div>
       </div>
     </div>

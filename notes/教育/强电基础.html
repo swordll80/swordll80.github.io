@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,189 +69,119 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">14 条</span>
+  <span class="result-count" id="resultCount">9 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">强电（电力/电气）基础：电路定律、交流与三相、变压器电机、电力系统与安全用电。</div>
+    <div class="intro">电路定律、交流与三相、变压器电机、电力系统与安全用电,配三相交流图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、电路基础</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="基本物理量 电压U(V)、电流I(A)、电阻R(Ω)、功率P(W)、电能W(kW·h)。 欧姆定律 I=U/R。 电阻 R=ρL/S，随温度变化。">
+        <div class="card" id="card-1-1" data-keywords="基本量与定律 U/I/R/P/W;欧姆 I=U/R;R=ρL/S;KCL(ΣI=0)、KVL(ΣU=0);串联分压、并联分流。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">基本物理量</span>
+            <span class="card-title">基本量与定律</span>
           </div>
-          <div class="card-code">电压U(V)、电流I(A)、电阻R(Ω)、功率P(W)、电能W(kW·h)。
-欧姆定律 I=U/R。
-电阻 R=ρL/S，随温度变化。</div>
+          <div class="card-code">U/I/R/P/W;欧姆 I=U/R;R=ρL/S;KCL(ΣI=0)、KVL(ΣU=0);串联分压、并联分流。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="基尔霍夫定律 KCL(节点电流定律)：流入=流出，ΣI=0。 KVL(回路电压定律)：闭合回路电压代数和为0，ΣU=0。 串联分压、并联分流。">
+        <div class="card" id="card-1-2" data-keywords="功率电能 直流 P=UI=I²R=U²/R;电能 W=Pt,1度=1kW·h;额定值。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">基尔霍夫定律</span>
+            <span class="card-title">功率电能</span>
           </div>
-          <div class="card-code">KCL(节点电流定律)：流入=流出，ΣI=0。
-KVL(回路电压定律)：闭合回路电压代数和为0，ΣU=0。
-串联分压、并联分流。</div>
-        </div>
-        <div class="card" id="card-1-3" data-keywords="功率与电能 直流 P=UI=I²R=U²/R。 电能 W=Pt，1度=1kW·h。 负载额定值：额定电压、电流、功率。">
-          <div class="card-head">
-            <span class="card-num">3</span>
-            <span class="card-title">功率与电能</span>
-          </div>
-          <div class="card-code">直流 P=UI=I²R=U²/R。
-电能 W=Pt，1度=1kW·h。
-负载额定值：额定电压、电流、功率。</div>
+          <div class="card-code">直流 P=UI=I²R=U²/R;电能 W=Pt,1度=1kW·h;额定值。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、交流电</span>
-        <span class="count">3 条</span>
+        <span class="title">二、交流与三相</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="正弦交流量 e=Eₘsin(ωt+φ)，角频率 ω=2πf，我国工频 f=50Hz。 有效值=峰值/√2，220V/380V 指有效值。 周期 T=1/f=0.02s。">
+        <div class="card" id="card-2-3" data-keywords="正弦交流与三相 e=Eₘsin(ωt+φ),工频 50Hz,有效值=峰值/√2(220/380V); 三相电动势互差120°;感抗 ωL、容抗 1/(ωC)、阻抗 Z。 三相交流电(相位互差120°)">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">正弦交流与三相</span>
+          </div>
+          <div class="card-code">e=Eₘsin(ωt+φ),工频 50Hz,有效值=峰值/√2(220/380V);
+三相电动势互差120°;感抗 ωL、容抗 1/(ωC)、阻抗 Z。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
+<line x1="20" y1="75" x2="285" y2="75" stroke="#7d8599"/>
+<path d="M20,75 Q50,20 80,75 Q110,130 140,75 Q170,20 200,75 Q230,130 260,75" fill="none" stroke="#b42318" stroke-width="1.6"/>
+<path d="M20,130 Q40,90 60,110 Q95,150 120,75 Q150,15 175,60 Q210,130 235,110 Q260,95 285,120" fill="none" stroke="#067647" stroke-width="1.4" opacity=".5"/>
+<text x="30" y="40" fill="#b42318">A</text><text x="120" y="140" fill="#067647" opacity=".7">相位互差120°</text>
+<text x="20" y="18" fill="#356ae6">三相交流(互差120°)</text>
+</svg><div class="cap">三相交流电(相位互差120°)</div></div>
+        </div>
+        <div class="card" id="card-2-4" data-keywords="三相与功率因数 星形 U线=√3U相;三角形 I线=√3I相; 有功 P=√3UIcosφ,cosφ=P/S,并电容补偿提高 cosφ 减线损。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">正弦交流量</span>
+            <span class="card-title">三相与功率因数</span>
           </div>
-          <div class="card-code">e=Eₘsin(ωt+φ)，角频率 ω=2πf，我国工频 f=50Hz。
-有效值=峰值/√2，220V/380V 指有效值。
-周期 T=1/f=0.02s。</div>
-        </div>
-        <div class="card" id="card-2-5" data-keywords="阻抗与相位 感抗 Xₗ=ωL(电流滞后电压90°)，容抗 Xc=1/(ωC)(电流超前90°)。 阻抗 Z=√(R²+(Xₗ-Xc)²)。 RLC 串联谐振 Xₗ=Xc 时阻抗最小。">
-          <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">阻抗与相位</span>
-          </div>
-          <div class="card-code">感抗 Xₗ=ωL(电流滞后电压90°)，容抗 Xc=1/(ωC)(电流超前90°)。
-阻抗 Z=√(R²+(Xₗ-Xc)²)。
-RLC 串联谐振 Xₗ=Xc 时阻抗最小。</div>
-        </div>
-        <div class="card" id="card-2-6" data-keywords="三相功率与功率因数 有功 P=√3·U线·I线·cosφ (W)。 无功 Q=√3·UI·sinφ (var)，视在 S=√3·UI (VA)。 功率因数 cosφ=P/S，提高 cosφ(并电容补偿)可减小线损。">
-          <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">三相功率与功率因数</span>
-          </div>
-          <div class="card-code">有功 P=√3·U线·I线·cosφ (W)。
-无功 Q=√3·UI·sinφ (var)，视在 S=√3·UI (VA)。
-功率因数 cosφ=P/S，提高 cosφ(并电容补偿)可减小线损。</div>
+          <div class="card-code">星形 U线=√3U相;三角形 I线=√3I相;
+有功 P=√3UIcosφ,cosφ=P/S,并电容补偿提高 cosφ 减线损。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、三相系统</span>
+        <span class="title">三、电机与变压器</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-7" data-keywords="三相电源 三相对称电动势相位互差120°。 星形(Y)接：线电压=√3×相电压，线电流=相电流。 三角形(Δ)接：线电压=相电压，线电流=√3×相电流。 我国低压 380V(线)/220V(相)。">
+        <div class="card" id="card-3-5" data-keywords="变压器 U₁/U₂=N₁/N₂;升压减流远距输电;铜损+铁损。 ">
           <div class="card-head">
-            <span class="card-num">7</span>
-            <span class="card-title">三相电源</span>
+            <span class="card-num">5</span>
+            <span class="card-title">变压器</span>
           </div>
-          <div class="card-code">三相对称电动势相位互差120°。
-星形(Y)接：线电压=√3×相电压，线电流=相电流。
-三角形(Δ)接：线电压=相电压，线电流=√3×相电流。
-我国低压 380V(线)/220V(相)。</div>
+          <div class="card-code">U₁/U₂=N₁/N₂;升压减流远距输电;铜损+铁损。</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="中性线与接地 三相四线制含中性线(N)，提供220V单相。 保护接地(PE)、保护接零；TN-S/TN-C-S系统。 三相不平衡时中性线有电流。">
+        <div class="card" id="card-3-6" data-keywords="电动机 异步电机 n₀=60f/p,转差率 s;起动(星三角/软起/变频)、调速(变频);同步电机转速恒定。 ">
           <div class="card-head">
-            <span class="card-num">8</span>
-            <span class="card-title">中性线与接地</span>
+            <span class="card-num">6</span>
+            <span class="card-title">电动机</span>
           </div>
-          <div class="card-code">三相四线制含中性线(N)，提供220V单相。
-保护接地(PE)、保护接零；TN-S/TN-C-S系统。
-三相不平衡时中性线有电流。</div>
+          <div class="card-code">异步电机 n₀=60f/p,转差率 s;起动(星三角/软起/变频)、调速(变频);同步电机转速恒定。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-4">
       <button class="section-head">
         <span class="icon">4</span>
-        <span class="title">四、电机与变压器</span>
+        <span class="title">四、电力系统与安全</span>
         <span class="count">3 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-9" data-keywords="变压器 原理：电磁感应，U₁/U₂=N₁/N₂=I₂/I₁。 升压减流(远距离输电)、降压供电。 损耗：铜损(绕组)+铁损(铁芯)；效率高。 三相变压器接线组别 Yyn0、Dyn11 等。">
+        <div class="card" id="card-4-7" data-keywords="电力系统 发电→升压→输电→降压→配电;提高电压减小线损 P损=I²R。 ">
           <div class="card-head">
-            <span class="card-num">9</span>
-            <span class="card-title">变压器</span>
+            <span class="card-num">7</span>
+            <span class="card-title">电力系统</span>
           </div>
-          <div class="card-code">原理：电磁感应，U₁/U₂=N₁/N₂=I₂/I₁。
-升压减流(远距离输电)、降压供电。
-损耗：铜损(绕组)+铁损(铁芯)；效率高。
-三相变压器接线组别 Yyn0、Dyn11 等。</div>
+          <div class="card-code">发电→升压→输电→降压→配电;提高电压减小线损 P损=I²R。</div>
         </div>
-        <div class="card" id="card-4-10" data-keywords="异步电动机 定子旋转磁场，转子感应电流受力转动。 同步转速 n₀=60f/p (p极对数)。 转差率 s=(n₀-n)/n₀，额定约1%~5%。 起动：直接、星-三角降压、软起动、变频。">
+        <div class="card" id="card-4-8" data-keywords="安全用电 安全电压≤36V;触电急救先断电源;漏电保护器、保险丝、断路器、接地;一停二验三挂接地四挂牌。 ">
           <div class="card-head">
-            <span class="card-num">10</span>
-            <span class="card-title">异步电动机</span>
-          </div>
-          <div class="card-code">定子旋转磁场，转子感应电流受力转动。
-同步转速 n₀=60f/p (p极对数)。
-转差率 s=(n₀-n)/n₀，额定约1%~5%。
-起动：直接、星-三角降压、软起动、变频。</div>
-        </div>
-        <div class="card" id="card-4-11" data-keywords="直流与同步电机 直流电机调速好、起动转矩大。 同步电机转速恒定 n=60f/p，可调节励磁改善功率因数(调相机)。 发电机将机械能转为电能(切割磁感线)。">
-          <div class="card-head">
-            <span class="card-num">11</span>
-            <span class="card-title">直流与同步电机</span>
-          </div>
-          <div class="card-code">直流电机调速好、起动转矩大。
-同步电机转速恒定 n=60f/p，可调节励磁改善功率因数(调相机)。
-发电机将机械能转为电能(切割磁感线)。</div>
-        </div>
-      </div>
-    </div>
-    <div class="section" id="sect-5">
-      <button class="section-head">
-        <span class="icon">5</span>
-        <span class="title">五、电力系统与安全</span>
-        <span class="count">3 条</span>
-        <span class="arrow">▼</span>
-      </button>
-      <div class="section-body">
-        <div class="card" id="card-5-12" data-keywords="电力系统组成 发电→升压→输电(高压)→降压→配电→用户。 电压等级：380V/10kV/35kV/110kV/220kV/500kV… 提高电压可减小输电电流和线损 P损=I²R。">
-          <div class="card-head">
-            <span class="card-num">12</span>
-            <span class="card-title">电力系统组成</span>
-          </div>
-          <div class="card-code">发电→升压→输电(高压)→降压→配电→用户。
-电压等级：380V/10kV/35kV/110kV/220kV/500kV…
-提高电压可减小输电电流和线损 P损=I²R。</div>
-        </div>
-        <div class="card" id="card-5-13" data-keywords="安全用电 安全电压≤36V(潮湿≤12V)。 触电：单相、两相、跨步电压；发现触电先断电源。 漏电保护器(RCD)、保险丝、断路器；接地电阻要求。 一停二验三挂接地线四挂标示牌。">
-          <div class="card-head">
-            <span class="card-num">13</span>
+            <span class="card-num">8</span>
             <span class="card-title">安全用电</span>
           </div>
-          <div class="card-code">安全电压≤36V(潮湿≤12V)。
-触电：单相、两相、跨步电压；发现触电先断电源。
-漏电保护器(RCD)、保险丝、断路器；接地电阻要求。
-一停二验三挂接地线四挂标示牌。</div>
+          <div class="card-code">安全电压≤36V;触电急救先断电源;漏电保护器、保险丝、断路器、接地;一停二验三挂接地四挂牌。</div>
         </div>
-        <div class="card" id="card-5-14" data-keywords="常用低压电器 断路器(空开)：过载/短路保护。 接触器：远距离通断主电路。 热继电器：过载保护电机。 熔断器：短路保护。 继电器-接触器控制、PLC 控制。">
+        <div class="card" id="card-4-9" data-keywords="常用低压电器 断路器(过载短路保护)、接触器(远距通断)、热继电器(过载)、熔断器(短路);继电器-接触器/PLC 控制。 ">
           <div class="card-head">
-            <span class="card-num">14</span>
+            <span class="card-num">9</span>
             <span class="card-title">常用低压电器</span>
           </div>
-          <div class="card-code">断路器(空开)：过载/短路保护。
-接触器：远距离通断主电路。
-热继电器：过载保护电机。
-熔断器：短路保护。
-继电器-接触器控制、PLC 控制。</div>
+          <div class="card-code">断路器(过载短路保护)、接触器(远距通断)、热继电器(过载)、熔断器(短路);继电器-接触器/PLC 控制。</div>
         </div>
       </div>
     </div>

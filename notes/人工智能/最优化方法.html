@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,10 +69,10 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">5 条</span>
+  <span class="result-count" id="resultCount">4 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">AI 与工程的数学优化:无约束、约束、凸优化与数值算法。</div>
+    <div class="intro">无约束/约束/凸优化与数值算法,配梯度下降图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,19 +81,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="问题与最优性 目标函数、可行域;局部/全局最优;一阶(梯度=0)与二阶(Hessian)条件。">
+        <div class="card" id="card-1-1" data-keywords="最优性 目标函数、可行域;局部/全局;一阶(梯度=0)、二阶(Hessian)条件。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">问题与最优性</span>
+            <span class="card-title">最优性</span>
           </div>
-          <div class="card-code">目标函数、可行域;局部/全局最优;一阶(梯度=0)与二阶(Hessian)条件。</div>
+          <div class="card-code">目标函数、可行域;局部/全局;一阶(梯度=0)、二阶(Hessian)条件。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="凸优化 凸集/凸函数;凸问题局部最优即全局最优;线性/二次/半定规划。">
+        <div class="card" id="card-1-2" data-keywords="凸优化 凸集/凸函数;凸问题局部即全局;线性/二次/半定规划。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">凸优化</span>
           </div>
-          <div class="card-code">凸集/凸函数;凸问题局部最优即全局最优;线性/二次/半定规划。</div>
+          <div class="card-code">凸集/凸函数;凸问题局部即全局;线性/二次/半定规划。</div>
         </div>
       </div>
     </div>
@@ -98,23 +101,18 @@
       <button class="section-head">
         <span class="icon">2</span>
         <span class="title">二、无约束优化</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="下降算法 梯度下降、最速下降、牛顿法与拟牛顿(BFGS)、共轭梯度;线搜索与信赖域。">
+        <div class="card" id="card-2-3" data-keywords="下降算法 梯度下降、最速下降、牛顿与拟牛顿(BFGS)、共轭梯度;线搜索与信赖域; 随机优化 SGD/动量/Adam。 梯度下降逼近极小值">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">下降算法</span>
           </div>
-          <div class="card-code">梯度下降、最速下降、牛顿法与拟牛顿(BFGS)、共轭梯度;线搜索与信赖域。</div>
-        </div>
-        <div class="card" id="card-2-4" data-keywords="随机优化 SGD、动量、AdaGrad/RMSProp/Adam(深度学习常用)。">
-          <div class="card-head">
-            <span class="card-num">4</span>
-            <span class="card-title">随机优化</span>
-          </div>
-          <div class="card-code">SGD、动量、AdaGrad/RMSProp/Adam(深度学习常用)。</div>
+          <div class="card-code">梯度下降、最速下降、牛顿与拟牛顿(BFGS)、共轭梯度;线搜索与信赖域;
+随机优化 SGD/动量/Adam。</div>
+          <div class="card-fig"><svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><path d="M20,30 Q130,180 240,30" fill="none" stroke="#356ae6" stroke-width="2"/><circle cx="45" cy="55" r="3" fill="#b42318"/><circle cx="70" cy="80" r="3" fill="#b42318"/><circle cx="95" cy="98" r="3" fill="#b42318"/><circle cx="115" cy="106" r="3" fill="#b42318"/><circle cx="130" cy="108" r="3" fill="#b42318"/><text x="40" y="45" fill="#b42318" font-size="9">沿负梯度下降</text><text x="90" y="128" fill="#7d8599" font-size="9">梯度下降:逐步逼近极小值</text></svg><div class="cap">梯度下降逼近极小值</div></div>
         </div>
       </div>
     </div>
@@ -126,13 +124,12 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="约束方法 拉格朗日乘子、KKT 条件、对偶;罚函数、内点法; 启发式:遗传算法、粒子群、模拟退火。">
+        <div class="card" id="card-3-4" data-keywords="方法 拉格朗日乘子、KKT、对偶;罚函数、内点法;启发式(遗传/粒子群/模拟退火)。 ">
           <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">约束方法</span>
+            <span class="card-num">4</span>
+            <span class="card-title">方法</span>
           </div>
-          <div class="card-code">拉格朗日乘子、KKT 条件、对偶;罚函数、内点法;
-启发式:遗传算法、粒子群、模拟退火。</div>
+          <div class="card-code">拉格朗日乘子、KKT、对偶;罚函数、内点法;启发式(遗传/粒子群/模拟退火)。</div>
         </div>
       </div>
     </div>

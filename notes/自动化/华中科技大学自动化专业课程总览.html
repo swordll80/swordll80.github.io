@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">17 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">华中科技大学人工智能与自动化学院·自动化专业培养方案课程总览(按类别整理，具体以当年培养计划为准)。各核心课程另有专门手册页。</div>
+    <div class="intro">华中科技大学人工智能与自动化学院·自动化专业课程总览(以当年培养计划为准),各核心课程另有专门手册页。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,27 +81,26 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="数学类 高等数学(微积分)、线性代数、概率论与数理统计、复变函数与积分变换、 数学物理方程、离散数学、运筹学。">
+        <div class="card" id="card-1-1" data-keywords="数学类 高等数学、线性代数、概率论与数理统计、复变函数与积分变换、数学物理方程、离散数学、运筹学。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">数学类</span>
           </div>
-          <div class="card-code">高等数学(微积分)、线性代数、概率论与数理统计、复变函数与积分变换、
-数学物理方程、离散数学、运筹学。</div>
+          <div class="card-code">高等数学、线性代数、概率论与数理统计、复变函数与积分变换、数学物理方程、离散数学、运筹学。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="物理与外语人文 大学物理、物理实验；大学英语、思想政治理论、体育、工程伦理、经济管理类通识。">
+        <div class="card" id="card-1-2" data-keywords="物理外语人文 大学物理与实验;英语、思政、体育、通识。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">物理与外语人文</span>
+            <span class="card-title">物理外语人文</span>
           </div>
-          <div class="card-code">大学物理、物理实验；大学英语、思想政治理论、体育、工程伦理、经济管理类通识。</div>
+          <div class="card-code">大学物理与实验;英语、思政、体育、通识。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="计算机入门 程序设计基础(C 语言)、大学计算机基础、Python 程序设计、工程制图(画法几何与机械制图)。">
+        <div class="card" id="card-1-3" data-keywords="计算机入门 C 程序设计、大学计算机基础、Python、工程制图。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">计算机入门</span>
           </div>
-          <div class="card-code">程序设计基础(C 语言)、大学计算机基础、Python 程序设计、工程制图(画法几何与机械制图)。</div>
+          <div class="card-code">C 程序设计、大学计算机基础、Python、工程制图。</div>
         </div>
       </div>
     </div>
@@ -110,33 +112,33 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="电路与电子 电路理论(电路分析)、模拟电子技术、数字电子技术、电子技术课程设计。">
+        <div class="card" id="card-2-4" data-keywords="电路与电子 电路理论、模拟电子技术、数字电子技术。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">电路与电子</span>
           </div>
-          <div class="card-code">电路理论(电路分析)、模拟电子技术、数字电子技术、电子技术课程设计。</div>
+          <div class="card-code">电路理论、模拟电子技术、数字电子技术。</div>
         </div>
-        <div class="card" id="card-2-5" data-keywords="信号与系统类 信号与系统、数字信号处理。">
+        <div class="card" id="card-2-5" data-keywords="信号类 信号与系统、数字信号处理。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">信号与系统类</span>
+            <span class="card-title">信号类</span>
           </div>
           <div class="card-code">信号与系统、数字信号处理。</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="计算机与微机 微机原理与接口技术、数据结构、面向对象程序设计(C++)、计算机网络、操作系统。">
+        <div class="card" id="card-2-6" data-keywords="计算机与微机 微机原理与接口技术、数据结构、面向对象(C++)、计算机网络、操作系统。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">计算机与微机</span>
           </div>
-          <div class="card-code">微机原理与接口技术、数据结构、面向对象程序设计(C++)、计算机网络、操作系统。</div>
+          <div class="card-code">微机原理与接口技术、数据结构、面向对象(C++)、计算机网络、操作系统。</div>
         </div>
-        <div class="card" id="card-2-7" data-keywords="控制与电机 自动控制原理(经典控制)、电机学 / 电机与拖动基础。">
+        <div class="card" id="card-2-7" data-keywords="控制与电机 自动控制原理、电机学/电机与拖动。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">控制与电机</span>
           </div>
-          <div class="card-code">自动控制原理(经典控制)、电机学 / 电机与拖动基础。</div>
+          <div class="card-code">自动控制原理、电机学/电机与拖动。</div>
         </div>
       </div>
     </div>
@@ -148,33 +150,33 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-8" data-keywords="控制理论 现代控制理论(状态空间)、最优控制、系统辨识。">
+        <div class="card" id="card-3-8" data-keywords="控制理论 现代控制理论、最优控制、系统辨识。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">控制理论</span>
           </div>
-          <div class="card-code">现代控制理论(状态空间)、最优控制、系统辨识。</div>
+          <div class="card-code">现代控制理论、最优控制、系统辨识。</div>
         </div>
-        <div class="card" id="card-3-9" data-keywords="电力电子与运动控制 电力电子技术、运动控制系统(电力拖动自动控制系统)。">
+        <div class="card" id="card-3-9" data-keywords="电力与运动 电力电子技术、运动控制系统。 ">
           <div class="card-head">
             <span class="card-num">9</span>
-            <span class="card-title">电力电子与运动控制</span>
+            <span class="card-title">电力与运动</span>
           </div>
-          <div class="card-code">电力电子技术、运动控制系统(电力拖动自动控制系统)。</div>
+          <div class="card-code">电力电子技术、运动控制系统。</div>
         </div>
-        <div class="card" id="card-3-10" data-keywords="过程与计算机控制 过程控制系统、计算机控制系统。">
+        <div class="card" id="card-3-10" data-keywords="过程与计算机控制 过程控制系统、计算机控制系统。 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">过程与计算机控制</span>
           </div>
           <div class="card-code">过程控制系统、计算机控制系统。</div>
         </div>
-        <div class="card" id="card-3-11" data-keywords="检测与信息处理 检测技术与仪表 / 传感器原理、误差理论与数据处理。">
+        <div class="card" id="card-3-11" data-keywords="检测与信息 检测技术与仪表/传感器、误差理论与数据处理。 ">
           <div class="card-head">
             <span class="card-num">11</span>
-            <span class="card-title">检测与信息处理</span>
+            <span class="card-title">检测与信息</span>
           </div>
-          <div class="card-code">检测技术与仪表 / 传感器原理、误差理论与数据处理。</div>
+          <div class="card-code">检测技术与仪表/传感器、误差理论与数据处理。</div>
         </div>
       </div>
     </div>
@@ -186,34 +188,33 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-12" data-keywords="先进控制 智能控制、模式识别、鲁棒控制、自适应控制、预测控制、非线性控制。">
+        <div class="card" id="card-4-12" data-keywords="先进控制 智能控制、模式识别、鲁棒/自适应/预测/非线性控制。 ">
           <div class="card-head">
             <span class="card-num">12</span>
             <span class="card-title">先进控制</span>
           </div>
-          <div class="card-code">智能控制、模式识别、鲁棒控制、自适应控制、预测控制、非线性控制。</div>
+          <div class="card-code">智能控制、模式识别、鲁棒/自适应/预测/非线性控制。</div>
         </div>
-        <div class="card" id="card-4-13" data-keywords="工程技术 可编程控制器(PLC)、嵌入式系统、DSP 技术与应用、现场总线技术、组态软件、 机器人学、运动控制卡与伺服。">
+        <div class="card" id="card-4-13" data-keywords="工程技术 PLC、嵌入式、DSP、现场总线、组态、机器人、伺服。 ">
           <div class="card-head">
             <span class="card-num">13</span>
             <span class="card-title">工程技术</span>
           </div>
-          <div class="card-code">可编程控制器(PLC)、嵌入式系统、DSP 技术与应用、现场总线技术、组态软件、
-机器人学、运动控制卡与伺服。</div>
+          <div class="card-code">PLC、嵌入式、DSP、现场总线、组态、机器人、伺服。</div>
         </div>
-        <div class="card" id="card-4-14" data-keywords="人工智能方向 人工智能导论、机器学习、模式识别、计算机视觉、深度学习。">
+        <div class="card" id="card-4-14" data-keywords="人工智能 人工智能导论、机器学习、计算机视觉、深度学习。 ">
           <div class="card-head">
             <span class="card-num">14</span>
-            <span class="card-title">人工智能方向</span>
+            <span class="card-title">人工智能</span>
           </div>
-          <div class="card-code">人工智能导论、机器学习、模式识别、计算机视觉、深度学习。</div>
+          <div class="card-code">人工智能导论、机器学习、计算机视觉、深度学习。</div>
         </div>
-        <div class="card" id="card-4-15" data-keywords="仿真与工具 控制系统仿真(MATLAB/Simulink)、系统建模、随机过程。">
+        <div class="card" id="card-4-15" data-keywords="仿真工具 MATLAB/Simulink 控制系统仿真、系统建模、随机过程。 ">
           <div class="card-head">
             <span class="card-num">15</span>
-            <span class="card-title">仿真与工具</span>
+            <span class="card-title">仿真工具</span>
           </div>
-          <div class="card-code">控制系统仿真(MATLAB/Simulink)、系统建模、随机过程。</div>
+          <div class="card-code">MATLAB/Simulink 控制系统仿真、系统建模、随机过程。</div>
         </div>
       </div>
     </div>
@@ -225,20 +226,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-16" data-keywords="实验与实习 电子工艺实习、金工实习、电子技术实验、控制系统综合实验、生产实习。">
+        <div class="card" id="card-5-16" data-keywords="实验实习 电子工艺/金工实习、电子技术实验、控制系统综合实验、生产实习。 ">
           <div class="card-head">
             <span class="card-num">16</span>
-            <span class="card-title">实验与实习</span>
+            <span class="card-title">实验实习</span>
           </div>
-          <div class="card-code">电子工艺实习、金工实习、电子技术实验、控制系统综合实验、生产实习。</div>
+          <div class="card-code">电子工艺/金工实习、电子技术实验、控制系统综合实验、生产实习。</div>
         </div>
-        <div class="card" id="card-5-17" data-keywords="课程设计与毕设 微机原理课程设计、自动控制课程设计、电力电子/运动控制课程设计、 工程实践、毕业设计(论文)。">
+        <div class="card" id="card-5-17" data-keywords="课程设计与毕设 微机/自控/电力电子课程设计、工程实践、毕业设计。 ">
           <div class="card-head">
             <span class="card-num">17</span>
             <span class="card-title">课程设计与毕设</span>
           </div>
-          <div class="card-code">微机原理课程设计、自动控制课程设计、电力电子/运动控制课程设计、
-工程实践、毕业设计(论文)。</div>
+          <div class="card-code">微机/自控/电力电子课程设计、工程实践、毕业设计。</div>
         </div>
       </div>
     </div>

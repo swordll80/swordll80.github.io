@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,24 +69,37 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">5 条</span>
+  <span class="result-count" id="resultCount">6 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">分布式的通信、一致性、容错与典型架构。</div>
+    <div class="intro">通信、一致性、容错与典型架构,配 CAP 定理图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、基础</span>
-        <span class="count">1 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="模型与通信 进程、时钟(逻辑时钟 Lamport/向量时钟)、RPC、消息队列;CAP 定理(一致性/可用性/分区容错)。">
+        <div class="card" id="card-1-1" data-keywords="CAP 定理 分布式系统在一致性(C)、可用性(A)、分区容错(P)三者中最多同时满足两个; 网络分区不可避免,通常在 C 与 A 间权衡(CP/AP)。 CAP 定理">
           <div class="card-head">
             <span class="card-num">1</span>
+            <span class="card-title">CAP 定理</span>
+          </div>
+          <div class="card-code">分布式系统在一致性(C)、可用性(A)、分区容错(P)三者中最多同时满足两个;
+网络分区不可避免,通常在 C 与 A 间权衡(CP/AP)。</div>
+          <div class="card-fig"><svg viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11">
+<path d="M110,20 L30,150 L190,150 Z" fill="#eef3ff" stroke="#356ae6"/>
+<text x="92" y="16">C 一致性</text><text x="5" y="164">A 可用性</text><text x="150" y="164">P 分区容错</text>
+<text x="55" y="120" fill="#7d8599" font-size="9">分布式三者最多同时满足两个</text>
+</svg><div class="cap">CAP 定理</div></div>
+        </div>
+        <div class="card" id="card-1-2" data-keywords="模型与通信 逻辑时钟(Lamport/向量时钟)、RPC、消息队列。 ">
+          <div class="card-head">
+            <span class="card-num">2</span>
             <span class="card-title">模型与通信</span>
           </div>
-          <div class="card-code">进程、时钟(逻辑时钟 Lamport/向量时钟)、RPC、消息队列;CAP 定理(一致性/可用性/分区容错)。</div>
+          <div class="card-code">逻辑时钟(Lamport/向量时钟)、RPC、消息队列。</div>
         </div>
       </div>
     </div>
@@ -95,16 +111,16 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="复制与一致性 强/最终一致性;主从/多主复制;Quorum。">
-          <div class="card-head">
-            <span class="card-num">2</span>
-            <span class="card-title">复制与一致性</span>
-          </div>
-          <div class="card-code">强/最终一致性;主从/多主复制;Quorum。</div>
-        </div>
-        <div class="card" id="card-2-3" data-keywords="共识算法 2PC/3PC;Paxos、Raft;拜占庭容错;分布式事务。">
+        <div class="card" id="card-2-3" data-keywords="复制与一致性 强/最终一致性;主从/多主复制;Quorum(读写多数)。 ">
           <div class="card-head">
             <span class="card-num">3</span>
+            <span class="card-title">复制与一致性</span>
+          </div>
+          <div class="card-code">强/最终一致性;主从/多主复制;Quorum(读写多数)。</div>
+        </div>
+        <div class="card" id="card-2-4" data-keywords="共识算法 2PC/3PC;Paxos、Raft;拜占庭容错;分布式事务。 ">
+          <div class="card-head">
+            <span class="card-num">4</span>
             <span class="card-title">共识算法</span>
           </div>
           <div class="card-code">2PC/3PC;Paxos、Raft;拜占庭容错;分布式事务。</div>
@@ -119,19 +135,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="分布式计算 MapReduce、Spark;分布式存储(GFS/HDFS)、KV 存储、一致性哈希。">
-          <div class="card-head">
-            <span class="card-num">4</span>
-            <span class="card-title">分布式计算</span>
-          </div>
-          <div class="card-code">MapReduce、Spark;分布式存储(GFS/HDFS)、KV 存储、一致性哈希。</div>
-        </div>
-        <div class="card" id="card-3-5" data-keywords="微服务与云 微服务、服务发现、负载均衡、容器与编排(Docker/K8s);可观测性。">
+        <div class="card" id="card-3-5" data-keywords="分布式计算与存储 MapReduce/Spark;GFS/HDFS、一致性哈希、KV 存储。 ">
           <div class="card-head">
             <span class="card-num">5</span>
+            <span class="card-title">分布式计算与存储</span>
+          </div>
+          <div class="card-code">MapReduce/Spark;GFS/HDFS、一致性哈希、KV 存储。</div>
+        </div>
+        <div class="card" id="card-3-6" data-keywords="微服务与云 服务发现、负载均衡、容器编排(K8s)、可观测性(见 软件开发)。 ">
+          <div class="card-head">
+            <span class="card-num">6</span>
             <span class="card-title">微服务与云</span>
           </div>
-          <div class="card-code">微服务、服务发现、负载均衡、容器与编排(Docker/K8s);可观测性。</div>
+          <div class="card-code">服务发现、负载均衡、容器编排(K8s)、可观测性(见 软件开发)。</div>
         </div>
       </div>
     </div>

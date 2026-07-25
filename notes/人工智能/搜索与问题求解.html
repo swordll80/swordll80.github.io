@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">状态空间搜索、启发式搜索、对抗搜索与约束满足。</div>
+    <div class="intro">状态空间、启发式、对抗搜索与约束满足,配搜索树图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,19 +81,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="问题建模 状态、动作、转移、初始/目标状态、路径代价。">
+        <div class="card" id="card-1-1" data-keywords="建模 状态、动作、转移、初始/目标、代价。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">问题建模</span>
+            <span class="card-title">建模</span>
           </div>
-          <div class="card-code">状态、动作、转移、初始/目标状态、路径代价。</div>
+          <div class="card-code">状态、动作、转移、初始/目标、代价。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="盲目搜索 BFS(最优步数)、DFS、一致代价搜索 UCS、迭代加深 IDDFS;完备性与最优性。">
+        <div class="card" id="card-1-2" data-keywords="盲目搜索 BFS/DFS、一致代价 UCS、迭代加深;完备性与最优性。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">盲目搜索</span>
           </div>
-          <div class="card-code">BFS(最优步数)、DFS、一致代价搜索 UCS、迭代加深 IDDFS;完备性与最优性。</div>
+          <div class="card-code">BFS/DFS、一致代价 UCS、迭代加深;完备性与最优性。</div>
         </div>
       </div>
     </div>
@@ -102,13 +105,14 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="A* 算法 f(n)=g(n)+h(n);启发函数 h 可采纳(≤真实)则 A* 最优;一致性; 贪婪最佳优先只用 h。">
+        <div class="card" id="card-2-3" data-keywords="A* 算法 f(n)=g(n)+h(n);h 可采纳(≤真实)则最优;贪婪最佳优先只用 h; 启发函数决定效率。 A* 启发式搜索择优扩展">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">A* 算法</span>
           </div>
-          <div class="card-code">f(n)=g(n)+h(n);启发函数 h 可采纳(≤真实)则 A* 最优;一致性;
-贪婪最佳优先只用 h。</div>
+          <div class="card-code">f(n)=g(n)+h(n);h 可采纳(≤真实)则最优;贪婪最佳优先只用 h;
+启发函数决定效率。</div>
+          <div class="card-fig"><svg viewBox="0 0 240 140" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><line x1="120" y1="30" x2="70" y2="75" stroke="#7d8599"/><line x1="120" y1="30" x2="170" y2="75" stroke="#7d8599"/><line x1="70" y1="90" x2="45" y2="125" stroke="#7d8599"/><line x1="70" y1="90" x2="95" y2="125" stroke="#7d8599"/><line x1="170" y1="90" x2="195" y2="125" stroke="#7d8599"/><circle cx="120" cy="28" r="15" fill="#eef3ff" stroke="#356ae6"/><text x="114" y="32">起</text><circle cx="70" cy="85" r="14" fill="#e8f7ee" stroke="#067647"/><circle cx="170" cy="85" r="14" fill="#e8f7ee" stroke="#067647"/><circle cx="45" cy="128" r="13" fill="#fff4e6" stroke="#b54708"/><text x="39" y="132">目</text><circle cx="95" cy="128" r="12" fill="#f5f5f5" stroke="#7d8599"/><circle cx="195" cy="128" r="12" fill="#f5f5f5" stroke="#7d8599"/><text x="30" y="18" fill="#7d8599" font-size="9">A*:f=g+h 择优扩展</text></svg><div class="cap">A* 启发式搜索择优扩展</div></div>
         </div>
       </div>
     </div>
@@ -120,19 +124,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="博弈搜索 极小极大 Minimax、α-β 剪枝、评估函数;蒙特卡洛树搜索 MCTS(AlphaGo)。">
+        <div class="card" id="card-3-4" data-keywords="博弈搜索 极小极大 Minimax、α-β 剪枝、评估函数;MCTS(AlphaGo)。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">博弈搜索</span>
           </div>
-          <div class="card-code">极小极大 Minimax、α-β 剪枝、评估函数;蒙特卡洛树搜索 MCTS(AlphaGo)。</div>
+          <div class="card-code">极小极大 Minimax、α-β 剪枝、评估函数;MCTS(AlphaGo)。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="约束满足 CSP 变量/域/约束;回溯 + 前向检查 + 弧一致性(AC-3);局部搜索。">
+        <div class="card" id="card-3-5" data-keywords="CSP 变量/域/约束;回溯+前向检查+弧一致性 AC-3;局部搜索。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">约束满足 CSP</span>
+            <span class="card-title">CSP</span>
           </div>
-          <div class="card-code">变量/域/约束;回溯 + 前向检查 + 弧一致性(AC-3);局部搜索。</div>
+          <div class="card-code">变量/域/约束;回溯+前向检查+弧一致性 AC-3;局部搜索。</div>
         </div>
       </div>
     </div>

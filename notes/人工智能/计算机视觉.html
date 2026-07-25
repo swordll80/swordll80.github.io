@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,36 +81,36 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="底层处理 滤波、边缘(Canny)、形态学、直方图、图像金字塔;颜色空间。">
+        <div class="card" id="card-1-1" data-keywords="底层 滤波、边缘(Canny)、形态学、直方图、金字塔;颜色空间。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">底层处理</span>
+            <span class="card-title">底层</span>
           </div>
-          <div class="card-code">滤波、边缘(Canny)、形态学、直方图、图像金字塔;颜色空间。</div>
+          <div class="card-code">滤波、边缘(Canny)、形态学、直方图、金字塔;颜色空间。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="特征 SIFT/SURF/ORB、HOG;特征匹配与描述子。">
+        <div class="card" id="card-1-2" data-keywords="特征 SIFT/SURF/ORB、HOG;匹配与描述子。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">特征</span>
           </div>
-          <div class="card-code">SIFT/SURF/ORB、HOG;特征匹配与描述子。</div>
+          <div class="card-code">SIFT/SURF/ORB、HOG;匹配与描述子。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、识别与检测</span>
+        <span class="title">二、识别检测</span>
         <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="分类与检测 CNN 图像分类;目标检测(R-CNN 系列、YOLO、SSD);语义/实例分割(FCN/U-Net/Mask R-CNN)。">
+        <div class="card" id="card-2-3" data-keywords="分类检测分割 CNN 分类;检测(R-CNN/YOLO/SSD);分割(FCN/U-Net/Mask R-CNN)。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">分类与检测</span>
+            <span class="card-title">分类检测分割</span>
           </div>
-          <div class="card-code">CNN 图像分类;目标检测(R-CNN 系列、YOLO、SSD);语义/实例分割(FCN/U-Net/Mask R-CNN)。</div>
+          <div class="card-code">CNN 分类;检测(R-CNN/YOLO/SSD);分割(FCN/U-Net/Mask R-CNN)。</div>
         </div>
       </div>
     </div>
@@ -119,19 +122,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="几何视觉 相机模型与标定、双目立体、SfM、SLAM;深度估计。">
+        <div class="card" id="card-3-4" data-keywords="几何视觉 相机标定、双目立体、SfM、SLAM、深度估计。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">几何视觉</span>
           </div>
-          <div class="card-code">相机模型与标定、双目立体、SfM、SLAM;深度估计。</div>
+          <div class="card-code">相机标定、双目立体、SfM、SLAM、深度估计。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="视频与生成 光流、目标跟踪、动作识别;图像生成(GAN/扩散)、NeRF。">
+        <div class="card" id="card-3-5" data-keywords="视频生成 光流、跟踪、动作识别;生成(GAN/扩散)、NeRF。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">视频与生成</span>
+            <span class="card-title">视频生成</span>
           </div>
-          <div class="card-code">光流、目标跟踪、动作识别;图像生成(GAN/扩散)、NeRF。</div>
+          <div class="card-code">光流、跟踪、动作识别;生成(GAN/扩散)、NeRF。</div>
         </div>
       </div>
     </div>

@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">4 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">数字逻辑设计与硬件描述语言 Verilog(可综合 RTL)。</div>
+    <div class="intro">数字逻辑与 Verilog RTL 设计,配状态机图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,36 +81,38 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="组合与时序 布尔代数、卡诺图化简;组合电路(MUX/译码器/加法器)、时序电路(触发器/计数器/状态机)。">
+        <div class="card" id="card-1-1" data-keywords="组合与时序 布尔代数、卡诺图;组合(MUX/译码/加法器)、时序(触发器/计数器/状态机)。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">组合与时序</span>
           </div>
-          <div class="card-code">布尔代数、卡诺图化简;组合电路(MUX/译码器/加法器)、时序电路(触发器/计数器/状态机)。</div>
+          <div class="card-code">布尔代数、卡诺图;组合(MUX/译码/加法器)、时序(触发器/计数器/状态机)。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、Verilog 基础</span>
+        <span class="title">二、Verilog</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="语法 module/端口;wire/reg;assign 连续赋值;always 块(组合 @*、时序 @posedge clk);阻塞= 与非阻塞&lt;=。">
+        <div class="card" id="card-2-2" data-keywords="语法 module/端口;wire/reg;assign;always(@* 组合、@posedge clk 时序);阻塞= 与非阻塞&lt;=。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">语法</span>
           </div>
-          <div class="card-code">module/端口;wire/reg;assign 连续赋值;always 块(组合 @*、时序 @posedge clk);阻塞= 与非阻塞&lt;=。</div>
+          <div class="card-code">module/端口;wire/reg;assign;always(@* 组合、@posedge clk 时序);阻塞= 与非阻塞&lt;=。</div>
         </div>
-        <div class="card" id="card-2-3" data-keywords="可综合 RTL 用非阻塞写时序、阻塞写组合;有限状态机(三段式);避免锁存器、参数化 parameter。">
+        <div class="card" id="card-2-3" data-keywords="可综合 RTL 与 FSM 非阻塞写时序、阻塞写组合;有限状态机三段式(状态寄存器/次态逻辑/输出逻辑); 避免锁存器、参数化 parameter。 有限状态机(FSM)">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">可综合 RTL</span>
+            <span class="card-title">可综合 RTL 与 FSM</span>
           </div>
-          <div class="card-code">用非阻塞写时序、阻塞写组合;有限状态机(三段式);避免锁存器、参数化 parameter。</div>
+          <div class="card-code">非阻塞写时序、阻塞写组合;有限状态机三段式(状态寄存器/次态逻辑/输出逻辑);
+避免锁存器、参数化 parameter。</div>
+          <div class="card-fig"><svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><defs><marker id="fm" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs><circle cx="50" cy="60" r="24" fill="#eef3ff" stroke="#356ae6"/><text x="36" y="63">S0</text><circle cx="140" cy="60" r="24" fill="#e8f7ee" stroke="#067647"/><text x="126" y="63">S1</text><circle cx="215" cy="60" r="24" fill="#fff4e6" stroke="#b54708"/><text x="203" y="63">S2</text><path d="M74,55 Q107,35 116,52" fill="none" stroke="#356ae6" marker-end="url(#fm)"/><path d="M164,60 Q188,60 191,60" fill="none" stroke="#356ae6" marker-end="url(#fm)"/><path d="M140,84 Q95,115 55,84" fill="none" stroke="#7d8599" marker-end="url(#fm)"/><text x="60" y="120" fill="#7d8599" font-size="9">有限状态机(时序逻辑核心)</text></svg><div class="cap">有限状态机(FSM)</div></div>
         </div>
       </div>
     </div>
@@ -119,13 +124,12 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="测试平台 testbench、激励、initial/always、$display/$monitor;仿真(ModelSim/VCS); 断言、覆盖率、UVM 概念。">
+        <div class="card" id="card-3-4" data-keywords="测试 testbench、激励、$display/$monitor;仿真(ModelSim/VCS);断言、覆盖率、UVM。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">测试平台</span>
+            <span class="card-title">测试</span>
           </div>
-          <div class="card-code">testbench、激励、initial/always、$display/$monitor;仿真(ModelSim/VCS);
-断言、覆盖率、UVM 概念。</div>
+          <div class="card-code">testbench、激励、$display/$monitor;仿真(ModelSim/VCS);断言、覆盖率、UVM。</div>
         </div>
       </div>
     </div>

@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,10 +69,10 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">5 条</span>
+  <span class="result-count" id="resultCount">4 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">功率器件、整流、逆变、斩波、交流调压与 PWM 变换。</div>
+    <div class="intro">功率器件、整流、逆变、斩波与 PWM,配 Buck 变换器图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,33 +81,29 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="器件 不可控:功率二极管；半控:晶闸管 SCR(触发导通,过零关断)。 全控:GTO、电力 MOSFET、IGBT(常用)。 开关特性、驱动与保护(缓冲/散热)。">
+        <div class="card" id="card-1-1" data-keywords="器件 二极管(不控)、晶闸管(半控)、GTO/MOSFET/IGBT(全控);驱动与保护。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">器件</span>
           </div>
-          <div class="card-code">不可控:功率二极管；半控:晶闸管 SCR(触发导通,过零关断)。
-全控:GTO、电力 MOSFET、IGBT(常用)。
-开关特性、驱动与保护(缓冲/散热)。</div>
+          <div class="card-code">二极管(不控)、晶闸管(半控)、GTO/MOSFET/IGBT(全控);驱动与保护。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、整流(AC-DC)</span>
+        <span class="title">二、整流</span>
         <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="可控整流 单相/三相半波、全波、桥式。 控制角 α 调节输出电压 Ud=Ud0·cosα(阻性)。 换相、谐波与功率因数。">
+        <div class="card" id="card-2-2" data-keywords="可控整流 单/三相桥;控制角 α 调 Ud=Ud0·cosα;换相、谐波、功率因数。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">可控整流</span>
           </div>
-          <div class="card-code">单相/三相半波、全波、桥式。
-控制角 α 调节输出电压 Ud=Ud0·cosα(阻性)。
-换相、谐波与功率因数。</div>
+          <div class="card-code">单/三相桥;控制角 α 调 Ud=Ud0·cosα;换相、谐波、功率因数。</div>
         </div>
       </div>
     </div>
@@ -112,32 +111,24 @@
       <button class="section-head">
         <span class="icon">3</span>
         <span class="title">三、变换电路</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-3" data-keywords="斩波(DC-DC) 降压 Buck、升压 Boost、升降压 Buck-Boost。 占空比 D 控制输出：Buck Uo=D·Ui。">
+        <div class="card" id="card-3-3" data-keywords="斩波 DC-DC Buck 降压 Vo=D·Vi、Boost 升压、Buck-Boost;占空比 D 控制;CCM/DCM。 降压 Buck 变换器">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">斩波(DC-DC)</span>
+            <span class="card-title">斩波 DC-DC</span>
           </div>
-          <div class="card-code">降压 Buck、升压 Boost、升降压 Buck-Boost。
-占空比 D 控制输出：Buck Uo=D·Ui。</div>
+          <div class="card-code">Buck 降压 Vo=D·Vi、Boost 升压、Buck-Boost;占空比 D 控制;CCM/DCM。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 125" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><line x1="20" y1="35" x2="70" y2="35" stroke="#1a1a2e"/><rect x="70" y="26" width="26" height="18" fill="#fff4e6" stroke="#b54708"/><text x="76" y="39">S</text><line x1="96" y1="35" x2="150" y2="35" stroke="#1a1a2e"/><path d="M150,35 q8,-9 16,0 q8,-9 16,0 q8,-9 16,0" fill="none" stroke="#356ae6"/><text x="160" y="20">L</text><line x1="198" y1="35" x2="240" y2="35" stroke="#1a1a2e"/><line x1="240" y1="20" x2="240" y2="88" stroke="#1a1a2e"/><text x="246" y="52">C</text><text x="246" y="30">Vo</text><line x1="130" y1="35" x2="130" y2="88" stroke="#1a1a2e"/><polygon points="123,52 137,52 130,64" fill="none" stroke="#067647"/><line x1="20" y1="88" x2="240" y2="88" stroke="#1a1a2e"/><text x="20" y="20">Vi</text><text x="55" y="115" fill="#7d8599">降压 Buck:Vo=D·Vi (D=占空比)</text></svg><div class="cap">降压 Buck 变换器</div></div>
         </div>
-        <div class="card" id="card-3-4" data-keywords="逆变(DC-AC) 电压型/电流型逆变；单相/三相桥。 SPWM 正弦脉宽调制生成近似正弦；载波比、调制度。">
+        <div class="card" id="card-3-4" data-keywords="逆变与变频 电压/电流型逆变、SPWM 生成正弦;变频器=整流+滤波+逆变,V/f 控制。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">逆变(DC-AC)</span>
+            <span class="card-title">逆变与变频</span>
           </div>
-          <div class="card-code">电压型/电流型逆变；单相/三相桥。
-SPWM 正弦脉宽调制生成近似正弦；载波比、调制度。</div>
-        </div>
-        <div class="card" id="card-3-5" data-keywords="交流调压与变频 交流调压(相控/斩控)；变频器 = 整流+滤波+逆变(交-直-交)，V/f 控制。">
-          <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">交流调压与变频</span>
-          </div>
-          <div class="card-code">交流调压(相控/斩控)；变频器 = 整流+滤波+逆变(交-直-交)，V/f 控制。</div>
+          <div class="card-code">电压/电流型逆变、SPWM 生成正弦;变频器=整流+滤波+逆变,V/f 控制。</div>
         </div>
       </div>
     </div>

@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">6 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">可编程控制器(PLC)与嵌入式系统的原理、编程与应用。</div>
+    <div class="intro">可编程控制器与嵌入式系统的原理编程与应用。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,28 +81,26 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="组成与扫描 PLC=CPU+存储+I/O+电源;循环扫描:输入采样→程序执行→输出刷新。 输入/输出模块、扩展、通信。">
+        <div class="card" id="card-1-1" data-keywords="组成与扫描 PLC=CPU+存储+I/O+电源;循环扫描:输入采样→程序执行→输出刷新。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">组成与扫描</span>
           </div>
-          <div class="card-code">PLC=CPU+存储+I/O+电源;循环扫描:输入采样→程序执行→输出刷新。
-输入/输出模块、扩展、通信。</div>
+          <div class="card-code">PLC=CPU+存储+I/O+电源;循环扫描:输入采样→程序执行→输出刷新。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="编程语言 IEC 61131-3:梯形图 LD、指令表 IL、功能块图 FBD、结构文本 ST、顺序功能图 SFC。 位逻辑、定时器 T、计数器 C、数据处理、PID 功能块。">
+        <div class="card" id="card-1-2" data-keywords="编程语言 IEC 61131-3:梯形图 LD、指令表 IL、功能块 FBD、结构文本 ST、顺序功能图 SFC;定时器/计数器/PID。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">编程语言</span>
           </div>
-          <div class="card-code">IEC 61131-3:梯形图 LD、指令表 IL、功能块图 FBD、结构文本 ST、顺序功能图 SFC。
-位逻辑、定时器 T、计数器 C、数据处理、PID 功能块。</div>
+          <div class="card-code">IEC 61131-3:梯形图 LD、指令表 IL、功能块 FBD、结构文本 ST、顺序功能图 SFC;定时器/计数器/PID。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="应用 开关量顺序控制、运动控制、过程控制;与触摸屏/组态、现场总线(Profibus/Modbus/Profinet)联网。">
+        <div class="card" id="card-1-3" data-keywords="应用 顺序/运动/过程控制;触摸屏/组态、现场总线(Profibus/Modbus/Profinet)。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">应用</span>
           </div>
-          <div class="card-code">开关量顺序控制、运动控制、过程控制;与触摸屏/组态、现场总线(Profibus/Modbus/Profinet)联网。</div>
+          <div class="card-code">顺序/运动/过程控制;触摸屏/组态、现场总线(Profibus/Modbus/Profinet)。</div>
         </div>
       </div>
     </div>
@@ -111,28 +112,26 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="硬件 MCU/SoC(51、STM32、ARM Cortex-M);GPIO、定时器、中断、ADC、PWM、DMA。 通信:UART、SPI、I²C、CAN、以太网。">
+        <div class="card" id="card-2-4" data-keywords="硬件 MCU/SoC(51/STM32/Cortex-M/ESP32);GPIO/定时器/中断/ADC/PWM/DMA;UART/SPI/I²C/CAN/以太网。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">硬件</span>
           </div>
-          <div class="card-code">MCU/SoC(51、STM32、ARM Cortex-M);GPIO、定时器、中断、ADC、PWM、DMA。
-通信:UART、SPI、I²C、CAN、以太网。</div>
+          <div class="card-code">MCU/SoC(51/STM32/Cortex-M/ESP32);GPIO/定时器/中断/ADC/PWM/DMA;UART/SPI/I²C/CAN/以太网。</div>
         </div>
-        <div class="card" id="card-2-5" data-keywords="软件 裸机(前后台)与 RTOS(FreeRTOS/μC-OS):任务调度、优先级、信号量、消息队列。 驱动、启动流程、交叉编译、调试(JTAG/SWD)。">
+        <div class="card" id="card-2-5" data-keywords="软件 裸机(前后台)与 RTOS(FreeRTOS)任务调度/信号量/队列;驱动、交叉编译、JTAG/SWD 调试。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">软件</span>
           </div>
-          <div class="card-code">裸机(前后台)与 RTOS(FreeRTOS/μC-OS):任务调度、优先级、信号量、消息队列。
-驱动、启动流程、交叉编译、调试(JTAG/SWD)。</div>
+          <div class="card-code">裸机(前后台)与 RTOS(FreeRTOS)任务调度/信号量/队列;驱动、交叉编译、JTAG/SWD 调试。</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="应用 工业控制、仪器仪表、机器人、物联网终端;低功耗、实时性、可靠性设计。">
+        <div class="card" id="card-2-6" data-keywords="应用 工业控制、仪器仪表、机器人、物联网;低功耗、实时、可靠性。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">应用</span>
           </div>
-          <div class="card-code">工业控制、仪器仪表、机器人、物联网终端;低功耗、实时性、可靠性设计。</div>
+          <div class="card-code">工业控制、仪器仪表、机器人、物联网;低功耗、实时、可靠性。</div>
         </div>
       </div>
     </div>

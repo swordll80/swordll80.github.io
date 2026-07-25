@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">软件过程、需求设计、测试与项目管理的工程化方法。</div>
+    <div class="intro">软件过程、需求设计、测试与管理,配开发生命周期图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,12 +81,13 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="生命周期 瀑布、增量、螺旋、RUP;敏捷(Scrum/看板)、DevOps、CI/CD。">
+        <div class="card" id="card-1-1" data-keywords="生命周期 瀑布、增量、螺旋、RUP;敏捷(Scrum/看板)、DevOps、CI/CD; 阶段:需求→设计→编码→测试→部署→维护。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">生命周期</span>
           </div>
-          <div class="card-code">瀑布、增量、螺旋、RUP;敏捷(Scrum/看板)、DevOps、CI/CD。</div>
+          <div class="card-code">瀑布、增量、螺旋、RUP;敏捷(Scrum/看板)、DevOps、CI/CD;
+阶段:需求→设计→编码→测试→部署→维护。</div>
         </div>
       </div>
     </div>
@@ -95,19 +99,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="需求工程 需求获取/分析/规格/验证;用例、用户故事。">
+        <div class="card" id="card-2-2" data-keywords="需求工程 获取/分析/规格/验证;用例、用户故事。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">需求工程</span>
           </div>
-          <div class="card-code">需求获取/分析/规格/验证;用例、用户故事。</div>
+          <div class="card-code">获取/分析/规格/验证;用例、用户故事。</div>
         </div>
-        <div class="card" id="card-2-3" data-keywords="设计 架构设计、模块化、高内聚低耦合;面向对象设计与 UML;设计模式(见 编程/设计模式)。">
+        <div class="card" id="card-2-3" data-keywords="设计 架构设计、模块化(高内聚低耦合)、UML;设计模式(见 编程/设计模式)。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">设计</span>
           </div>
-          <div class="card-code">架构设计、模块化、高内聚低耦合;面向对象设计与 UML;设计模式(见 编程/设计模式)。</div>
+          <div class="card-code">架构设计、模块化(高内聚低耦合)、UML;设计模式(见 编程/设计模式)。</div>
         </div>
       </div>
     </div>
@@ -119,19 +123,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="测试 单元/集成/系统/验收;黑盒/白盒、覆盖率、回归、自动化测试。">
+        <div class="card" id="card-3-4" data-keywords="测试 单元/集成/系统/验收;黑盒/白盒、覆盖率、回归、自动化(见 软件开发/测试与质量)。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">测试</span>
           </div>
-          <div class="card-code">单元/集成/系统/验收;黑盒/白盒、覆盖率、回归、自动化测试。</div>
+          <div class="card-code">单元/集成/系统/验收;黑盒/白盒、覆盖率、回归、自动化(见 软件开发/测试与质量)。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="管理与度量 项目计划、估算、风险、配置管理;质量保证、软件度量与维护。">
+        <div class="card" id="card-3-5" data-keywords="管理 计划、估算、风险、配置管理、度量;质量保证与维护。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">管理与度量</span>
+            <span class="card-title">管理</span>
           </div>
-          <div class="card-code">项目计划、估算、风险、配置管理;质量保证、软件度量与维护。</div>
+          <div class="card-code">计划、估算、风险、配置管理、度量;质量保证与维护。</div>
         </div>
       </div>
     </div>

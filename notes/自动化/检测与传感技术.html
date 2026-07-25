@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">测量基础、误差处理、各类传感器与信号调理。</div>
+    <div class="intro">测量与误差、各类传感器与信号调理。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,21 +81,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="测量基础 直接/间接/组合测量;精度、灵敏度、分辨力、线性度、迟滞、重复性。 静态特性与动态特性(一阶/二阶)。">
+        <div class="card" id="card-1-1" data-keywords="测量基础 精度/灵敏度/分辨力/线性度/迟滞;静态与动态特性(一阶/二阶)。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">测量基础</span>
           </div>
-          <div class="card-code">直接/间接/组合测量;精度、灵敏度、分辨力、线性度、迟滞、重复性。
-静态特性与动态特性(一阶/二阶)。</div>
+          <div class="card-code">精度/灵敏度/分辨力/线性度/迟滞;静态与动态特性(一阶/二阶)。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="误差处理 系统误差/随机误差/粗大误差; 随机误差正态分布,用标准差评定;最小二乘、数据处理与不确定度。">
+        <div class="card" id="card-1-2" data-keywords="误差处理 系统/随机/粗大误差;随机误差正态分布用标准差评定;最小二乘、不确定度。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">误差处理</span>
           </div>
-          <div class="card-code">系统误差/随机误差/粗大误差;
-随机误差正态分布,用标准差评定;最小二乘、数据处理与不确定度。</div>
+          <div class="card-code">系统/随机/粗大误差;随机误差正态分布用标准差评定;最小二乘、不确定度。</div>
         </div>
       </div>
     </div>
@@ -104,20 +105,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="参量型 电阻式(应变片/热电阻 Pt100)、电感式、电容式、压阻式。 用于力、压力、位移、液位。">
+        <div class="card" id="card-2-3" data-keywords="参量型 电阻(应变片/Pt100)、电感、电容、压阻;力/压力/位移/液位。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">参量型</span>
           </div>
-          <div class="card-code">电阻式(应变片/热电阻 Pt100)、电感式、电容式、压阻式。
-用于力、压力、位移、液位。</div>
+          <div class="card-code">电阻(应变片/Pt100)、电感、电容、压阻;力/压力/位移/液位。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="发电型与其他 热电偶(温度)、压电(振动/加速度)、光电、霍尔(磁/电流)、光栅/编码器(位移角度)、超声/红外。">
+        <div class="card" id="card-2-4" data-keywords="发电型 热电偶、压电、光电、霍尔、光栅/编码器、超声/红外。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">发电型与其他</span>
+            <span class="card-title">发电型</span>
           </div>
-          <div class="card-code">热电偶(温度)、压电(振动/加速度)、光电、霍尔(磁/电流)、光栅/编码器(位移角度)、超声/红外。</div>
+          <div class="card-code">热电偶、压电、光电、霍尔、光栅/编码器、超声/红外。</div>
         </div>
       </div>
     </div>
@@ -129,13 +129,12 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="调理与变送 电桥、放大、滤波、线性化、隔离、A/D。 变送器输出标准信号(4-20mA/0-10V);抗干扰与远传。">
+        <div class="card" id="card-3-5" data-keywords="调理变送 电桥、放大、滤波、线性化、隔离、A/D;变送器输出 4-20mA/0-10V,抗干扰远传。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">调理与变送</span>
+            <span class="card-title">调理变送</span>
           </div>
-          <div class="card-code">电桥、放大、滤波、线性化、隔离、A/D。
-变送器输出标准信号(4-20mA/0-10V);抗干扰与远传。</div>
+          <div class="card-code">电桥、放大、滤波、线性化、隔离、A/D;变送器输出 4-20mA/0-10V,抗干扰远传。</div>
         </div>
       </div>
     </div>

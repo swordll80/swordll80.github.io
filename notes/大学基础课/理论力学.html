@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,31 +69,35 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">6 条</span>
+  <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">静力学、运动学与动力学:质点与刚体的平衡与运动规律。</div>
+    <div class="intro">静力学、运动学、动力学:质点与刚体的平衡与运动,配受力图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、静力学</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="力系与平衡 力、力矩、力偶;力系简化(主矢+主矩);平面/空间力系平衡方程。">
+        <div class="card" id="card-1-1" data-keywords="力系与受力分析 力、力矩、力偶;力系简化(主矢+主矩);受力图与约束反力; 平面/空间力系平衡方程 ΣF=0、ΣM=0;摩擦与自锁。 受力分析(斜面为例)">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">力系与平衡</span>
+            <span class="card-title">力系与受力分析</span>
           </div>
-          <div class="card-code">力、力矩、力偶;力系简化(主矢+主矩);平面/空间力系平衡方程。</div>
-        </div>
-        <div class="card" id="card-1-2" data-keywords="约束与摩擦 约束反力、受力图;滑动摩擦、摩擦角、自锁。">
-          <div class="card-head">
-            <span class="card-num">2</span>
-            <span class="card-title">约束与摩擦</span>
-          </div>
-          <div class="card-code">约束反力、受力图;滑动摩擦、摩擦角、自锁。</div>
+          <div class="card-code">力、力矩、力偶;力系简化(主矢+主矩);受力图与约束反力;
+平面/空间力系平衡方程 ΣF=0、ΣM=0;摩擦与自锁。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11">
+<defs><marker id="ia" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#b42318"/></marker></defs>
+<path d="M20,150 L270,150 L270,60 Z" fill="#eef3ff" stroke="#356ae6"/>
+<rect x="180" y="78" width="34" height="24" fill="#e8f7ee" stroke="#067647" transform="rotate(-19.8 197 90)"/>
+<text x="228" y="140">θ</text>
+<line x1="197" y1="90" x2="197" y2="140" stroke="#b42318" stroke-width="2" marker-end="url(#ia)"/><text x="200" y="135" fill="#b42318">mg</text>
+<line x1="197" y1="90" x2="230" y2="72" stroke="#067647" stroke-width="2" marker-end="url(#ia)"/><text x="232" y="72" fill="#067647">N</text>
+<line x1="197" y1="90" x2="165" y2="102" stroke="#b54708" stroke-width="2" marker-end="url(#ia)"/><text x="140" y="102" fill="#b54708">f</text>
+<text x="30" y="165" fill="#7d8599" font-size="10">斜面：重力分解 mg·sinθ(下滑) 与 mg·cosθ(压力)</text>
+</svg><div class="cap">受力分析(斜面为例)</div></div>
         </div>
       </div>
     </div>
@@ -102,19 +109,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="点的运动 矢量/直角坐标/自然坐标法;速度、加速度(切向/法向)。">
+        <div class="card" id="card-2-2" data-keywords="点的运动 矢量/直角/自然坐标;速度、切向法向加速度。 ">
           <div class="card-head">
-            <span class="card-num">3</span>
+            <span class="card-num">2</span>
             <span class="card-title">点的运动</span>
           </div>
-          <div class="card-code">矢量/直角坐标/自然坐标法;速度、加速度(切向/法向)。</div>
+          <div class="card-code">矢量/直角/自然坐标;速度、切向法向加速度。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="刚体运动 平动、定轴转动(角速度/角加速度)、平面运动(基点法/瞬心法)、点的合成运动(牵连/相对/科氏加速度)。">
+        <div class="card" id="card-2-3" data-keywords="刚体运动 平动、定轴转动、平面运动(基点/瞬心)、合成运动(牵连/相对/科氏)。 ">
           <div class="card-head">
-            <span class="card-num">4</span>
+            <span class="card-num">3</span>
             <span class="card-title">刚体运动</span>
           </div>
-          <div class="card-code">平动、定轴转动(角速度/角加速度)、平面运动(基点法/瞬心法)、点的合成运动(牵连/相对/科氏加速度)。</div>
+          <div class="card-code">平动、定轴转动、平面运动(基点/瞬心)、合成运动(牵连/相对/科氏)。</div>
         </div>
       </div>
     </div>
@@ -126,19 +133,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="动力学基本定律 牛顿第二定律;质点系动量定理、动量矩定理、动能定理。">
+        <div class="card" id="card-3-4" data-keywords="基本定律 牛顿第二定律;质点系动量、动量矩、动能定理。 ">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">基本定律</span>
+          </div>
+          <div class="card-code">牛顿第二定律;质点系动量、动量矩、动能定理。</div>
+        </div>
+        <div class="card" id="card-3-5" data-keywords="普遍原理 达朗贝尔(动静法)、虚位移原理、拉格朗日方程;振动基础。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">动力学基本定律</span>
+            <span class="card-title">普遍原理</span>
           </div>
-          <div class="card-code">牛顿第二定律;质点系动量定理、动量矩定理、动能定理。</div>
-        </div>
-        <div class="card" id="card-3-6" data-keywords="普遍定理与原理 达朗贝尔原理(惯性力,动静法)、虚位移原理、拉格朗日方程;振动基础。">
-          <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">普遍定理与原理</span>
-          </div>
-          <div class="card-code">达朗贝尔原理(惯性力,动静法)、虚位移原理、拉格朗日方程;振动基础。</div>
+          <div class="card-code">达朗贝尔(动静法)、虚位移原理、拉格朗日方程;振动基础。</div>
         </div>
       </div>
     </div>

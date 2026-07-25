@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,10 +69,10 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">5 条</span>
+  <span class="result-count" id="resultCount">4 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">用图表示随机变量依赖:贝叶斯网络、马尔可夫随机场与推断学习。</div>
+    <div class="intro">贝叶斯网络、马尔可夫随机场与推断学习,配贝叶斯网络图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,15 +81,15 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="有向图 贝叶斯网络 DAG 表示条件独立;联合分布分解 P(x)=ΠP(xi|pa(xi)); d-分离判断独立。">
+        <div class="card" id="card-1-1" data-keywords="有向图 贝叶斯网络 DAG 表示条件独立;联合分布 P(x)=ΠP(xi|pa(xi));d-分离判独立。 贝叶斯网络(有向图)">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">有向图 贝叶斯网络</span>
           </div>
-          <div class="card-code">DAG 表示条件独立;联合分布分解 P(x)=ΠP(xi|pa(xi));
-d-分离判断独立。</div>
+          <div class="card-code">DAG 表示条件独立;联合分布 P(x)=ΠP(xi|pa(xi));d-分离判独立。</div>
+          <div class="card-fig"><svg viewBox="0 0 240 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><defs><marker id="bn" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs><circle cx="60" cy="35" r="18" fill="#eef3ff" stroke="#356ae6"/><text x="54" y="39">A</text><circle cx="170" cy="35" r="18" fill="#eef3ff" stroke="#356ae6"/><text x="164" y="39">B</text><circle cx="115" cy="100" r="18" fill="#e8f7ee" stroke="#067647"/><text x="109" y="104">C</text><line x1="73" y1="48" x2="102" y2="86" stroke="#356ae6" marker-end="url(#bn)"/><line x1="157" y1="48" x2="128" y2="86" stroke="#356ae6" marker-end="url(#bn)"/><text x="40" y="126" fill="#7d8599" font-size="9">贝叶斯网络:P(C|A,B) 有向无环图</text></svg><div class="cap">贝叶斯网络(有向图)</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="无向图 MRF 势函数与团;条件随机场 CRF(序列标注)。">
+        <div class="card" id="card-1-2" data-keywords="无向图 MRF 势函数与团;条件随机场 CRF(序列标注)。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">无向图 MRF</span>
@@ -99,23 +102,16 @@ d-分离判断独立。</div>
       <button class="section-head">
         <span class="icon">2</span>
         <span class="title">二、推断</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="精确推断 变量消元、信念传播(和积算法)、联结树。">
+        <div class="card" id="card-2-3" data-keywords="精确/近似 变量消元、信念传播、联结树;采样(MCMC/Gibbs)、变分推断。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">精确推断</span>
+            <span class="card-title">精确/近似</span>
           </div>
-          <div class="card-code">变量消元、信念传播(和积算法)、联结树。</div>
-        </div>
-        <div class="card" id="card-2-4" data-keywords="近似推断 采样(MCMC:Gibbs/MH)、变分推断。">
-          <div class="card-head">
-            <span class="card-num">4</span>
-            <span class="card-title">近似推断</span>
-          </div>
-          <div class="card-code">采样(MCMC:Gibbs/MH)、变分推断。</div>
+          <div class="card-code">变量消元、信念传播、联结树;采样(MCMC/Gibbs)、变分推断。</div>
         </div>
       </div>
     </div>
@@ -127,13 +123,12 @@ d-分离判断独立。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="参数与结构学习 最大似然/贝叶斯估计;含隐变量用 EM;结构学习; 典型:HMM(语音/序列)、LDA(主题模型)。">
+        <div class="card" id="card-3-4" data-keywords="参数结构学习 最大似然/贝叶斯估计;含隐变量用 EM;HMM(序列)、LDA(主题)。 ">
           <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">参数与结构学习</span>
+            <span class="card-num">4</span>
+            <span class="card-title">参数结构学习</span>
           </div>
-          <div class="card-code">最大似然/贝叶斯估计;含隐变量用 EM;结构学习;
-典型:HMM(语音/序列)、LDA(主题模型)。</div>
+          <div class="card-code">最大似然/贝叶斯估计;含隐变量用 EM;HMM(序列)、LDA(主题)。</div>
         </div>
       </div>
     </div>

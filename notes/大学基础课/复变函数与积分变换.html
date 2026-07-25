@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">4 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">复变函数、解析与留数,以及傅里叶变换与拉普拉斯变换。</div>
+    <div class="intro">复变函数、解析与留数,傅里叶与拉普拉斯变换。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,56 +81,44 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="复数与解析 复数、欧拉公式 e^(iθ)=cosθ+isinθ;解析函数、柯西-黎曼方程;初等复变函数。">
+        <div class="card" id="card-1-1" data-keywords="复数与解析 欧拉公式 e^(iθ)=cosθ+isinθ;解析函数、柯西-黎曼方程。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">复数与解析</span>
           </div>
-          <div class="card-code">复数、欧拉公式 e^(iθ)=cosθ+isinθ;解析函数、柯西-黎曼方程;初等复变函数。</div>
+          <div class="card-code">欧拉公式 e^(iθ)=cosθ+isinθ;解析函数、柯西-黎曼方程。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="复积分 柯西积分定理与积分公式;泰勒级数与洛朗级数; 留数定理 ∮f dz=2πiΣRes,用于计算实积分。">
+        <div class="card" id="card-1-2" data-keywords="复积分与留数 柯西积分定理与公式;泰勒/洛朗级数;留数定理 ∮f dz=2πiΣRes(算实积分)。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">复积分</span>
+            <span class="card-title">复积分与留数</span>
           </div>
-          <div class="card-code">柯西积分定理与积分公式;泰勒级数与洛朗级数;
-留数定理 ∮f dz=2πiΣRes,用于计算实积分。</div>
+          <div class="card-code">柯西积分定理与公式;泰勒/洛朗级数;留数定理 ∮f dz=2πiΣRes(算实积分)。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、傅里叶变换</span>
-        <span class="count">1 条</span>
+        <span class="title">二、积分变换</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="傅里叶级数与变换 周期函数傅里叶级数;傅里叶变换 F(ω)=∫f(t)e^(-jωt)dt; 性质(线性/位移/微分/卷积)、频谱、能量。">
+        <div class="card" id="card-2-3" data-keywords="傅里叶变换 F(ω)=∫f(t)e^(−jωt)dt;性质(线性/位移/微分/卷积)、频谱。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">傅里叶级数与变换</span>
+            <span class="card-title">傅里叶变换</span>
           </div>
-          <div class="card-code">周期函数傅里叶级数;傅里叶变换 F(ω)=∫f(t)e^(-jωt)dt;
-性质(线性/位移/微分/卷积)、频谱、能量。</div>
+          <div class="card-code">F(ω)=∫f(t)e^(−jωt)dt;性质(线性/位移/微分/卷积)、频谱。</div>
         </div>
-      </div>
-    </div>
-    <div class="section" id="sect-3">
-      <button class="section-head">
-        <span class="icon">3</span>
-        <span class="title">三、拉普拉斯变换</span>
-        <span class="count">1 条</span>
-        <span class="arrow">▼</span>
-      </button>
-      <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="拉氏变换 F(s)=∫₀^∞ f(t)e^(-st)dt;常用变换对、性质; 求解线性常微分方程与电路/控制系统(传递函数);反变换(部分分式/留数)。">
+        <div class="card" id="card-2-4" data-keywords="拉普拉斯变换 F(s)=∫₀^∞f(t)e^(−st)dt;常用变换对与性质; 解常微分方程、系统传递函数;反变换(部分分式/留数)。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">拉氏变换</span>
+            <span class="card-title">拉普拉斯变换</span>
           </div>
-          <div class="card-code">F(s)=∫₀^∞ f(t)e^(-st)dt;常用变换对、性质;
-求解线性常微分方程与电路/控制系统(传递函数);反变换(部分分式/留数)。</div>
+          <div class="card-code">F(s)=∫₀^∞f(t)e^(−st)dt;常用变换对与性质;
+解常微分方程、系统传递函数;反变换(部分分式/留数)。</div>
         </div>
       </div>
     </div>

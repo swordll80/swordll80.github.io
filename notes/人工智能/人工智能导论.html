@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">6 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">参考清华大学人工智能专业。AI 的范畴、发展、主要范式与应用总览。</div>
+    <div class="intro">参考清华大学人工智能专业。AI 的范畴、发展、范式与应用总览。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,20 +81,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="什么是 AI 让机器具有感知、推理、学习、决策等智能行为的学科。 三大流派:符号主义(逻辑推理)、连接主义(神经网络)、行为主义(控制/强化学习)。">
+        <div class="card" id="card-1-1" data-keywords="什么是 AI 让机器具备感知/推理/学习/决策的智能行为。三大流派:符号主义(逻辑)、连接主义(神经网络)、行为主义(控制/强化)。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">什么是 AI</span>
           </div>
-          <div class="card-code">让机器具有感知、推理、学习、决策等智能行为的学科。
-三大流派:符号主义(逻辑推理)、连接主义(神经网络)、行为主义(控制/强化学习)。</div>
+          <div class="card-code">让机器具备感知/推理/学习/决策的智能行为。三大流派:符号主义(逻辑)、连接主义(神经网络)、行为主义(控制/强化)。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="发展历程 1956 达特茅斯会议;专家系统兴衰;机器学习兴起;2012 深度学习突破;大模型时代。">
+        <div class="card" id="card-1-2" data-keywords="发展历程 1956 达特茅斯会议;专家系统;机器学习兴起;2012 深度学习突破;大模型时代。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">发展历程</span>
           </div>
-          <div class="card-code">1956 达特茅斯会议;专家系统兴衰;机器学习兴起;2012 深度学习突破;大模型时代。</div>
+          <div class="card-code">1956 达特茅斯会议;专家系统;机器学习兴起;2012 深度学习突破;大模型时代。</div>
         </div>
       </div>
     </div>
@@ -103,19 +105,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="智能的构成 搜索与规划、知识表示与推理、机器学习、感知(视觉/语音)、自然语言、机器人、多智能体。">
+        <div class="card" id="card-2-3" data-keywords="智能构成 搜索与规划、知识表示与推理、机器学习、感知(视觉/语音)、NLP、机器人、多智能体。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">智能的构成</span>
+            <span class="card-title">智能构成</span>
           </div>
-          <div class="card-code">搜索与规划、知识表示与推理、机器学习、感知(视觉/语音)、自然语言、机器人、多智能体。</div>
+          <div class="card-code">搜索与规划、知识表示与推理、机器学习、感知(视觉/语音)、NLP、机器人、多智能体。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="范式 数据驱动(学习) vs 知识驱动(推理);二者融合(神经符号)。">
+        <div class="card" id="card-2-4" data-keywords="范式 数据驱动(学习) vs 知识驱动(推理),及二者融合(神经符号)。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">范式</span>
           </div>
-          <div class="card-code">数据驱动(学习) vs 知识驱动(推理);二者融合(神经符号)。</div>
+          <div class="card-code">数据驱动(学习) vs 知识驱动(推理),及二者融合(神经符号)。</div>
         </div>
       </div>
     </div>
@@ -127,19 +129,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="应用 计算机视觉、语音、NLP、推荐、自动驾驶、医疗、科学计算(AI for Science)。">
+        <div class="card" id="card-3-5" data-keywords="应用 CV、语音、NLP、推荐、自动驾驶、医疗、AI for Science。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">应用</span>
           </div>
-          <div class="card-code">计算机视觉、语音、NLP、推荐、自动驾驶、医疗、科学计算(AI for Science)。</div>
+          <div class="card-code">CV、语音、NLP、推荐、自动驾驶、医疗、AI for Science。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="伦理与安全 偏见与公平、可解释性、隐私、对齐与安全、AI 治理。">
+        <div class="card" id="card-3-6" data-keywords="伦理安全 偏见公平、可解释、隐私、对齐与安全、AI 治理。 ">
           <div class="card-head">
             <span class="card-num">6</span>
-            <span class="card-title">伦理与安全</span>
+            <span class="card-title">伦理安全</span>
           </div>
-          <div class="card-code">偏见与公平、可解释性、隐私、对齐与安全、AI 治理。</div>
+          <div class="card-code">偏见公平、可解释、隐私、对齐与安全、AI 治理。</div>
         </div>
       </div>
     </div>

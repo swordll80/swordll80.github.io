@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,59 +69,42 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">16 条</span>
+  <span class="result-count" id="resultCount">11 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">小学阶段数学核心：数与运算、常见量、图形周长面积体积、分数小数与简单应用题。</div>
+    <div class="intro">数与运算、常见量、图形周长面积体积、分数小数与应用题,配图形面积公式图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、数与运算</span>
-        <span class="count">4 条</span>
+        <span class="count">3 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="四则运算顺序 先算括号里的，再算乘除，最后算加减。 有括号：先小括号( )，再中括号[ ]。 同级运算从左到右。 例：3 + 4 × 5 = 3 + 20 = 23">
+        <div class="card" id="card-1-1" data-keywords="四则运算顺序 先括号,再乘除,后加减;同级从左到右。 如 3+4×5=3+20=23。括号:先小()再中[]。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">四则运算顺序</span>
           </div>
-          <div class="card-code">先算括号里的，再算乘除，最后算加减。
-有括号：先小括号( )，再中括号[ ]。
-同级运算从左到右。
-例：3 + 4 × 5 = 3 + 20 = 23</div>
+          <div class="card-code">先括号,再乘除,后加减;同级从左到右。
+如 3+4×5=3+20=23。括号:先小()再中[]。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="运算定律 加法交换律：a + b = b + a 加法结合律：(a + b) + c = a + (b + c) 乘法交换律：a × b = b × a 乘法结合律：(a × b) × c = a × (b × c) 乘法分配律：a × (b + c) = a×b + a×c">
+        <div class="card" id="card-1-2" data-keywords="运算定律 加法交换/结合律;乘法交换/结合律; 乘法分配律 a×(b+c)=a×b+a×c(简算关键)。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">运算定律</span>
           </div>
-          <div class="card-code">加法交换律：a + b = b + a
-加法结合律：(a + b) + c = a + (b + c)
-乘法交换律：a × b = b × a
-乘法结合律：(a × b) × c = a × (b × c)
-乘法分配律：a × (b + c) = a×b + a×c</div>
+          <div class="card-code">加法交换/结合律;乘法交换/结合律;
+乘法分配律 a×(b+c)=a×b+a×c(简算关键)。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="因数与倍数 能整除：a ÷ b 没有余数，b 是 a 的因数，a 是 b 的倍数。 偶数：能被2整除(个位0,2,4,6,8)；奇数：不能。 质数：只有1和它本身两个因数(2,3,5,7,11…)。 合数：除1和本身外还有别的因数。 2既是最小质数也是唯一的偶质数。">
+        <div class="card" id="card-1-3" data-keywords="因数倍数与质合 能整除→因数/倍数;偶数(个位0/2/4/6/8)、奇数; 质数(只有1和本身:2,3,5,7,11…)、合数;2是最小且唯一偶质数; 最大公因数 GCD、最小公倍数 LCM(短除法求)。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">因数与倍数</span>
+            <span class="card-title">因数倍数与质合</span>
           </div>
-          <div class="card-code">能整除：a ÷ b 没有余数，b 是 a 的因数，a 是 b 的倍数。
-偶数：能被2整除(个位0,2,4,6,8)；奇数：不能。
-质数：只有1和它本身两个因数(2,3,5,7,11…)。
-合数：除1和本身外还有别的因数。
-2既是最小质数也是唯一的偶质数。</div>
-        </div>
-        <div class="card" id="card-1-4" data-keywords="最大公因数/最小公倍数 最大公因数(GCD)：两数公有因数中最大的。 最小公倍数(LCM)：两数公有倍数中最小的。 互质：公因数只有1。 短除法可同时求 GCD 和 LCM。">
-          <div class="card-head">
-            <span class="card-num">4</span>
-            <span class="card-title">最大公因数/最小公倍数</span>
-          </div>
-          <div class="card-code">最大公因数(GCD)：两数公有因数中最大的。
-最小公倍数(LCM)：两数公有倍数中最小的。
-互质：公因数只有1。
-短除法可同时求 GCD 和 LCM。</div>
+          <div class="card-code">能整除→因数/倍数;偶数(个位0/2/4/6/8)、奇数;
+质数(只有1和本身:2,3,5,7,11…)、合数;2是最小且唯一偶质数;
+最大公因数 GCD、最小公倍数 LCM(短除法求)。</div>
         </div>
       </div>
     </div>
@@ -126,39 +112,26 @@
       <button class="section-head">
         <span class="icon">2</span>
         <span class="title">二、分数与小数</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-5" data-keywords="分数基本性质 分子分母同乘或同除以相同的数(0除外)，分数大小不变。 约分：分子分母同除以最大公因数，化成最简分数。 通分：把异分母化成同分母(用最小公倍数)。">
+        <div class="card" id="card-2-4" data-keywords="分数性质与运算 分子分母同乘除(非0)大小不变;约分/通分。 同分母加减:分母不变分子加减;异分母先通分; 分数乘:分子乘分子;分数除:乘倒数。 ">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">分数性质与运算</span>
+          </div>
+          <div class="card-code">分子分母同乘除(非0)大小不变;约分/通分。
+同分母加减:分母不变分子加减;异分母先通分;
+分数乘:分子乘分子;分数除:乘倒数。</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="小数与百分数 小数点移位×/÷10;分数化小数=分子÷分母; 25%=0.25;八折=80%,三成=30%。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">分数基本性质</span>
-          </div>
-          <div class="card-code">分子分母同乘或同除以相同的数(0除外)，分数大小不变。
-约分：分子分母同除以最大公因数，化成最简分数。
-通分：把异分母化成同分母(用最小公倍数)。</div>
-        </div>
-        <div class="card" id="card-2-6" data-keywords="分数运算 同分母加减：分母不变，分子相加减。 异分母加减：先通分再加减。 分数乘法：分子乘分子，分母乘分母。 分数除法：除以一个数等于乘它的倒数。 1/2 + 1/3 = 3/6 + 2/6 = 5/6">
-          <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">分数运算</span>
-          </div>
-          <div class="card-code">同分母加减：分母不变，分子相加减。
-异分母加减：先通分再加减。
-分数乘法：分子乘分子，分母乘分母。
-分数除法：除以一个数等于乘它的倒数。
-1/2 + 1/3 = 3/6 + 2/6 = 5/6</div>
-        </div>
-        <div class="card" id="card-2-7" data-keywords="小数与百分数 小数点右移一位×10，左移一位÷10。 分数化小数：分子÷分母。 百分数化小数：去掉%再÷100，如 25% = 0.25。 成数、折扣：三成=30%，八折=80%。">
-          <div class="card-head">
-            <span class="card-num">7</span>
             <span class="card-title">小数与百分数</span>
           </div>
-          <div class="card-code">小数点右移一位×10，左移一位÷10。
-分数化小数：分子÷分母。
-百分数化小数：去掉%再÷100，如 25% = 0.25。
-成数、折扣：三成=30%，八折=80%。</div>
+          <div class="card-code">小数点移位×/÷10;分数化小数=分子÷分母;
+25%=0.25;八折=80%,三成=30%。</div>
         </div>
       </div>
     </div>
@@ -166,39 +139,25 @@
       <button class="section-head">
         <span class="icon">3</span>
         <span class="title">三、常见的量</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-8" data-keywords="单位换算 长度：1km=1000m，1m=10dm=100cm=1000mm。 面积：1m²=100dm²=10000cm²；1公顷=10000m²；1km²=100公顷。 质量：1吨=1000kg，1kg=1000g。 时间：1时=60分，1分=60秒；1天=24时。 体积容积：1L=1000mL，1L=1dm³，1mL=1cm³。">
+        <div class="card" id="card-3-6" data-keywords="单位换算 长度 1km=1000m,1m=100cm;面积 1m²=10000cm²,1公顷=10000m²; 质量 1吨=1000kg;时间 1时=60分;体积 1L=1000mL=1dm³。 ">
           <div class="card-head">
-            <span class="card-num">8</span>
+            <span class="card-num">6</span>
             <span class="card-title">单位换算</span>
           </div>
-          <div class="card-code">长度：1km=1000m，1m=10dm=100cm=1000mm。
-面积：1m²=100dm²=10000cm²；1公顷=10000m²；1km²=100公顷。
-质量：1吨=1000kg，1kg=1000g。
-时间：1时=60分，1分=60秒；1天=24时。
-体积容积：1L=1000mL，1L=1dm³，1mL=1cm³。</div>
+          <div class="card-code">长度 1km=1000m,1m=100cm;面积 1m²=10000cm²,1公顷=10000m²;
+质量 1吨=1000kg;时间 1时=60分;体积 1L=1000mL=1dm³。</div>
         </div>
-        <div class="card" id="card-3-9" data-keywords="速度时间路程 路程 = 速度 × 时间 速度 = 路程 ÷ 时间 时间 = 路程 ÷ 速度 相遇问题：路程和 = 速度和 × 相遇时间。">
+        <div class="card" id="card-3-7" data-keywords="数量关系 路程=速度×时间;总价=单价×数量;工作量=效率×时间; 相遇:路程和=速度和×时间。 ">
           <div class="card-head">
-            <span class="card-num">9</span>
-            <span class="card-title">速度时间路程</span>
+            <span class="card-num">7</span>
+            <span class="card-title">数量关系</span>
           </div>
-          <div class="card-code">路程 = 速度 × 时间
-速度 = 路程 ÷ 时间
-时间 = 路程 ÷ 速度
-相遇问题：路程和 = 速度和 × 相遇时间。</div>
-        </div>
-        <div class="card" id="card-3-10" data-keywords="单价数量总价/工作量 总价 = 单价 × 数量 工作总量 = 工作效率 × 工作时间 把总量看作单位“1”，可用分数解工程问题。">
-          <div class="card-head">
-            <span class="card-num">10</span>
-            <span class="card-title">单价数量总价/工作量</span>
-          </div>
-          <div class="card-code">总价 = 单价 × 数量
-工作总量 = 工作效率 × 工作时间
-把总量看作单位“1”，可用分数解工程问题。</div>
+          <div class="card-code">路程=速度×时间;总价=单价×数量;工作量=效率×时间;
+相遇:路程和=速度和×时间。</div>
         </div>
       </div>
     </div>
@@ -206,79 +165,56 @@
       <button class="section-head">
         <span class="icon">4</span>
         <span class="title">四、图形与几何</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-11" data-keywords="平面图形周长 长方形周长 = (长 + 宽) × 2 正方形周长 = 边长 × 4 圆周长 C = πd = 2πr（π取3.14）">
+        <div class="card" id="card-4-8" data-keywords="平面图形面积 长方形=长×宽;正方形=边²;平行四边形=底×高; 三角形=底×高÷2;梯形=(上底+下底)×高÷2;圆=πr²。 常见图形面积公式">
           <div class="card-head">
-            <span class="card-num">11</span>
-            <span class="card-title">平面图形周长</span>
-          </div>
-          <div class="card-code">长方形周长 = (长 + 宽) × 2
-正方形周长 = 边长 × 4
-圆周长 C = πd = 2πr（π取3.14）</div>
-        </div>
-        <div class="card" id="card-4-12" data-keywords="平面图形面积 长方形 = 长 × 宽 正方形 = 边长 × 边长 平行四边形 = 底 × 高 三角形 = 底 × 高 ÷ 2 梯形 = (上底 + 下底) × 高 ÷ 2 圆 = πr²">
-          <div class="card-head">
-            <span class="card-num">12</span>
+            <span class="card-num">8</span>
             <span class="card-title">平面图形面积</span>
           </div>
-          <div class="card-code">长方形 = 长 × 宽
-正方形 = 边长 × 边长
-平行四边形 = 底 × 高
-三角形 = 底 × 高 ÷ 2
-梯形 = (上底 + 下底) × 高 ÷ 2
-圆 = πr²</div>
+          <div class="card-code">长方形=长×宽;正方形=边²;平行四边形=底×高;
+三角形=底×高÷2;梯形=(上底+下底)×高÷2;圆=πr²。</div>
+          <div class="card-fig"><svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
+<rect x="15" y="30" width="70" height="45" fill="#eef3ff" stroke="#356ae6"/><text x="20" y="95">长×宽</text>
+<path d="M120,75 L165,30 L210,75 Z" fill="#e8f7ee" stroke="#067647"/><text x="120" y="95">底×高÷2</text>
+<circle cx="270" cy="52" r="28" fill="#fff4e6" stroke="#b54708"/><text x="245" y="95">πr²</text>
+<text x="20" y="18" fill="#7d8599">常见图形面积公式</text>
+</svg><div class="cap">常见图形面积公式</div></div>
         </div>
-        <div class="card" id="card-4-13" data-keywords="立体图形体积 长方体体积 = 长 × 宽 × 高 正方体体积 = 棱长³ 圆柱体积 = 底面积 × 高 = πr²h 圆锥体积 = 1/3 × 底面积 × 高 长方体表面积 = (长×宽 + 长×高 + 宽×高) × 2">
+        <div class="card" id="card-4-9" data-keywords="周长与体积 长方形周长=(长+宽)×2;圆周长 C=2πr。 长方体体积=长×宽×高;正方体=棱长³;圆柱=πr²h;圆锥=1/3×底面积×高。 ">
           <div class="card-head">
-            <span class="card-num">13</span>
-            <span class="card-title">立体图形体积</span>
+            <span class="card-num">9</span>
+            <span class="card-title">周长与体积</span>
           </div>
-          <div class="card-code">长方体体积 = 长 × 宽 × 高
-正方体体积 = 棱长³
-圆柱体积 = 底面积 × 高 = πr²h
-圆锥体积 = 1/3 × 底面积 × 高
-长方体表面积 = (长×宽 + 长×高 + 宽×高) × 2</div>
+          <div class="card-code">长方形周长=(长+宽)×2;圆周长 C=2πr。
+长方体体积=长×宽×高;正方体=棱长³;圆柱=πr²h;圆锥=1/3×底面积×高。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-5">
       <button class="section-head">
         <span class="icon">5</span>
-        <span class="title">五、应用与统计</span>
-        <span class="count">3 条</span>
+        <span class="title">五、比例与统计</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-14" data-keywords="比与比例 比：a : b = a ÷ b，比值不变可同乘同除。 比例：两个比相等 a:b = c:d，即 ad = bc（外项积=内项积）。 按比例分配：先求份数总和，再分。">
+        <div class="card" id="card-5-10" data-keywords="比与比例 比 a:b=a÷b;比例 a:b=c:d ⇔ ad=bc;按比例分配。 ">
           <div class="card-head">
-            <span class="card-num">14</span>
+            <span class="card-num">10</span>
             <span class="card-title">比与比例</span>
           </div>
-          <div class="card-code">比：a : b = a ÷ b，比值不变可同乘同除。
-比例：两个比相等 a:b = c:d，即 ad = bc（外项积=内项积）。
-按比例分配：先求份数总和，再分。</div>
+          <div class="card-code">比 a:b=a÷b;比例 a:b=c:d ⇔ ad=bc;按比例分配。</div>
         </div>
-        <div class="card" id="card-5-15" data-keywords="常见解题思路 画线段图理清数量关系； 找单位“1”(总量或标准量)； 倒推法：从结果往前推； 列方程：设未知数为 x 再求解。">
+        <div class="card" id="card-5-11" data-keywords="统计与可能性 平均数=总和÷个数;条形图看多少、折线看趋势、扇形看占比; 可能性:一定/可能/不可能。 ">
           <div class="card-head">
-            <span class="card-num">15</span>
-            <span class="card-title">常见解题思路</span>
+            <span class="card-num">11</span>
+            <span class="card-title">统计与可能性</span>
           </div>
-          <div class="card-code">画线段图理清数量关系；
-找单位“1”(总量或标准量)；
-倒推法：从结果往前推；
-列方程：设未知数为 x 再求解。</div>
-        </div>
-        <div class="card" id="card-5-16" data-keywords="简单统计 平均数 = 总和 ÷ 个数。 条形图看数量多少，折线图看变化趋势，扇形图看占比。 可能性：一定、可能、不可能。">
-          <div class="card-head">
-            <span class="card-num">16</span>
-            <span class="card-title">简单统计</span>
-          </div>
-          <div class="card-code">平均数 = 总和 ÷ 个数。
-条形图看数量多少，折线图看变化趋势，扇形图看占比。
-可能性：一定、可能、不可能。</div>
+          <div class="card-code">平均数=总和÷个数;条形图看多少、折线看趋势、扇形看占比;
+可能性:一定/可能/不可能。</div>
         </div>
       </div>
     </div>

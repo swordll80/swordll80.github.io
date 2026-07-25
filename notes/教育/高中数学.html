@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,10 +69,10 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">17 条</span>
+  <span class="result-count" id="resultCount">13 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">高中数学核心公式：集合函数、三角、数列、立体解析几何、导数、概率统计。</div>
+    <div class="intro">集合函数、三角、数列、立体解析几何、导数、概率统计核心公式,配函数图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,34 +81,34 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="集合 ∈ 属于，⊆ 子集，∪ 并集，∩ 交集，∁ 补集。 空集∅是任何集合的子集。 含 n 个元素的集合有 2ⁿ 个子集。">
+        <div class="card" id="card-1-1" data-keywords="集合 ∈⊆∪∩∁;空集∅是任何集合子集;n 元集有 2ⁿ 子集。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">集合</span>
           </div>
-          <div class="card-code">∈ 属于，⊆ 子集，∪ 并集，∩ 交集，∁ 补集。
-空集∅是任何集合的子集。
-含 n 个元素的集合有 2ⁿ 个子集。</div>
+          <div class="card-code">∈⊆∪∩∁;空集∅是任何集合子集;n 元集有 2ⁿ 子集。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="函数性质 定义域、值域、对应法则确定函数。 奇函数 f(-x)=-f(x) 图象关于原点对称； 偶函数 f(-x)=f(x) 关于y轴对称。 单调性：增函数 x₁&lt;x₂ ⇒ f(x₁)&lt;f(x₂)。">
+        <div class="card" id="card-1-2" data-keywords="函数性质 定义域/值域/对应法则;奇函数 f(−x)=−f(x)关于原点、偶函数关于y轴; 单调性、最值。二次函数是常见模型。 二次函数图像(对称轴与顶点)">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">函数性质</span>
           </div>
-          <div class="card-code">定义域、值域、对应法则确定函数。
-奇函数 f(-x)=-f(x) 图象关于原点对称；
-偶函数 f(-x)=f(x) 关于y轴对称。
-单调性：增函数 x₁&lt;x₂ ⇒ f(x₁)&lt;f(x₂)。</div>
+          <div class="card-code">定义域/值域/对应法则;奇函数 f(−x)=−f(x)关于原点、偶函数关于y轴;
+单调性、最值。二次函数是常见模型。</div>
+          <div class="card-fig"><svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
+<line x1="30" y1="20" x2="30" y2="145" stroke="#1a1a2e"/><line x1="10" y1="120" x2="245" y2="120" stroke="#1a1a2e"/>
+<path d="M40,40 Q130,220 220,40" fill="none" stroke="#356ae6" stroke-width="2"/>
+<circle cx="130" cy="120" r="3" fill="#b42318"/><text x="115" y="135" fill="#b42318">顶点</text>
+<line x1="130" y1="20" x2="130" y2="145" stroke="#7d8599" stroke-dasharray="3 2"/><text x="134" y="30" fill="#7d8599">对称轴</text>
+<text x="180" y="55" fill="#356ae6">y=ax²+bx+c</text>
+</svg><div class="cap">二次函数图像(对称轴与顶点)</div></div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="指数与对数 aˣ (a&gt;0,a≠1)；logₐN=b ⇔ aᵇ=N。 logₐ(MN)=logₐM+logₐN；logₐ(M/N)=logₐM-logₐN；logₐMⁿ=n·logₐM。 换底：logₐb = lnb/lna。 e≈2.718，lnx=logₑx。">
+        <div class="card" id="card-1-3" data-keywords="指数与对数 logₐN=b⇔aᵇ=N;logₐ(MN)=logₐM+logₐN;换底 logₐb=lnb/lna;e≈2.718。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">指数与对数</span>
           </div>
-          <div class="card-code">aˣ (a&gt;0,a≠1)；logₐN=b ⇔ aᵇ=N。
-logₐ(MN)=logₐM+logₐN；logₐ(M/N)=logₐM-logₐN；logₐMⁿ=n·logₐM。
-换底：logₐb = lnb/lna。
-e≈2.718，lnx=logₑx。</div>
+          <div class="card-code">logₐN=b⇔aᵇ=N;logₐ(MN)=logₐM+logₐN;换底 logₐb=lnb/lna;e≈2.718。</div>
         </div>
       </div>
     </div>
@@ -113,46 +116,30 @@ e≈2.718，lnx=logₑx。</div>
       <button class="section-head">
         <span class="icon">2</span>
         <span class="title">二、三角函数</span>
-        <span class="count">4 条</span>
+        <span class="count">3 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="基本关系与诱导 sin²α+cos²α=1，tanα=sinα/cosα。 诱导公式口诀：奇变偶不变，符号看象限。 sin(π-α)=sinα，cos(π-α)=-cosα。">
+        <div class="card" id="card-2-4" data-keywords="基本关系与诱导 sin²α+cos²α=1,tanα=sinα/cosα;诱导&#x27;奇变偶不变,符号看象限&#x27;。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">基本关系与诱导</span>
           </div>
-          <div class="card-code">sin²α+cos²α=1，tanα=sinα/cosα。
-诱导公式口诀：奇变偶不变，符号看象限。
-sin(π-α)=sinα，cos(π-α)=-cosα。</div>
+          <div class="card-code">sin²α+cos²α=1,tanα=sinα/cosα;诱导&#x27;奇变偶不变,符号看象限&#x27;。</div>
         </div>
-        <div class="card" id="card-2-5" data-keywords="和差与倍角 sin(A±B)=sinAcosB±cosAsinB cos(A±B)=cosAcosB∓sinAsinB tan(A±B)=(tanA±tanB)/(1∓tanAtanB) sin2A=2sinAcosA，cos2A=2cos²A-1=1-2sin²A。">
+        <div class="card" id="card-2-5" data-keywords="和差倍角 sin(A±B)、cos(A±B)、tan(A±B);sin2A=2sinAcosA,cos2A=2cos²A−1。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">和差与倍角</span>
+            <span class="card-title">和差倍角</span>
           </div>
-          <div class="card-code">sin(A±B)=sinAcosB±cosAsinB
-cos(A±B)=cosAcosB∓sinAsinB
-tan(A±B)=(tanA±tanB)/(1∓tanAtanB)
-sin2A=2sinAcosA，cos2A=2cos²A-1=1-2sin²A。</div>
+          <div class="card-code">sin(A±B)、cos(A±B)、tan(A±B);sin2A=2sinAcosA,cos2A=2cos²A−1。</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="正余弦定理 正弦定理：a/sinA = b/sinB = c/sinC = 2R。 余弦定理：c² = a²+b² - 2ab·cosC。 三角形面积：S = 1/2·ab·sinC。">
+        <div class="card" id="card-2-6" data-keywords="正余弦定理 a/sinA=b/sinB=c/sinC=2R;c²=a²+b²−2ab·cosC;面积 ½ab·sinC。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">正余弦定理</span>
           </div>
-          <div class="card-code">正弦定理：a/sinA = b/sinB = c/sinC = 2R。
-余弦定理：c² = a²+b² - 2ab·cosC。
-三角形面积：S = 1/2·ab·sinC。</div>
-        </div>
-        <div class="card" id="card-2-7" data-keywords="三角函数图象 y=Asin(ωx+φ)+k： 振幅A，周期T=2π/ω，相位φ，平移k。 y=sinx 周期2π，y=tanx 周期π。">
-          <div class="card-head">
-            <span class="card-num">7</span>
-            <span class="card-title">三角函数图象</span>
-          </div>
-          <div class="card-code">y=Asin(ωx+φ)+k：
-振幅A，周期T=2π/ω，相位φ，平移k。
-y=sinx 周期2π，y=tanx 周期π。</div>
+          <div class="card-code">a/sinA=b/sinB=c/sinC=2R;c²=a²+b²−2ab·cosC;面积 ½ab·sinC。</div>
         </div>
       </div>
     </div>
@@ -160,36 +147,23 @@ y=sinx 周期2π，y=tanx 周期π。</div>
       <button class="section-head">
         <span class="icon">3</span>
         <span class="title">三、数列与不等式</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-8" data-keywords="等差数列 aₙ = a₁ + (n-1)d 前n项和 Sₙ = n(a₁+aₙ)/2 = na₁ + n(n-1)d/2 中项：2aₙ = aₙ₋₁ + aₙ₊₁。">
+        <div class="card" id="card-3-7" data-keywords="等差与等比 等差 aₙ=a₁+(n−1)d,Sₙ=n(a₁+aₙ)/2;等比 aₙ=a₁qⁿ⁻¹,Sₙ=a₁(1−qⁿ)/(1−q),|q|&lt;1 无穷和 a₁/(1−q)。 ">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">等差与等比</span>
+          </div>
+          <div class="card-code">等差 aₙ=a₁+(n−1)d,Sₙ=n(a₁+aₙ)/2;等比 aₙ=a₁qⁿ⁻¹,Sₙ=a₁(1−qⁿ)/(1−q),|q|&lt;1 无穷和 a₁/(1−q)。</div>
+        </div>
+        <div class="card" id="card-3-8" data-keywords="基本不等式 a,b&gt;0 时 (a+b)/2≥√(ab)(算术≥几何),等号 a=b;求最值。 ">
           <div class="card-head">
             <span class="card-num">8</span>
-            <span class="card-title">等差数列</span>
-          </div>
-          <div class="card-code">aₙ = a₁ + (n-1)d
-前n项和 Sₙ = n(a₁+aₙ)/2 = na₁ + n(n-1)d/2
-中项：2aₙ = aₙ₋₁ + aₙ₊₁。</div>
-        </div>
-        <div class="card" id="card-3-9" data-keywords="等比数列 aₙ = a₁·qⁿ⁻¹ Sₙ = a₁(1-qⁿ)/(1-q) (q≠1) 当 |q|&lt;1 时无穷和 S = a₁/(1-q)。">
-          <div class="card-head">
-            <span class="card-num">9</span>
-            <span class="card-title">等比数列</span>
-          </div>
-          <div class="card-code">aₙ = a₁·qⁿ⁻¹
-Sₙ = a₁(1-qⁿ)/(1-q) (q≠1)
-当 |q|&lt;1 时无穷和 S = a₁/(1-q)。</div>
-        </div>
-        <div class="card" id="card-3-10" data-keywords="基本不等式 a²+b² ≥ 2ab； 当 a,b&gt;0：(a+b)/2 ≥ √(ab)，即算术≥几何平均，等号 a=b 时取。 用于求最值：和定积最大、积定和最小。">
-          <div class="card-head">
-            <span class="card-num">10</span>
             <span class="card-title">基本不等式</span>
           </div>
-          <div class="card-code">a²+b² ≥ 2ab；
-当 a,b&gt;0：(a+b)/2 ≥ √(ab)，即算术≥几何平均，等号 a=b 时取。
-用于求最值：和定积最大、积定和最小。</div>
+          <div class="card-code">a,b&gt;0 时 (a+b)/2≥√(ab)(算术≥几何),等号 a=b;求最值。</div>
         </div>
       </div>
     </div>
@@ -201,80 +175,52 @@ Sₙ = a₁(1-qⁿ)/(1-q) (q≠1)
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-11" data-keywords="立体几何 线面平行/垂直的判定与性质。 柱体 V=Sh，锥体 V=1/3·Sh，球 V=4/3·πr³，球表面积 4πr²。 空间向量法：法向量求二面角、线面角、距离。">
+        <div class="card" id="card-4-9" data-keywords="立体几何 线面平行/垂直判定;V柱=Sh,V锥=1/3Sh,V球=4/3πr³;向量法求角与距离。 ">
           <div class="card-head">
-            <span class="card-num">11</span>
+            <span class="card-num">9</span>
             <span class="card-title">立体几何</span>
           </div>
-          <div class="card-code">线面平行/垂直的判定与性质。
-柱体 V=Sh，锥体 V=1/3·Sh，球 V=4/3·πr³，球表面积 4πr²。
-空间向量法：法向量求二面角、线面角、距离。</div>
+          <div class="card-code">线面平行/垂直判定;V柱=Sh,V锥=1/3Sh,V球=4/3πr³;向量法求角与距离。</div>
         </div>
-        <div class="card" id="card-4-12" data-keywords="直线与圆 斜率 k=(y₂-y₁)/(x₂-x₁)=tanα。 点斜式 y-y₁=k(x-x₁)；两直线垂直 k₁k₂=-1，平行 k₁=k₂。 圆 (x-a)²+(y-b)²=r²；点到直线距离 d=|Ax₀+By₀+C|/√(A²+B²)。">
+        <div class="card" id="card-4-10" data-keywords="解析几何 斜率 k=tanα;两直线垂直 k₁k₂=−1;圆 (x−a)²+(y−b)²=r²;点到直线距离。 ">
           <div class="card-head">
-            <span class="card-num">12</span>
-            <span class="card-title">直线与圆</span>
+            <span class="card-num">10</span>
+            <span class="card-title">解析几何</span>
           </div>
-          <div class="card-code">斜率 k=(y₂-y₁)/(x₂-x₁)=tanα。
-点斜式 y-y₁=k(x-x₁)；两直线垂直 k₁k₂=-1，平行 k₁=k₂。
-圆 (x-a)²+(y-b)²=r²；点到直线距离 d=|Ax₀+By₀+C|/√(A²+B²)。</div>
+          <div class="card-code">斜率 k=tanα;两直线垂直 k₁k₂=−1;圆 (x−a)²+(y−b)²=r²;点到直线距离。</div>
         </div>
-        <div class="card" id="card-4-13" data-keywords="圆锥曲线 椭圆 x²/a²+y²/b²=1，a²=b²+c²，离心率 e=c/a&lt;1。 双曲线 x²/a²-y²/b²=1，c²=a²+b²，e&gt;1，渐近线 y=±(b/a)x。 抛物线 y²=2px，焦点(p/2,0)，准线 x=-p/2。">
+        <div class="card" id="card-4-11" data-keywords="圆锥曲线 椭圆 x²/a²+y²/b²=1(e&lt;1)、双曲线(e&gt;1,渐近线)、抛物线 y²=2px。 ">
           <div class="card-head">
-            <span class="card-num">13</span>
+            <span class="card-num">11</span>
             <span class="card-title">圆锥曲线</span>
           </div>
-          <div class="card-code">椭圆 x²/a²+y²/b²=1，a²=b²+c²，离心率 e=c/a&lt;1。
-双曲线 x²/a²-y²/b²=1，c²=a²+b²，e&gt;1，渐近线 y=±(b/a)x。
-抛物线 y²=2px，焦点(p/2,0)，准线 x=-p/2。</div>
+          <div class="card-code">椭圆 x²/a²+y²/b²=1(e&lt;1)、双曲线(e&gt;1,渐近线)、抛物线 y²=2px。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-5">
       <button class="section-head">
         <span class="icon">5</span>
-        <span class="title">五、导数与概率统计</span>
-        <span class="count">4 条</span>
+        <span class="title">五、导数与概率</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-14" data-keywords="导数公式 (xⁿ)&#x27;=nxⁿ⁻¹，(sinx)&#x27;=cosx，(cosx)&#x27;=-sinx。 (eˣ)&#x27;=eˣ，(lnx)&#x27;=1/x。 乘积 (uv)&#x27;=u&#x27;v+uv&#x27;，商 (u/v)&#x27;=(u&#x27;v-uv&#x27;)/v²。 复合 [f(g(x))]&#x27;=f&#x27;(g)·g&#x27;。">
+        <div class="card" id="card-5-12" data-keywords="导数 (xⁿ)&#x27;=nxⁿ⁻¹,(sinx)&#x27;=cosx,(eˣ)&#x27;=eˣ,(lnx)&#x27;=1/x;乘积/商/复合法则。 f&#x27;&gt;0 增、f&#x27;&lt;0 减;极值点 f&#x27;=0 且两侧变号;切线斜率=f&#x27;(x₀)。 ">
           <div class="card-head">
-            <span class="card-num">14</span>
-            <span class="card-title">导数公式</span>
+            <span class="card-num">12</span>
+            <span class="card-title">导数</span>
           </div>
-          <div class="card-code">(xⁿ)&#x27;=nxⁿ⁻¹，(sinx)&#x27;=cosx，(cosx)&#x27;=-sinx。
-(eˣ)&#x27;=eˣ，(lnx)&#x27;=1/x。
-乘积 (uv)&#x27;=u&#x27;v+uv&#x27;，商 (u/v)&#x27;=(u&#x27;v-uv&#x27;)/v²。
-复合 [f(g(x))]&#x27;=f&#x27;(g)·g&#x27;。</div>
+          <div class="card-code">(xⁿ)&#x27;=nxⁿ⁻¹,(sinx)&#x27;=cosx,(eˣ)&#x27;=eˣ,(lnx)&#x27;=1/x;乘积/商/复合法则。
+f&#x27;&gt;0 增、f&#x27;&lt;0 减;极值点 f&#x27;=0 且两侧变号;切线斜率=f&#x27;(x₀)。</div>
         </div>
-        <div class="card" id="card-5-15" data-keywords="导数应用 f&#x27;(x)&gt;0 递增，f&#x27;(x)&lt;0 递减。 极值点：f&#x27;(x)=0 且两侧异号。 切线斜率 = f&#x27;(x₀)。 求最值：比较极值与端点值。">
+        <div class="card" id="card-5-13" data-keywords="排列组合与概率 Aₙᵐ、Cₙᵐ;二项式定理;古典概率、互斥/独立、条件概率; 正态分布、期望 E(X)=Σxᵢpᵢ、方差。 ">
           <div class="card-head">
-            <span class="card-num">15</span>
-            <span class="card-title">导数应用</span>
+            <span class="card-num">13</span>
+            <span class="card-title">排列组合与概率</span>
           </div>
-          <div class="card-code">f&#x27;(x)&gt;0 递增，f&#x27;(x)&lt;0 递减。
-极值点：f&#x27;(x)=0 且两侧异号。
-切线斜率 = f&#x27;(x₀)。
-求最值：比较极值与端点值。</div>
-        </div>
-        <div class="card" id="card-5-16" data-keywords="排列组合 排列 Aₙᵐ = n!/(n-m)!（有序）。 组合 Cₙᵐ = n!/[m!(n-m)!]（无序）。 二项式 (a+b)ⁿ = ΣCₙᵏaⁿ⁻ᵏbᵏ。">
-          <div class="card-head">
-            <span class="card-num">16</span>
-            <span class="card-title">排列组合</span>
-          </div>
-          <div class="card-code">排列 Aₙᵐ = n!/(n-m)!（有序）。
-组合 Cₙᵐ = n!/[m!(n-m)!]（无序）。
-二项式 (a+b)ⁿ = ΣCₙᵏaⁿ⁻ᵏbᵏ。</div>
-        </div>
-        <div class="card" id="card-5-17" data-keywords="概率统计 古典概率 P=有利/总数；互斥事件 P(A∪B)=P(A)+P(B)。 独立事件 P(AB)=P(A)P(B)；条件概率 P(B|A)=P(AB)/P(A)。 正态分布 N(μ,σ²)钟形对称；期望 E(X)=Σxᵢpᵢ，方差 D(X)=Σ(xᵢ-μ)²pᵢ。">
-          <div class="card-head">
-            <span class="card-num">17</span>
-            <span class="card-title">概率统计</span>
-          </div>
-          <div class="card-code">古典概率 P=有利/总数；互斥事件 P(A∪B)=P(A)+P(B)。
-独立事件 P(AB)=P(A)P(B)；条件概率 P(B|A)=P(AB)/P(A)。
-正态分布 N(μ,σ²)钟形对称；期望 E(X)=Σxᵢpᵢ，方差 D(X)=Σ(xᵢ-μ)²pᵢ。</div>
+          <div class="card-code">Aₙᵐ、Cₙᵐ;二项式定理;古典概率、互斥/独立、条件概率;
+正态分布、期望 E(X)=Σxᵢpᵢ、方差。</div>
         </div>
       </div>
     </div>

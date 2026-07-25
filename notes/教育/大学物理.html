@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,10 +69,10 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">11 条</span>
+  <span class="result-count" id="resultCount">8 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">普通物理：力学(矢量/刚体)、振动波动、热力学统计、电磁学(麦克斯韦)、光学与量子初步。</div>
+    <div class="intro">力学、振动波动、热学、电磁学、光学与近代物理,配斜面受力图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,33 +81,37 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="质点动力学 位置矢量 r，速度 v=dr/dt，加速度 a=dv/dt。 牛顿第二定律矢量式 F=ma=dp/dt。 功 W=∫F·dr，动能定理 W=ΔEk。 保守力与势能 F=-∇Ep，机械能守恒。">
+        <div class="card" id="card-1-1" data-keywords="质点力学 位置/速度/加速度矢量;牛顿第二定律 F=ma=dp/dt; 斜面等模型用正交分解;功 W=∫F·dr,动能定理 W=ΔEk。 斜面上物体的受力分解">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">质点动力学</span>
+            <span class="card-title">质点力学</span>
           </div>
-          <div class="card-code">位置矢量 r，速度 v=dr/dt，加速度 a=dv/dt。
-牛顿第二定律矢量式 F=ma=dp/dt。
-功 W=∫F·dr，动能定理 W=ΔEk。
-保守力与势能 F=-∇Ep，机械能守恒。</div>
+          <div class="card-code">位置/速度/加速度矢量;牛顿第二定律 F=ma=dp/dt;
+斜面等模型用正交分解;功 W=∫F·dr,动能定理 W=ΔEk。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 170" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11">
+<defs><marker id="ia" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#b42318"/></marker></defs>
+<path d="M20,150 L270,150 L270,60 Z" fill="#eef3ff" stroke="#356ae6"/>
+<rect x="180" y="78" width="34" height="24" fill="#e8f7ee" stroke="#067647" transform="rotate(-19.8 197 90)"/>
+<text x="228" y="140">θ</text>
+<line x1="197" y1="90" x2="197" y2="140" stroke="#b42318" stroke-width="2" marker-end="url(#ia)"/><text x="200" y="135" fill="#b42318">mg</text>
+<line x1="197" y1="90" x2="230" y2="72" stroke="#067647" stroke-width="2" marker-end="url(#ia)"/><text x="232" y="72" fill="#067647">N</text>
+<line x1="197" y1="90" x2="165" y2="102" stroke="#b54708" stroke-width="2" marker-end="url(#ia)"/><text x="140" y="102" fill="#b54708">f</text>
+<text x="30" y="165" fill="#7d8599" font-size="10">斜面：重力分解 mg·sinθ(下滑) 与 mg·cosθ(压力)</text>
+</svg><div class="cap">斜面上物体的受力分解</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="动量与角动量 动量 p=mv，冲量 J=∫Fdt=Δp。 质心运动定理；碰撞(弹性/非弹性)。 角动量 L=r×p，力矩 M=r×F=dL/dt，角动量守恒。">
+        <div class="card" id="card-1-2" data-keywords="守恒律 动量守恒(合外力为0)、角动量守恒(合外力矩为0)、机械能守恒(只有保守力做功)。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">动量与角动量</span>
+            <span class="card-title">守恒律</span>
           </div>
-          <div class="card-code">动量 p=mv，冲量 J=∫Fdt=Δp。
-质心运动定理；碰撞(弹性/非弹性)。
-角动量 L=r×p，力矩 M=r×F=dL/dt，角动量守恒。</div>
+          <div class="card-code">动量守恒(合外力为0)、角动量守恒(合外力矩为0)、机械能守恒(只有保守力做功)。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="刚体转动 转动惯量 I=Σmᵢrᵢ²(圆盘½MR²，细杆1/12ML²)。 转动定律 M=Iα。 转动动能 ½Iω²，角动量 L=Iω。">
+        <div class="card" id="card-1-3" data-keywords="刚体转动 转动惯量 I=Σmr²;转动定律 M=Iα;转动动能 ½Iω²,角动量 Iω。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">刚体转动</span>
           </div>
-          <div class="card-code">转动惯量 I=Σmᵢrᵢ²(圆盘½MR²，细杆1/12ML²)。
-转动定律 M=Iα。
-转动动能 ½Iω²，角动量 L=Iω。</div>
+          <div class="card-code">转动惯量 I=Σmr²;转动定律 M=Iα;转动动能 ½Iω²,角动量 Iω。</div>
         </div>
       </div>
     </div>
@@ -112,37 +119,23 @@
       <button class="section-head">
         <span class="icon">2</span>
         <span class="title">二、振动、波、热</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="振动与波动 简谐 x=Acos(ωt+φ)，能量 E=½kA²。 阻尼、受迫振动与共振。 波动方程 y=Acos(ωt-kx)，波速 v=ω/k=λf。 干涉、驻波、多普勒。">
+        <div class="card" id="card-2-4" data-keywords="振动波动 简谐 x=Acos(ωt+φ);波速 v=λf;干涉、驻波、多普勒。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">振动与波动</span>
+            <span class="card-title">振动波动</span>
           </div>
-          <div class="card-code">简谐 x=Acos(ωt+φ)，能量 E=½kA²。
-阻尼、受迫振动与共振。
-波动方程 y=Acos(ωt-kx)，波速 v=ω/k=λf。
-干涉、驻波、多普勒。</div>
+          <div class="card-code">简谐 x=Acos(ωt+φ);波速 v=λf;干涉、驻波、多普勒。</div>
         </div>
-        <div class="card" id="card-2-5" data-keywords="热力学 第一定律 dU=δQ-δW(或 ΔU=Q-W，注意符号约定)。 理想气体 pV=nRT，内能只与 T 有关。 第二定律：熵增原理 dS≥δQ/T，热机效率 η≤1-T₂/T₁(卡诺)。">
+        <div class="card" id="card-2-5" data-keywords="热学 理想气体 pV=nRT;分子动理论(温度∝平均动能);第一定律 ΔU=Q−W;熵增、卡诺 η=1−T₂/T₁。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">热力学</span>
+            <span class="card-title">热学</span>
           </div>
-          <div class="card-code">第一定律 dU=δQ-δW(或 ΔU=Q-W，注意符号约定)。
-理想气体 pV=nRT，内能只与 T 有关。
-第二定律：熵增原理 dS≥δQ/T，热机效率 η≤1-T₂/T₁(卡诺)。</div>
-        </div>
-        <div class="card" id="card-2-6" data-keywords="统计物理初步 麦克斯韦速率分布，最概然/平均/方均根速率。 能量均分定理：每自由度 ½kT。 玻尔兹曼分布 ∝ e^(-E/kT)。">
-          <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">统计物理初步</span>
-          </div>
-          <div class="card-code">麦克斯韦速率分布，最概然/平均/方均根速率。
-能量均分定理：每自由度 ½kT。
-玻尔兹曼分布 ∝ e^(-E/kT)。</div>
+          <div class="card-code">理想气体 pV=nRT;分子动理论(温度∝平均动能);第一定律 ΔU=Q−W;熵增、卡诺 η=1−T₂/T₁。</div>
         </div>
       </div>
     </div>
@@ -150,28 +143,17 @@
       <button class="section-head">
         <span class="icon">3</span>
         <span class="title">三、电磁学</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-7" data-keywords="静电与稳恒磁场 高斯定理 ∮E·dS=Q/ε₀，安培环路 ∮B·dl=μ₀I。 电势 V=∫E·dl，电容、电场能 ½CV²。 毕奥-萨伐尔定律求磁场，洛伦兹力 F=qv×B。">
+        <div class="card" id="card-3-6" data-keywords="场与方程 高斯定理、安培环路;洛伦兹力 F=qv×B; 法拉第 ε=−dΦ/dt;麦克斯韦方程组统一电磁场,预言电磁波 c=1/√(μ₀ε₀)。 ">
           <div class="card-head">
-            <span class="card-num">7</span>
-            <span class="card-title">静电与稳恒磁场</span>
+            <span class="card-num">6</span>
+            <span class="card-title">场与方程</span>
           </div>
-          <div class="card-code">高斯定理 ∮E·dS=Q/ε₀，安培环路 ∮B·dl=μ₀I。
-电势 V=∫E·dl，电容、电场能 ½CV²。
-毕奥-萨伐尔定律求磁场，洛伦兹力 F=qv×B。</div>
-        </div>
-        <div class="card" id="card-3-8" data-keywords="电磁感应与麦克斯韦方程 法拉第 ε=-dΦ/dt，位移电流。 麦克斯韦方程组(积分/微分形式)统一电磁场， 预言电磁波 c=1/√(μ₀ε₀)。 电磁波横波，能流坡印廷矢量 S=E×H/μ₀。">
-          <div class="card-head">
-            <span class="card-num">8</span>
-            <span class="card-title">电磁感应与麦克斯韦方程</span>
-          </div>
-          <div class="card-code">法拉第 ε=-dΦ/dt，位移电流。
-麦克斯韦方程组(积分/微分形式)统一电磁场，
-预言电磁波 c=1/√(μ₀ε₀)。
-电磁波横波，能流坡印廷矢量 S=E×H/μ₀。</div>
+          <div class="card-code">高斯定理、安培环路;洛伦兹力 F=qv×B;
+法拉第 ε=−dΦ/dt;麦克斯韦方程组统一电磁场,预言电磁波 c=1/√(μ₀ε₀)。</div>
         </div>
       </div>
     </div>
@@ -179,36 +161,24 @@
       <button class="section-head">
         <span class="icon">4</span>
         <span class="title">四、光学与近代</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-9" data-keywords="波动光学 干涉：杨氏双缝 Δx=λL/d，薄膜干涉、牛顿环。 衍射：单缝、光栅 dsinθ=kλ。 偏振：马吕斯定律 I=I₀cos²θ。">
+        <div class="card" id="card-4-7" data-keywords="波动光学 干涉(双缝 Δx=λL/d)、衍射(光栅 dsinθ=kλ)、偏振(马吕斯 I=I₀cos²θ)。 ">
           <div class="card-head">
-            <span class="card-num">9</span>
+            <span class="card-num">7</span>
             <span class="card-title">波动光学</span>
           </div>
-          <div class="card-code">干涉：杨氏双缝 Δx=λL/d，薄膜干涉、牛顿环。
-衍射：单缝、光栅 dsinθ=kλ。
-偏振：马吕斯定律 I=I₀cos²θ。</div>
+          <div class="card-code">干涉(双缝 Δx=λL/d)、衍射(光栅 dsinθ=kλ)、偏振(马吕斯 I=I₀cos²θ)。</div>
         </div>
-        <div class="card" id="card-4-10" data-keywords="量子物理初步 黑体辐射普朗克 E=hν；光电效应；康普顿散射。 波粒二象性 λ=h/p；不确定关系 ΔxΔp≥ℏ/2。 薛定谔方程、势阱、氢原子能级 Eₙ=-13.6/n² eV。">
+        <div class="card" id="card-4-8" data-keywords="近代物理 光电效应 Ek=hν−W₀;波粒二象性 λ=h/p;不确定关系; 氢原子能级 Eₙ=−13.6/n² eV;狭义相对论(钟慢尺缩,E=mc²)。 ">
           <div class="card-head">
-            <span class="card-num">10</span>
-            <span class="card-title">量子物理初步</span>
+            <span class="card-num">8</span>
+            <span class="card-title">近代物理</span>
           </div>
-          <div class="card-code">黑体辐射普朗克 E=hν；光电效应；康普顿散射。
-波粒二象性 λ=h/p；不确定关系 ΔxΔp≥ℏ/2。
-薛定谔方程、势阱、氢原子能级 Eₙ=-13.6/n² eV。</div>
-        </div>
-        <div class="card" id="card-4-11" data-keywords="狭义相对论 两条基本原理：相对性原理、光速不变。 钟慢 Δt=Δt₀/√(1-v²/c²)，尺缩，质能 E=mc²， 相对论动量 p=mv/√(1-v²/c²)。">
-          <div class="card-head">
-            <span class="card-num">11</span>
-            <span class="card-title">狭义相对论</span>
-          </div>
-          <div class="card-code">两条基本原理：相对性原理、光速不变。
-钟慢 Δt=Δt₀/√(1-v²/c²)，尺缩，质能 E=mc²，
-相对论动量 p=mv/√(1-v²/c²)。</div>
+          <div class="card-code">光电效应 Ek=hν−W₀;波粒二象性 λ=h/p;不确定关系;
+氢原子能级 Eₙ=−13.6/n² eV;狭义相对论(钟慢尺缩,E=mc²)。</div>
         </div>
       </div>
     </div>

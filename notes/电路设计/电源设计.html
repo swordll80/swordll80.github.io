@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">线性与开关电源、拓扑、控制环路与电源管理 IC。</div>
+    <div class="intro">线性与开关电源、拓扑与控制环路,配 Buck 变换器图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,12 +81,12 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="LDO 与基准 线性稳压器 LDO(压差/效率/PSRR)、带隙基准;适合低噪声小电流。">
+        <div class="card" id="card-1-1" data-keywords="LDO 与基准 LDO(压差/效率/PSRR)、带隙基准;低噪声小电流。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">LDO 与基准</span>
           </div>
-          <div class="card-code">线性稳压器 LDO(压差/效率/PSRR)、带隙基准;适合低噪声小电流。</div>
+          <div class="card-code">LDO(压差/效率/PSRR)、带隙基准;低噪声小电流。</div>
         </div>
       </div>
     </div>
@@ -95,41 +98,42 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="DC-DC 拓扑 Buck/Boost/Buck-Boost、反激/正激、LLC;占空比与电压关系、CCM/DCM。">
+        <div class="card" id="card-2-2" data-keywords="DC-DC 拓扑 Buck 降压/Boost 升压/Buck-Boost、反激/正激、LLC;占空比控制;CCM/DCM。 降压 Buck 变换器">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">DC-DC 拓扑</span>
           </div>
-          <div class="card-code">Buck/Boost/Buck-Boost、反激/正激、LLC;占空比与电压关系、CCM/DCM。</div>
+          <div class="card-code">Buck 降压/Boost 升压/Buck-Boost、反激/正激、LLC;占空比控制;CCM/DCM。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 120" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><line x1="20" y1="35" x2="70" y2="35" stroke="#1a1a2e"/><rect x="70" y="26" width="26" height="18" fill="#fff4e6" stroke="#b54708"/><text x="76" y="39">S</text><line x1="96" y1="35" x2="150" y2="35" stroke="#1a1a2e"/><path d="M150,35 q8,-9 16,0 q8,-9 16,0 q8,-9 16,0" fill="none" stroke="#356ae6"/><text x="160" y="20">L</text><line x1="198" y1="35" x2="240" y2="35" stroke="#1a1a2e"/><line x1="240" y1="22" x2="240" y2="86" stroke="#1a1a2e"/><text x="246" y="50">C</text><text x="246" y="30">Vo</text><line x1="130" y1="35" x2="130" y2="86" stroke="#1a1a2e"/><polygon points="123,50 137,50 130,62" fill="none" stroke="#067647"/><line x1="20" y1="86" x2="240" y2="86" stroke="#1a1a2e"/><text x="20" y="20">Vi</text><text x="55" y="112" fill="#7d8599">Buck:Vo=D·Vi</text></svg><div class="cap">降压 Buck 变换器</div></div>
         </div>
-        <div class="card" id="card-2-3" data-keywords="控制 电压/电流模式控制、PWM、环路补偿(Type II/III)、软启动、保护(过流/过温)。">
+        <div class="card" id="card-2-3" data-keywords="控制 电压/电流模式、PWM、环路补偿(Type II/III)、软启动、保护。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">控制</span>
           </div>
-          <div class="card-code">电压/电流模式控制、PWM、环路补偿(Type II/III)、软启动、保护(过流/过温)。</div>
+          <div class="card-code">电压/电流模式、PWM、环路补偿(Type II/III)、软启动、保护。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、器件与设计</span>
+        <span class="title">三、器件与应用</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="功率器件与磁性 MOSFET/GaN、二极管、电感/变压器设计、输出电容与纹波;损耗与热设计。">
+        <div class="card" id="card-3-4" data-keywords="功率器件 MOSFET/GaN、电感/变压器、输出电容与纹波;损耗与热设计。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">功率器件与磁性</span>
+            <span class="card-title">功率器件</span>
           </div>
-          <div class="card-code">MOSFET/GaN、二极管、电感/变压器设计、输出电容与纹波;损耗与热设计。</div>
+          <div class="card-code">MOSFET/GaN、电感/变压器、输出电容与纹波;损耗与热设计。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="PMIC 与应用 电源管理 IC、多路电源、DVFS;AC-DC(PFC)、充电管理、无线充电。">
+        <div class="card" id="card-3-5" data-keywords="PMIC 电源管理 IC、多路电源、DVFS;AC-DC(PFC)、充电管理、无线充电。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">PMIC 与应用</span>
+            <span class="card-title">PMIC</span>
           </div>
           <div class="card-code">电源管理 IC、多路电源、DVFS;AC-DC(PFC)、充电管理、无线充电。</div>
         </div>

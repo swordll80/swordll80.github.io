@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,10 +69,10 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">4 条</span>
+  <span class="result-count" id="resultCount">3 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">逻辑、语义网络、本体、知识图谱与不确定性推理。</div>
+    <div class="intro">逻辑、语义网络、知识图谱与不确定推理,配贝叶斯网络图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,12 +81,12 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="命题与一阶逻辑 命题逻辑、一阶谓词逻辑;归结推理、前向/反向链;Horn 子句与 Prolog。">
+        <div class="card" id="card-1-1" data-keywords="逻辑 命题/一阶谓词逻辑;归结推理、前向/反向链;Horn 子句与 Prolog。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">命题与一阶逻辑</span>
+            <span class="card-title">逻辑</span>
           </div>
-          <div class="card-code">命题逻辑、一阶谓词逻辑;归结推理、前向/反向链;Horn 子句与 Prolog。</div>
+          <div class="card-code">命题/一阶谓词逻辑;归结推理、前向/反向链;Horn 子句与 Prolog。</div>
         </div>
       </div>
     </div>
@@ -91,23 +94,16 @@
       <button class="section-head">
         <span class="icon">2</span>
         <span class="title">二、结构化知识</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="语义网络与框架 语义网络、框架、脚本;描述逻辑与本体(OWL)。">
+        <div class="card" id="card-2-2" data-keywords="语义网络与图谱 框架、描述逻辑与本体(OWL);知识图谱(实体-关系-实体三元组)、嵌入(TransE)。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">语义网络与框架</span>
+            <span class="card-title">语义网络与图谱</span>
           </div>
-          <div class="card-code">语义网络、框架、脚本;描述逻辑与本体(OWL)。</div>
-        </div>
-        <div class="card" id="card-2-3" data-keywords="知识图谱 实体-关系-实体三元组;构建(抽取/融合)、存储、推理与问答;嵌入(TransE)。">
-          <div class="card-head">
-            <span class="card-num">3</span>
-            <span class="card-title">知识图谱</span>
-          </div>
-          <div class="card-code">实体-关系-实体三元组;构建(抽取/融合)、存储、推理与问答;嵌入(TransE)。</div>
+          <div class="card-code">框架、描述逻辑与本体(OWL);知识图谱(实体-关系-实体三元组)、嵌入(TransE)。</div>
         </div>
       </div>
     </div>
@@ -119,12 +115,13 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="概率与规则 贝叶斯网络、马尔可夫逻辑;模糊逻辑;确定性因子;主观贝叶斯。">
+        <div class="card" id="card-3-3" data-keywords="概率推理 贝叶斯网络(有向无环图表示条件独立)、马尔可夫逻辑;模糊逻辑;确定性因子。 贝叶斯网络">
           <div class="card-head">
-            <span class="card-num">4</span>
-            <span class="card-title">概率与规则</span>
+            <span class="card-num">3</span>
+            <span class="card-title">概率推理</span>
           </div>
-          <div class="card-code">贝叶斯网络、马尔可夫逻辑;模糊逻辑;确定性因子;主观贝叶斯。</div>
+          <div class="card-code">贝叶斯网络(有向无环图表示条件独立)、马尔可夫逻辑;模糊逻辑;确定性因子。</div>
+          <div class="card-fig"><svg viewBox="0 0 240 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><defs><marker id="bn" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs><circle cx="60" cy="35" r="18" fill="#eef3ff" stroke="#356ae6"/><text x="54" y="39">A</text><circle cx="170" cy="35" r="18" fill="#eef3ff" stroke="#356ae6"/><text x="164" y="39">B</text><circle cx="115" cy="100" r="18" fill="#e8f7ee" stroke="#067647"/><text x="109" y="104">C</text><line x1="73" y1="48" x2="102" y2="86" stroke="#356ae6" marker-end="url(#bn)"/><line x1="157" y1="48" x2="128" y2="86" stroke="#356ae6" marker-end="url(#bn)"/><text x="40" y="126" fill="#7d8599" font-size="9">贝叶斯网络:P(C|A,B) 有向无环图</text></svg><div class="cap">贝叶斯网络</div></div>
         </div>
       </div>
     </div>

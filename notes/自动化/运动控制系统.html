@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -61,7 +64,7 @@
 </head>
 <body>
 <div class="topbar">
-  <h1>运动控制系统(电力拖动自动控制)</h1>
+  <h1>运动控制系统</h1>
   <div class="search-wrap">
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">直流与交流调速系统、闭环控制、矢量控制与伺服。</div>
+    <div class="intro">直流/交流调速、闭环、矢量控制与伺服,配三环结构图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,20 +81,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="开环与闭环 转速开环有稳态误差；加转速负反馈构成闭环提高精度。 转速、电流双闭环:电流内环(快速限流)、转速外环，按工程整定。">
+        <div class="card" id="card-1-1" data-keywords="闭环调速 转速负反馈闭环;转速-电流双闭环(电流内环限流、转速外环)。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">开环与闭环</span>
+            <span class="card-title">闭环调速</span>
           </div>
-          <div class="card-code">转速开环有稳态误差；加转速负反馈构成闭环提高精度。
-转速、电流双闭环:电流内环(快速限流)、转速外环，按工程整定。</div>
+          <div class="card-code">转速负反馈闭环;转速-电流双闭环(电流内环限流、转速外环)。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="可逆与 PWM V-M(晶闸管)系统、PWM 直流调速；可逆运行与四象限。">
+        <div class="card" id="card-1-2" data-keywords="PWM 与可逆 PWM 直流调速、四象限可逆运行。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">可逆与 PWM</span>
+            <span class="card-title">PWM 与可逆</span>
           </div>
-          <div class="card-code">V-M(晶闸管)系统、PWM 直流调速；可逆运行与四象限。</div>
+          <div class="card-code">PWM 直流调速、四象限可逆运行。</div>
         </div>
       </div>
     </div>
@@ -103,21 +105,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="变频调速 异步电机 V/f 恒定协调控制,基频以下恒转矩、以上恒功率。 转差频率控制。">
+        <div class="card" id="card-2-3" data-keywords="变频调速 V/f 协调(基频下恒转矩、上恒功率);转差频率控制。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">变频调速</span>
           </div>
-          <div class="card-code">异步电机 V/f 恒定协调控制,基频以下恒转矩、以上恒功率。
-转差频率控制。</div>
+          <div class="card-code">V/f 协调(基频下恒转矩、上恒功率);转差频率控制。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="矢量控制与DTC 矢量控制(FOC):将定子电流解耦为励磁分量与转矩分量,像直流机一样控制,动态好。 直接转矩控制(DTC):直接控制磁链与转矩。">
+        <div class="card" id="card-2-4" data-keywords="矢量与DTC 矢量控制(FOC)解耦励磁与转矩分量,像直流机;直接转矩控制 DTC。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">矢量控制与DTC</span>
+            <span class="card-title">矢量与DTC</span>
           </div>
-          <div class="card-code">矢量控制(FOC):将定子电流解耦为励磁分量与转矩分量,像直流机一样控制,动态好。
-直接转矩控制(DTC):直接控制磁链与转矩。</div>
+          <div class="card-code">矢量控制(FOC)解耦励磁与转矩分量,像直流机;直接转矩控制 DTC。</div>
         </div>
       </div>
     </div>
@@ -129,13 +129,14 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="伺服与位置控制 位置环-速度环-电流环三环结构。 伺服电机(永磁同步)+编码器反馈;定位精度、跟随误差、前馈补偿。">
+        <div class="card" id="card-3-5" data-keywords="伺服三环 位置环-速度环-电流环;伺服电机(永磁同步)+编码器反馈; 定位精度、跟随误差、前馈补偿。 伺服位置/速度/电流三环">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">伺服与位置控制</span>
+            <span class="card-title">伺服三环</span>
           </div>
-          <div class="card-code">位置环-速度环-电流环三环结构。
-伺服电机(永磁同步)+编码器反馈;定位精度、跟随误差、前馈补偿。</div>
+          <div class="card-code">位置环-速度环-电流环;伺服电机(永磁同步)+编码器反馈;
+定位精度、跟随误差、前馈补偿。</div>
+          <div class="card-fig"><svg viewBox="0 0 340 105" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><defs><marker id="tl" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs><rect x="20" y="32" width="55" height="28" rx="4" fill="#eef3ff" stroke="#356ae6"/><text x="30" y="50">位置环</text><rect x="95" y="32" width="55" height="28" rx="4" fill="#e8f7ee" stroke="#067647"/><text x="105" y="50">速度环</text><rect x="170" y="32" width="55" height="28" rx="4" fill="#fff4e6" stroke="#b54708"/><text x="180" y="50">电流环</text><rect x="245" y="32" width="45" height="28" rx="4" fill="#f3f0ff" stroke="#7c3aed"/><text x="253" y="50">电机</text><line x1="75" y1="46" x2="93" y2="46" stroke="#356ae6" marker-end="url(#tl)"/><line x1="150" y1="46" x2="168" y2="46" stroke="#356ae6" marker-end="url(#tl)"/><line x1="225" y1="46" x2="243" y2="46" stroke="#356ae6" marker-end="url(#tl)"/><text x="30" y="92" fill="#7d8599">伺服三环:位置→速度→电流(内环最快)</text></svg><div class="cap">伺服位置/速度/电流三环</div></div>
         </div>
       </div>
     </div>

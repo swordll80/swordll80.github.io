@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,58 +72,52 @@
   <span class="result-count" id="resultCount">7 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">电路的基本定律、分析方法、暂态与正弦稳态、三相与二端口网络。</div>
+    <div class="intro">基本定律、分析方法、暂态与正弦稳态、三相与二端口,配运放/等效概念。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、基本概念与定律</span>
+        <span class="title">一、基本定律</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="基本量与元件 电压 U(V)、电流 I(A)、功率 P=UI。 电阻 R(欧姆定律 U=IR)、电容 C(i=C·du/dt)、电感 L(u=L·di/dt)。 独立源/受控源；关联参考方向。">
+        <div class="card" id="card-1-1" data-keywords="基本量与元件 U/I/P;电阻(U=IR)、电容(i=C·du/dt)、电感(u=L·di/dt);独立/受控源。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">基本量与元件</span>
           </div>
-          <div class="card-code">电压 U(V)、电流 I(A)、功率 P=UI。
-电阻 R(欧姆定律 U=IR)、电容 C(i=C·du/dt)、电感 L(u=L·di/dt)。
-独立源/受控源；关联参考方向。</div>
+          <div class="card-code">U/I/P;电阻(U=IR)、电容(i=C·du/dt)、电感(u=L·di/dt);独立/受控源。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="基尔霍夫定律 KCL：节点电流代数和为 0(ΣI=0)。 KVL：回路电压代数和为 0(ΣU=0)。 串联分压、并联分流。">
+        <div class="card" id="card-1-2" data-keywords="基尔霍夫 KCL(节点 ΣI=0)、KVL(回路 ΣU=0);串联分压、并联分流。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">基尔霍夫定律</span>
+            <span class="card-title">基尔霍夫</span>
           </div>
-          <div class="card-code">KCL：节点电流代数和为 0(ΣI=0)。
-KVL：回路电压代数和为 0(ΣU=0)。
-串联分压、并联分流。</div>
+          <div class="card-code">KCL(节点 ΣI=0)、KVL(回路 ΣU=0);串联分压、并联分流。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、电路分析方法</span>
+        <span class="title">二、分析方法</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="等效与定理 电阻串并联、Y-Δ 变换、电源等效(戴维南/诺顿)。 叠加定理、戴维南定理(Uoc, Req)、诺顿定理、最大功率传输(RL=Req)。">
+        <div class="card" id="card-2-3" data-keywords="等效与定理 串并联、Y-Δ 变换、电源等效;叠加定理、戴维南(Uoc,Req)、诺顿、最大功率传输(RL=Req)。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">等效与定理</span>
           </div>
-          <div class="card-code">电阻串并联、Y-Δ 变换、电源等效(戴维南/诺顿)。
-叠加定理、戴维南定理(Uoc, Req)、诺顿定理、最大功率传输(RL=Req)。</div>
+          <div class="card-code">串并联、Y-Δ 变换、电源等效;叠加定理、戴维南(Uoc,Req)、诺顿、最大功率传输(RL=Req)。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="系统分析法 支路电流法、节点电压法(Node)、网孔电流法(Mesh)。 列写并解线性方程组，适合复杂电路。">
+        <div class="card" id="card-2-4" data-keywords="系统法 支路电流法、节点电压法、网孔电流法。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">系统分析法</span>
+            <span class="card-title">系统法</span>
           </div>
-          <div class="card-code">支路电流法、节点电压法(Node)、网孔电流法(Mesh)。
-列写并解线性方程组，适合复杂电路。</div>
+          <div class="card-code">支路电流法、节点电压法、网孔电流法。</div>
         </div>
       </div>
     </div>
@@ -128,34 +125,48 @@ KVL：回路电压代数和为 0(ΣU=0)。
       <button class="section-head">
         <span class="icon">3</span>
         <span class="title">三、暂态与稳态</span>
-        <span class="count">3 条</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="一阶暂态 RC/RL 电路换路：三要素法 f(t)=f(∞)+[f(0⁺)-f(∞)]e^(-t/τ)。 时间常数 τ=RC 或 L/R。">
+        <div class="card" id="card-3-5" data-keywords="一阶暂态 三要素法 f(t)=f(∞)+[f(0⁺)−f(∞)]e^(−t/τ),τ=RC 或 L/R。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">一阶暂态</span>
           </div>
-          <div class="card-code">RC/RL 电路换路：三要素法 f(t)=f(∞)+[f(0⁺)-f(∞)]e^(-t/τ)。
-时间常数 τ=RC 或 L/R。</div>
+          <div class="card-code">三要素法 f(t)=f(∞)+[f(0⁺)−f(∞)]e^(−t/τ),τ=RC 或 L/R。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="正弦稳态(相量) 相量法：正弦量↔复数相量。 阻抗 Z=R+jX，感抗 jωL，容抗 1/(jωC)。 有功 P=UIcosφ、无功 Q=UIsinφ、视在 S=UI、功率因数 cosφ；谐振 ωL=1/ωC。">
+        <div class="card" id="card-3-6" data-keywords="正弦稳态 相量法;阻抗 Z=R+jX,感抗 jωL、容抗 1/(jωC); 有功 P=UIcosφ、无功 Q、视在 S、功率因数;谐振 ωL=1/ωC。 正弦交流(三相互差120°)">
           <div class="card-head">
             <span class="card-num">6</span>
-            <span class="card-title">正弦稳态(相量)</span>
+            <span class="card-title">正弦稳态</span>
           </div>
-          <div class="card-code">相量法：正弦量↔复数相量。
-阻抗 Z=R+jX，感抗 jωL，容抗 1/(jωC)。
-有功 P=UIcosφ、无功 Q=UIsinφ、视在 S=UI、功率因数 cosφ；谐振 ωL=1/ωC。</div>
+          <div class="card-code">相量法;阻抗 Z=R+jX,感抗 jωL、容抗 1/(jωC);
+有功 P=UIcosφ、无功 Q、视在 S、功率因数;谐振 ωL=1/ωC。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
+<line x1="20" y1="75" x2="285" y2="75" stroke="#7d8599"/>
+<path d="M20,75 Q50,20 80,75 Q110,130 140,75 Q170,20 200,75 Q230,130 260,75" fill="none" stroke="#b42318" stroke-width="1.6"/>
+<path d="M20,130 Q40,90 60,110 Q95,150 120,75 Q150,15 175,60 Q210,130 235,110 Q260,95 285,120" fill="none" stroke="#067647" stroke-width="1.4" opacity=".5"/>
+<text x="30" y="40" fill="#b42318">A</text><text x="120" y="140" fill="#067647" opacity=".7">相位互差120°</text>
+<text x="20" y="18" fill="#356ae6">三相交流(互差120°)</text>
+</svg><div class="cap">正弦交流(三相互差120°)</div></div>
         </div>
-        <div class="card" id="card-3-7" data-keywords="三相与二端口 对称三相 Y/Δ：线量与相量关系(√3)。 二端口网络：Z/Y/H/T 参数矩阵。">
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、三相与二端口</span>
+        <span class="count">1 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-7" data-keywords="三相与二端口 对称三相 Y/Δ(√3 关系);二端口 Z/Y/H/T 参数。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">三相与二端口</span>
           </div>
-          <div class="card-code">对称三相 Y/Δ：线量与相量关系(√3)。
-二端口网络：Z/Y/H/T 参数矩阵。</div>
+          <div class="card-code">对称三相 Y/Δ(√3 关系);二端口 Z/Y/H/T 参数。</div>
         </div>
       </div>
     </div>
