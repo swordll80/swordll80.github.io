@@ -2,7 +2,7 @@
 <html lang="zh-CN"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Git 速查</title>
+  <title>硬件调试工具</title>
   <style>
     :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -64,124 +64,61 @@
 </head>
 <body>
 <div class="topbar">
-  <h1>Git 版本控制手册</h1>
+  <h1>硬件调试与测试工具</h1>
   <div class="search-wrap">
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">8 条</span>
+  <span class="result-count" id="resultCount">4 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">分布式版本控制常用命令速查,配工作区/暂存区/仓库示意图。</div>
+    <div class="intro">常用硬件调试仪器与方法,提高软硬件联调效率。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、核心概念</span>
+        <span class="title">一、测量仪器</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="四个区域 工作区(编辑)→暂存区(add)→本地仓库(commit)→远程仓库(push); pull=fetch+merge 把远程拉回本地。理解这条链是掌握 Git 的关键。 Git 工作区/暂存区/仓库与命令">
+        <div class="card" id="card-1-1" data-keywords="万用表/示波器 万用表:电压/电流/电阻/通断; 示波器:观察波形、时序、噪声、纹波;带宽与采样率、探头。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">四个区域</span>
+            <span class="card-title">万用表/示波器</span>
           </div>
-          <div class="card-code">工作区(编辑)→暂存区(add)→本地仓库(commit)→远程仓库(push);
-pull=fetch+merge 把远程拉回本地。理解这条链是掌握 Git 的关键。</div>
-          <div class="card-fig"><svg viewBox="0 0 360 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
-<defs><marker id="gah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs>
-<rect x="8" y="45" width="70" height="30" rx="4" fill="#fdeaea" stroke="#b42318"/><text x="24" y="64">工作区</text>
-<rect x="103" y="45" width="70" height="30" rx="4" fill="#fff4e6" stroke="#b54708"/><text x="118" y="64">暂存区</text>
-<rect x="198" y="45" width="75" height="30" rx="4" fill="#e8f7ee" stroke="#067647"/><text x="210" y="64">本地仓库</text>
-<rect x="295" y="45" width="60" height="30" rx="4" fill="#eef3ff" stroke="#356ae6"/><text x="305" y="64">远程</text>
-<line x1="78" y1="55" x2="101" y2="55" stroke="#356ae6" marker-end="url(#gah)"/><text x="78" y="42" fill="#356ae6">add</text>
-<line x1="173" y1="55" x2="196" y2="55" stroke="#356ae6" marker-end="url(#gah)"/><text x="168" y="42" fill="#356ae6">commit</text>
-<line x1="273" y1="55" x2="293" y2="55" stroke="#356ae6" marker-end="url(#gah)"/><text x="273" y="42" fill="#356ae6">push</text>
-<line x1="295" y1="70" x2="45" y2="70" stroke="#7d8599" stroke-dasharray="3 2" marker-end="url(#gah)"/><text x="120" y="88" fill="#7d8599">pull / fetch+merge</text>
-</svg><div class="cap">Git 工作区/暂存区/仓库与命令</div></div>
+          <div class="card-code">万用表:电压/电流/电阻/通断;
+示波器:观察波形、时序、噪声、纹波;带宽与采样率、探头。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="身份配置 git config --global user.name / user.email; git init 建仓、git clone &lt;url&gt; 克隆。 ">
+        <div class="card" id="card-1-2" data-keywords="逻辑/协议分析仪 逻辑分析仪抓多路数字信号与总线时序;协议分析仪解码 UART/SPI/I²C/CAN。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">身份配置</span>
+            <span class="card-title">逻辑/协议分析仪</span>
           </div>
-          <div class="card-code">git config --global user.name / user.email;
-git init 建仓、git clone &lt;url&gt; 克隆。</div>
+          <div class="card-code">逻辑分析仪抓多路数字信号与总线时序;协议分析仪解码 UART/SPI/I²C/CAN。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、日常提交</span>
+        <span class="title">二、调试手段</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="状态与暂存 git status 看状态、git diff 看改动; git add . 暂存、git add -p 逐块;git restore --staged 取消暂存。 ">
+        <div class="card" id="card-2-3" data-keywords="在线调试 JTAG/SWD 单步、断点、看寄存器与内存;printf/串口日志;LED 指示。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">状态与暂存</span>
+            <span class="card-title">在线调试</span>
           </div>
-          <div class="card-code">git status 看状态、git diff 看改动;
-git add . 暂存、git add -p 逐块;git restore --staged 取消暂存。</div>
+          <div class="card-code">JTAG/SWD 单步、断点、看寄存器与内存;printf/串口日志;LED 指示。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="提交 git commit -m &quot;信息&quot;;git commit --amend 改上次提交(未push);.gitignore 忽略规则。 ">
+        <div class="card" id="card-2-4" data-keywords="信号与电源 信号完整性(反射/串扰)、电源纹波与噪声、接地;万用表/示波器定位硬件故障。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">提交</span>
+            <span class="card-title">信号与电源</span>
           </div>
-          <div class="card-code">git commit -m &quot;信息&quot;;git commit --amend 改上次提交(未push);.gitignore 忽略规则。</div>
-        </div>
-      </div>
-    </div>
-    <div class="section" id="sect-3">
-      <button class="section-head">
-        <span class="icon">3</span>
-        <span class="title">三、分支与合并</span>
-        <span class="count">2 条</span>
-        <span class="arrow">▼</span>
-      </button>
-      <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="分支 git switch -c dev 新建切换、git branch -d dev 删除;git switch main。 ">
-          <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">分支</span>
-          </div>
-          <div class="card-code">git switch -c dev 新建切换、git branch -d dev 删除;git switch main。</div>
-        </div>
-        <div class="card" id="card-3-6" data-keywords="合并与变基 git merge dev 合并;git rebase main 变基(历史线性,勿对已push提交用); 冲突:改标记&lt;&lt;&lt;&lt; ====&gt;&gt;&gt;&gt;后 add 再 commit/continue。 ">
-          <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">合并与变基</span>
-          </div>
-          <div class="card-code">git merge dev 合并;git rebase main 变基(历史线性,勿对已push提交用);
-冲突:改标记&lt;&lt;&lt;&lt; ====&gt;&gt;&gt;&gt;后 add 再 commit/continue。</div>
-        </div>
-      </div>
-    </div>
-    <div class="section" id="sect-4">
-      <button class="section-head">
-        <span class="icon">4</span>
-        <span class="title">四、远程与撤销</span>
-        <span class="count">2 条</span>
-        <span class="arrow">▼</span>
-      </button>
-      <div class="section-body">
-        <div class="card" id="card-4-7" data-keywords="远程 git remote add origin &lt;url&gt;;git pull --rebase;git push -u origin dev;git fetch。 ">
-          <div class="card-head">
-            <span class="card-num">7</span>
-            <span class="card-title">远程</span>
-          </div>
-          <div class="card-code">git remote add origin &lt;url&gt;;git pull --rebase;git push -u origin dev;git fetch。</div>
-        </div>
-        <div class="card" id="card-4-8" data-keywords="撤销 git restore file 丢弃改动;git reset --soft/mixed/hard HEAD~1; git revert &lt;c&gt; 反向提交(安全);git reflog 找回;git stash 暂存现场。 ">
-          <div class="card-head">
-            <span class="card-num">8</span>
-            <span class="card-title">撤销</span>
-          </div>
-          <div class="card-code">git restore file 丢弃改动;git reset --soft/mixed/hard HEAD~1;
-git revert &lt;c&gt; 反向提交(安全);git reflog 找回;git stash 暂存现场。</div>
+          <div class="card-code">信号完整性(反射/串扰)、电源纹波与噪声、接地;万用表/示波器定位硬件故障。</div>
         </div>
       </div>
     </div>

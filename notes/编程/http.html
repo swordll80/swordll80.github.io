@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,103 +69,117 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">15 条</span>
+  <span class="result-count" id="resultCount">20 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">Web 开发必备网络知识：HTTP 方法与状态码、请求头、REST、跨域、缓存与安全。</div>
+    <div class="intro">Web 网络核心：协议分层、HTTP 方法与状态码、报文结构、连接与版本、REST、鉴权、缓存、跨域与安全，配图理解。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、HTTP 方法</span>
+        <span class="title">一、网络分层</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="常用方法 GET     获取资源（幂等、可缓存） POST    提交/创建（非幂等） PUT     整体更新/替换（幂等） PATCH   局部更新 DELETE  删除（幂等） HEAD    只取响应头 OPTIONS 预检、查询能力">
+        <div class="card" id="card-1-1" data-keywords="TCP/IP 四层模型 数据自上而下逐层封装(加头部)，接收端逐层解封装。 应用层→传输层→网络层→网络接口层。 HTTP 工作在应用层，依赖传输层 TCP 可靠传输。 TCP/IP 分层与常见协议">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">常用方法</span>
+            <span class="card-title">TCP/IP 四层模型</span>
           </div>
-          <div class="card-code">GET     获取资源（幂等、可缓存）
-POST    提交/创建（非幂等）
-PUT     整体更新/替换（幂等）
-PATCH   局部更新
-DELETE  删除（幂等）
-HEAD    只取响应头
-OPTIONS 预检、查询能力</div>
+          <div class="card-code">数据自上而下逐层封装(加头部)，接收端逐层解封装。
+应用层→传输层→网络层→网络接口层。
+HTTP 工作在应用层，依赖传输层 TCP 可靠传输。</div>
+          <div class="card-fig"><svg viewBox="0 0 340 178" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11">
+<rect x="8" y="8" width="324" height="34" rx="5" fill="#eef3ff" stroke="#356ae6"/><text x="18" y="29" font-weight="700">应用层</text><text x="120" y="29" fill="#475467">HTTP DNS FTP SMTP TLS</text>
+<rect x="8" y="48" width="324" height="34" rx="5" fill="#e8f7ee" stroke="#067647"/><text x="18" y="69" font-weight="700">传输层</text><text x="120" y="69" fill="#475467">TCP  UDP  (端口)</text>
+<rect x="8" y="88" width="324" height="34" rx="5" fill="#fff4e6" stroke="#b54708"/><text x="18" y="109" font-weight="700">网络层</text><text x="120" y="109" fill="#475467">IP  ICMP  路由</text>
+<rect x="8" y="128" width="324" height="34" rx="5" fill="#f3f0ff" stroke="#7c3aed"/><text x="18" y="149" font-weight="700">网络接口层</text><text x="120" y="149" fill="#475467">以太网 WiFi MAC 帧</text>
+</svg><div class="cap">TCP/IP 分层与常见协议</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="幂等与安全 安全：不改变服务器状态 → GET/HEAD/OPTIONS 幂等：多次调用结果一致 → GET/PUT/DELETE POST 既不安全也不幂等">
+        <div class="card" id="card-1-2" data-keywords="封装与地址 每层有自己的地址/标识： 应用层 URL/域名 → 传输层 端口 → 网络层 IP → 链路层 MAC。 DNS 把域名解析为 IP，再由 TCP 建立连接。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">幂等与安全</span>
+            <span class="card-title">封装与地址</span>
           </div>
-          <div class="card-code">安全：不改变服务器状态 → GET/HEAD/OPTIONS
-幂等：多次调用结果一致 → GET/PUT/DELETE
-POST 既不安全也不幂等</div>
+          <div class="card-code">每层有自己的地址/标识：
+应用层 URL/域名 → 传输层 端口 → 网络层 IP → 链路层 MAC。
+DNS 把域名解析为 IP，再由 TCP 建立连接。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、状态码</span>
-        <span class="count">4 条</span>
+        <span class="title">二、HTTP 方法</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="2xx 成功 200 OK        请求成功 201 Created   已创建（POST） 204 No Content 成功但无返回体">
+        <div class="card" id="card-2-3" data-keywords="常用方法 GET 获取(幂等、可缓存)、POST 提交/创建(非幂等)、 PUT 整体更新(幂等)、PATCH 局部更新、DELETE 删除(幂等)、 HEAD 只取头、OPTIONS 预检/查询能力。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">2xx 成功</span>
+            <span class="card-title">常用方法</span>
           </div>
-          <div class="card-code">200 OK        请求成功
-201 Created   已创建（POST）
-204 No Content 成功但无返回体</div>
+          <div class="card-code">GET 获取(幂等、可缓存)、POST 提交/创建(非幂等)、
+PUT 整体更新(幂等)、PATCH 局部更新、DELETE 删除(幂等)、
+HEAD 只取头、OPTIONS 预检/查询能力。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="3xx 重定向 301 永久重定向 302 临时重定向 304 Not Modified 命中缓存">
+        <div class="card" id="card-2-4" data-keywords="安全与幂等 安全:不改服务器状态(GET/HEAD/OPTIONS)。 幂等:多次调用效果一致(GET/PUT/DELETE)。 POST 既不安全也不幂等。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">3xx 重定向</span>
+            <span class="card-title">安全与幂等</span>
           </div>
-          <div class="card-code">301 永久重定向
-302 临时重定向
-304 Not Modified 命中缓存</div>
-        </div>
-        <div class="card" id="card-2-5" data-keywords="4xx 客户端错误 400 请求语法错误 401 未认证（需登录） 403 已认证但无权限 404 资源不存在 405 方法不允许 429 请求过多（限流）">
-          <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">4xx 客户端错误</span>
-          </div>
-          <div class="card-code">400 请求语法错误
-401 未认证（需登录）
-403 已认证但无权限
-404 资源不存在
-405 方法不允许
-429 请求过多（限流）</div>
-        </div>
-        <div class="card" id="card-2-6" data-keywords="5xx 服务端错误 500 服务器内部错误 502 网关错误 503 服务不可用 504 网关超时">
-          <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">5xx 服务端错误</span>
-          </div>
-          <div class="card-code">500 服务器内部错误
-502 网关错误
-503 服务不可用
-504 网关超时</div>
+          <div class="card-code">安全:不改服务器状态(GET/HEAD/OPTIONS)。
+幂等:多次调用效果一致(GET/PUT/DELETE)。
+POST 既不安全也不幂等。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、报文与请求头</span>
+        <span class="title">三、状态码</span>
         <span class="count">3 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-7" data-keywords="请求结构 GET /api/users?id=1 HTTP/1.1 Host: example.com Authorization: Bearer &lt;token&gt; Content-Type: application/json Accept: application/json  {&quot;body&quot;: &quot;...&quot;}">
+        <div class="card" id="card-3-5" data-keywords="2xx / 3xx 200 OK、201 Created、204 No Content。 301 永久重定向、302 临时、304 Not Modified(命中缓存)、307/308 保持方法重定向。 ">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">2xx / 3xx</span>
+          </div>
+          <div class="card-code">200 OK、201 Created、204 No Content。
+301 永久重定向、302 临时、304 Not Modified(命中缓存)、307/308 保持方法重定向。</div>
+        </div>
+        <div class="card" id="card-3-6" data-keywords="4xx 客户端错误 400 语法错误、401 未认证、403 无权限、404 不存在、 405 方法不允许、409 冲突、413 体过大、429 请求过多(限流)。 ">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">4xx 客户端错误</span>
+          </div>
+          <div class="card-code">400 语法错误、401 未认证、403 无权限、404 不存在、
+405 方法不允许、409 冲突、413 体过大、429 请求过多(限流)。</div>
+        </div>
+        <div class="card" id="card-3-7" data-keywords="5xx 服务端错误 500 内部错误、502 网关错误、503 不可用、504 网关超时。 5xx 通常应重试或降级。 ">
           <div class="card-head">
             <span class="card-num">7</span>
+            <span class="card-title">5xx 服务端错误</span>
+          </div>
+          <div class="card-code">500 内部错误、502 网关错误、503 不可用、504 网关超时。
+5xx 通常应重试或降级。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、报文与请求头</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-8" data-keywords="请求结构 GET /api/users?id=1 HTTP/1.1 Host: example.com Authorization: Bearer &lt;token&gt; Content-Type: application/json Accept: application/json  {&quot;body&quot;:&quot;...&quot;} 请求行 + 头部 + 空行 + 可选体。 ">
+          <div class="card-head">
+            <span class="card-num">8</span>
             <span class="card-title">请求结构</span>
           </div>
           <div class="card-code">GET /api/users?id=1 HTTP/1.1
@@ -171,113 +188,162 @@ Authorization: Bearer &lt;token&gt;
 Content-Type: application/json
 Accept: application/json
 
-{&quot;body&quot;: &quot;...&quot;}</div>
+{&quot;body&quot;:&quot;...&quot;}
+请求行 + 头部 + 空行 + 可选体。</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="常用请求头 Content-Type  请求体类型（application/json、form-data） Authorization 认证凭证 Accept        期望的响应类型 User-Agent    客户端标识 Cookie        携带的 Cookie Referer       来源页面">
-          <div class="card-head">
-            <span class="card-num">8</span>
-            <span class="card-title">常用请求头</span>
-          </div>
-          <div class="card-code">Content-Type  请求体类型（application/json、form-data）
-Authorization 认证凭证
-Accept        期望的响应类型
-User-Agent    客户端标识
-Cookie        携带的 Cookie
-Referer       来源页面</div>
-        </div>
-        <div class="card" id="card-3-9" data-keywords="常用响应头 Content-Type    响应体类型 Set-Cookie      设置 Cookie Cache-Control   缓存策略 Location        重定向地址 Access-Control-Allow-Origin  跨域许可">
+        <div class="card" id="card-4-9" data-keywords="常用请求头 Content-Type 体类型、Accept 期望类型、 Authorization 凭证、Cookie、User-Agent、Referer、 Accept-Encoding(gzip)、Range(断点续传)。 ">
           <div class="card-head">
             <span class="card-num">9</span>
-            <span class="card-title">常用响应头</span>
+            <span class="card-title">常用请求头</span>
           </div>
-          <div class="card-code">Content-Type    响应体类型
-Set-Cookie      设置 Cookie
-Cache-Control   缓存策略
-Location        重定向地址
-Access-Control-Allow-Origin  跨域许可</div>
+          <div class="card-code">Content-Type 体类型、Accept 期望类型、
+Authorization 凭证、Cookie、User-Agent、Referer、
+Accept-Encoding(gzip)、Range(断点续传)。</div>
         </div>
-      </div>
-    </div>
-    <div class="section" id="sect-4">
-      <button class="section-head">
-        <span class="icon">4</span>
-        <span class="title">四、REST 与鉴权</span>
-        <span class="count">3 条</span>
-        <span class="arrow">▼</span>
-      </button>
-      <div class="section-body">
-        <div class="card" id="card-4-10" data-keywords="RESTful 设计 GET    /users      列表 GET    /users/1    详情 POST   /users      新建 PUT    /users/1    更新 DELETE /users/1    删除 -- 用名词复数、用状态码表达结果">
+        <div class="card" id="card-4-10" data-keywords="常用响应头 Content-Type、Content-Length、Set-Cookie、 Cache-Control、ETag、Location(重定向)、 Access-Control-Allow-Origin(跨域)。 ">
           <div class="card-head">
             <span class="card-num">10</span>
-            <span class="card-title">RESTful 设计</span>
+            <span class="card-title">常用响应头</span>
           </div>
-          <div class="card-code">GET    /users      列表
-GET    /users/1    详情
-POST   /users      新建
-PUT    /users/1    更新
-DELETE /users/1    删除
--- 用名词复数、用状态码表达结果</div>
-        </div>
-        <div class="card" id="card-4-11" data-keywords="鉴权方式 Cookie-Session：服务端存会话，浏览器带 Cookie Token (JWT)：无状态，Header 带 Bearer OAuth2：第三方授权（微信/GitHub 登录） API Key：简单的密钥标识">
-          <div class="card-head">
-            <span class="card-num">11</span>
-            <span class="card-title">鉴权方式</span>
-          </div>
-          <div class="card-code">Cookie-Session：服务端存会话，浏览器带 Cookie
-Token (JWT)：无状态，Header 带 Bearer
-OAuth2：第三方授权（微信/GitHub 登录）
-API Key：简单的密钥标识</div>
-        </div>
-        <div class="card" id="card-4-12" data-keywords="JWT 结构 header.payload.signature（Base64 三段，用 . 连接） header   算法类型 payload  载荷（用户id、过期时间，勿放敏感信息） signature 签名，防篡改">
-          <div class="card-head">
-            <span class="card-num">12</span>
-            <span class="card-title">JWT 结构</span>
-          </div>
-          <div class="card-code">header.payload.signature（Base64 三段，用 . 连接）
-header   算法类型
-payload  载荷（用户id、过期时间，勿放敏感信息）
-signature 签名，防篡改</div>
+          <div class="card-code">Content-Type、Content-Length、Set-Cookie、
+Cache-Control、ETag、Location(重定向)、
+Access-Control-Allow-Origin(跨域)。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-5">
       <button class="section-head">
         <span class="icon">5</span>
-        <span class="title">五、跨域、缓存与安全</span>
+        <span class="title">五、连接与 TLS</span>
         <span class="count">3 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-13" data-keywords="CORS 跨域 同源 = 协议+域名+端口 都相同 跨域时浏览器拦截，需服务端响应： Access-Control-Allow-Origin: * Access-Control-Allow-Methods: GET,POST 复杂请求先发 OPTIONS 预检">
+        <div class="card" id="card-5-11" data-keywords="TCP 三次握手 HTTP 传输前，TCP 需三次握手建立连接： SYN → SYN+ACK → ACK。 关闭用四次挥手(FIN/ACK ×2)。 TCP 三次握手建立连接">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">TCP 三次握手</span>
+          </div>
+          <div class="card-code">HTTP 传输前，TCP 需三次握手建立连接：
+SYN → SYN+ACK → ACK。
+关闭用四次挥手(FIN/ACK ×2)。</div>
+          <div class="card-fig"><svg viewBox="0 0 340 190" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11">
+<defs><marker id="ah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#356ae6"/></marker></defs>
+<text x="55" y="20" text-anchor="middle" font-weight="700">客户端</text>
+<text x="285" y="20" text-anchor="middle" font-weight="700">服务器</text>
+<line x1="55" y1="28" x2="55" y2="180" stroke="#c7d0e0"/><line x1="285" y1="28" x2="285" y2="180" stroke="#c7d0e0"/>
+<line x1="55" y1="55" x2="283" y2="70" stroke="#356ae6" marker-end="url(#ah)"/><text x="60" y="50" fill="#1849a9">SYN, seq=x</text>
+<line x1="285" y1="95" x2="57" y2="110" stroke="#356ae6" marker-end="url(#ah)"/><text x="150" y="90" fill="#1849a9">SYN+ACK, seq=y, ack=x+1</text>
+<line x1="55" y1="135" x2="283" y2="150" stroke="#356ae6" marker-end="url(#ah)"/><text x="60" y="130" fill="#1849a9">ACK, ack=y+1</text>
+<text x="170" y="176" text-anchor="middle" fill="#7d8599">建立连接后开始传输数据</text>
+</svg><div class="cap">TCP 三次握手建立连接</div></div>
+        </div>
+        <div class="card" id="card-5-12" data-keywords="HTTPS 与 TLS HTTPS = HTTP + TLS 加密。 TLS 握手协商版本与密码套件、验证证书、交换密钥(非对称)后用对称密钥加密数据。 防窃听、防篡改、身份认证。 ">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">HTTPS 与 TLS</span>
+          </div>
+          <div class="card-code">HTTPS = HTTP + TLS 加密。
+TLS 握手协商版本与密码套件、验证证书、交换密钥(非对称)后用对称密钥加密数据。
+防窃听、防篡改、身份认证。</div>
+        </div>
+        <div class="card" id="card-5-13" data-keywords="连接管理 HTTP/1.0 默认短连接；HTTP/1.1 默认长连接(Keep-Alive)、管线化。 复用连接减少握手开销。 ">
           <div class="card-head">
             <span class="card-num">13</span>
-            <span class="card-title">CORS 跨域</span>
+            <span class="card-title">连接管理</span>
           </div>
-          <div class="card-code">同源 = 协议+域名+端口 都相同
-跨域时浏览器拦截，需服务端响应：
-Access-Control-Allow-Origin: *
-Access-Control-Allow-Methods: GET,POST
-复杂请求先发 OPTIONS 预检</div>
+          <div class="card-code">HTTP/1.0 默认短连接；HTTP/1.1 默认长连接(Keep-Alive)、管线化。
+复用连接减少握手开销。</div>
         </div>
-        <div class="card" id="card-5-14" data-keywords="缓存 Cache-Control: max-age=3600  强缓存 ETag / If-None-Match         协商缓存→304 Last-Modified / If-Modified-Since no-cache 每次校验；no-store 不缓存">
+      </div>
+    </div>
+    <div class="section" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、HTTP 版本演进</span>
+        <span class="count">1 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-14" data-keywords="1.1 / 2 / 3 HTTP/1.1:长连接、分块传输、Host 头。 HTTP/2:二进制分帧、多路复用(解决队头阻塞)、头部压缩(HPACK)、服务器推送。 HTTP/3:基于 QUIC(UDP)，进一步减少握手与队头阻塞。 ">
           <div class="card-head">
             <span class="card-num">14</span>
-            <span class="card-title">缓存</span>
+            <span class="card-title">1.1 / 2 / 3</span>
           </div>
-          <div class="card-code">Cache-Control: max-age=3600  强缓存
-ETag / If-None-Match         协商缓存→304
-Last-Modified / If-Modified-Since
-no-cache 每次校验；no-store 不缓存</div>
+          <div class="card-code">HTTP/1.1:长连接、分块传输、Host 头。
+HTTP/2:二进制分帧、多路复用(解决队头阻塞)、头部压缩(HPACK)、服务器推送。
+HTTP/3:基于 QUIC(UDP)，进一步减少握手与队头阻塞。</div>
         </div>
-        <div class="card" id="card-5-15" data-keywords="HTTPS 与常见攻击 HTTPS = HTTP + TLS 加密，防窃听篡改 XSS：注入脚本 → 转义输出、CSP CSRF：伪造请求 → Token 校验、SameSite Cookie SQL 注入：参数化查询、勿拼接 SQL">
+      </div>
+    </div>
+    <div class="section" id="sect-7">
+      <button class="section-head">
+        <span class="icon">7</span>
+        <span class="title">七、REST 与鉴权</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-7-15" data-keywords="RESTful 设计 GET/POST/PUT/DELETE /users[/id]； 用名词复数、用状态码表达结果、无状态。 ">
           <div class="card-head">
             <span class="card-num">15</span>
-            <span class="card-title">HTTPS 与常见攻击</span>
+            <span class="card-title">RESTful 设计</span>
           </div>
-          <div class="card-code">HTTPS = HTTP + TLS 加密，防窃听篡改
-XSS：注入脚本 → 转义输出、CSP
-CSRF：伪造请求 → Token 校验、SameSite Cookie
-SQL 注入：参数化查询、勿拼接 SQL</div>
+          <div class="card-code">GET/POST/PUT/DELETE /users[/id]；
+用名词复数、用状态码表达结果、无状态。</div>
+        </div>
+        <div class="card" id="card-7-16" data-keywords="鉴权方式 Cookie-Session:服务端存会话； Token(JWT):无状态，Header 带 Bearer； OAuth2:第三方授权；API Key。 ">
+          <div class="card-head">
+            <span class="card-num">16</span>
+            <span class="card-title">鉴权方式</span>
+          </div>
+          <div class="card-code">Cookie-Session:服务端存会话；
+Token(JWT):无状态，Header 带 Bearer；
+OAuth2:第三方授权；API Key。</div>
+        </div>
+        <div class="card" id="card-7-17" data-keywords="JWT 结构 header.payload.signature(Base64 三段)。 header:算法；payload:载荷(勿放敏感信息)；signature:签名防篡改。 ">
+          <div class="card-head">
+            <span class="card-num">17</span>
+            <span class="card-title">JWT 结构</span>
+          </div>
+          <div class="card-code">header.payload.signature(Base64 三段)。
+header:算法；payload:载荷(勿放敏感信息)；signature:签名防篡改。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-8">
+      <button class="section-head">
+        <span class="icon">8</span>
+        <span class="title">八、缓存、跨域与安全</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-8-18" data-keywords="缓存 强缓存 Cache-Control: max-age=3600(不请求)； 协商缓存 ETag/If-None-Match、Last-Modified/If-Modified-Since → 304。 no-cache 每次校验，no-store 不缓存。 ">
+          <div class="card-head">
+            <span class="card-num">18</span>
+            <span class="card-title">缓存</span>
+          </div>
+          <div class="card-code">强缓存 Cache-Control: max-age=3600(不请求)；
+协商缓存 ETag/If-None-Match、Last-Modified/If-Modified-Since → 304。
+no-cache 每次校验，no-store 不缓存。</div>
+        </div>
+        <div class="card" id="card-8-19" data-keywords="CORS 跨域 同源=协议+域名+端口相同。跨域时浏览器拦截，需服务端响应 Access-Control-Allow-Origin 等；复杂请求先发 OPTIONS 预检。 ">
+          <div class="card-head">
+            <span class="card-num">19</span>
+            <span class="card-title">CORS 跨域</span>
+          </div>
+          <div class="card-code">同源=协议+域名+端口相同。跨域时浏览器拦截，需服务端响应
+Access-Control-Allow-Origin 等；复杂请求先发 OPTIONS 预检。</div>
+        </div>
+        <div class="card" id="card-8-20" data-keywords="常见攻击 XSS 注入脚本→转义输出+CSP； CSRF 伪造请求→Token+SameSite Cookie； SQL 注入→参数化查询；中间人→HTTPS。 ">
+          <div class="card-head">
+            <span class="card-num">20</span>
+            <span class="card-title">常见攻击</span>
+          </div>
+          <div class="card-code">XSS 注入脚本→转义输出+CSP；
+CSRF 伪造请求→Token+SameSite Cookie；
+SQL 注入→参数化查询；中间人→HTTPS。</div>
         </div>
       </div>
     </div>

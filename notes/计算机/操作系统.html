@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,79 +69,189 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">6 条</span>
+  <span class="result-count" id="resultCount">14 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">进程与线程、调度、同步、内存管理、文件系统与 I/O。</div>
+    <div class="intro">进程与线程、调度、同步互斥、死锁、内存管理与文件系统，配状态图理解。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、进程与线程</span>
-        <span class="count">2 条</span>
+        <span class="count">3 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="进程管理 进程/线程、状态与 PCB、上下文切换;进程通信 IPC(管道/消息/共享内存)。">
+        <div class="card" id="card-1-1" data-keywords="进程状态转换 进程五态:新建→就绪→运行→(阻塞)→终止。 运行态因时间片到回就绪、因等待 I/O 转阻塞、I/O 完成回就绪。 进程状态转换图">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">进程管理</span>
+            <span class="card-title">进程状态转换</span>
           </div>
-          <div class="card-code">进程/线程、状态与 PCB、上下文切换;进程通信 IPC(管道/消息/共享内存)。</div>
+          <div class="card-code">进程五态:新建→就绪→运行→(阻塞)→终止。
+运行态因时间片到回就绪、因等待 I/O 转阻塞、I/O 完成回就绪。</div>
+          <div class="card-fig"><svg viewBox="0 0 360 190" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11">
+<defs><marker id="a3" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#356ae6"/></marker></defs>
+<rect x="10" y="80" width="60" height="30" rx="5" fill="#f3f0ff" stroke="#7c3aed"/><text x="30" y="99">新建</text>
+<rect x="110" y="80" width="60" height="30" rx="5" fill="#eef3ff" stroke="#356ae6"/><text x="130" y="99">就绪</text>
+<rect x="230" y="80" width="60" height="30" rx="5" fill="#e8f7ee" stroke="#067647"/><text x="248" y="99">运行</text>
+<rect x="230" y="150" width="60" height="30" rx="5" fill="#fff4e6" stroke="#b54708"/><text x="248" y="169">阻塞</text>
+<rect x="300" y="80" width="52" height="30" rx="5" fill="#fdeaea" stroke="#b42318"/><text x="312" y="99">终止</text>
+<line x1="70" y1="95" x2="108" y2="95" stroke="#356ae6" marker-end="url(#a3)"/>
+<line x1="170" y1="90" x2="228" y2="90" stroke="#356ae6" marker-end="url(#a3)"/><text x="176" y="84" font-size="10" fill="#475467">调度</text>
+<line x1="228" y1="100" x2="172" y2="100" stroke="#356ae6" marker-end="url(#a3)"/><text x="176" y="115" font-size="10" fill="#475467">时间片到</text>
+<line x1="260" y1="110" x2="260" y2="148" stroke="#356ae6" marker-end="url(#a3)"/><text x="264" y="132" font-size="10" fill="#475467">等待I/O</text>
+<line x1="230" y1="165" x2="140" y2="112" stroke="#356ae6" marker-end="url(#a3)"/><text x="150" y="150" font-size="10" fill="#475467">I/O完成</text>
+<line x1="290" y1="92" x2="298" y2="92" stroke="#356ae6" marker-end="url(#a3)"/>
+</svg><div class="cap">进程状态转换图</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="CPU 调度 调度算法(FCFS/SJF/优先级/时间片轮转/多级反馈);评价指标。">
+        <div class="card" id="card-1-2" data-keywords="进程与线程 进程:资源分配基本单位,有独立地址空间(PCB 描述)。 线程:CPU 调度基本单位,同进程线程共享地址空间,切换开销小。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">CPU 调度</span>
+            <span class="card-title">进程与线程</span>
           </div>
-          <div class="card-code">调度算法(FCFS/SJF/优先级/时间片轮转/多级反馈);评价指标。</div>
+          <div class="card-code">进程:资源分配基本单位,有独立地址空间(PCB 描述)。
+线程:CPU 调度基本单位,同进程线程共享地址空间,切换开销小。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="进程通信 IPC 管道/命名管道、消息队列、共享内存(最快)、信号量、信号、套接字。 ">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">进程通信 IPC</span>
+          </div>
+          <div class="card-code">管道/命名管道、消息队列、共享内存(最快)、信号量、信号、套接字。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、并发与死锁</span>
+        <span class="title">二、CPU 调度</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="同步互斥 临界区;信号量 PV、互斥锁、条件变量、管程;经典问题(生产者消费者/读写者/哲学家)。">
-          <div class="card-head">
-            <span class="card-num">3</span>
-            <span class="card-title">同步互斥</span>
-          </div>
-          <div class="card-code">临界区;信号量 PV、互斥锁、条件变量、管程;经典问题(生产者消费者/读写者/哲学家)。</div>
-        </div>
-        <div class="card" id="card-2-4" data-keywords="死锁 产生四条件;预防、避免(银行家算法)、检测与解除。">
+        <div class="card" id="card-2-4" data-keywords="调度算法 FCFS 先来先服务、SJF 短作业优先(平均周转短但可能饥饿)、 优先级调度、RR 时间片轮转(响应好)、多级反馈队列(综合)。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">死锁</span>
+            <span class="card-title">调度算法</span>
           </div>
-          <div class="card-code">产生四条件;预防、避免(银行家算法)、检测与解除。</div>
+          <div class="card-code">FCFS 先来先服务、SJF 短作业优先(平均周转短但可能饥饿)、
+优先级调度、RR 时间片轮转(响应好)、多级反馈队列(综合)。</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="评价指标 CPU 利用率、吞吐量、周转时间、等待时间、响应时间。 抢占式 vs 非抢占式。 ">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">评价指标</span>
+          </div>
+          <div class="card-code">CPU 利用率、吞吐量、周转时间、等待时间、响应时间。
+抢占式 vs 非抢占式。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、内存与文件</span>
+        <span class="title">三、同步与互斥</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="内存管理 分区、分页、分段、段页式;虚拟内存、页面置换(FIFO/LRU/Clock)、抖动。">
-          <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">内存管理</span>
-          </div>
-          <div class="card-code">分区、分页、分段、段页式;虚拟内存、页面置换(FIFO/LRU/Clock)、抖动。</div>
-        </div>
-        <div class="card" id="card-3-6" data-keywords="文件与 I/O 文件结构与目录、分配(连续/链接/索引)、FAT/inode;设备管理、缓冲、磁盘调度(SCAN)。">
+        <div class="card" id="card-3-6" data-keywords="临界区问题 多进程访问共享资源需互斥;要求:互斥、空闲让进、有限等待。 ">
           <div class="card-head">
             <span class="card-num">6</span>
-            <span class="card-title">文件与 I/O</span>
+            <span class="card-title">临界区问题</span>
           </div>
-          <div class="card-code">文件结构与目录、分配(连续/链接/索引)、FAT/inode;设备管理、缓冲、磁盘调度(SCAN)。</div>
+          <div class="card-code">多进程访问共享资源需互斥;要求:互斥、空闲让进、有限等待。</div>
+        </div>
+        <div class="card" id="card-3-7" data-keywords="同步机制 信号量 P(wait)/V(signal)、互斥锁、条件变量、管程。 经典问题:生产者-消费者、读者-写者、哲学家进餐。 ">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">同步机制</span>
+          </div>
+          <div class="card-code">信号量 P(wait)/V(signal)、互斥锁、条件变量、管程。
+经典问题:生产者-消费者、读者-写者、哲学家进餐。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、死锁</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-8" data-keywords="死锁四条件 互斥、占有并等待、不可剥夺、循环等待(同时满足才会死锁)。 ">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">死锁四条件</span>
+          </div>
+          <div class="card-code">互斥、占有并等待、不可剥夺、循环等待(同时满足才会死锁)。</div>
+        </div>
+        <div class="card" id="card-4-9" data-keywords="处理策略 预防(破坏某条件)、避免(银行家算法,判断安全序列)、 检测(资源分配图)与解除、鸵鸟策略(忽略)。 ">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">处理策略</span>
+          </div>
+          <div class="card-code">预防(破坏某条件)、避免(银行家算法,判断安全序列)、
+检测(资源分配图)与解除、鸵鸟策略(忽略)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、内存管理</span>
+        <span class="count">3 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-10" data-keywords="内存分配 连续分配(分区)、分页(消除外碎片)、分段(按逻辑)、段页式。 地址转换靠页表/段表 + MMU。 ">
+          <div class="card-head">
+            <span class="card-num">10</span>
+            <span class="card-title">内存分配</span>
+          </div>
+          <div class="card-code">连续分配(分区)、分页(消除外碎片)、分段(按逻辑)、段页式。
+地址转换靠页表/段表 + MMU。</div>
+        </div>
+        <div class="card" id="card-5-11" data-keywords="虚拟内存 把部分程序放磁盘,按需调入(请求分页); 页面置换:FIFO、LRU、Clock、最优 OPT;缺页与抖动(Thrashing)。 ">
+          <div class="card-head">
+            <span class="card-num">11</span>
+            <span class="card-title">虚拟内存</span>
+          </div>
+          <div class="card-code">把部分程序放磁盘,按需调入(请求分页);
+页面置换:FIFO、LRU、Clock、最优 OPT;缺页与抖动(Thrashing)。</div>
+        </div>
+        <div class="card" id="card-5-12" data-keywords="局部性 时间局部性+空间局部性是分页与 Cache 有效的基础。 ">
+          <div class="card-head">
+            <span class="card-num">12</span>
+            <span class="card-title">局部性</span>
+          </div>
+          <div class="card-code">时间局部性+空间局部性是分页与 Cache 有效的基础。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-6">
+      <button class="section-head">
+        <span class="icon">6</span>
+        <span class="title">六、文件与 I/O</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-6-13" data-keywords="文件系统 文件与目录、访问方式;分配方式:连续、链接(FAT)、索引(inode)。 空闲空间管理(位图/空闲链)。 ">
+          <div class="card-head">
+            <span class="card-num">13</span>
+            <span class="card-title">文件系统</span>
+          </div>
+          <div class="card-code">文件与目录、访问方式;分配方式:连续、链接(FAT)、索引(inode)。
+空闲空间管理(位图/空闲链)。</div>
+        </div>
+        <div class="card" id="card-6-14" data-keywords="I/O 管理 I/O 方式:程序查询、中断驱动、DMA、通道; 缓冲、假脱机 SPOOLing;磁盘调度 FCFS/SSTF/SCAN/C-SCAN。 ">
+          <div class="card-head">
+            <span class="card-num">14</span>
+            <span class="card-title">I/O 管理</span>
+          </div>
+          <div class="card-code">I/O 方式:程序查询、中断驱动、DMA、通道;
+缓冲、假脱机 SPOOLing;磁盘调度 FCFS/SSTF/SCAN/C-SCAN。</div>
         </div>
       </div>
     </div>

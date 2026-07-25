@@ -2,7 +2,7 @@
 <html lang="zh-CN"><head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Git 速查</title>
+  <title>软件架构</title>
   <style>
     :root { --bg:#f5f6fa; --card:#fff; --accent:#356ae6; --muted:#7d8599; --line:#e2e5ee; --text:#1a1a2e; --radius:12px; }
     * { margin:0; padding:0; box-sizing:border-box; }
@@ -64,7 +64,7 @@
 </head>
 <body>
 <div class="topbar">
-  <h1>Git 版本控制手册</h1>
+  <h1>软件架构</h1>
   <div class="search-wrap">
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
@@ -72,116 +72,105 @@
   <span class="result-count" id="resultCount">8 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">分布式版本控制常用命令速查,配工作区/暂存区/仓库示意图。</div>
+    <div class="intro">常见架构风格、设计取舍与演进，帮助快速确定系统的整体开发方向。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、核心概念</span>
-        <span class="count">2 条</span>
+        <span class="title">一、架构风格</span>
+        <span class="count">4 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="四个区域 工作区(编辑)→暂存区(add)→本地仓库(commit)→远程仓库(push); pull=fetch+merge 把远程拉回本地。理解这条链是掌握 Git 的关键。 Git 工作区/暂存区/仓库与命令">
+        <div class="card" id="card-1-1" data-keywords="单体 vs 微服务 单体:一个可部署单元,简单、部署快,适合初期/小团队;规模大后耦合高、难扩展。 微服务:按业务拆分独立服务,可独立部署与扩展,但引入分布式复杂度(网络/一致性/运维)。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">四个区域</span>
+            <span class="card-title">单体 vs 微服务</span>
           </div>
-          <div class="card-code">工作区(编辑)→暂存区(add)→本地仓库(commit)→远程仓库(push);
-pull=fetch+merge 把远程拉回本地。理解这条链是掌握 Git 的关键。</div>
-          <div class="card-fig"><svg viewBox="0 0 360 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
-<defs><marker id="gah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs>
-<rect x="8" y="45" width="70" height="30" rx="4" fill="#fdeaea" stroke="#b42318"/><text x="24" y="64">工作区</text>
-<rect x="103" y="45" width="70" height="30" rx="4" fill="#fff4e6" stroke="#b54708"/><text x="118" y="64">暂存区</text>
-<rect x="198" y="45" width="75" height="30" rx="4" fill="#e8f7ee" stroke="#067647"/><text x="210" y="64">本地仓库</text>
-<rect x="295" y="45" width="60" height="30" rx="4" fill="#eef3ff" stroke="#356ae6"/><text x="305" y="64">远程</text>
-<line x1="78" y1="55" x2="101" y2="55" stroke="#356ae6" marker-end="url(#gah)"/><text x="78" y="42" fill="#356ae6">add</text>
-<line x1="173" y1="55" x2="196" y2="55" stroke="#356ae6" marker-end="url(#gah)"/><text x="168" y="42" fill="#356ae6">commit</text>
-<line x1="273" y1="55" x2="293" y2="55" stroke="#356ae6" marker-end="url(#gah)"/><text x="273" y="42" fill="#356ae6">push</text>
-<line x1="295" y1="70" x2="45" y2="70" stroke="#7d8599" stroke-dasharray="3 2" marker-end="url(#gah)"/><text x="120" y="88" fill="#7d8599">pull / fetch+merge</text>
-</svg><div class="cap">Git 工作区/暂存区/仓库与命令</div></div>
+          <div class="card-code">单体:一个可部署单元,简单、部署快,适合初期/小团队;规模大后耦合高、难扩展。
+微服务:按业务拆分独立服务,可独立部署与扩展,但引入分布式复杂度(网络/一致性/运维)。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="身份配置 git config --global user.name / user.email; git init 建仓、git clone &lt;url&gt; 克隆。 ">
+        <div class="card" id="card-1-2" data-keywords="微服务架构 客户端→API 网关→各业务服务(各自数据库),服务间用 REST/gRPC/消息队列通信。 配套:服务注册发现、配置中心、链路追踪、熔断限流。 典型微服务架构">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">身份配置</span>
+            <span class="card-title">微服务架构</span>
           </div>
-          <div class="card-code">git config --global user.name / user.email;
-git init 建仓、git clone &lt;url&gt; 克隆。</div>
+          <div class="card-code">客户端→API 网关→各业务服务(各自数据库),服务间用 REST/gRPC/消息队列通信。
+配套:服务注册发现、配置中心、链路追踪、熔断限流。</div>
+          <div class="card-fig"><svg viewBox="0 0 360 150" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
+<defs><marker id="m1" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs>
+<rect x="130" y="8" width="100" height="24" rx="4" fill="#eef3ff" stroke="#356ae6"/><text x="150" y="24">API 网关</text>
+<line x1="180" y1="32" x2="70" y2="58" stroke="#356ae6" marker-end="url(#m1)"/><line x1="180" y1="32" x2="180" y2="58" stroke="#356ae6" marker-end="url(#m1)"/><line x1="180" y1="32" x2="290" y2="58" stroke="#356ae6" marker-end="url(#m1)"/>
+<rect x="20" y="60" width="90" height="26" rx="4" fill="#e8f7ee" stroke="#067647"/><text x="34" y="77">用户服务</text>
+<rect x="135" y="60" width="90" height="26" rx="4" fill="#e8f7ee" stroke="#067647"/><text x="150" y="77">订单服务</text>
+<rect x="250" y="60" width="95" height="26" rx="4" fill="#e8f7ee" stroke="#067647"/><text x="264" y="77">支付服务</text>
+<rect x="20" y="110" width="90" height="24" rx="4" fill="#fff4e6" stroke="#b54708"/><text x="42" y="126">DB</text>
+<rect x="135" y="110" width="90" height="24" rx="4" fill="#fff4e6" stroke="#b54708"/><text x="157" y="126">DB</text>
+<rect x="250" y="110" width="95" height="24" rx="4" fill="#fff4e6" stroke="#b54708"/><text x="274" y="126">DB</text>
+<line x1="65" y1="86" x2="65" y2="108" stroke="#b54708"/><line x1="180" y1="86" x2="180" y2="108" stroke="#b54708"/><line x1="297" y1="86" x2="297" y2="108" stroke="#b54708"/>
+</svg><div class="cap">典型微服务架构</div></div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="分层与六边形 经典分层:表现层-业务层-数据层; 整洁/六边形架构:领域为核心,外部(DB/UI/第三方)通过端口适配器接入,依赖指向内。 ">
+          <div class="card-head">
+            <span class="card-num">3</span>
+            <span class="card-title">分层与六边形</span>
+          </div>
+          <div class="card-code">经典分层:表现层-业务层-数据层;
+整洁/六边形架构:领域为核心,外部(DB/UI/第三方)通过端口适配器接入,依赖指向内。</div>
+        </div>
+        <div class="card" id="card-1-4" data-keywords="事件驱动 组件通过事件(消息)解耦;发布订阅、事件溯源、CQRS(读写分离);适合高并发与异步。 ">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">事件驱动</span>
+          </div>
+          <div class="card-code">组件通过事件(消息)解耦;发布订阅、事件溯源、CQRS(读写分离);适合高并发与异步。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、日常提交</span>
+        <span class="title">二、设计方法</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="状态与暂存 git status 看状态、git diff 看改动; git add . 暂存、git add -p 逐块;git restore --staged 取消暂存。 ">
+        <div class="card" id="card-2-5" data-keywords="领域驱动 DDD 以业务领域为核心建模:实体、值对象、聚合、领域服务、限界上下文;战略设计划分服务边界。 ">
           <div class="card-head">
-            <span class="card-num">3</span>
-            <span class="card-title">状态与暂存</span>
+            <span class="card-num">5</span>
+            <span class="card-title">领域驱动 DDD</span>
           </div>
-          <div class="card-code">git status 看状态、git diff 看改动;
-git add . 暂存、git add -p 逐块;git restore --staged 取消暂存。</div>
+          <div class="card-code">以业务领域为核心建模:实体、值对象、聚合、领域服务、限界上下文;战略设计划分服务边界。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="提交 git commit -m &quot;信息&quot;;git commit --amend 改上次提交(未push);.gitignore 忽略规则。 ">
+        <div class="card" id="card-2-6" data-keywords="质量属性 性能、可用性、可扩展性、可维护性、安全性;架构决策围绕关键质量属性取舍(ADR 记录)。 ">
           <div class="card-head">
-            <span class="card-num">4</span>
-            <span class="card-title">提交</span>
+            <span class="card-num">6</span>
+            <span class="card-title">质量属性</span>
           </div>
-          <div class="card-code">git commit -m &quot;信息&quot;;git commit --amend 改上次提交(未push);.gitignore 忽略规则。</div>
+          <div class="card-code">性能、可用性、可扩展性、可维护性、安全性;架构决策围绕关键质量属性取舍(ADR 记录)。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、分支与合并</span>
+        <span class="title">三、与AI协作要点</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="分支 git switch -c dev 新建切换、git branch -d dev 删除;git switch main。 ">
-          <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">分支</span>
-          </div>
-          <div class="card-code">git switch -c dev 新建切换、git branch -d dev 删除;git switch main。</div>
-        </div>
-        <div class="card" id="card-3-6" data-keywords="合并与变基 git merge dev 合并;git rebase main 变基(历史线性,勿对已push提交用); 冲突:改标记&lt;&lt;&lt;&lt; ====&gt;&gt;&gt;&gt;后 add 再 commit/continue。 ">
-          <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">合并与变基</span>
-          </div>
-          <div class="card-code">git merge dev 合并;git rebase main 变基(历史线性,勿对已push提交用);
-冲突:改标记&lt;&lt;&lt;&lt; ====&gt;&gt;&gt;&gt;后 add 再 commit/continue。</div>
-        </div>
-      </div>
-    </div>
-    <div class="section" id="sect-4">
-      <button class="section-head">
-        <span class="icon">4</span>
-        <span class="title">四、远程与撤销</span>
-        <span class="count">2 条</span>
-        <span class="arrow">▼</span>
-      </button>
-      <div class="section-body">
-        <div class="card" id="card-4-7" data-keywords="远程 git remote add origin &lt;url&gt;;git pull --rebase;git push -u origin dev;git fetch。 ">
+        <div class="card" id="card-3-7" data-keywords="先定边界与接口 先让 AI 产出架构图、模块边界与关键接口(契约),再实现;避免一上来堆细节。 ">
           <div class="card-head">
             <span class="card-num">7</span>
-            <span class="card-title">远程</span>
+            <span class="card-title">先定边界与接口</span>
           </div>
-          <div class="card-code">git remote add origin &lt;url&gt;;git pull --rebase;git push -u origin dev;git fetch。</div>
+          <div class="card-code">先让 AI 产出架构图、模块边界与关键接口(契约),再实现;避免一上来堆细节。</div>
         </div>
-        <div class="card" id="card-4-8" data-keywords="撤销 git restore file 丢弃改动;git reset --soft/mixed/hard HEAD~1; git revert &lt;c&gt; 反向提交(安全);git reflog 找回;git stash 暂存现场。 ">
+        <div class="card" id="card-3-8" data-keywords="技术选型 明确语言/框架/数据库/部署环境与非功能约束,AI 据此给出方案与脚手架。 ">
           <div class="card-head">
             <span class="card-num">8</span>
-            <span class="card-title">撤销</span>
+            <span class="card-title">技术选型</span>
           </div>
-          <div class="card-code">git restore file 丢弃改动;git reset --soft/mixed/hard HEAD~1;
-git revert &lt;c&gt; 反向提交(安全);git reflog 找回;git stash 暂存现场。</div>
+          <div class="card-code">明确语言/框架/数据库/部署环境与非功能约束,AI 据此给出方案与脚手架。</div>
         </div>
       </div>
     </div>

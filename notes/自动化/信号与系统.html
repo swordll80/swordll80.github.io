@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,30 +72,36 @@
   <span class="result-count" id="resultCount">6 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">连续/离散信号、LTI 系统、卷积、傅里叶/拉普拉斯/z 变换与系统分析。</div>
+    <div class="intro">连续/离散信号、LTI 系统、卷积与变换域分析,配 LTI 系统图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、信号与系统基础</span>
+        <span class="title">一、信号与系统</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="信号分类 连续/离散、周期/非周期、能量/功率、确定/随机。 基本信号：冲激 δ(t)、阶跃 u(t)、指数、正弦。">
+        <div class="card" id="card-1-1" data-keywords="信号分类 连续/离散、周期/非周期、能量/功率;基本信号:冲激 δ、阶跃 u、指数、正弦。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">信号分类</span>
           </div>
-          <div class="card-code">连续/离散、周期/非周期、能量/功率、确定/随机。
-基本信号：冲激 δ(t)、阶跃 u(t)、指数、正弦。</div>
+          <div class="card-code">连续/离散、周期/非周期、能量/功率;基本信号:冲激 δ、阶跃 u、指数、正弦。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="LTI 系统 线性 + 时不变；用冲激响应 h(t) 完全描述。 因果性、稳定性(BIBO)。">
+        <div class="card" id="card-1-2" data-keywords="LTI 系统 线性+时不变系统,由冲激响应 h(t) 完全描述; 零状态响应 = 输入与冲激响应的卷积。因果性、稳定性(BIBO)。 LTI 系统：输出=输入与 h(t) 的卷积">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">LTI 系统</span>
           </div>
-          <div class="card-code">线性 + 时不变；用冲激响应 h(t) 完全描述。
-因果性、稳定性(BIBO)。</div>
+          <div class="card-code">线性+时不变系统,由冲激响应 h(t) 完全描述;
+零状态响应 = 输入与冲激响应的卷积。因果性、稳定性(BIBO)。</div>
+          <div class="card-fig"><svg viewBox="0 0 320 96" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11">
+<defs><marker id="sah" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 z" fill="#1a1a2e"/></marker></defs>
+<text x="10" y="44" fill="#1849a9" font-weight="700">x(t)</text><line x1="45" y1="40" x2="110" y2="40" stroke="#1a1a2e" marker-end="url(#sah)"/>
+<rect x="112" y="20" width="96" height="40" rx="5" fill="#eef3ff" stroke="#356ae6"/><text x="140" y="38">LTI 系统</text><text x="140" y="52" font-size="10">h(t)</text>
+<line x1="208" y1="40" x2="270" y2="40" stroke="#1a1a2e" marker-end="url(#sah)"/><text x="274" y="44" fill="#1849a9" font-weight="700">y(t)</text>
+<text x="70" y="86" fill="#7d8599" font-size="10">y(t) = x(t) * h(t)  (卷积)</text>
+</svg><div class="cap">LTI 系统：输出=输入与 h(t) 的卷积</div></div>
         </div>
       </div>
     </div>
@@ -104,47 +113,44 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="卷积 零状态响应 y(t)=x(t)*h(t)=∫x(τ)h(t-τ)dτ。 离散：y[n]=Σx[k]h[n-k]。卷积性质：交换/结合/分配。">
+        <div class="card" id="card-2-3" data-keywords="卷积 y(t)=∫x(τ)h(t−τ)dτ;离散 y[n]=Σx[k]h[n−k]; 性质:交换/结合/分配;图解法(翻褶-平移-相乘-积分)。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">卷积</span>
           </div>
-          <div class="card-code">零状态响应 y(t)=x(t)*h(t)=∫x(τ)h(t-τ)dτ。
-离散：y[n]=Σx[k]h[n-k]。卷积性质：交换/结合/分配。</div>
+          <div class="card-code">y(t)=∫x(τ)h(t−τ)dτ;离散 y[n]=Σx[k]h[n−k];
+性质:交换/结合/分配;图解法(翻褶-平移-相乘-积分)。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、变换域分析</span>
+        <span class="title">三、变换域</span>
         <span class="count">3 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="傅里叶 周期→傅里叶级数；非周期→傅里叶变换 X(jω)=∫x(t)e^(-jωt)dt。 频谱、带宽、系统频率响应 H(jω)。">
+        <div class="card" id="card-3-4" data-keywords="傅里叶 周期→傅里叶级数;非周期→傅里叶变换 X(jω);频谱与带宽、系统频率响应 H(jω)。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">傅里叶</span>
           </div>
-          <div class="card-code">周期→傅里叶级数；非周期→傅里叶变换 X(jω)=∫x(t)e^(-jωt)dt。
-频谱、带宽、系统频率响应 H(jω)。</div>
+          <div class="card-code">周期→傅里叶级数;非周期→傅里叶变换 X(jω);频谱与带宽、系统频率响应 H(jω)。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="拉普拉斯变换 X(s)=∫x(t)e^(-st)dt，处理暂态与稳定性。 系统函数 H(s)=Y(s)/X(s)，极点决定稳定性(左半平面)。">
+        <div class="card" id="card-3-5" data-keywords="拉普拉斯 X(s)=∫x(t)e^(−st)dt;系统函数 H(s),极点在左半平面则稳定;暂态分析。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">拉普拉斯变换</span>
+            <span class="card-title">拉普拉斯</span>
           </div>
-          <div class="card-code">X(s)=∫x(t)e^(-st)dt，处理暂态与稳定性。
-系统函数 H(s)=Y(s)/X(s)，极点决定稳定性(左半平面)。</div>
+          <div class="card-code">X(s)=∫x(t)e^(−st)dt;系统函数 H(s),极点在左半平面则稳定;暂态分析。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="z 变换 离散系统：X(z)=Σx[n]z^(-n)。 系统函数 H(z)，极点在单位圆内则稳定；差分方程↔H(z)。">
+        <div class="card" id="card-3-6" data-keywords="z 变换 离散系统 X(z)=Σx[n]z^(−n);H(z),极点在单位圆内则稳定;差分方程求解。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">z 变换</span>
           </div>
-          <div class="card-code">离散系统：X(z)=Σx[n]z^(-n)。
-系统函数 H(z)，极点在单位圆内则稳定；差分方程↔H(z)。</div>
+          <div class="card-code">离散系统 X(z)=Σx[n]z^(−n);H(z),极点在单位圆内则稳定;差分方程求解。</div>
         </div>
       </div>
     </div>

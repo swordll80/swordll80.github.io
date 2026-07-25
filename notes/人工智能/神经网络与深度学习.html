@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,32 +69,52 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">6 条</span>
+  <span class="result-count" id="resultCount">7 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">从感知机到深度网络:前馈、CNN、RNN、Transformer 与训练技巧。</div>
+    <div class="intro">从感知机到深度网络:结构、训练与典型模型,配网络结构图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、基础</span>
-        <span class="count">2 条</span>
+        <span class="count">3 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="神经元与网络 感知机、多层感知机 MLP;激活函数(ReLU/Sigmoid/Tanh); 前向传播、反向传播(链式法则)、梯度下降。">
+        <div class="card" id="card-1-1" data-keywords="神经网络结构 由输入层、若干隐藏层、输出层的神经元(带权重+偏置+激活)全连接组成。 前向传播算输出,反向传播(链式法则)算梯度,梯度下降更新权重。 三层前馈神经网络(全连接)">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">神经元与网络</span>
+            <span class="card-title">神经网络结构</span>
           </div>
-          <div class="card-code">感知机、多层感知机 MLP;激活函数(ReLU/Sigmoid/Tanh);
-前向传播、反向传播(链式法则)、梯度下降。</div>
+          <div class="card-code">由输入层、若干隐藏层、输出层的神经元(带权重+偏置+激活)全连接组成。
+前向传播算输出,反向传播(链式法则)算梯度,梯度下降更新权重。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 180" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
+<g stroke="#c7d0e0">
+<line x1="55" y1="50" x2="150" y2="35"/><line x1="55" y1="50" x2="150" y2="75"/><line x1="55" y1="50" x2="150" y2="115"/><line x1="55" y1="50" x2="150" y2="155"/>
+<line x1="55" y1="90" x2="150" y2="35"/><line x1="55" y1="90" x2="150" y2="75"/><line x1="55" y1="90" x2="150" y2="115"/><line x1="55" y1="90" x2="150" y2="155"/>
+<line x1="55" y1="130" x2="150" y2="35"/><line x1="55" y1="130" x2="150" y2="75"/><line x1="55" y1="130" x2="150" y2="115"/><line x1="55" y1="130" x2="150" y2="155"/>
+<line x1="150" y1="35" x2="245" y2="70"/><line x1="150" y1="35" x2="245" y2="110"/><line x1="150" y1="75" x2="245" y2="70"/><line x1="150" y1="75" x2="245" y2="110"/><line x1="150" y1="115" x2="245" y2="70"/><line x1="150" y1="115" x2="245" y2="110"/><line x1="150" y1="155" x2="245" y2="70"/><line x1="150" y1="155" x2="245" y2="110"/>
+</g>
+<g fill="#eef3ff" stroke="#356ae6"><circle cx="55" cy="50" r="11"/><circle cx="55" cy="90" r="11"/><circle cx="55" cy="130" r="11"/></g>
+<g fill="#e8f7ee" stroke="#067647"><circle cx="150" cy="35" r="11"/><circle cx="150" cy="75" r="11"/><circle cx="150" cy="115" r="11"/><circle cx="150" cy="155" r="11"/></g>
+<g fill="#fff4e6" stroke="#b54708"><circle cx="245" cy="70" r="11"/><circle cx="245" cy="110" r="11"/></g>
+<text x="30" y="20">输入层</text><text x="128" y="20">隐藏层</text><text x="222" y="20">输出层</text>
+</svg><div class="cap">三层前馈神经网络(全连接)</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="训练技巧 初始化、批归一化、Dropout、残差连接、学习率调度;梯度消失/爆炸。">
+        <div class="card" id="card-1-2" data-keywords="激活与训练 激活函数:ReLU(常用)、Sigmoid、Tanh、Softmax(输出概率); 损失函数(MSE/交叉熵)、优化器(SGD/Adam)、学习率。 ">
           <div class="card-head">
             <span class="card-num">2</span>
+            <span class="card-title">激活与训练</span>
+          </div>
+          <div class="card-code">激活函数:ReLU(常用)、Sigmoid、Tanh、Softmax(输出概率);
+损失函数(MSE/交叉熵)、优化器(SGD/Adam)、学习率。</div>
+        </div>
+        <div class="card" id="card-1-3" data-keywords="训练技巧 初始化、批归一化 BN、Dropout(防过拟合)、残差连接(防梯度消失)、学习率调度、早停;数据增强。 ">
+          <div class="card-head">
+            <span class="card-num">3</span>
             <span class="card-title">训练技巧</span>
           </div>
-          <div class="card-code">初始化、批归一化、Dropout、残差连接、学习率调度;梯度消失/爆炸。</div>
+          <div class="card-code">初始化、批归一化 BN、Dropout(防过拟合)、残差连接(防梯度消失)、学习率调度、早停;数据增强。</div>
         </div>
       </div>
     </div>
@@ -103,19 +126,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="CNN 卷积、池化、感受野、参数共享;图像分类(ResNet)、检测、分割。">
-          <div class="card-head">
-            <span class="card-num">3</span>
-            <span class="card-title">CNN</span>
-          </div>
-          <div class="card-code">卷积、池化、感受野、参数共享;图像分类(ResNet)、检测、分割。</div>
-        </div>
-        <div class="card" id="card-2-4" data-keywords="RNN 与注意力 RNN/LSTM/GRU 处理序列;自注意力与 Transformer(并行、长依赖)。">
+        <div class="card" id="card-2-4" data-keywords="CNN 卷积网络 卷积(局部+权值共享)+池化;感受野;图像分类(LeNet/ResNet)、检测、分割。 ">
           <div class="card-head">
             <span class="card-num">4</span>
+            <span class="card-title">CNN 卷积网络</span>
+          </div>
+          <div class="card-code">卷积(局部+权值共享)+池化;感受野;图像分类(LeNet/ResNet)、检测、分割。</div>
+        </div>
+        <div class="card" id="card-2-5" data-keywords="RNN 与注意力 RNN/LSTM/GRU 处理序列(梯度问题);自注意力与 Transformer(并行、长依赖),NLP/多模态主流。 ">
+          <div class="card-head">
+            <span class="card-num">5</span>
             <span class="card-title">RNN 与注意力</span>
           </div>
-          <div class="card-code">RNN/LSTM/GRU 处理序列;自注意力与 Transformer(并行、长依赖)。</div>
+          <div class="card-code">RNN/LSTM/GRU 处理序列(梯度问题);自注意力与 Transformer(并行、长依赖),NLP/多模态主流。</div>
         </div>
       </div>
     </div>
@@ -127,19 +150,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="生成与预训练 自编码器/VAE、GAN、扩散模型;预训练+微调(BERT/GPT);自监督学习。">
-          <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">生成与预训练</span>
-          </div>
-          <div class="card-code">自编码器/VAE、GAN、扩散模型;预训练+微调(BERT/GPT);自监督学习。</div>
-        </div>
-        <div class="card" id="card-3-6" data-keywords="框架 PyTorch/TensorFlow;自动微分、GPU 训练、分布式。">
+        <div class="card" id="card-3-6" data-keywords="生成模型 自编码器/VAE、GAN(对抗)、扩散模型(去噪生成,文生图)。 ">
           <div class="card-head">
             <span class="card-num">6</span>
-            <span class="card-title">框架</span>
+            <span class="card-title">生成模型</span>
           </div>
-          <div class="card-code">PyTorch/TensorFlow;自动微分、GPU 训练、分布式。</div>
+          <div class="card-code">自编码器/VAE、GAN(对抗)、扩散模型(去噪生成,文生图)。</div>
+        </div>
+        <div class="card" id="card-3-7" data-keywords="预训练与框架 预训练+微调(BERT/GPT)、自监督;框架 PyTorch/TensorFlow,自动微分、GPU/分布式训练。 ">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">预训练与框架</span>
+          </div>
+          <div class="card-code">预训练+微调(BERT/GPT)、自监督;框架 PyTorch/TensorFlow,自动微分、GPU/分布式训练。</div>
         </div>
       </div>
     </div>

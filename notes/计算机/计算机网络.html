@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,10 +69,10 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">6 条</span>
+  <span class="result-count" id="resultCount">10 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">分层体系、各层协议与网络应用(TCP/IP 五层视角)。</div>
+    <div class="intro">分层体系、各层协议与网络应用,配封装示意图理解数据如何在网络中传输。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,67 +81,125 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="分层模型 OSI 七层与 TCP/IP 四/五层;封装与解封装;协议与服务。">
+        <div class="card" id="card-1-1" data-keywords="分层与封装 OSI 七层(物/数/网/传/会/表/应)与 TCP/IP 五层。 发送端数据自上而下逐层加头部(封装),接收端逐层去头部(解封装)。 数据封装：每层添加头部">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">分层模型</span>
+            <span class="card-title">分层与封装</span>
           </div>
-          <div class="card-code">OSI 七层与 TCP/IP 四/五层;封装与解封装;协议与服务。</div>
+          <div class="card-code">OSI 七层(物/数/网/传/会/表/应)与 TCP/IP 五层。
+发送端数据自上而下逐层加头部(封装),接收端逐层去头部(解封装)。</div>
+          <div class="card-fig"><svg viewBox="0 0 360 172" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
+<text x="6" y="24">应用层</text><rect x="150" y="12" width="90" height="20" rx="3" fill="#eef3ff" stroke="#356ae6"/><text x="165" y="26">应用数据</text>
+<text x="6" y="58">传输层</text><rect x="120" y="46" width="30" height="20" rx="3" fill="#e8f7ee" stroke="#067647"/><text x="124" y="60">TCP</text><rect x="150" y="46" width="90" height="20" rx="3" fill="#eef3ff" stroke="#356ae6"/><text x="176" y="60">数据</text>
+<text x="6" y="92">网络层</text><rect x="90" y="80" width="30" height="20" rx="3" fill="#fff4e6" stroke="#b54708"/><text x="97" y="94">IP</text><rect x="120" y="80" width="30" height="20" rx="3" fill="#e8f7ee" stroke="#067647"/><text x="124" y="94">TCP</text><rect x="150" y="80" width="90" height="20" rx="3" fill="#eef3ff" stroke="#356ae6"/><text x="176" y="94">数据</text>
+<text x="6" y="126">链路层</text><rect x="55" y="114" width="35" height="20" rx="3" fill="#f3f0ff" stroke="#7c3aed"/><text x="58" y="128">帧头</text><rect x="90" y="114" width="30" height="20" rx="3" fill="#fff4e6" stroke="#b54708"/><text x="97" y="128">IP</text><rect x="120" y="114" width="30" height="20" rx="3" fill="#e8f7ee" stroke="#067647"/><text x="124" y="128">TCP</text><rect x="150" y="114" width="90" height="20" rx="3" fill="#eef3ff" stroke="#356ae6"/><text x="176" y="128">数据</text><rect x="240" y="114" width="30" height="20" rx="3" fill="#f3f0ff" stroke="#7c3aed"/><text x="244" y="128">FCS</text>
+<text x="55" y="158" fill="#7d8599">每下一层都在前面加头部(封装)，接收端反向解封装</text>
+</svg><div class="cap">数据封装：每层添加头部</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="物理与数据链路 编码调制、复用;成帧、差错控制(CRC)、流量控制、MAC(CSMA/CD、以太网)、交换机。">
+        <div class="card" id="card-1-2" data-keywords="协议与服务 协议:对等层之间的通信规则;服务:下层为上层提供的能力(接口); PDU:各层数据单元(段/包/帧/比特)。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">物理与数据链路</span>
+            <span class="card-title">协议与服务</span>
           </div>
-          <div class="card-code">编码调制、复用;成帧、差错控制(CRC)、流量控制、MAC(CSMA/CD、以太网)、交换机。</div>
+          <div class="card-code">协议:对等层之间的通信规则;服务:下层为上层提供的能力(接口);
+PDU:各层数据单元(段/包/帧/比特)。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、网络层与传输层</span>
+        <span class="title">二、物理与链路层</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="网络层 IP 地址与子网、路由(RIP/OSPF/BGP)、ICMP、ARP、NAT、IPv6。">
+        <div class="card" id="card-2-3" data-keywords="物理层 比特传输;编码调制、传输介质(双绞线/光纤/无线)、带宽与信噪比、复用(时分/频分)。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">网络层</span>
+            <span class="card-title">物理层</span>
           </div>
-          <div class="card-code">IP 地址与子网、路由(RIP/OSPF/BGP)、ICMP、ARP、NAT、IPv6。</div>
+          <div class="card-code">比特传输;编码调制、传输介质(双绞线/光纤/无线)、带宽与信噪比、复用(时分/频分)。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="传输层 UDP 与 TCP;TCP 连接(三次握手/四次挥手)、可靠传输、流量控制(滑动窗口)、拥塞控制。">
+        <div class="card" id="card-2-4" data-keywords="数据链路层 成帧、差错控制(CRC)、流量控制;MAC 地址与 CSMA/CD(以太网)、交换机、VLAN;PPP。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">传输层</span>
+            <span class="card-title">数据链路层</span>
           </div>
-          <div class="card-code">UDP 与 TCP;TCP 连接(三次握手/四次挥手)、可靠传输、流量控制(滑动窗口)、拥塞控制。</div>
+          <div class="card-code">成帧、差错控制(CRC)、流量控制;MAC 地址与 CSMA/CD(以太网)、交换机、VLAN;PPP。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、应用层与安全</span>
+        <span class="title">三、网络层</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="应用协议 DNS、HTTP/HTTPS、DHCP、SMTP/POP3、FTP;CDN、P2P。">
+        <div class="card" id="card-3-5" data-keywords="IP 与地址 IP 地址与子网掩码、CIDR;IPv4/IPv6;私有地址与 NAT。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">应用协议</span>
+            <span class="card-title">IP 与地址</span>
           </div>
-          <div class="card-code">DNS、HTTP/HTTPS、DHCP、SMTP/POP3、FTP;CDN、P2P。</div>
+          <div class="card-code">IP 地址与子网掩码、CIDR;IPv4/IPv6;私有地址与 NAT。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="网络安全 对称/非对称加密、数字签名、证书、TLS;防火墙、常见攻击与防护。">
+        <div class="card" id="card-3-6" data-keywords="路由与协议 路由算法(距离矢量/链路状态);RIP、OSPF、BGP;ICMP(ping)、ARP(IP→MAC)。 ">
           <div class="card-head">
             <span class="card-num">6</span>
+            <span class="card-title">路由与协议</span>
+          </div>
+          <div class="card-code">路由算法(距离矢量/链路状态);RIP、OSPF、BGP;ICMP(ping)、ARP(IP→MAC)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、传输层</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-7" data-keywords="UDP 与 TCP UDP:无连接、不可靠、快(视频/DNS); TCP:面向连接、可靠、有序。 ">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">UDP 与 TCP</span>
+          </div>
+          <div class="card-code">UDP:无连接、不可靠、快(视频/DNS);
+TCP:面向连接、可靠、有序。</div>
+        </div>
+        <div class="card" id="card-4-8" data-keywords="TCP 机制 三次握手/四次挥手;可靠传输(确认+重传)、流量控制(滑动窗口)、拥塞控制(慢启动/拥塞避免/快重传快恢复)。 ">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">TCP 机制</span>
+          </div>
+          <div class="card-code">三次握手/四次挥手;可靠传输(确认+重传)、流量控制(滑动窗口)、拥塞控制(慢启动/拥塞避免/快重传快恢复)。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、应用层与安全</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-9" data-keywords="应用协议 DNS(域名解析)、HTTP/HTTPS、DHCP(自动分配IP)、SMTP/POP3/IMAP、FTP;详见 编程/HTTP。 ">
+          <div class="card-head">
+            <span class="card-num">9</span>
+            <span class="card-title">应用协议</span>
+          </div>
+          <div class="card-code">DNS(域名解析)、HTTP/HTTPS、DHCP(自动分配IP)、SMTP/POP3/IMAP、FTP;详见 编程/HTTP。</div>
+        </div>
+        <div class="card" id="card-5-10" data-keywords="网络安全 对称/非对称加密、数字签名与证书、TLS;防火墙、VPN、常见攻击与防护(见 网络安全 分类)。 ">
+          <div class="card-head">
+            <span class="card-num">10</span>
             <span class="card-title">网络安全</span>
           </div>
-          <div class="card-code">对称/非对称加密、数字签名、证书、TLS;防火墙、常见攻击与防护。</div>
+          <div class="card-code">对称/非对称加密、数字签名与证书、TLS;防火墙、VPN、常见攻击与防护(见 网络安全 分类)。</div>
         </div>
       </div>
     </div>

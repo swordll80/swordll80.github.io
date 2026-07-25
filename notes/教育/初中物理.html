@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,150 +69,143 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">11 条</span>
+  <span class="result-count" id="resultCount">10 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">初中物理主干：声光热、力与运动、压强浮力、简单机械、电学与电磁基础。</div>
+    <div class="intro">声光热、力与运动、压强浮力、简单机械、电学与电磁基础,配透镜成像图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、声、光、热</span>
-        <span class="count">4 条</span>
+        <span class="title">一、声现象</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="声现象 声音由物体振动产生，靠介质传播，真空不能传声。 空气中声速约 340 m/s。 乐音三要素：音调(频率)、响度(振幅)、音色。 超声波(&gt;20000Hz)测距/清洗，次声波(&lt;20Hz)。">
+        <div class="card" id="card-1-1" data-keywords="声音 由物体振动产生,靠介质传播(真空不能传声),空气中约 340 m/s; 乐音三要素:音调(频率)、响度(振幅)、音色;超声/次声。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">声现象</span>
+            <span class="card-title">声音</span>
           </div>
-          <div class="card-code">声音由物体振动产生，靠介质传播，真空不能传声。
-空气中声速约 340 m/s。
-乐音三要素：音调(频率)、响度(振幅)、音色。
-超声波(&gt;20000Hz)测距/清洗，次声波(&lt;20Hz)。</div>
-        </div>
-        <div class="card" id="card-1-2" data-keywords="光现象 光在同种均匀介质中沿直线传播，真空光速 c=3×10⁸ m/s。 反射定律：反射角=入射角。 平面镜成等大、正立、虚像，物像关于镜面对称。 折射：光从空气斜射入水，折射角&lt;入射角。">
-          <div class="card-head">
-            <span class="card-num">2</span>
-            <span class="card-title">光现象</span>
-          </div>
-          <div class="card-code">光在同种均匀介质中沿直线传播，真空光速 c=3×10⁸ m/s。
-反射定律：反射角=入射角。
-平面镜成等大、正立、虚像，物像关于镜面对称。
-折射：光从空气斜射入水，折射角&lt;入射角。</div>
-        </div>
-        <div class="card" id="card-1-3" data-keywords="透镜成像 凸透镜(会聚)成像规律(f为焦距)：  u&gt;2f 倒立缩小实像(照相机)  f&lt;u&lt;2f 倒立放大实像(投影仪)  u&lt;f 正立放大虚像(放大镜)。 凹透镜发散，成正立缩小虚像(近视镜)。">
-          <div class="card-head">
-            <span class="card-num">3</span>
-            <span class="card-title">透镜成像</span>
-          </div>
-          <div class="card-code">凸透镜(会聚)成像规律(f为焦距)：
- u&gt;2f 倒立缩小实像(照相机)
- f&lt;u&lt;2f 倒立放大实像(投影仪)
- u&lt;f 正立放大虚像(放大镜)。
-凹透镜发散，成正立缩小虚像(近视镜)。</div>
-        </div>
-        <div class="card" id="card-1-4" data-keywords="热学 温度反映冷热程度，摄氏度℃。 物态变化：熔化/凝固、汽化/液化、升华/凝华，吸放热。 热量 Q=cmΔt (c比热容)，水 c=4.2×10³ J/(kg·℃)。 热值：Q=mq(燃料)。">
-          <div class="card-head">
-            <span class="card-num">4</span>
-            <span class="card-title">热学</span>
-          </div>
-          <div class="card-code">温度反映冷热程度，摄氏度℃。
-物态变化：熔化/凝固、汽化/液化、升华/凝华，吸放热。
-热量 Q=cmΔt (c比热容)，水 c=4.2×10³ J/(kg·℃)。
-热值：Q=mq(燃料)。</div>
+          <div class="card-code">由物体振动产生,靠介质传播(真空不能传声),空气中约 340 m/s;
+乐音三要素:音调(频率)、响度(振幅)、音色;超声/次声。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、力与运动</span>
-        <span class="count">4 条</span>
+        <span class="title">二、光现象</span>
+        <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-5" data-keywords="力的概念 力是物体对物体的作用，单位牛顿N。 力的三要素：大小、方向、作用点。 重力 G=mg，g≈9.8 N/kg(粗略10)，方向竖直向下。 弹力、摩擦力(与接触面粗糙程度和压力有关)。">
+        <div class="card" id="card-2-2" data-keywords="反射与折射 光沿直线传播(真空 c=3×10⁸ m/s);反射角=入射角;平面镜成等大正立虚像; 折射:空气斜射入水,折射角&lt;入射角。 ">
           <div class="card-head">
-            <span class="card-num">5</span>
-            <span class="card-title">力的概念</span>
+            <span class="card-num">2</span>
+            <span class="card-title">反射与折射</span>
           </div>
-          <div class="card-code">力是物体对物体的作用，单位牛顿N。
-力的三要素：大小、方向、作用点。
-重力 G=mg，g≈9.8 N/kg(粗略10)，方向竖直向下。
-弹力、摩擦力(与接触面粗糙程度和压力有关)。</div>
+          <div class="card-code">光沿直线传播(真空 c=3×10⁸ m/s);反射角=入射角;平面镜成等大正立虚像;
+折射:空气斜射入水,折射角&lt;入射角。</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="运动与惯性 参照物：判断运动与静止的标准。 速度 v=s/t，匀速直线运动。 牛顿第一定律(惯性定律)：不受力时保持静止或匀速直线运动。 二力平衡：等大、反向、共线、同物。">
+        <div class="card" id="card-2-3" data-keywords="凸透镜成像 u&gt;2f 倒立缩小实像(照相机);f&lt;u&lt;2f 倒立放大实像(投影仪);u&lt;f 正立放大虚像(放大镜)。 凹透镜成正立缩小虚像(近视镜)。 凸透镜成倒立实像(u&gt;f)">
           <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">运动与惯性</span>
+            <span class="card-num">3</span>
+            <span class="card-title">凸透镜成像</span>
           </div>
-          <div class="card-code">参照物：判断运动与静止的标准。
-速度 v=s/t，匀速直线运动。
-牛顿第一定律(惯性定律)：不受力时保持静止或匀速直线运动。
-二力平衡：等大、反向、共线、同物。</div>
-        </div>
-        <div class="card" id="card-2-7" data-keywords="压强与浮力 压强 p=F/S，单位帕Pa。增大压强减小受力面积。 液体压强 p=ρgh，只与深度和密度有关。 大气压约 1.0×10⁵ Pa。 阿基米德原理：F浮=ρ液·g·V排。 浮沉：F浮&gt;G上浮，=G悬浮/漂浮，&lt;G下沉。">
-          <div class="card-head">
-            <span class="card-num">7</span>
-            <span class="card-title">压强与浮力</span>
-          </div>
-          <div class="card-code">压强 p=F/S，单位帕Pa。增大压强减小受力面积。
-液体压强 p=ρgh，只与深度和密度有关。
-大气压约 1.0×10⁵ Pa。
-阿基米德原理：F浮=ρ液·g·V排。
-浮沉：F浮&gt;G上浮，=G悬浮/漂浮，&lt;G下沉。</div>
-        </div>
-        <div class="card" id="card-2-8" data-keywords="简单机械与功 杠杆平衡：F₁L₁=F₂L₂。 定滑轮不省力改方向，动滑轮省一半力费距离。 功 W=Fs，功率 P=W/t=Fv。 机械效率 η=W有用/W总×100%。 能量：动能 Ek=½mv²，重力势能 Ep=mgh。">
-          <div class="card-head">
-            <span class="card-num">8</span>
-            <span class="card-title">简单机械与功</span>
-          </div>
-          <div class="card-code">杠杆平衡：F₁L₁=F₂L₂。
-定滑轮不省力改方向，动滑轮省一半力费距离。
-功 W=Fs，功率 P=W/t=Fv。
-机械效率 η=W有用/W总×100%。
-能量：动能 Ek=½mv²，重力势能 Ep=mgh。</div>
+          <div class="card-code">u&gt;2f 倒立缩小实像(照相机);f&lt;u&lt;2f 倒立放大实像(投影仪);u&lt;f 正立放大虚像(放大镜)。
+凹透镜成正立缩小虚像(近视镜)。</div>
+          <div class="card-fig"><svg viewBox="0 0 340 160" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10">
+<defs><marker id="lah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs>
+<line x1="10" y1="80" x2="330" y2="80" stroke="#7d8599"/>
+<ellipse cx="170" cy="80" rx="10" ry="55" fill="#eef3ff" stroke="#356ae6"/><text x="158" y="150" fill="#356ae6">凸透镜</text>
+<circle cx="120" cy="80" r="2" fill="#b54708"/><text x="112" y="94" fill="#b54708" font-size="9">F</text><circle cx="220" cy="80" r="2" fill="#b54708"/><text x="214" y="94" fill="#b54708" font-size="9">F</text>
+<line x1="60" y1="80" x2="60" y2="45" stroke="#067647" stroke-width="2" marker-end="url(#lah)"/><text x="45" y="42" fill="#067647">物</text>
+<line x1="60" y1="45" x2="170" y2="45" stroke="#356ae6"/><line x1="170" y1="45" x2="250" y2="112" stroke="#356ae6"/>
+<line x1="60" y1="45" x2="250" y2="112" stroke="#356ae6" stroke-dasharray="1 0"/>
+<line x1="250" y1="80" x2="250" y2="112" stroke="#b42318" stroke-width="2" marker-end="url(#lah)"/><text x="255" y="112" fill="#b42318">像(倒立)</text>
+</svg><div class="cap">凸透镜成倒立实像(u&gt;f)</div></div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、电与磁</span>
-        <span class="count">3 条</span>
+        <span class="title">三、热学</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-9" data-keywords="电路与欧姆定律 电流 I(安A)、电压 U(伏V)、电阻 R(欧Ω)。 欧姆定律 I=U/R。 串联：I相等，U分压，R=R₁+R₂。 并联：U相等，I分流，1/R=1/R₁+1/R₂。">
+        <div class="card" id="card-3-4" data-keywords="温度与热量 物态变化(熔化/凝固、汽化/液化、升华/凝华)吸放热; 热量 Q=cmΔt,水 c=4.2×10³ J/(kg·℃);热值 Q=mq。 ">
+          <div class="card-head">
+            <span class="card-num">4</span>
+            <span class="card-title">温度与热量</span>
+          </div>
+          <div class="card-code">物态变化(熔化/凝固、汽化/液化、升华/凝华)吸放热;
+热量 Q=cmΔt,水 c=4.2×10³ J/(kg·℃);热值 Q=mq。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-4">
+      <button class="section-head">
+        <span class="icon">4</span>
+        <span class="title">四、力与运动</span>
+        <span class="count">4 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-4-5" data-keywords="力 力是物体间的作用,单位 N;重力 G=mg(g≈9.8N/kg);弹力、摩擦力;力的三要素。 ">
+          <div class="card-head">
+            <span class="card-num">5</span>
+            <span class="card-title">力</span>
+          </div>
+          <div class="card-code">力是物体间的作用,单位 N;重力 G=mg(g≈9.8N/kg);弹力、摩擦力;力的三要素。</div>
+        </div>
+        <div class="card" id="card-4-6" data-keywords="运动与平衡 参照物;速度 v=s/t;牛顿第一定律(惯性);二力平衡(等大反向共线同物)。 ">
+          <div class="card-head">
+            <span class="card-num">6</span>
+            <span class="card-title">运动与平衡</span>
+          </div>
+          <div class="card-code">参照物;速度 v=s/t;牛顿第一定律(惯性);二力平衡(等大反向共线同物)。</div>
+        </div>
+        <div class="card" id="card-4-7" data-keywords="压强与浮力 压强 p=F/S;液体压强 p=ρgh;大气压≈1.0×10⁵Pa; 阿基米德 F浮=ρ液gV排;浮沉条件。 ">
+          <div class="card-head">
+            <span class="card-num">7</span>
+            <span class="card-title">压强与浮力</span>
+          </div>
+          <div class="card-code">压强 p=F/S;液体压强 p=ρgh;大气压≈1.0×10⁵Pa;
+阿基米德 F浮=ρ液gV排;浮沉条件。</div>
+        </div>
+        <div class="card" id="card-4-8" data-keywords="简单机械与功 杠杆平衡 F₁L₁=F₂L₂;滑轮;功 W=Fs、功率 P=W/t、机械效率 η;动能与势能。 ">
+          <div class="card-head">
+            <span class="card-num">8</span>
+            <span class="card-title">简单机械与功</span>
+          </div>
+          <div class="card-code">杠杆平衡 F₁L₁=F₂L₂;滑轮;功 W=Fs、功率 P=W/t、机械效率 η;动能与势能。</div>
+        </div>
+      </div>
+    </div>
+    <div class="section" id="sect-5">
+      <button class="section-head">
+        <span class="icon">5</span>
+        <span class="title">五、电与磁</span>
+        <span class="count">2 条</span>
+        <span class="arrow">▼</span>
+      </button>
+      <div class="section-body">
+        <div class="card" id="card-5-9" data-keywords="电路与欧姆定律 I=U/R;串联(I 等 U 分,R=R₁+R₂)、并联(U 等 I 分,1/R=1/R₁+1/R₂)。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">电路与欧姆定律</span>
           </div>
-          <div class="card-code">电流 I(安A)、电压 U(伏V)、电阻 R(欧Ω)。
-欧姆定律 I=U/R。
-串联：I相等，U分压，R=R₁+R₂。
-并联：U相等，I分流，1/R=1/R₁+1/R₂。</div>
+          <div class="card-code">I=U/R;串联(I 等 U 分,R=R₁+R₂)、并联(U 等 I 分,1/R=1/R₁+1/R₂)。</div>
         </div>
-        <div class="card" id="card-3-10" data-keywords="电功与电热 电功 W=UIt，电功率 P=UI=I²R=U²/R。 1度电=1kW·h。 焦耳定律 Q=I²Rt(纯电阻 Q=W)。 家庭电路220V，火线零线，保险丝、三孔插座接地。">
+        <div class="card" id="card-5-10" data-keywords="电功率与电磁 电功 W=UIt、功率 P=UI=I²R=U²/R,1度=1kW·h; 磁体两极、电流磁效应(右手)、电动机(左手)、电磁感应发电(右手)。 ">
           <div class="card-head">
             <span class="card-num">10</span>
-            <span class="card-title">电功与电热</span>
+            <span class="card-title">电功率与电磁</span>
           </div>
-          <div class="card-code">电功 W=UIt，电功率 P=UI=I²R=U²/R。
-1度电=1kW·h。
-焦耳定律 Q=I²Rt(纯电阻 Q=W)。
-家庭电路220V，火线零线，保险丝、三孔插座接地。</div>
-        </div>
-        <div class="card" id="card-3-11" data-keywords="电与磁 磁体两极 N、S，同名相斥异名相吸。 奥斯特实验：电流周围有磁场(右手螺旋定则)。 通电导体在磁场中受力(电动机原理，左手定则)。 电磁感应：闭合电路部分导体切割磁感线产生感应电流(发电机原理，右手定则)。">
-          <div class="card-head">
-            <span class="card-num">11</span>
-            <span class="card-title">电与磁</span>
-          </div>
-          <div class="card-code">磁体两极 N、S，同名相斥异名相吸。
-奥斯特实验：电流周围有磁场(右手螺旋定则)。
-通电导体在磁场中受力(电动机原理，左手定则)。
-电磁感应：闭合电路部分导体切割磁感线产生感应电流(发电机原理，右手定则)。</div>
+          <div class="card-code">电功 W=UIt、功率 P=UI=I²R=U²/R,1度=1kW·h;
+磁体两极、电流磁效应(右手)、电动机(左手)、电磁感应发电(右手)。</div>
         </div>
       </div>
     </div>

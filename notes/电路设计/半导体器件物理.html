@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">半导体基础、PN结、双极晶体管与 MOS 器件的物理机理。</div>
+    <div class="intro">半导体基础、PN结、双极晶体管与 MOS 器件,配 PN 结示意图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,60 +81,73 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="能带与载流子 本征/掺杂半导体、N/P 型、费米能级;电子空穴、漂移与扩散、迁移率、载流子浓度。">
+        <div class="card" id="card-1-1" data-keywords="能带与载流子 导带/价带/禁带;本征半导体、掺杂(N型施主/P型受主)、费米能级; 载流子:电子与空穴,漂移(电场)与扩散(浓度)、迁移率。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">能带与载流子</span>
           </div>
-          <div class="card-code">本征/掺杂半导体、N/P 型、费米能级;电子空穴、漂移与扩散、迁移率、载流子浓度。</div>
+          <div class="card-code">导带/价带/禁带;本征半导体、掺杂(N型施主/P型受主)、费米能级;
+载流子:电子与空穴,漂移(电场)与扩散(浓度)、迁移率。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、PN 结与 BJT</span>
+        <span class="title">二、PN 结</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="PN 结 势垒、耗尽区、内建电势;正偏导通/反偏截止;二极管方程 I=Is(e^(V/VT)-1);击穿(齐纳/雪崩)、结电容。">
+        <div class="card" id="card-2-2" data-keywords="PN 结原理 P、N 区接触,载流子扩散在交界形成耗尽区与内建电场(阻止进一步扩散)。 正偏(P接正):势垒降低→导通;反偏:势垒升高→截止(仅微小漏电)。 PN 结:耗尽区与内建电场">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">PN 结</span>
+            <span class="card-title">PN 结原理</span>
           </div>
-          <div class="card-code">势垒、耗尽区、内建电势;正偏导通/反偏截止;二极管方程 I=Is(e^(V/VT)-1);击穿(齐纳/雪崩)、结电容。</div>
+          <div class="card-code">P、N 区接触,载流子扩散在交界形成耗尽区与内建电场(阻止进一步扩散)。
+正偏(P接正):势垒降低→导通;反偏:势垒升高→截止(仅微小漏电)。</div>
+          <div class="card-fig"><svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="11">
+<rect x="20" y="30" width="110" height="60" fill="#fdeaea" stroke="#b42318"/><text x="60" y="24">P 区(空穴)</text>
+<rect x="190" y="30" width="110" height="60" fill="#eef3ff" stroke="#356ae6"/><text x="215" y="24">N 区(电子)</text>
+<rect x="130" y="30" width="60" height="60" fill="#f5f5f5" stroke="#7d8599"/><text x="132" y="105" fill="#7d8599" font-size="10">耗尽区</text>
+<text x="45" y="65">+ + +</text><text x="220" y="65">− − −</text>
+<text x="140" y="55" fill="#b42318">−</text><text x="140" y="75" fill="#b42318">−</text><text x="172" y="55" fill="#356ae6">+</text><text x="172" y="75" fill="#356ae6">+</text>
+<line x1="185" y1="60" x2="135" y2="60" stroke="#067647" stroke-width="1.5" marker-end="url(#pah)"/>
+<defs><marker id="pah" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#067647"/></marker></defs>
+<text x="140" y="118" fill="#067647" font-size="10">内建电场 E</text>
+</svg><div class="cap">PN 结:耗尽区与内建电场</div></div>
         </div>
-        <div class="card" id="card-2-3" data-keywords="双极晶体管 NPN/PNP;放大原理、电流放大系数 β;Ebers-Moll 模型、厄利效应。">
+        <div class="card" id="card-2-3" data-keywords="二极管特性 I=Is(e^(V/VT)−1);单向导电;击穿(齐纳/雪崩)、结电容;应用:整流、稳压、检波、LED。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">双极晶体管</span>
+            <span class="card-title">二极管特性</span>
           </div>
-          <div class="card-code">NPN/PNP;放大原理、电流放大系数 β;Ebers-Moll 模型、厄利效应。</div>
+          <div class="card-code">I=Is(e^(V/VT)−1);单向导电;击穿(齐纳/雪崩)、结电容;应用:整流、稳压、检波、LED。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、MOS 器件</span>
+        <span class="title">三、晶体管</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="MOSFET MOS 电容、阈值电压 Vth、反型层;线性/饱和区 I-V;沟道调制、短沟道效应、亚阈值。">
+        <div class="card" id="card-3-4" data-keywords="双极晶体管 BJT NPN/PNP,发射/基/集三区;电流控制,β 放大;放大/饱和/截止;Ebers-Moll、厄利效应。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">MOSFET</span>
+            <span class="card-title">双极晶体管 BJT</span>
           </div>
-          <div class="card-code">MOS 电容、阈值电压 Vth、反型层;线性/饱和区 I-V;沟道调制、短沟道效应、亚阈值。</div>
+          <div class="card-code">NPN/PNP,发射/基/集三区;电流控制,β 放大;放大/饱和/截止;Ebers-Moll、厄利效应。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="按比例缩小 器件微缩(Dennard scaling)、漏电与功耗;FinFET/GAA 先进器件。">
+        <div class="card" id="card-3-5" data-keywords="MOSFET 栅压控制沟道;阈值电压 Vth、线性/饱和区;短沟道效应、亚阈值漏电; 微缩(Dennard)、FinFET/GAA 先进器件。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">按比例缩小</span>
+            <span class="card-title">MOSFET</span>
           </div>
-          <div class="card-code">器件微缩(Dennard scaling)、漏电与功耗;FinFET/GAA 先进器件。</div>
+          <div class="card-code">栅压控制沟道;阈值电压 Vth、线性/饱和区;短沟道效应、亚阈值漏电;
+微缩(Dennard)、FinFET/GAA 先进器件。</div>
         </div>
       </div>
     </div>
