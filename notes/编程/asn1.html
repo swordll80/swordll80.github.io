@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="是什么 ASN.1 是一套描述数据结构的“抽象语法”标准，与具体编码分离。 定义(.asn 模块) 说明有哪些字段和类型；编码规则说明如何变成字节。 标准：结构 X.680，编码 X.690(BER/DER/CER)、X.691(PER)、X.693(XER)。">
+        <div class="card" id="card-1-1" data-keywords="是什么 ASN.1 是一套描述数据结构的“抽象语法”标准，与具体编码分离。 定义(.asn 模块) 说明有哪些字段和类型；编码规则说明如何变成字节。 标准：结构 X.680，编码 X.690(BER/DER/CER)、X.691(PER)、X.693(XER)。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">是什么</span>
@@ -87,7 +90,7 @@
 定义(.asn 模块) 说明有哪些字段和类型；编码规则说明如何变成字节。
 标准：结构 X.680，编码 X.690(BER/DER/CER)、X.691(PER)、X.693(XER)。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="编码规则 BER 基本编码规则：灵活，同一值可有多种编码。 DER 唯一化编码：BER 的确定子集，X.509 证书/PKI 必用(可重现、可签名)。 CER：长数据流式。PER：紧凑(电信/3GPP)。XER：XML 形式。">
+        <div class="card" id="card-1-2" data-keywords="编码规则 BER 基本编码规则：灵活，同一值可有多种编码。 DER 唯一化编码：BER 的确定子集，X.509 证书/PKI 必用(可重现、可签名)。 CER：长数据流式。PER：紧凑(电信/3GPP)。XER：XML 形式。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">编码规则</span>
@@ -96,7 +99,7 @@
 DER 唯一化编码：BER 的确定子集，X.509 证书/PKI 必用(可重现、可签名)。
 CER：长数据流式。PER：紧凑(电信/3GPP)。XER：XML 形式。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="典型应用 X.509 数字证书、PKCS 系列、CMS/S-MIME； LDAP、SNMP(MIB)、Kerberos、H.323/SIP、3GPP LTE/5G 信令。">
+        <div class="card" id="card-1-3" data-keywords="典型应用 X.509 数字证书、PKCS 系列、CMS/S-MIME； LDAP、SNMP(MIB)、Kerberos、H.323/SIP、3GPP LTE/5G 信令。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">典型应用</span>
@@ -114,7 +117,7 @@ LDAP、SNMP(MIB)、Kerberos、H.323/SIP、3GPP LTE/5G 信令。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="常用简单类型 BOOLEAN            布尔 INTEGER            任意大整数 ENUMERATED         枚举 REAL               实数 NULL               空 BIT STRING         位串 OCTET STRING       字节串 OBJECT IDENTIFIER  对象标识符(OID, 如 1.2.840.113549)">
+        <div class="card" id="card-2-4" data-keywords="常用简单类型 BOOLEAN            布尔 INTEGER            任意大整数 ENUMERATED         枚举 REAL               实数 NULL               空 BIT STRING         位串 OCTET STRING       字节串 OBJECT IDENTIFIER  对象标识符(OID, 如 1.2.840.113549) ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">常用简单类型</span>
@@ -128,7 +131,7 @@ BIT STRING         位串
 OCTET STRING       字节串
 OBJECT IDENTIFIER  对象标识符(OID, 如 1.2.840.113549)</div>
         </div>
-        <div class="card" id="card-2-5" data-keywords="字符串类型 UTF8String     Unicode(推荐) PrintableString  A-Z a-z 0-9 及少量符号 IA5String      ASCII NumericString  数字与空格 其它：BMPString、TeletexString(历史)">
+        <div class="card" id="card-2-5" data-keywords="字符串类型 UTF8String     Unicode(推荐) PrintableString  A-Z a-z 0-9 及少量符号 IA5String      ASCII NumericString  数字与空格 其它：BMPString、TeletexString(历史) ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">字符串类型</span>
@@ -139,7 +142,7 @@ IA5String      ASCII
 NumericString  数字与空格
 其它：BMPString、TeletexString(历史)</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="时间类型 UTCTime           YYMMDDHHMMSSZ (两位年, 证书旧式) GeneralizedTime   YYYYMMDDHHMMSSZ (四位年) DER 要求时间用 Z(UTC) 且规范化。">
+        <div class="card" id="card-2-6" data-keywords="时间类型 UTCTime           YYMMDDHHMMSSZ (两位年, 证书旧式) GeneralizedTime   YYYYMMDDHHMMSSZ (四位年) DER 要求时间用 Z(UTC) 且规范化。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">时间类型</span>
@@ -158,7 +161,7 @@ DER 要求时间用 Z(UTC) 且规范化。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-7" data-keywords="SEQUENCE / SET SEQUENCE：有序字段集合(类似 struct)。 SEQUENCE OF T：同类型 T 的有序列表(数组)。 SET：无序集合；SET OF T：无序列表。 DER 中 SET OF 元素需按编码排序。">
+        <div class="card" id="card-3-7" data-keywords="SEQUENCE / SET SEQUENCE：有序字段集合(类似 struct)。 SEQUENCE OF T：同类型 T 的有序列表(数组)。 SET：无序集合；SET OF T：无序列表。 DER 中 SET OF 元素需按编码排序。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">SEQUENCE / SET</span>
@@ -168,7 +171,7 @@ SEQUENCE OF T：同类型 T 的有序列表(数组)。
 SET：无序集合；SET OF T：无序列表。
 DER 中 SET OF 元素需按编码排序。</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="CHOICE / 可选 CHOICE：多选一(联合类型)。 OPTIONAL：字段可缺省；DEFAULT v：默认值(DER 中等于默认值时不编码)。">
+        <div class="card" id="card-3-8" data-keywords="CHOICE / 可选 CHOICE：多选一(联合类型)。 OPTIONAL：字段可缺省；DEFAULT v：默认值(DER 中等于默认值时不编码)。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">CHOICE / 可选</span>
@@ -176,7 +179,7 @@ DER 中 SET OF 元素需按编码排序。</div>
           <div class="card-code">CHOICE：多选一(联合类型)。
 OPTIONAL：字段可缺省；DEFAULT v：默认值(DER 中等于默认值时不编码)。</div>
         </div>
-        <div class="card" id="card-3-9" data-keywords="模块与定义示例 Person DEFINITIONS ::= BEGIN   Person ::= SEQUENCE {     name     UTF8String,     age      INTEGER OPTIONAL,     email    IA5String,     roles    SEQUENCE OF UTF8String   } END">
+        <div class="card" id="card-3-9" data-keywords="模块与定义示例 Person DEFINITIONS ::= BEGIN   Person ::= SEQUENCE {     name     UTF8String,     age      INTEGER OPTIONAL,     email    IA5String,     roles    SEQUENCE OF UTF8String   } END ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">模块与定义示例</span>
@@ -200,7 +203,7 @@ END</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-10" data-keywords="标签类别 Universal：内建类型(INTEGER=2, OCTET STRING=4, SEQUENCE=16…)。 Application：应用范围。 Context-specific [n]：上下文相关(结构内区分字段)，最常见。 Private：私有。">
+        <div class="card" id="card-4-10" data-keywords="标签类别 Universal：内建类型(INTEGER=2, OCTET STRING=4, SEQUENCE=16…)。 Application：应用范围。 Context-specific [n]：上下文相关(结构内区分字段)，最常见。 Private：私有。 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">标签类别</span>
@@ -210,7 +213,7 @@ Application：应用范围。
 Context-specific [n]：上下文相关(结构内区分字段)，最常见。
 Private：私有。</div>
         </div>
-        <div class="card" id="card-4-11" data-keywords="IMPLICIT / EXPLICIT EXPLICIT：在原类型外再套一层标签(保留原 tag)。 IMPLICIT：直接替换原类型 tag(更省字节)。 模块可声明 DEFINITIONS IMPLICIT TAGS 设默认。 例：age [0] IMPLICIT INTEGER OPTIONAL。">
+        <div class="card" id="card-4-11" data-keywords="IMPLICIT / EXPLICIT EXPLICIT：在原类型外再套一层标签(保留原 tag)。 IMPLICIT：直接替换原类型 tag(更省字节)。 模块可声明 DEFINITIONS IMPLICIT TAGS 设默认。 例：age [0] IMPLICIT INTEGER OPTIONAL。 ">
           <div class="card-head">
             <span class="card-num">11</span>
             <span class="card-title">IMPLICIT / EXPLICIT</span>
@@ -230,7 +233,7 @@ IMPLICIT：直接替换原类型 tag(更省字节)。
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-12" data-keywords="TLV 结构 每个值编码为 Tag–Length–Value： Tag(标识类型) + Length(长度) + Value(内容)。 嵌套结构的 Value 内又是若干 TLV(构造类型 constructed)。">
+        <div class="card" id="card-5-12" data-keywords="TLV 结构 每个值编码为 Tag–Length–Value： Tag(标识类型) + Length(长度) + Value(内容)。 嵌套结构的 Value 内又是若干 TLV(构造类型 constructed)。 BER/DER 的 TLV 编码">
           <div class="card-head">
             <span class="card-num">12</span>
             <span class="card-title">TLV 结构</span>
@@ -238,8 +241,9 @@ IMPLICIT：直接替换原类型 tag(更省字节)。
           <div class="card-code">每个值编码为 Tag–Length–Value：
 Tag(标识类型) + Length(长度) + Value(内容)。
 嵌套结构的 Value 内又是若干 TLV(构造类型 constructed)。</div>
+          <div class="card-fig"><svg viewBox="0 0 320 90" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><rect x="10" y="28" width="60" height="30" fill="#eef3ff" stroke="#356ae6"/><text x="26" y="48">Tag</text><rect x="70" y="28" width="70" height="30" fill="#e8f7ee" stroke="#067647"/><text x="82" y="48">Length</text><rect x="140" y="28" width="170" height="30" fill="#fff4e6" stroke="#b54708"/><text x="200" y="48">Value</text><text x="150" y="76" fill="#7d8599" font-size="9">Value 可再嵌套 TLV(构造类型)</text><text x="12" y="22" fill="#7d8599" font-size="9">类型</text><text x="90" y="22" fill="#7d8599" font-size="9">内容长度</text></svg><div class="cap">BER/DER 的 TLV 编码</div></div>
         </div>
-        <div class="card" id="card-5-13" data-keywords="Tag 字节 第1字节：bit7-6 类别(00普通/01应用/10上下文/11私有)， bit5 = 0 基本 / 1 构造，bit4-0 = 标签号(≥31 用多字节)。 如 0x30 = 构造+Universal 16 = SEQUENCE；0x02 = INTEGER；0x04 = OCTET STRING。">
+        <div class="card" id="card-5-13" data-keywords="Tag 字节 第1字节：bit7-6 类别(00普通/01应用/10上下文/11私有)， bit5 = 0 基本 / 1 构造，bit4-0 = 标签号(≥31 用多字节)。 如 0x30 = 构造+Universal 16 = SEQUENCE；0x02 = INTEGER；0x04 = OCTET STRING。 ">
           <div class="card-head">
             <span class="card-num">13</span>
             <span class="card-title">Tag 字节</span>
@@ -248,7 +252,7 @@ Tag(标识类型) + Length(长度) + Value(内容)。
 bit5 = 0 基本 / 1 构造，bit4-0 = 标签号(≥31 用多字节)。
 如 0x30 = 构造+Universal 16 = SEQUENCE；0x02 = INTEGER；0x04 = OCTET STRING。</div>
         </div>
-        <div class="card" id="card-5-14" data-keywords="Length 字节 短式：0x00–0x7F 直接表示长度(&lt;128)。 长式：首字节 0x80|n，随后 n 个字节为长度(大端)。 0x80 单独 = 不定长(仅 BER，DER 禁用)。">
+        <div class="card" id="card-5-14" data-keywords="Length 字节 短式：0x00–0x7F 直接表示长度(&lt;128)。 长式：首字节 0x80|n，随后 n 个字节为长度(大端)。 0x80 单独 = 不定长(仅 BER，DER 禁用)。 ">
           <div class="card-head">
             <span class="card-num">14</span>
             <span class="card-title">Length 字节</span>
@@ -257,7 +261,7 @@ bit5 = 0 基本 / 1 构造，bit4-0 = 标签号(≥31 用多字节)。
 长式：首字节 0x80|n，随后 n 个字节为长度(大端)。
 0x80 单独 = 不定长(仅 BER，DER 禁用)。</div>
         </div>
-        <div class="card" id="card-5-15" data-keywords="解码示例 30 06 02 01 05 01 01 FF 30=SEQUENCE,len=6   02 01 05      INTEGER 5   01 01 FF      BOOLEAN TRUE 可用 openssl asn1parse -in cert.der -inform DER 查看。">
+        <div class="card" id="card-5-15" data-keywords="解码示例 30 06 02 01 05 01 01 FF 30=SEQUENCE,len=6   02 01 05      INTEGER 5   01 01 FF      BOOLEAN TRUE 可用 openssl asn1parse -in cert.der -inform DER 查看。 ">
           <div class="card-head">
             <span class="card-num">15</span>
             <span class="card-title">解码示例</span>

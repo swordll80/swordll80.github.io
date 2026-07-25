@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,15 +81,16 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="机器学习三步骤 1) 写出带未知参数的函数(模型 Model)；2) 定义损失函数 Loss 衡量好坏；3) 用优化(梯度下降)找最优参数。 本质：从数据中自动找一个函数 f，输入→输出。">
+        <div class="card" id="card-1-1" data-keywords="机器学习三步骤 1) 写出带未知参数的函数(模型 Model)；2) 定义损失函数 Loss 衡量好坏；3) 用优化(梯度下降)找最优参数。 本质：从数据中自动找一个函数 f，输入→输出。 机器学习三步骤">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">机器学习三步骤</span>
           </div>
           <div class="card-code">1) 写出带未知参数的函数(模型 Model)；2) 定义损失函数 Loss 衡量好坏；3) 用优化(梯度下降)找最优参数。
 本质：从数据中自动找一个函数 f，输入→输出。</div>
+          <div class="card-fig"><svg viewBox="0 0 330 78" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><defs><marker id="ml" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs><rect x="6" y="24" width="92" height="28" rx="4" fill="#eef3ff" stroke="#356ae6"/><text x="14" y="42">①定义模型</text><rect x="118" y="24" width="92" height="28" rx="4" fill="#e8f7ee" stroke="#356ae6"/><text x="126" y="42">②定义损失</text><rect x="230" y="24" width="92" height="28" rx="4" fill="#fff4e6" stroke="#356ae6"/><text x="238" y="42">③优化求参</text><line x1="98" y1="38" x2="112" y2="38" stroke="#356ae6" marker-end="url(#ml)"/><line x1="210" y1="38" x2="224" y2="38" stroke="#356ae6" marker-end="url(#ml)"/><text x="6" y="70" fill="#7d8599">机器学习三步骤</text></svg><div class="cap">机器学习三步骤</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="任务类型 回归 Regression：输出连续数值(如预测观看人数)。 分类 Classification：输出类别(如图像识别)。 结构化学习：输出有结构的对象(序列、图、图像)。">
+        <div class="card" id="card-1-2" data-keywords="任务类型 回归 Regression：输出连续数值(如预测观看人数)。 分类 Classification：输出类别(如图像识别)。 结构化学习：输出有结构的对象(序列、图、图像)。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">任务类型</span>
@@ -95,7 +99,7 @@
 分类 Classification：输出类别(如图像识别)。
 结构化学习：输出有结构的对象(序列、图、图像)。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="模型与特征 线性模型 y=b+Σwᵢxᵢ 太简单，有 model bias。 用 Sigmoid/ReLU 叠加可逼近任意分段函数(激活函数带来非线性)。 feature 的选取与变换影响很大。">
+        <div class="card" id="card-1-3" data-keywords="模型与特征 线性模型 y=b+Σwᵢxᵢ 太简单，有 model bias。 用 Sigmoid/ReLU 叠加可逼近任意分段函数(激活函数带来非线性)。 feature 的选取与变换影响很大。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">模型与特征</span>
@@ -104,7 +108,7 @@
 用 Sigmoid/ReLU 叠加可逼近任意分段函数(激活函数带来非线性)。
 feature 的选取与变换影响很大。</div>
         </div>
-        <div class="card" id="card-1-4" data-keywords="误差来源：偏差与方差 过于简单→高偏差(欠拟合)：训练集也做不好。 过于复杂→高方差(过拟合)：训练好、测试差。 用训练/验证误差诊断，权衡模型复杂度。">
+        <div class="card" id="card-1-4" data-keywords="误差来源：偏差与方差 过于简单→高偏差(欠拟合)：训练集也做不好。 过于复杂→高方差(过拟合)：训练好、测试差。 用训练/验证误差诊断，权衡模型复杂度。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">误差来源：偏差与方差</span>
@@ -113,7 +117,7 @@ feature 的选取与变换影响很大。</div>
 过于复杂→高方差(过拟合)：训练好、测试差。
 用训练/验证误差诊断，权衡模型复杂度。</div>
         </div>
-        <div class="card" id="card-1-5" data-keywords="过拟合与应对 增大数据/数据增强、降低模型复杂度、正则化、Dropout、早停。 用交叉验证选模型，切勿用测试集调参(会乐观偏差)。">
+        <div class="card" id="card-1-5" data-keywords="过拟合与应对 增大数据/数据增强、降低模型复杂度、正则化、Dropout、早停。 用交叉验证选模型，切勿用测试集调参(会乐观偏差)。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">过拟合与应对</span>
@@ -131,7 +135,7 @@ feature 的选取与变换影响很大。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-6" data-keywords="梯度下降 参数沿负梯度更新 θ ← θ - η·∇L。 学习率 η 太大震荡不收敛，太小太慢。 批量梯度、随机(SGD)、小批量(mini-batch) 折中。">
+        <div class="card" id="card-2-6" data-keywords="梯度下降 参数沿负梯度更新 θ ← θ - η·∇L。 学习率 η 太大震荡不收敛，太小太慢。 批量梯度、随机(SGD)、小批量(mini-batch) 折中。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">梯度下降</span>
@@ -140,7 +144,7 @@ feature 的选取与变换影响很大。</div>
 学习率 η 太大震荡不收敛，太小太慢。
 批量梯度、随机(SGD)、小批量(mini-batch) 折中。</div>
         </div>
-        <div class="card" id="card-2-7" data-keywords="局部最小值与鞍点 训练卡住多因“临界点”梯度≈0。 用海森矩阵(Hessian)特征值判断：全正=局部最小，有正有负=鞍点。 高维空间鞍点远多于局部最小，多数可逃离。">
+        <div class="card" id="card-2-7" data-keywords="局部最小值与鞍点 训练卡住多因“临界点”梯度≈0。 用海森矩阵(Hessian)特征值判断：全正=局部最小，有正有负=鞍点。 高维空间鞍点远多于局部最小，多数可逃离。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">局部最小值与鞍点</span>
@@ -149,7 +153,7 @@ feature 的选取与变换影响很大。</div>
 用海森矩阵(Hessian)特征值判断：全正=局部最小，有正有负=鞍点。
 高维空间鞍点远多于局部最小，多数可逃离。</div>
         </div>
-        <div class="card" id="card-2-8" data-keywords="批量大小与动量 小批量噪声大、泛化常更好；大批量每步快但可能陷差解。 动量 Momentum：累积历史梯度方向，冲过平坦区与小坑。">
+        <div class="card" id="card-2-8" data-keywords="批量大小与动量 小批量噪声大、泛化常更好；大批量每步快但可能陷差解。 动量 Momentum：累积历史梯度方向，冲过平坦区与小坑。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">批量大小与动量</span>
@@ -157,7 +161,7 @@ feature 的选取与变换影响很大。</div>
           <div class="card-code">小批量噪声大、泛化常更好；大批量每步快但可能陷差解。
 动量 Momentum：累积历史梯度方向，冲过平坦区与小坑。</div>
         </div>
-        <div class="card" id="card-2-9" data-keywords="自适应学习率 不同参数用不同步长：AdaGrad、RMSProp 按梯度平方历史缩放。 Adam = RMSProp + Momentum，最常用默认优化器。 学习率调度：warm-up 先小后大再衰减(decay)。">
+        <div class="card" id="card-2-9" data-keywords="自适应学习率 不同参数用不同步长：AdaGrad、RMSProp 按梯度平方历史缩放。 Adam = RMSProp + Momentum，最常用默认优化器。 学习率调度：warm-up 先小后大再衰减(decay)。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">自适应学习率</span>
@@ -166,7 +170,7 @@ feature 的选取与变换影响很大。</div>
 Adam = RMSProp + Momentum，最常用默认优化器。
 学习率调度：warm-up 先小后大再衰减(decay)。</div>
         </div>
-        <div class="card" id="card-2-10" data-keywords="训练技巧总览 先确认能过拟合(模型够强)，再解决过拟合。 检查训练损失→若高，是优化或模型问题；训练低测试高→过拟合。">
+        <div class="card" id="card-2-10" data-keywords="训练技巧总览 先确认能过拟合(模型够强)，再解决过拟合。 检查训练损失→若高，是优化或模型问题；训练低测试高→过拟合。 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">训练技巧总览</span>
@@ -184,7 +188,7 @@ Adam = RMSProp + Momentum，最常用默认优化器。
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-11" data-keywords="分类的输出 多类用 one-hot 标签；网络输出经 Softmax 归一化为概率分布。 Softmax：yᵢ=exp(zᵢ)/Σexp(zⱼ)。二分类可用 Sigmoid。">
+        <div class="card" id="card-3-11" data-keywords="分类的输出 多类用 one-hot 标签；网络输出经 Softmax 归一化为概率分布。 Softmax：yᵢ=exp(zᵢ)/Σexp(zⱼ)。二分类可用 Sigmoid。 ">
           <div class="card-head">
             <span class="card-num">11</span>
             <span class="card-title">分类的输出</span>
@@ -192,7 +196,7 @@ Adam = RMSProp + Momentum，最常用默认优化器。
           <div class="card-code">多类用 one-hot 标签；网络输出经 Softmax 归一化为概率分布。
 Softmax：yᵢ=exp(zᵢ)/Σexp(zⱼ)。二分类可用 Sigmoid。</div>
         </div>
-        <div class="card" id="card-3-12" data-keywords="交叉熵损失 分类用交叉熵 CE 而非 MSE：L=-Σŷᵢ·log yᵢ。 CE 在错误区梯度更大、更易优化(MSE 在此处梯度平坦)。">
+        <div class="card" id="card-3-12" data-keywords="交叉熵损失 分类用交叉熵 CE 而非 MSE：L=-Σŷᵢ·log yᵢ。 CE 在错误区梯度更大、更易优化(MSE 在此处梯度平坦)。 ">
           <div class="card-head">
             <span class="card-num">12</span>
             <span class="card-title">交叉熵损失</span>
@@ -200,7 +204,7 @@ Softmax：yᵢ=exp(zᵢ)/Σexp(zⱼ)。二分类可用 Sigmoid。</div>
           <div class="card-code">分类用交叉熵 CE 而非 MSE：L=-Σŷᵢ·log yᵢ。
 CE 在错误区梯度更大、更易优化(MSE 在此处梯度平坦)。</div>
         </div>
-        <div class="card" id="card-3-13" data-keywords="归一化 特征归一化(标准化)让各维尺度一致，优化更稳更快。 Batch Normalization：对每层激活按批做归一化，缓解内部协变量偏移、可用更大学习率。">
+        <div class="card" id="card-3-13" data-keywords="归一化 特征归一化(标准化)让各维尺度一致，优化更稳更快。 Batch Normalization：对每层激活按批做归一化，缓解内部协变量偏移、可用更大学习率。 ">
           <div class="card-head">
             <span class="card-num">13</span>
             <span class="card-title">归一化</span>
@@ -208,7 +212,7 @@ CE 在错误区梯度更大、更易优化(MSE 在此处梯度平坦)。</div>
           <div class="card-code">特征归一化(标准化)让各维尺度一致，优化更稳更快。
 Batch Normalization：对每层激活按批做归一化，缓解内部协变量偏移、可用更大学习率。</div>
         </div>
-        <div class="card" id="card-3-14" data-keywords="正则化与 Dropout L2 正则(权重衰减)抑制大权重。 Dropout：训练随机丢弃神经元，测试时全用并缩放，等效集成、抗过拟合。">
+        <div class="card" id="card-3-14" data-keywords="正则化与 Dropout L2 正则(权重衰减)抑制大权重。 Dropout：训练随机丢弃神经元，测试时全用并缩放，等效集成、抗过拟合。 ">
           <div class="card-head">
             <span class="card-num">14</span>
             <span class="card-title">正则化与 Dropout</span>
@@ -226,7 +230,7 @@ Dropout：训练随机丢弃神经元，测试时全用并缩放，等效集成�
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-15" data-keywords="为何用 CNN 图像特点：局部模式、平移不变、可下采样。 全连接参数过多，CNN 用先验简化，专为图像/网格数据设计。">
+        <div class="card" id="card-4-15" data-keywords="为何用 CNN 图像特点：局部模式、平移不变、可下采样。 全连接参数过多，CNN 用先验简化，专为图像/网格数据设计。 ">
           <div class="card-head">
             <span class="card-num">15</span>
             <span class="card-title">为何用 CNN</span>
@@ -234,7 +238,7 @@ Dropout：训练随机丢弃神经元，测试时全用并缩放，等效集成�
           <div class="card-code">图像特点：局部模式、平移不变、可下采样。
 全连接参数过多，CNN 用先验简化，专为图像/网格数据设计。</div>
         </div>
-        <div class="card" id="card-4-16" data-keywords="感受野与参数共享 每个神经元只看局部感受野(receptive field)。 不同位置共享同一组卷积核(filter)权重 → 大幅减少参数、平移不变。">
+        <div class="card" id="card-4-16" data-keywords="感受野与参数共享 每个神经元只看局部感受野(receptive field)。 不同位置共享同一组卷积核(filter)权重 → 大幅减少参数、平移不变。 ">
           <div class="card-head">
             <span class="card-num">16</span>
             <span class="card-title">感受野与参数共享</span>
@@ -242,7 +246,7 @@ Dropout：训练随机丢弃神经元，测试时全用并缩放，等效集成�
           <div class="card-code">每个神经元只看局部感受野(receptive field)。
 不同位置共享同一组卷积核(filter)权重 → 大幅减少参数、平移不变。</div>
         </div>
-        <div class="card" id="card-4-17" data-keywords="卷积与池化 卷积核在图上滑动做内积得到特征图(feature map)；多核提取多种特征。 池化(Max/Average Pooling)下采样、减小尺寸与计算、增强鲁棒。">
+        <div class="card" id="card-4-17" data-keywords="卷积与池化 卷积核在图上滑动做内积得到特征图(feature map)；多核提取多种特征。 池化(Max/Average Pooling)下采样、减小尺寸与计算、增强鲁棒。 ">
           <div class="card-head">
             <span class="card-num">17</span>
             <span class="card-title">卷积与池化</span>
@@ -250,7 +254,7 @@ Dropout：训练随机丢弃神经元，测试时全用并缩放，等效集成�
           <div class="card-code">卷积核在图上滑动做内积得到特征图(feature map)；多核提取多种特征。
 池化(Max/Average Pooling)下采样、减小尺寸与计算、增强鲁棒。</div>
         </div>
-        <div class="card" id="card-4-18" data-keywords="应用与局限 图像分类、AlphaGo(棋盘)、语音、文本。 对放大/旋转不具不变性，需数据增强；感受野需堆叠加深。">
+        <div class="card" id="card-4-18" data-keywords="应用与局限 图像分类、AlphaGo(棋盘)、语音、文本。 对放大/旋转不具不变性，需数据增强；感受野需堆叠加深。 ">
           <div class="card-head">
             <span class="card-num">18</span>
             <span class="card-title">应用与局限</span>
@@ -268,7 +272,7 @@ Dropout：训练随机丢弃神经元，测试时全用并缩放，等效集成�
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-19" data-keywords="自注意力机制 处理变长序列，让每个位置关注序列中所有位置。 Q(查询)·K(键)算注意力权重(经 Softmax)，加权求和 V(值)得输出。 可并行、捕捉长程依赖，是 Transformer 核心。">
+        <div class="card" id="card-5-19" data-keywords="自注意力机制 处理变长序列，让每个位置关注序列中所有位置。 Q(查询)·K(键)算注意力权重(经 Softmax)，加权求和 V(值)得输出。 可并行、捕捉长程依赖，是 Transformer 核心。 ">
           <div class="card-head">
             <span class="card-num">19</span>
             <span class="card-title">自注意力机制</span>
@@ -277,7 +281,7 @@ Dropout：训练随机丢弃神经元，测试时全用并缩放，等效集成�
 Q(查询)·K(键)算注意力权重(经 Softmax)，加权求和 V(值)得输出。
 可并行、捕捉长程依赖，是 Transformer 核心。</div>
         </div>
-        <div class="card" id="card-5-20" data-keywords="多头注意力与位置编码 多头(Multi-head)：多组 QKV 关注不同关系。 自注意力本身无序 → 加位置编码(Positional Encoding)注入顺序信息。 自注意力 vs CNN/RNN：更全局、可并行。">
+        <div class="card" id="card-5-20" data-keywords="多头注意力与位置编码 多头(Multi-head)：多组 QKV 关注不同关系。 自注意力本身无序 → 加位置编码(Positional Encoding)注入顺序信息。 自注意力 vs CNN/RNN：更全局、可并行。 ">
           <div class="card-head">
             <span class="card-num">20</span>
             <span class="card-title">多头注意力与位置编码</span>
@@ -286,7 +290,7 @@ Q(查询)·K(键)算注意力权重(经 Softmax)，加权求和 V(值)得输出�
 自注意力本身无序 → 加位置编码(Positional Encoding)注入顺序信息。
 自注意力 vs CNN/RNN：更全局、可并行。</div>
         </div>
-        <div class="card" id="card-5-21" data-keywords="Transformer 结构 编码器-解码器(Encoder-Decoder)： 编码器=多层(自注意力+前馈+残差+LayerNorm)。 解码器用掩码自注意力(masked)+交叉注意力(cross-attention)看编码器输出，自回归生成。">
+        <div class="card" id="card-5-21" data-keywords="Transformer 结构 编码器-解码器(Encoder-Decoder)： 编码器=多层(自注意力+前馈+残差+LayerNorm)。 解码器用掩码自注意力(masked)+交叉注意力(cross-attention)看编码器输出，自回归生成。 ">
           <div class="card-head">
             <span class="card-num">21</span>
             <span class="card-title">Transformer 结构</span>
@@ -295,7 +299,7 @@ Q(查询)·K(键)算注意力权重(经 Softmax)，加权求和 V(值)得输出�
 编码器=多层(自注意力+前馈+残差+LayerNorm)。
 解码器用掩码自注意力(masked)+交叉注意力(cross-attention)看编码器输出，自回归生成。</div>
         </div>
-        <div class="card" id="card-5-22" data-keywords="seq2seq 应用 机器翻译、语音识别、摘要、聊天、语法解析等皆可 seq2seq。 Teacher forcing 训练；推理时 beam search 搜索较优序列。">
+        <div class="card" id="card-5-22" data-keywords="seq2seq 应用 机器翻译、语音识别、摘要、聊天、语法解析等皆可 seq2seq。 Teacher forcing 训练；推理时 beam search 搜索较优序列。 ">
           <div class="card-head">
             <span class="card-num">22</span>
             <span class="card-title">seq2seq 应用</span>
@@ -313,7 +317,7 @@ Teacher forcing 训练；推理时 beam search 搜索较优序列。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-6-23" data-keywords="RNN 与序列 隐藏状态携带历史信息，逐步处理序列(语音、文本)。 共享权重，适合时序；但长序列有梯度消失/爆炸。">
+        <div class="card" id="card-6-23" data-keywords="RNN 与序列 隐藏状态携带历史信息，逐步处理序列(语音、文本)。 共享权重，适合时序；但长序列有梯度消失/爆炸。 ">
           <div class="card-head">
             <span class="card-num">23</span>
             <span class="card-title">RNN 与序列</span>
@@ -321,7 +325,7 @@ Teacher forcing 训练；推理时 beam search 搜索较优序列。</div>
           <div class="card-code">隐藏状态携带历史信息，逐步处理序列(语音、文本)。
 共享权重，适合时序；但长序列有梯度消失/爆炸。</div>
         </div>
-        <div class="card" id="card-6-24" data-keywords="LSTM / GRU LSTM 用输入/遗忘/输出门与记忆单元控制信息流，缓解长依赖梯度问题。 很多任务已被自注意力/Transformer 取代，但仍是重要基础。">
+        <div class="card" id="card-6-24" data-keywords="LSTM / GRU LSTM 用输入/遗忘/输出门与记忆单元控制信息流，缓解长依赖梯度问题。 很多任务已被自注意力/Transformer 取代，但仍是重要基础。 ">
           <div class="card-head">
             <span class="card-num">24</span>
             <span class="card-title">LSTM / GRU</span>
@@ -339,7 +343,7 @@ Teacher forcing 训练；推理时 beam search 搜索较优序列。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-7-25" data-keywords="自监督与预训练范式 无标注数据上自造任务预训练(pre-train)，再在下游少量标注上微调(fine-tune)。 芝麻街命名(ELMo/BERT/ERNIE) 是这一系列模型的梗。">
+        <div class="card" id="card-7-25" data-keywords="自监督与预训练范式 无标注数据上自造任务预训练(pre-train)，再在下游少量标注上微调(fine-tune)。 芝麻街命名(ELMo/BERT/ERNIE) 是这一系列模型的梗。 ">
           <div class="card-head">
             <span class="card-num">25</span>
             <span class="card-title">自监督与预训练范式</span>
@@ -347,7 +351,7 @@ Teacher forcing 训练；推理时 beam search 搜索较优序列。</div>
           <div class="card-code">无标注数据上自造任务预训练(pre-train)，再在下游少量标注上微调(fine-tune)。
 芝麻街命名(ELMo/BERT/ERNIE) 是这一系列模型的梗。</div>
         </div>
-        <div class="card" id="card-7-26" data-keywords="BERT Transformer 编码器；预训练任务：掩码语言模型(遮词预测)+下句预测。 擅长理解类任务(分类、问答、NER)；微调即可迁移，通用表示强。">
+        <div class="card" id="card-7-26" data-keywords="BERT Transformer 编码器；预训练任务：掩码语言模型(遮词预测)+下句预测。 擅长理解类任务(分类、问答、NER)；微调即可迁移，通用表示强。 ">
           <div class="card-head">
             <span class="card-num">26</span>
             <span class="card-title">BERT</span>
@@ -355,7 +359,7 @@ Teacher forcing 训练；推理时 beam search 搜索较优序列。</div>
           <div class="card-code">Transformer 编码器；预训练任务：掩码语言模型(遮词预测)+下句预测。
 擅长理解类任务(分类、问答、NER)；微调即可迁移，通用表示强。</div>
         </div>
-        <div class="card" id="card-7-27" data-keywords="GPT 系列 Transformer 解码器；预训练做自回归“预测下一个词”。 擅长生成；GPT-3 展示在少样本/零样本(in-context learning)下的通用能力。">
+        <div class="card" id="card-7-27" data-keywords="GPT 系列 Transformer 解码器；预训练做自回归“预测下一个词”。 擅长生成；GPT-3 展示在少样本/零样本(in-context learning)下的通用能力。 ">
           <div class="card-head">
             <span class="card-num">27</span>
             <span class="card-title">GPT 系列</span>
@@ -373,7 +377,7 @@ Teacher forcing 训练；推理时 beam search 搜索较优序列。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-8-28" data-keywords="GAN 基础 生成器 G 造假、判别器 D 辨真假，二者对抗博弈共同进步。 G 学到数据分布，从噪声生成逼真样本(图像等)。训练不稳、易模式崩溃。">
+        <div class="card" id="card-8-28" data-keywords="GAN 基础 生成器 G 造假、判别器 D 辨真假，二者对抗博弈共同进步。 G 学到数据分布，从噪声生成逼真样本(图像等)。训练不稳、易模式崩溃。 ">
           <div class="card-head">
             <span class="card-num">28</span>
             <span class="card-title">GAN 基础</span>
@@ -381,7 +385,7 @@ Teacher forcing 训练；推理时 beam search 搜索较优序列。</div>
           <div class="card-code">生成器 G 造假、判别器 D 辨真假，二者对抗博弈共同进步。
 G 学到数据分布，从噪声生成逼真样本(图像等)。训练不稳、易模式崩溃。</div>
         </div>
-        <div class="card" id="card-8-29" data-keywords="WGAN 与条件 GAN 原始 GAN 用 JS 散度，分布不重叠时梯度消失。 WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练更稳。 条件 GAN(cGAN)：给定条件(文字/标签)生成对应图像。">
+        <div class="card" id="card-8-29" data-keywords="WGAN 与条件 GAN 原始 GAN 用 JS 散度，分布不重叠时梯度消失。 WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练更稳。 条件 GAN(cGAN)：给定条件(文字/标签)生成对应图像。 ">
           <div class="card-head">
             <span class="card-num">29</span>
             <span class="card-title">WGAN 与条件 GAN</span>
@@ -390,7 +394,7 @@ G 学到数据分布，从噪声生成逼真样本(图像等)。训练不稳、�
 WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练更稳。
 条件 GAN(cGAN)：给定条件(文字/标签)生成对应图像。</div>
         </div>
-        <div class="card" id="card-8-30" data-keywords="CycleGAN 无需成对数据做图像风格转换(如照片↔油画)。 用循环一致性损失(A→B→A 应还原)约束。">
+        <div class="card" id="card-8-30" data-keywords="CycleGAN 无需成对数据做图像风格转换(如照片↔油画)。 用循环一致性损失(A→B→A 应还原)约束。 ">
           <div class="card-head">
             <span class="card-num">30</span>
             <span class="card-title">CycleGAN</span>
@@ -398,7 +402,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
           <div class="card-code">无需成对数据做图像风格转换(如照片↔油画)。
 用循环一致性损失(A→B→A 应还原)约束。</div>
         </div>
-        <div class="card" id="card-8-31" data-keywords="自编码器与 VAE Auto-encoder：编码器压缩到隐向量、解码器重建，学到低维表示。 用于降维、去噪、异常检测、预训练；VAE 使隐空间连续可采样生成。">
+        <div class="card" id="card-8-31" data-keywords="自编码器与 VAE Auto-encoder：编码器压缩到隐向量、解码器重建，学到低维表示。 用于降维、去噪、异常检测、预训练；VAE 使隐空间连续可采样生成。 ">
           <div class="card-head">
             <span class="card-num">31</span>
             <span class="card-title">自编码器与 VAE</span>
@@ -406,7 +410,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
           <div class="card-code">Auto-encoder：编码器压缩到隐向量、解码器重建，学到低维表示。
 用于降维、去噪、异常检测、预训练；VAE 使隐空间连续可采样生成。</div>
         </div>
-        <div class="card" id="card-8-32" data-keywords="扩散模型 Diffusion 前向逐步加噪把图像变纯噪声；训练网络学“去噪”。 反向从噪声逐步去噪生成高质量图像(Stable Diffusion 等文生图基础)。">
+        <div class="card" id="card-8-32" data-keywords="扩散模型 Diffusion 前向逐步加噪把图像变纯噪声；训练网络学“去噪”。 反向从噪声逐步去噪生成高质量图像(Stable Diffusion 等文生图基础)。 ">
           <div class="card-head">
             <span class="card-num">32</span>
             <span class="card-title">扩散模型 Diffusion</span>
@@ -424,7 +428,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-9-33" data-keywords="对抗攻击与防御 对输入加人眼难察觉的扰动即可让模型误判(对抗样本)。 白盒(知模型)vs黑盒攻击；防御：被动(检测/去噪)与主动(对抗训练)。">
+        <div class="card" id="card-9-33" data-keywords="对抗攻击与防御 对输入加人眼难察觉的扰动即可让模型误判(对抗样本)。 白盒(知模型)vs黑盒攻击；防御：被动(检测/去噪)与主动(对抗训练)。 ">
           <div class="card-head">
             <span class="card-num">33</span>
             <span class="card-title">对抗攻击与防御</span>
@@ -432,7 +436,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
           <div class="card-code">对输入加人眼难察觉的扰动即可让模型误判(对抗样本)。
 白盒(知模型)vs黑盒攻击；防御：被动(检测/去噪)与主动(对抗训练)。</div>
         </div>
-        <div class="card" id="card-9-34" data-keywords="可解释 AI 让模型决策可理解。 局部可解释：某样本为何这样判(显著图/SHAP/LIME)。 全局可解释：模型整体学到了什么。">
+        <div class="card" id="card-9-34" data-keywords="可解释 AI 让模型决策可理解。 局部可解释：某样本为何这样判(显著图/SHAP/LIME)。 全局可解释：模型整体学到了什么。 ">
           <div class="card-head">
             <span class="card-num">34</span>
             <span class="card-title">可解释 AI</span>
@@ -441,7 +445,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
 局部可解释：某样本为何这样判(显著图/SHAP/LIME)。
 全局可解释：模型整体学到了什么。</div>
         </div>
-        <div class="card" id="card-9-35" data-keywords="迁移学习/领域自适应 源域训练、目标域应用，分布不同(domain shift)。 领域对抗训练(DaNN)：让特征在域间不可区分，学习域不变特征。">
+        <div class="card" id="card-9-35" data-keywords="迁移学习/领域自适应 源域训练、目标域应用，分布不同(domain shift)。 领域对抗训练(DaNN)：让特征在域间不可区分，学习域不变特征。 ">
           <div class="card-head">
             <span class="card-num">35</span>
             <span class="card-title">迁移学习/领域自适应</span>
@@ -449,7 +453,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
           <div class="card-code">源域训练、目标域应用，分布不同(domain shift)。
 领域对抗训练(DaNN)：让特征在域间不可区分，学习域不变特征。</div>
         </div>
-        <div class="card" id="card-9-36" data-keywords="深度强化学习 RL 智能体与环境交互，靠奖励学策略最大化累计回报。 策略梯度、Actor-Critic、探索与利用；奖励稀疏是难点(与人类反馈 RLHF 相关)。">
+        <div class="card" id="card-9-36" data-keywords="深度强化学习 RL 智能体与环境交互，靠奖励学策略最大化累计回报。 策略梯度、Actor-Critic、探索与利用；奖励稀疏是难点(与人类反馈 RLHF 相关)。 ">
           <div class="card-head">
             <span class="card-num">36</span>
             <span class="card-title">深度强化学习 RL</span>
@@ -457,7 +461,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
           <div class="card-code">智能体与环境交互，靠奖励学策略最大化累计回报。
 策略梯度、Actor-Critic、探索与利用；奖励稀疏是难点(与人类反馈 RLHF 相关)。</div>
         </div>
-        <div class="card" id="card-9-37" data-keywords="终身学习 顺序学多任务时会“灾难性遗忘”旧任务。 缓解：正则(EWC 保护重要权重)、回放旧数据、扩展网络结构。">
+        <div class="card" id="card-9-37" data-keywords="终身学习 顺序学多任务时会“灾难性遗忘”旧任务。 缓解：正则(EWC 保护重要权重)、回放旧数据、扩展网络结构。 ">
           <div class="card-head">
             <span class="card-num">37</span>
             <span class="card-title">终身学习</span>
@@ -465,7 +469,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
           <div class="card-code">顺序学多任务时会“灾难性遗忘”旧任务。
 缓解：正则(EWC 保护重要权重)、回放旧数据、扩展网络结构。</div>
         </div>
-        <div class="card" id="card-9-38" data-keywords="网络压缩 剪枝(去冗余权重/通道)+彩票假设(存在可训练的稀疏子网)。 知识蒸馏(大teacher教小student)、量化、参数共享，便于端侧部署。">
+        <div class="card" id="card-9-38" data-keywords="网络压缩 剪枝(去冗余权重/通道)+彩票假设(存在可训练的稀疏子网)。 知识蒸馏(大teacher教小student)、量化、参数共享，便于端侧部署。 ">
           <div class="card-head">
             <span class="card-num">38</span>
             <span class="card-title">网络压缩</span>
@@ -473,7 +477,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
           <div class="card-code">剪枝(去冗余权重/通道)+彩票假设(存在可训练的稀疏子网)。
 知识蒸馏(大teacher教小student)、量化、参数共享，便于端侧部署。</div>
         </div>
-        <div class="card" id="card-9-39" data-keywords="元学习 Meta Learning “学会学习”：学习一个能快速适应新任务的初始化/算法(如 MAML)。 与少样本学习(few-shot)紧密相关。">
+        <div class="card" id="card-9-39" data-keywords="元学习 Meta Learning “学会学习”：学习一个能快速适应新任务的初始化/算法(如 MAML)。 与少样本学习(few-shot)紧密相关。 ">
           <div class="card-head">
             <span class="card-num">39</span>
             <span class="card-title">元学习 Meta Learning</span>
@@ -491,7 +495,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-10-40" data-keywords="ChatGPT 关键技术 1) 大规模自监督预训练(海量文本学语言与知识)； 2) 指令微调 + 人类反馈强化学习(RLHF) 对齐人类偏好； 3) 上下文学习(in-context learning) 少样本即用。">
+        <div class="card" id="card-10-40" data-keywords="ChatGPT 关键技术 1) 大规模自监督预训练(海量文本学语言与知识)； 2) 指令微调 + 人类反馈强化学习(RLHF) 对齐人类偏好； 3) 上下文学习(in-context learning) 少样本即用。 ">
           <div class="card-head">
             <span class="card-num">40</span>
             <span class="card-title">ChatGPT 关键技术</span>
@@ -500,7 +504,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
 2) 指令微调 + 人类反馈强化学习(RLHF) 对齐人类偏好；
 3) 上下文学习(in-context learning) 少样本即用。</div>
         </div>
-        <div class="card" id="card-10-41" data-keywords="常见误解与研究问题 它是概率生成而非“查数据库”，可能一本正经胡说(幻觉)。 研究方向：事实性、对齐与安全、可控生成、推理能力、评估。">
+        <div class="card" id="card-10-41" data-keywords="常见误解与研究问题 它是概率生成而非“查数据库”，可能一本正经胡说(幻觉)。 研究方向：事实性、对齐与安全、可控生成、推理能力、评估。 ">
           <div class="card-head">
             <span class="card-num">41</span>
             <span class="card-title">常见误解与研究问题</span>
@@ -518,7 +522,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-11-42" data-keywords="作业主线 HW1–HW15 回归→分类→CNN→自注意力→seq2seq→GAN→BERT→异常检测→可解释→对抗攻击→领域自适应→RL→网络压缩→终身学习→元学习。 按此顺序动手，是掌握全景的最好路径。">
+        <div class="card" id="card-11-42" data-keywords="作业主线 HW1–HW15 回归→分类→CNN→自注意力→seq2seq→GAN→BERT→异常检测→可解释→对抗攻击→领域自适应→RL→网络压缩→终身学习→元学习。 按此顺序动手，是掌握全景的最好路径。 ">
           <div class="card-head">
             <span class="card-num">42</span>
             <span class="card-title">作业主线 HW1–HW15</span>
@@ -526,7 +530,7 @@ WGAN 用 Wasserstein 距离(推土机距离)+权重裁剪/梯度惩罚，训练�
           <div class="card-code">回归→分类→CNN→自注意力→seq2seq→GAN→BERT→异常检测→可解释→对抗攻击→领域自适应→RL→网络压缩→终身学习→元学习。
 按此顺序动手，是掌握全景的最好路径。</div>
         </div>
-        <div class="card" id="card-11-43" data-keywords="实践建议 先跑通基线再改进；用验证集调参、TensorBoard 看曲线。 注意数据预处理与增强、随机种子、正则与学习率调度； 复现论文从小模型/小数据开始，逐步放大。">
+        <div class="card" id="card-11-43" data-keywords="实践建议 先跑通基线再改进；用验证集调参、TensorBoard 看曲线。 注意数据预处理与增强、随机种子、正则与学习率调度； 复现论文从小模型/小数据开始，逐步放大。 ">
           <div class="card-head">
             <span class="card-num">43</span>
             <span class="card-title">实践建议</span>

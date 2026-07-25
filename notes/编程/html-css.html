@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="文档骨架 &lt;!doctype html&gt; &lt;html lang=&quot;zh-CN&quot;&gt; &lt;head&gt;   &lt;meta charset=&quot;utf-8&quot;&gt;   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;   &lt;title&gt;标题&lt;/title&gt; &lt;/head&gt; &lt;body&gt;...&lt;/body&gt; &lt;/html&gt;">
+        <div class="card" id="card-1-1" data-keywords="文档骨架 &lt;!doctype html&gt; &lt;html lang=&quot;zh-CN&quot;&gt; &lt;head&gt;   &lt;meta charset=&quot;utf-8&quot;&gt;   &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;   &lt;title&gt;标题&lt;/title&gt; &lt;/head&gt; &lt;body&gt;...&lt;/body&gt; &lt;/html&gt; ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">文档骨架</span>
@@ -93,7 +96,7 @@
 &lt;body&gt;...&lt;/body&gt;
 &lt;/html&gt;</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="常用标签 &lt;h1&gt;~&lt;h6&gt;  标题 &lt;p&gt;        段落 &lt;a href&gt;   链接 &lt;img src alt&gt;  图片 &lt;ul&gt;&lt;li&gt;   无序列表 &lt;ol&gt;&lt;li&gt;   有序列表 &lt;div&gt;      块容器  &lt;span&gt; 行内容器 &lt;table&gt;&lt;tr&gt;&lt;td&gt;  表格">
+        <div class="card" id="card-1-2" data-keywords="常用标签 &lt;h1&gt;~&lt;h6&gt;  标题 &lt;p&gt;        段落 &lt;a href&gt;   链接 &lt;img src alt&gt;  图片 &lt;ul&gt;&lt;li&gt;   无序列表 &lt;ol&gt;&lt;li&gt;   有序列表 &lt;div&gt;      块容器  &lt;span&gt; 行内容器 &lt;table&gt;&lt;tr&gt;&lt;td&gt;  表格 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">常用标签</span>
@@ -107,7 +110,7 @@
 &lt;div&gt;      块容器  &lt;span&gt; 行内容器
 &lt;table&gt;&lt;tr&gt;&lt;td&gt;  表格</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="语义化标签 &lt;header&gt; 页眉   &lt;nav&gt; 导航 &lt;main&gt; 主体    &lt;section&gt; 区块 &lt;article&gt; 文章 &lt;aside&gt; 侧栏 &lt;footer&gt; 页脚 -- 利于 SEO 与无障碍，优于全用 div">
+        <div class="card" id="card-1-3" data-keywords="语义化标签 &lt;header&gt; 页眉   &lt;nav&gt; 导航 &lt;main&gt; 主体    &lt;section&gt; 区块 &lt;article&gt; 文章 &lt;aside&gt; 侧栏 &lt;footer&gt; 页脚 -- 利于 SEO 与无障碍，优于全用 div ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">语义化标签</span>
@@ -118,7 +121,7 @@
 &lt;footer&gt; 页脚
 -- 利于 SEO 与无障碍，优于全用 div</div>
         </div>
-        <div class="card" id="card-1-4" data-keywords="表单 &lt;form action=&quot;/x&quot; method=&quot;post&quot;&gt;   &lt;input type=&quot;text&quot; name=&quot;user&quot; placeholder=&quot;用户名&quot;&gt;   &lt;input type=&quot;password&quot; name=&quot;pwd&quot;&gt;   &lt;input type=&quot;email&quot;&gt; &lt;input type=&quot;number&quot;&gt;   &lt;textarea&gt;&lt;/textarea&gt;   &lt;select&gt;&lt;option&gt;A&lt;/option&gt;&lt;/select&gt;   &lt;button type=&quot;submit&quot;&gt;提交&lt;/button&gt; &lt;/form&gt;">
+        <div class="card" id="card-1-4" data-keywords="表单 &lt;form action=&quot;/x&quot; method=&quot;post&quot;&gt;   &lt;input type=&quot;text&quot; name=&quot;user&quot; placeholder=&quot;用户名&quot;&gt;   &lt;input type=&quot;password&quot; name=&quot;pwd&quot;&gt;   &lt;input type=&quot;email&quot;&gt; &lt;input type=&quot;number&quot;&gt;   &lt;textarea&gt;&lt;/textarea&gt;   &lt;select&gt;&lt;option&gt;A&lt;/option&gt;&lt;/select&gt;   &lt;button type=&quot;submit&quot;&gt;提交&lt;/button&gt; &lt;/form&gt; ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">表单</span>
@@ -142,7 +145,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-5" data-keywords="引入方式 /* 外部（推荐） */ &lt;link rel=&quot;stylesheet&quot; href=&quot;a.css&quot;&gt; /* 内部 */ &lt;style&gt; p{color:red} &lt;/style&gt; /* 行内 */ &lt;p style=&quot;color:red&quot;&gt;">
+        <div class="card" id="card-2-5" data-keywords="引入方式 /* 外部（推荐） */ &lt;link rel=&quot;stylesheet&quot; href=&quot;a.css&quot;&gt; /* 内部 */ &lt;style&gt; p{color:red} &lt;/style&gt; /* 行内 */ &lt;p style=&quot;color:red&quot;&gt; ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">引入方式</span>
@@ -151,7 +154,7 @@
 /* 内部 */ &lt;style&gt; p{color:red} &lt;/style&gt;
 /* 行内 */ &lt;p style=&quot;color:red&quot;&gt;</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="选择器 *           所有元素 .class      类 #id         id div p       后代 div &gt; p     直接子元素 a:hover     悬停 input:focus 聚焦 li:nth-child(2n)  偶数项 [type=text] 属性">
+        <div class="card" id="card-2-6" data-keywords="选择器 *           所有元素 .class      类 #id         id div p       后代 div &gt; p     直接子元素 a:hover     悬停 input:focus 聚焦 li:nth-child(2n)  偶数项 [type=text] 属性 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">选择器</span>
@@ -166,7 +169,7 @@ input:focus 聚焦
 li:nth-child(2n)  偶数项
 [type=text] 属性</div>
         </div>
-        <div class="card" id="card-2-7" data-keywords="优先级 !important &gt; 行内(1000) &gt; id(100) &gt; class/属性/伪类(10) &gt; 标签(1) -- 尽量避免 !important；用更具体的选择器">
+        <div class="card" id="card-2-7" data-keywords="优先级 !important &gt; 行内(1000) &gt; id(100) &gt; class/属性/伪类(10) &gt; 标签(1) -- 尽量避免 !important；用更具体的选择器 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">优先级</span>
@@ -174,7 +177,7 @@ li:nth-child(2n)  偶数项
           <div class="card-code">!important &gt; 行内(1000) &gt; id(100) &gt; class/属性/伪类(10) &gt; 标签(1)
 -- 尽量避免 !important；用更具体的选择器</div>
         </div>
-        <div class="card" id="card-2-8" data-keywords="颜色与单位 color: #356ae6; rgb(53,106,230); rgba(0,0,0,.5); 长度: px 绝对 / em 相对父字号 / rem 相对根字号 %   百分比 / vw vh 视口宽高 / vmin">
+        <div class="card" id="card-2-8" data-keywords="颜色与单位 color: #356ae6; rgb(53,106,230); rgba(0,0,0,.5); 长度: px 绝对 / em 相对父字号 / rem 相对根字号 %   百分比 / vw vh 视口宽高 / vmin ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">颜色与单位</span>
@@ -193,7 +196,7 @@ li:nth-child(2n)  偶数项
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-9" data-keywords="盒模型组成 content → padding → border → margin box-sizing: border-box;  /* 宽高含 padding+border，推荐 */ margin: 0 auto;          /* 水平居中块 */">
+        <div class="card" id="card-3-9" data-keywords="盒模型组成 content → padding → border → margin box-sizing: border-box;  /* 宽高含 padding+border，推荐 */ margin: 0 auto;          /* 水平居中块 */ CSS 盒模型">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">盒模型组成</span>
@@ -201,8 +204,9 @@ li:nth-child(2n)  偶数项
           <div class="card-code">content → padding → border → margin
 box-sizing: border-box;  /* 宽高含 padding+border，推荐 */
 margin: 0 auto;          /* 水平居中块 */</div>
+          <div class="card-fig"><svg viewBox="0 0 260 160" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><rect x="10" y="10" width="240" height="140" fill="#fdeaea" stroke="#b42318" stroke-dasharray="3 2"/><text x="16" y="24" fill="#b42318">margin</text><rect x="45" y="35" width="170" height="90" fill="#fff4e6" stroke="#b54708"/><text x="50" y="49" fill="#b54708">border</text><rect x="70" y="55" width="120" height="50" fill="#e8f7ee" stroke="#067647"/><text x="75" y="69" fill="#067647">padding</text><rect x="95" y="70" width="70" height="20" fill="#eef3ff" stroke="#356ae6"/><text x="105" y="84" fill="#356ae6">content</text></svg><div class="cap">CSS 盒模型</div></div>
         </div>
-        <div class="card" id="card-3-10" data-keywords="显示与定位 display: block / inline / inline-block / none; position: static(默认) / relative / absolute / fixed / sticky; z-index: 10;   /* 层叠顺序 */ overflow: hidden / auto / scroll;">
+        <div class="card" id="card-3-10" data-keywords="显示与定位 display: block / inline / inline-block / none; position: static(默认) / relative / absolute / fixed / sticky; z-index: 10;   /* 层叠顺序 */ overflow: hidden / auto / scroll; ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">显示与定位</span>
@@ -222,7 +226,7 @@ overflow: hidden / auto / scroll;</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-11" data-keywords="Flex 弹性布局 /* 容器 */ display: flex; flex-direction: row | column; justify-content: center | space-between | flex-start;  /* 主轴 */ align-items: center | stretch;      /* 交叉轴 */ flex-wrap: wrap; gap: 12px; /* 子项 */ flex: 1;  /* 占据剩余空间 */">
+        <div class="card" id="card-4-11" data-keywords="Flex 弹性布局 /* 容器 */ display: flex; flex-direction: row | column; justify-content: center | space-between | flex-start;  /* 主轴 */ align-items: center | stretch;      /* 交叉轴 */ flex-wrap: wrap; gap: 12px; /* 子项 */ flex: 1;  /* 占据剩余空间 */ ">
           <div class="card-head">
             <span class="card-num">11</span>
             <span class="card-title">Flex 弹性布局</span>
@@ -236,7 +240,7 @@ flex-wrap: wrap;
 gap: 12px;
 /* 子项 */ flex: 1;  /* 占据剩余空间 */</div>
         </div>
-        <div class="card" id="card-4-12" data-keywords="Grid 网格布局 display: grid; grid-template-columns: repeat(3, 1fr);   /* 三等分 */ grid-template-columns: 200px 1fr;        /* 定宽+自适应 */ gap: 16px; grid-column: span 2;    /* 子项跨两列 */">
+        <div class="card" id="card-4-12" data-keywords="Grid 网格布局 display: grid; grid-template-columns: repeat(3, 1fr);   /* 三等分 */ grid-template-columns: 200px 1fr;        /* 定宽+自适应 */ gap: 16px; grid-column: span 2;    /* 子项跨两列 */ ">
           <div class="card-head">
             <span class="card-num">12</span>
             <span class="card-title">Grid 网格布局</span>
@@ -247,7 +251,7 @@ grid-template-columns: 200px 1fr;        /* 定宽+自适应 */
 gap: 16px;
 grid-column: span 2;    /* 子项跨两列 */</div>
         </div>
-        <div class="card" id="card-4-13" data-keywords="常见居中 /* Flex 居中 */ display:flex; justify-content:center; align-items:center; /* 绝对定位居中 */ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);">
+        <div class="card" id="card-4-13" data-keywords="常见居中 /* Flex 居中 */ display:flex; justify-content:center; align-items:center; /* 绝对定位居中 */ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); ">
           <div class="card-head">
             <span class="card-num">13</span>
             <span class="card-title">常见居中</span>
@@ -267,7 +271,7 @@ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-14" data-keywords="媒体查询 @media (max-width: 768px) {   .sidebar { display: none; }   .container { padding: 8px; } } @media (prefers-color-scheme: dark) { ... }">
+        <div class="card" id="card-5-14" data-keywords="媒体查询 @media (max-width: 768px) {   .sidebar { display: none; }   .container { padding: 8px; } } @media (prefers-color-scheme: dark) { ... } ">
           <div class="card-head">
             <span class="card-num">14</span>
             <span class="card-title">媒体查询</span>
@@ -278,7 +282,7 @@ position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);</div>
 }
 @media (prefers-color-scheme: dark) { ... }</div>
         </div>
-        <div class="card" id="card-5-15" data-keywords="过渡与动画 transition: all .2s ease; transform: scale(1.1) rotate(5deg) translateY(-4px); @keyframes spin { to { transform: rotate(360deg); } } animation: spin 1s linear infinite;">
+        <div class="card" id="card-5-15" data-keywords="过渡与动画 transition: all .2s ease; transform: scale(1.1) rotate(5deg) translateY(-4px); @keyframes spin { to { transform: rotate(360deg); } } animation: spin 1s linear infinite; ">
           <div class="card-head">
             <span class="card-num">15</span>
             <span class="card-title">过渡与动画</span>
@@ -288,7 +292,7 @@ transform: scale(1.1) rotate(5deg) translateY(-4px);
 @keyframes spin { to { transform: rotate(360deg); } }
 animation: spin 1s linear infinite;</div>
         </div>
-        <div class="card" id="card-5-16" data-keywords="CSS 变量 :root { --accent:#356ae6; --gap:12px; } .btn { color: var(--accent); padding: var(--gap); } /* 便于统一维护主题色与间距 */">
+        <div class="card" id="card-5-16" data-keywords="CSS 变量 :root { --accent:#356ae6; --gap:12px; } .btn { color: var(--accent); padding: var(--gap); } /* 便于统一维护主题色与间距 */ ">
           <div class="card-head">
             <span class="card-num">16</span>
             <span class="card-title">CSS 变量</span>

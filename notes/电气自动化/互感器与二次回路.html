@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="原理与极性 一次串入线路，二次接测量/保护回路，二次额定多为 5A 或 1A。 极性遵循减极性(P1→P2 与 S1→S2 对应)，接线错误将导致差动、方向元件误判。">
+        <div class="card" id="card-1-1" data-keywords="原理与极性 一次串入线路，二次接测量/保护回路，二次额定多为 5A 或 1A。 极性遵循减极性(P1→P2 与 S1→S2 对应)，接线错误将导致差动、方向元件误判。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">原理与极性</span>
@@ -86,7 +89,7 @@
           <div class="card-code">一次串入线路，二次接测量/保护回路，二次额定多为 5A 或 1A。
 极性遵循减极性(P1→P2 与 S1→S2 对应)，接线错误将导致差动、方向元件误判。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="二次不得开路 TA 二次严禁开路！开路时励磁磁势剧增，二次产生高电压，危及人身和绝缘。 检修换表用短接片先短接二次；PT 则严禁二次短路。">
+        <div class="card" id="card-1-2" data-keywords="二次不得开路 TA 二次严禁开路！开路时励磁磁势剧增，二次产生高电压，危及人身和绝缘。 检修换表用短接片先短接二次；PT 则严禁二次短路。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">二次不得开路</span>
@@ -94,7 +97,7 @@
           <div class="card-code">TA 二次严禁开路！开路时励磁磁势剧增，二次产生高电压，危及人身和绝缘。
 检修换表用短接片先短接二次；PT 则严禁二次短路。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="误差与10%误差曲线 保护用TA要求在最大短路电流下误差不超10%，以保证保护正确动作； 用 10% 误差曲线校验二次负荷是否满足要求，防TA饱和。 测量用TA要求正常负荷下精度高(0.2/0.5级)，故障大电流下宜饱和以保护仪表。">
+        <div class="card" id="card-1-3" data-keywords="误差与10%误差曲线 保护用TA要求在最大短路电流下误差不超10%，以保证保护正确动作； 用 10% 误差曲线校验二次负荷是否满足要求，防TA饱和。 测量用TA要求正常负荷下精度高(0.2/0.5级)，故障大电流下宜饱和以保护仪表。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">误差与10%误差曲线</span>
@@ -113,7 +116,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="类型与接线 电磁式(TV)与电容式(CVT，高压常用)。 二次额定相电压 100/√3 V，开口三角(3U0)输出零序电压。 三相五柱式/三只单相组成 Yn/Yn/开口三角。">
+        <div class="card" id="card-2-4" data-keywords="类型与接线 电磁式(TV)与电容式(CVT，高压常用)。 二次额定相电压 100/√3 V，开口三角(3U0)输出零序电压。 三相五柱式/三只单相组成 Yn/Yn/开口三角。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">类型与接线</span>
@@ -122,7 +125,7 @@
 二次额定相电压 100/√3 V，开口三角(3U0)输出零序电压。
 三相五柱式/三只单相组成 Yn/Yn/开口三角。</div>
         </div>
-        <div class="card" id="card-2-5" data-keywords="TV 断线 熔断器熔断或接触不良导致二次失压， 会使距离、方向、低电压等误动 → 设 TV 断线闭锁并告警，切换到电流后备。">
+        <div class="card" id="card-2-5" data-keywords="TV 断线 熔断器熔断或接触不良导致二次失压， 会使距离、方向、低电压等误动 → 设 TV 断线闭锁并告警，切换到电流后备。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">TV 断线</span>
@@ -140,7 +143,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-6" data-keywords="回路分类 交流电流回路：TA→保护/表计。 交流电压回路：TV→保护/表计/计量。 直流控制回路：跳合闸、信号。 直流信号与中央信号回路。">
+        <div class="card" id="card-3-6" data-keywords="回路分类 交流电流回路：TA→保护/表计。 交流电压回路：TV→保护/表计/计量。 直流控制回路：跳合闸、信号。 直流信号与中央信号回路。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">回路分类</span>
@@ -150,7 +153,7 @@
 直流控制回路：跳合闸、信号。
 直流信号与中央信号回路。</div>
         </div>
-        <div class="card" id="card-3-7" data-keywords="接地要求 TA/TV 二次均须一点接地(通常在控制室集中接地)； 多点接地会引入环流误差，无接地则有感应高压危险。">
+        <div class="card" id="card-3-7" data-keywords="接地要求 TA/TV 二次均须一点接地(通常在控制室集中接地)； 多点接地会引入环流误差，无接地则有感应高压危险。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">接地要求</span>
@@ -168,7 +171,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-8" data-keywords="站用直流电源 由蓄电池组+充电装置构成，为保护、控制、信号提供不间断电源(常 110V/220V DC)； 绝缘监视装置监测正负极对地绝缘，接地会引起误跳/拒动。">
+        <div class="card" id="card-4-8" data-keywords="站用直流电源 由蓄电池组+充电装置构成，为保护、控制、信号提供不间断电源(常 110V/220V DC)； 绝缘监视装置监测正负极对地绝缘，接地会引起误跳/拒动。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">站用直流电源</span>
@@ -176,7 +179,7 @@
           <div class="card-code">由蓄电池组+充电装置构成，为保护、控制、信号提供不间断电源(常 110V/220V DC)；
 绝缘监视装置监测正负极对地绝缘，接地会引起误跳/拒动。</div>
         </div>
-        <div class="card" id="card-4-9" data-keywords="连接片(压板) 功能压板：投退某保护功能(软/硬压板)。 出口压板：连通保护到断路器跳闸线圈。 操作原则：投保护先投功能后投出口，停保护先退出口后退功能；操作须核对、双人监护。">
+        <div class="card" id="card-4-9" data-keywords="连接片(压板) 功能压板：投退某保护功能(软/硬压板)。 出口压板：连通保护到断路器跳闸线圈。 操作原则：投保护先投功能后投出口，停保护先退出口后退功能；操作须核对、双人监护。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">连接片(压板)</span>
@@ -185,7 +188,7 @@
 出口压板：连通保护到断路器跳闸线圈。
 操作原则：投保护先投功能后投出口，停保护先退出口后退功能；操作须核对、双人监护。</div>
         </div>
-        <div class="card" id="card-4-10" data-keywords="检修安全 工作前确认保护状态、退出相关出口压板、做好防误动措施； 差动、母差等带方向性的保护尤其注意二次极性与短接顺序。">
+        <div class="card" id="card-4-10" data-keywords="检修安全 工作前确认保护状态、退出相关出口压板、做好防误动措施； 差动、母差等带方向性的保护尤其注意二次极性与短接顺序。 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">检修安全</span>

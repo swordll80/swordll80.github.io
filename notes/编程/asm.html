@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="汇编是什么 汇编语言：与 CPU 指令一一对应的低级语言，用助记符(mnemonic)表示机器指令。 汇编器(assembler)把 .asm 汇编成机器码：NASM/MASM(Intel 语法)、GAS/as(AT&amp;T 语法)。 用途：理解底层、性能热点、逆向、内核/引导/嵌入式。">
+        <div class="card" id="card-1-1" data-keywords="汇编是什么 汇编语言：与 CPU 指令一一对应的低级语言，用助记符(mnemonic)表示机器指令。 汇编器(assembler)把 .asm 汇编成机器码：NASM/MASM(Intel 语法)、GAS/as(AT&amp;T 语法)。 用途：理解底层、性能热点、逆向、内核/引导/嵌入式。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">汇编是什么</span>
@@ -87,7 +90,7 @@
 汇编器(assembler)把 .asm 汇编成机器码：NASM/MASM(Intel 语法)、GAS/as(AT&amp;T 语法)。
 用途：理解底层、性能热点、逆向、内核/引导/嵌入式。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="两种语法 Intel 语法：  mov dst, src   (目的在前) AT&amp;T  语法：  mov %src, %dst (源在前，寄存器带 %, 立即数带 $) 本手册用 Intel 语法(NASM)。">
+        <div class="card" id="card-1-2" data-keywords="两种语法 Intel 语法：  mov dst, src   (目的在前) AT&amp;T  语法：  mov %src, %dst (源在前，寄存器带 %, 立即数带 $) 本手册用 Intel 语法(NASM)。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">两种语法</span>
@@ -96,7 +99,7 @@
 AT&amp;T  语法：  mov %src, %dst (源在前，寄存器带 %, 立即数带 $)
 本手册用 Intel 语法(NASM)。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="程序结构 section .data   ; 已初始化数据 section .bss    ; 未初始化数据 section .text   ; 代码 global _start   ; 入口符号 标号: 指令   ; 注释用 ;">
+        <div class="card" id="card-1-3" data-keywords="程序结构 section .data   ; 已初始化数据 section .bss    ; 未初始化数据 section .text   ; 代码 global _start   ; 入口符号 标号: 指令   ; 注释用 ; ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">程序结构</span>
@@ -117,7 +120,7 @@ global _start   ; 入口符号
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="通用寄存器 (64位) rax rbx rcx rdx rsi rdi rbp rsp r8–r15 32位: eax… 16位: ax… 8位: al/ah… 惯用：rax 返回值/累加，rcx 计数，rsp 栈指针，rbp 栈帧基址，rsi/rdi 源/目的。">
+        <div class="card" id="card-2-4" data-keywords="通用寄存器 (64位) rax rbx rcx rdx rsi rdi rbp rsp r8–r15 32位: eax… 16位: ax… 8位: al/ah… 惯用：rax 返回值/累加，rcx 计数，rsp 栈指针，rbp 栈帧基址，rsi/rdi 源/目的。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">通用寄存器 (64位)</span>
@@ -126,7 +129,7 @@ global _start   ; 入口符号
 32位: eax… 16位: ax… 8位: al/ah…
 惯用：rax 返回值/累加，rcx 计数，rsp 栈指针，rbp 栈帧基址，rsi/rdi 源/目的。</div>
         </div>
-        <div class="card" id="card-2-5" data-keywords="指令指针与段 rip：指令指针(下一条指令地址)。 段寄存器：cs ds ss es fs gs(现代多用 fs/gs 做 TLS)。">
+        <div class="card" id="card-2-5" data-keywords="指令指针与段 rip：指令指针(下一条指令地址)。 段寄存器：cs ds ss es fs gs(现代多用 fs/gs 做 TLS)。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">指令指针与段</span>
@@ -134,7 +137,7 @@ global _start   ; 入口符号
           <div class="card-code">rip：指令指针(下一条指令地址)。
 段寄存器：cs ds ss es fs gs(现代多用 fs/gs 做 TLS)。</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="标志寄存器 EFLAGS/RFLAGS ZF 零标志、SF 符号、CF 进位、OF 溢出、PF 奇偶、AF 辅助进位、DF 方向。 由算术/比较指令设置，条件跳转据此判断。">
+        <div class="card" id="card-2-6" data-keywords="标志寄存器 EFLAGS/RFLAGS ZF 零标志、SF 符号、CF 进位、OF 溢出、PF 奇偶、AF 辅助进位、DF 方向。 由算术/比较指令设置，条件跳转据此判断。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">标志寄存器 EFLAGS/RFLAGS</span>
@@ -152,7 +155,7 @@ global _start   ; 入口符号
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-7" data-keywords="操作数类型 立即数：mov rax, 10 寄存器：mov rax, rbx 内存：  mov rax, [rbx] 有效地址：lea rax, [rbx+rcx*4+8]  ; 只算地址不取值">
+        <div class="card" id="card-3-7" data-keywords="操作数类型 立即数：mov rax, 10 寄存器：mov rax, rbx 内存：  mov rax, [rbx] 有效地址：lea rax, [rbx+rcx*4+8]  ; 只算地址不取值 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">操作数类型</span>
@@ -162,7 +165,7 @@ global _start   ; 入口符号
 内存：  mov rax, [rbx]
 有效地址：lea rax, [rbx+rcx*4+8]  ; 只算地址不取值</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="内存寻址 [base + index*scale + disp] scale ∈ {1,2,4,8} 例：mov eax, [rbx + rsi*4 + 12]  ; 访问数组元素">
+        <div class="card" id="card-3-8" data-keywords="内存寻址 [base + index*scale + disp] scale ∈ {1,2,4,8} 例：mov eax, [rbx + rsi*4 + 12]  ; 访问数组元素 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">内存寻址</span>
@@ -181,7 +184,7 @@ scale ∈ {1,2,4,8}
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-9" data-keywords="数据传送 mov  传送     lea 取有效地址 push/pop 入栈/出栈    xchg 交换 movzx 零扩展   movsx 符号扩展">
+        <div class="card" id="card-4-9" data-keywords="数据传送 mov  传送     lea 取有效地址 push/pop 入栈/出栈    xchg 交换 movzx 零扩展   movsx 符号扩展 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">数据传送</span>
@@ -190,7 +193,7 @@ scale ∈ {1,2,4,8}
 push/pop 入栈/出栈    xchg 交换
 movzx 零扩展   movsx 符号扩展</div>
         </div>
-        <div class="card" id="card-4-10" data-keywords="算术与逻辑 add sub  加减    inc dec 自增减 mul/imul 乘  div/idiv 除(结果在 rax, 余数 rdx) and or xor not  逻辑    neg 取负 shl/shr 逻辑移位  sal/sar 算术移位  rol/ror 循环移位">
+        <div class="card" id="card-4-10" data-keywords="算术与逻辑 add sub  加减    inc dec 自增减 mul/imul 乘  div/idiv 除(结果在 rax, 余数 rdx) and or xor not  逻辑    neg 取负 shl/shr 逻辑移位  sal/sar 算术移位  rol/ror 循环移位 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">算术与逻辑</span>
@@ -200,7 +203,7 @@ mul/imul 乘  div/idiv 除(结果在 rax, 余数 rdx)
 and or xor not  逻辑    neg 取负
 shl/shr 逻辑移位  sal/sar 算术移位  rol/ror 循环移位</div>
         </div>
-        <div class="card" id="card-4-11" data-keywords="比较与跳转 cmp a,b   ; 做 a-b 只设标志 test a,b  ; 做 a&amp;b 只设标志 jmp 无条件跳；条件跳(据标志)： je/jz 相等/零, jne/jnz 不等, jg/jl 有符号&gt;/&lt;, ja/jb 无符号&gt;/&lt;。">
+        <div class="card" id="card-4-11" data-keywords="比较与跳转 cmp a,b   ; 做 a-b 只设标志 test a,b  ; 做 a&amp;b 只设标志 jmp 无条件跳；条件跳(据标志)： je/jz 相等/零, jne/jnz 不等, jg/jl 有符号&gt;/&lt;, ja/jb 无符号&gt;/&lt;。 ">
           <div class="card-head">
             <span class="card-num">11</span>
             <span class="card-title">比较与跳转</span>
@@ -210,7 +213,7 @@ test a,b  ; 做 a&amp;b 只设标志
 jmp 无条件跳；条件跳(据标志)：
 je/jz 相等/零, jne/jnz 不等, jg/jl 有符号&gt;/&lt;, ja/jb 无符号&gt;/&lt;。</div>
         </div>
-        <div class="card" id="card-4-12" data-keywords="函数与栈 call func  ; 压返回地址并跳转 ret        ; 弹返回地址返回 push/pop 维护栈；栈向低地址增长。">
+        <div class="card" id="card-4-12" data-keywords="函数与栈 call func  ; 压返回地址并跳转 ret        ; 弹返回地址返回 push/pop 维护栈；栈向低地址增长。 ">
           <div class="card-head">
             <span class="card-num">12</span>
             <span class="card-title">函数与栈</span>
@@ -229,7 +232,7 @@ push/pop 维护栈；栈向低地址增长。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-13" data-keywords="典型栈帧 push rbp mov  rbp, rsp     ; 建立栈帧 sub  rsp, N       ; 分配局部变量 ... leave             ; = mov rsp,rbp / pop rbp ret">
+        <div class="card" id="card-5-13" data-keywords="典型栈帧 push rbp mov  rbp, rsp     ; 建立栈帧 sub  rsp, N       ; 分配局部变量 ... leave             ; = mov rsp,rbp / pop rbp ret 函数调用栈帧">
           <div class="card-head">
             <span class="card-num">13</span>
             <span class="card-title">典型栈帧</span>
@@ -240,8 +243,9 @@ sub  rsp, N       ; 分配局部变量
 ...
 leave             ; = mov rsp,rbp / pop rbp
 ret</div>
+          <div class="card-fig"><svg viewBox="0 0 220 150" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><rect x="60" y="10" width="110" height="22" fill="#eef3ff" stroke="#7d8599"/><text x="70" y="25">参数/返回地址</text><rect x="60" y="34" width="110" height="22" fill="#e8f7ee" stroke="#7d8599"/><text x="70" y="49">保存的 rbp</text><rect x="60" y="58" width="110" height="22" fill="#fff4e6" stroke="#7d8599"/><text x="70" y="73">局部变量</text><rect x="60" y="82" width="110" height="22" fill="#fff4e6" stroke="#7d8599"/><text x="70" y="97">...</text><rect x="60" y="106" width="110" height="22" fill="#fdeaea" stroke="#7d8599"/><text x="70" y="121">栈顶 rsp→</text><text x="175" y="24" fill="#7d8599" font-size="8">高地址</text><text x="175" y="130" fill="#7d8599" font-size="8">低地址</text><text x="15" y="145" fill="#7d8599">栈向低地址增长</text></svg><div class="cap">函数调用栈帧</div></div>
         </div>
-        <div class="card" id="card-5-14" data-keywords="调用约定 System V AMD64(Linux)：整型参数依次 rdi rsi rdx rcx r8 r9，返回 rax；被调用者保存 rbx rbp r12–r15。 Windows x64：参数 rcx rdx r8 r9，调用者留 32 字节 shadow space。 cdecl(32位)：参数从右到左压栈，调用者清栈。">
+        <div class="card" id="card-5-14" data-keywords="调用约定 System V AMD64(Linux)：整型参数依次 rdi rsi rdx rcx r8 r9，返回 rax；被调用者保存 rbx rbp r12–r15。 Windows x64：参数 rcx rdx r8 r9，调用者留 32 字节 shadow space。 cdecl(32位)：参数从右到左压栈，调用者清栈。 ">
           <div class="card-head">
             <span class="card-num">14</span>
             <span class="card-title">调用约定</span>
@@ -260,7 +264,7 @@ cdecl(32位)：参数从右到左压栈，调用者清栈。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-6-15" data-keywords="Linux 系统调用 x86-64：调用号放 rax，参数 rdi rsi rdx…，执行 syscall。 write=1, exit=60, read=0, open=2。">
+        <div class="card" id="card-6-15" data-keywords="Linux 系统调用 x86-64：调用号放 rax，参数 rdi rsi rdx…，执行 syscall。 write=1, exit=60, read=0, open=2。 ">
           <div class="card-head">
             <span class="card-num">15</span>
             <span class="card-title">Linux 系统调用</span>
@@ -268,7 +272,7 @@ cdecl(32位)：参数从右到左压栈，调用者清栈。</div>
           <div class="card-code">x86-64：调用号放 rax，参数 rdi rsi rdx…，执行 syscall。
 write=1, exit=60, read=0, open=2。</div>
         </div>
-        <div class="card" id="card-6-16" data-keywords="Hello World (NASM/Linux) section .data msg db &quot;Hello&quot;,10 section .text global _start _start:   mov rax,1      ; write   mov rdi,1      ; stdout   mov rsi,msg   mov rdx,6   syscall   mov rax,60     ; exit   xor rdi,rdi   syscall ; 编译: nasm -f elf64 a.asm &amp;&amp; ld a.o -o a">
+        <div class="card" id="card-6-16" data-keywords="Hello World (NASM/Linux) section .data msg db &quot;Hello&quot;,10 section .text global _start _start:   mov rax,1      ; write   mov rdi,1      ; stdout   mov rsi,msg   mov rdx,6   syscall   mov rax,60     ; exit   xor rdi,rdi   syscall ; 编译: nasm -f elf64 a.asm &amp;&amp; ld a.o -o a ">
           <div class="card-head">
             <span class="card-num">16</span>
             <span class="card-title">Hello World (NASM/Linux)</span>
@@ -288,7 +292,7 @@ _start:
   syscall
 ; 编译: nasm -f elf64 a.asm &amp;&amp; ld a.o -o a</div>
         </div>
-        <div class="card" id="card-6-17" data-keywords="加法函数 add2:            ; int add2(int a,int b)   mov eax, edi   ; a   add eax, esi   ; +b   ret            ; 返回值在 eax">
+        <div class="card" id="card-6-17" data-keywords="加法函数 add2:            ; int add2(int a,int b)   mov eax, edi   ; a   add eax, esi   ; +b   ret            ; 返回值在 eax ">
           <div class="card-head">
             <span class="card-num">17</span>
             <span class="card-title">加法函数</span>
@@ -308,7 +312,7 @@ _start:
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-7-18" data-keywords="ARM 特点 精简指令集(RISC)，定长指令，寄存器 r0–r15(r13=SP,r14=LR,r15=PC)，AArch64 用 x0–x30。 加载/存储架构：运算只对寄存器，访存用 LDR/STR。 参数 x0–x7，返回 x0，返回地址在 LR。">
+        <div class="card" id="card-7-18" data-keywords="ARM 特点 精简指令集(RISC)，定长指令，寄存器 r0–r15(r13=SP,r14=LR,r15=PC)，AArch64 用 x0–x30。 加载/存储架构：运算只对寄存器，访存用 LDR/STR。 参数 x0–x7，返回 x0，返回地址在 LR。 ">
           <div class="card-head">
             <span class="card-num">18</span>
             <span class="card-title">ARM 特点</span>
@@ -317,7 +321,7 @@ _start:
 加载/存储架构：运算只对寄存器，访存用 LDR/STR。
 参数 x0–x7，返回 x0，返回地址在 LR。</div>
         </div>
-        <div class="card" id="card-7-19" data-keywords="常用指令 MOV 传送  ADD/SUB 加减  MUL 乘 LDR/STR 加载/存储  CMP 比较 B/BL 跳转/带链接跳转  BX LR 返回 条件执行与后缀(EQ/NE/GT…)。">
+        <div class="card" id="card-7-19" data-keywords="常用指令 MOV 传送  ADD/SUB 加减  MUL 乘 LDR/STR 加载/存储  CMP 比较 B/BL 跳转/带链接跳转  BX LR 返回 条件执行与后缀(EQ/NE/GT…)。 ">
           <div class="card-head">
             <span class="card-num">19</span>
             <span class="card-title">常用指令</span>

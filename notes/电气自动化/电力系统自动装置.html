@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="作用 工作电源失电时，自动投入备用电源，恢复供电，提高可靠性。 典型：进线备自投、母联(分段)备自投。">
+        <div class="card" id="card-1-1" data-keywords="作用 工作电源失电时，自动投入备用电源，恢复供电，提高可靠性。 典型：进线备自投、母联(分段)备自投。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">作用</span>
@@ -86,7 +89,7 @@
           <div class="card-code">工作电源失电时，自动投入备用电源，恢复供电，提高可靠性。
 典型：进线备自投、母联(分段)备自投。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="动作条件 工作电源确无电压(且非本身故障造成)、备用电源有压、 工作断路器已跳开 → 合备用断路器。 只动作一次(充电→放电)，防止合于永久故障反复冲击。">
+        <div class="card" id="card-1-2" data-keywords="动作条件 工作电源确无电压(且非本身故障造成)、备用电源有压、 工作断路器已跳开 → 合备用断路器。 只动作一次(充电→放电)，防止合于永久故障反复冲击。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">动作条件</span>
@@ -105,7 +108,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="低频减载(AFL) 系统有功缺额→频率下降，按频率分级切除部分负荷，阻止频率崩溃。 按频率定值分轮次动作(如 49.0/48.8/48.6Hz…)，先切次要负荷。">
+        <div class="card" id="card-2-3" data-keywords="低频减载(AFL) 系统有功缺额→频率下降，按频率分级切除部分负荷，阻止频率崩溃。 按频率定值分轮次动作(如 49.0/48.8/48.6Hz…)，先切次要负荷。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">低频减载(AFL)</span>
@@ -113,7 +116,7 @@
           <div class="card-code">系统有功缺额→频率下降，按频率分级切除部分负荷，阻止频率崩溃。
 按频率定值分轮次动作(如 49.0/48.8/48.6Hz…)，先切次要负荷。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="低压减载 无功缺额致电压下降时按电压分级切负荷，防电压崩溃； 与低频减载配合维持系统稳定。">
+        <div class="card" id="card-2-4" data-keywords="低压减载 无功缺额致电压下降时按电压分级切负荷，防电压崩溃； 与低频减载配合维持系统稳定。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">低压减载</span>
@@ -131,21 +134,21 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="自动重合闸 见《母线与线路保护》，属输配电基本自动装置。">
+        <div class="card" id="card-3-5" data-keywords="自动重合闸 见《母线与线路保护》，属输配电基本自动装置。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">自动重合闸</span>
           </div>
           <div class="card-code">见《母线与线路保护》，属输配电基本自动装置。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="故障录波器 记录故障前后电流、电压、开关量波形，用于事故分析、保护动作评价和整定校核。">
+        <div class="card" id="card-3-6" data-keywords="故障录波器 记录故障前后电流、电压、开关量波形，用于事故分析、保护动作评价和整定校核。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">故障录波器</span>
           </div>
           <div class="card-code">记录故障前后电流、电压、开关量波形，用于事故分析、保护动作评价和整定校核。</div>
         </div>
-        <div class="card" id="card-3-7" data-keywords="同期装置 并列操作时检测两侧频率、电压、相角差在允许范围内才合闸， 分自动准同期与手动准同期。">
+        <div class="card" id="card-3-7" data-keywords="同期装置 并列操作时检测两侧频率、电压、相角差在允许范围内才合闸， 分自动准同期与手动准同期。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">同期装置</span>
@@ -153,7 +156,7 @@
           <div class="card-code">并列操作时检测两侧频率、电压、相角差在允许范围内才合闸，
 分自动准同期与手动准同期。</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="稳定控制装置 切机、切负荷、解列等，快速平衡功率、维持暂态/动态稳定； 构成地区/省级安全稳定控制系统。">
+        <div class="card" id="card-3-8" data-keywords="稳定控制装置 切机、切负荷、解列等，快速平衡功率、维持暂态/动态稳定； 构成地区/省级安全稳定控制系统。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">稳定控制装置</span>
@@ -171,7 +174,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-9" data-keywords="整定计算要点 先算短路电流(最大/最小方式)，再按选择性、灵敏性、速动性要求整定； 上下级保护动作值与时限逐级配合，留可靠系数与配合时差 Δt。">
+        <div class="card" id="card-4-9" data-keywords="整定计算要点 先算短路电流(最大/最小方式)，再按选择性、灵敏性、速动性要求整定； 上下级保护动作值与时限逐级配合，留可靠系数与配合时差 Δt。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">整定计算要点</span>
@@ -179,7 +182,7 @@
           <div class="card-code">先算短路电流(最大/最小方式)，再按选择性、灵敏性、速动性要求整定；
 上下级保护动作值与时限逐级配合，留可靠系数与配合时差 Δt。</div>
         </div>
-        <div class="card" id="card-4-10" data-keywords="反措与规程 遵循《继电保护和安全自动装置技术规程》(GB/T 14285)及电网反事故措施； 定值单执行需审核、核对、双重编号管理。">
+        <div class="card" id="card-4-10" data-keywords="反措与规程 遵循《继电保护和安全自动装置技术规程》(GB/T 14285)及电网反事故措施； 定值单执行需审核、核对、双重编号管理。 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">反措与规程</span>

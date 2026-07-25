@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,29 +72,30 @@
   <span class="result-count" id="resultCount">6 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">电力系统的元件模型、潮流计算、短路(故障)分析与对称分量法。</div>
+    <div class="intro">元件模型、潮流计算、短路分析与对称分量法,配一次系统单线图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
-        <span class="title">一、系统与元件模型</span>
+        <span class="title">一、系统与元件</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="标幺值与网络 标幺值 =实际值/基准值,统一多电压等级计算;基准容量 SB、基准电压 UB。 发电机、变压器、线路(π形等效)、负荷模型。">
+        <div class="card" id="card-1-1" data-keywords="标幺值与网络 标幺值=实际值/基准值,统一多电压等级;发电机、变压器、线路(π形)、负荷模型。 发电→升压→输电→变电→配电。 电力系统一次结构(单线图)">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">标幺值与网络</span>
           </div>
-          <div class="card-code">标幺值 =实际值/基准值,统一多电压等级计算;基准容量 SB、基准电压 UB。
-发电机、变压器、线路(π形等效)、负荷模型。</div>
+          <div class="card-code">标幺值=实际值/基准值,统一多电压等级;发电机、变压器、线路(π形)、负荷模型。
+发电→升压→输电→变电→配电。</div>
+          <div class="card-fig"><svg viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><circle cx="30" cy="45" r="16" fill="#eef3ff" stroke="#356ae6"/><text x="24" y="49">G</text><line x1="46" y1="45" x2="80" y2="45" stroke="#1a1a2e"/><circle cx="92" cy="45" r="12" fill="none" stroke="#067647"/><circle cx="104" cy="45" r="12" fill="none" stroke="#067647"/><line x1="116" y1="45" x2="220" y2="45" stroke="#1a1a2e" stroke-width="2"/><text x="150" y="38" fill="#7d8599">输电线路</text><circle cx="232" cy="45" r="12" fill="none" stroke="#067647"/><circle cx="244" cy="45" r="12" fill="none" stroke="#067647"/><line x1="256" y1="45" x2="290" y2="45" stroke="#1a1a2e"/><path d="M290,38 L305,45 L290,52 Z" fill="#fff4e6" stroke="#b54708"/><text x="300" y="49">负荷</text><text x="20" y="80" fill="#7d8599">发电→升压→输电→降压→负荷(一次系统)</text></svg><div class="cap">电力系统一次结构(单线图)</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="电压等级与结构 发电→升压→输电(高压)→变电→配电;中性点接地方式影响故障与保护。">
+        <div class="card" id="card-1-2" data-keywords="中性点接地 接地方式影响故障电流与保护配置。 ">
           <div class="card-head">
             <span class="card-num">2</span>
-            <span class="card-title">电压等级与结构</span>
+            <span class="card-title">中性点接地</span>
           </div>
-          <div class="card-code">发电→升压→输电(高压)→变电→配电;中性点接地方式影响故障与保护。</div>
+          <div class="card-code">接地方式影响故障电流与保护配置。</div>
         </div>
       </div>
     </div>
@@ -103,46 +107,43 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="潮流方程 节点功率方程 Pi+jQi=Ui·Σ(Yij Uj)*;节点类型 PQ/PV/平衡节点。">
+        <div class="card" id="card-2-3" data-keywords="潮流方程 节点功率 Pi+jQi=Ui·Σ(YijUj)*;节点类型 PQ/PV/平衡。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">潮流方程</span>
           </div>
-          <div class="card-code">节点功率方程 Pi+jQi=Ui·Σ(Yij Uj)*;节点类型 PQ/PV/平衡节点。</div>
+          <div class="card-code">节点功率 Pi+jQi=Ui·Σ(YijUj)*;节点类型 PQ/PV/平衡。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="求解方法 牛顿-拉夫逊法(收敛快)、PQ 分解法、高斯-赛德尔法; 求各节点电压幅值相角、支路潮流与网损。">
+        <div class="card" id="card-2-4" data-keywords="求解 牛顿-拉夫逊(收敛快)、PQ 分解、高斯-赛德尔;求电压、潮流、网损。 ">
           <div class="card-head">
             <span class="card-num">4</span>
-            <span class="card-title">求解方法</span>
+            <span class="card-title">求解</span>
           </div>
-          <div class="card-code">牛顿-拉夫逊法(收敛快)、PQ 分解法、高斯-赛德尔法;
-求各节点电压幅值相角、支路潮流与网损。</div>
+          <div class="card-code">牛顿-拉夫逊(收敛快)、PQ 分解、高斯-赛德尔;求电压、潮流、网损。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、短路故障分析</span>
+        <span class="title">三、短路分析</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="三相对称短路 次暂态/暂态/稳态电流;发电机 Xd&#x27;&#x27;/Xd&#x27;/Xd; 短路容量、冲击电流(计非周期分量)。">
+        <div class="card" id="card-3-5" data-keywords="三相对称短路 次暂态/暂态/稳态电流;Xd&#x27;&#x27;/Xd&#x27;/Xd;短路容量、冲击电流。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">三相对称短路</span>
           </div>
-          <div class="card-code">次暂态/暂态/稳态电流;发电机 Xd&#x27;&#x27;/Xd&#x27;/Xd;
-短路容量、冲击电流(计非周期分量)。</div>
+          <div class="card-code">次暂态/暂态/稳态电流;Xd&#x27;&#x27;/Xd&#x27;/Xd;短路容量、冲击电流。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="对称分量法 不对称故障用正序/负序/零序分量分解; 单相接地、两相短路、两相接地用序网组合求解;序阻抗与接地方式。">
+        <div class="card" id="card-3-6" data-keywords="对称分量法 不对称故障分解为正/负/零序;单相接地、两相短路用序网组合;序阻抗与接地方式。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">对称分量法</span>
           </div>
-          <div class="card-code">不对称故障用正序/负序/零序分量分解;
-单相接地、两相短路、两相接地用序网组合求解;序阻抗与接地方式。</div>
+          <div class="card-code">不对称故障分解为正/负/零序;单相接地、两相短路用序网组合;序阻抗与接地方式。</div>
         </div>
       </div>
     </div>

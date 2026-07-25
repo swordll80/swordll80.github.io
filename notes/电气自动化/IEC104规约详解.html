@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="协议定位 IEC 60870-5-104 = 101 应用层 + TCP/IP 网络传输。 标准端口 2404(IANA 分配, 也可自定义)。 用于控制站(主站/调度)与被控站(厂站 RTU/测控)之间的遥测、遥信、遥控、遥调与对时、电度等。 国内对应 DL/T 634.5104。">
+        <div class="card" id="card-1-1" data-keywords="协议定位 IEC 60870-5-104 = 101 应用层 + TCP/IP 网络传输。 标准端口 2404(IANA 分配, 也可自定义)。 用于控制站(主站/调度)与被控站(厂站 RTU/测控)之间的遥测、遥信、遥控、遥调与对时、电度等。 国内对应 DL/T 634.5104。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">协议定位</span>
@@ -88,7 +91,7 @@
 用于控制站(主站/调度)与被控站(厂站 RTU/测控)之间的遥测、遥信、遥控、遥调与对时、电度等。
 国内对应 DL/T 634.5104。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="与 101 关系 104 复用 101(IEC 60870-5-101)的 ASDU(应用服务数据单元)； 因 TCP 面向连接、可靠，104 去掉了 101 的链路层校验与分组召唤。">
+        <div class="card" id="card-1-2" data-keywords="与 101 关系 104 复用 101(IEC 60870-5-101)的 ASDU(应用服务数据单元)； 因 TCP 面向连接、可靠，104 去掉了 101 的链路层校验与分组召唤。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">与 101 关系</span>
@@ -106,7 +109,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="APDU 组成 APDU = APCI(应用规约控制信息) + ASDU(应用服务数据单元)。 APCI(6字节) = 启动字符 68H + APDU长度(1字节) + 4 个控制字节。 APDU长度 = ASDU 字节数 + 4(控制字节)，最大 253。">
+        <div class="card" id="card-2-3" data-keywords="APDU 组成 APDU = APCI(应用规约控制信息) + ASDU(应用服务数据单元)。 APCI(6字节) = 启动字符 68H + APDU长度(1字节) + 4 个控制字节。 APDU长度 = ASDU 字节数 + 4(控制字节)，最大 253。 IEC104 APDU 帧结构">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">APDU 组成</span>
@@ -114,8 +117,9 @@
           <div class="card-code">APDU = APCI(应用规约控制信息) + ASDU(应用服务数据单元)。
 APCI(6字节) = 启动字符 68H + APDU长度(1字节) + 4 个控制字节。
 APDU长度 = ASDU 字节数 + 4(控制字节)，最大 253。</div>
+          <div class="card-fig"><svg viewBox="0 0 340 100" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><rect x="8" y="30" width="40" height="28" fill="#f3f0ff" stroke="#7c3aed"/><text x="14" y="48">68H</text><rect x="48" y="30" width="44" height="28" fill="#fff4e6" stroke="#b54708"/><text x="54" y="48">长度</text><rect x="92" y="30" width="90" height="28" fill="#e8f7ee" stroke="#067647"/><text x="98" y="48">4 控制字节</text><rect x="182" y="30" width="150" height="28" fill="#eef3ff" stroke="#356ae6"/><text x="230" y="48">ASDU</text><text x="8" y="22" fill="#7d8599">← APCI(6字节) →</text><text x="230" y="22" fill="#7d8599">应用数据</text><text x="60" y="80" fill="#7d8599">IEC104 APDU = APCI + ASDU</text></svg><div class="cap">IEC104 APDU 帧结构</div></div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="启动与长度 68H 标记数据流中一帧的起点。 长度字节给出其后(4控制字节+ASDU)的字节数，用于分帧。">
+        <div class="card" id="card-2-4" data-keywords="启动与长度 68H 标记数据流中一帧的起点。 长度字节给出其后(4控制字节+ASDU)的字节数，用于分帧。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">启动与长度</span>
@@ -133,7 +137,7 @@ APDU长度 = ASDU 字节数 + 4(控制字节)，最大 253。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="I 格式(信息传输) 用于带编号的信息传输(承载 ASDU)。 4 控制字节含 发送序列号 N(S) 与 接收序列号 N(R)(各16位, 最低位标志区分格式)。 发送方增 N(S)、接收方增 N(R)，与 X.25 一致，实现流量控制与重传确认。">
+        <div class="card" id="card-3-5" data-keywords="I 格式(信息传输) 用于带编号的信息传输(承载 ASDU)。 4 控制字节含 发送序列号 N(S) 与 接收序列号 N(R)(各16位, 最低位标志区分格式)。 发送方增 N(S)、接收方增 N(R)，与 X.25 一致，实现流量控制与重传确认。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">I 格式(信息传输)</span>
@@ -142,7 +146,7 @@ APDU长度 = ASDU 字节数 + 4(控制字节)，最大 253。</div>
 4 控制字节含 发送序列号 N(S) 与 接收序列号 N(R)(各16位, 最低位标志区分格式)。
 发送方增 N(S)、接收方增 N(R)，与 X.25 一致，实现流量控制与重传确认。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="S 格式(监视) 仅确认收到的 I 帧(带 N(R))，无 ASDU。 控制字节第1字节最低两位=01。用于接收方在只收不发时回确认，防止发送方 k 值溢出。">
+        <div class="card" id="card-3-6" data-keywords="S 格式(监视) 仅确认收到的 I 帧(带 N(R))，无 ASDU。 控制字节第1字节最低两位=01。用于接收方在只收不发时回确认，防止发送方 k 值溢出。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">S 格式(监视)</span>
@@ -150,7 +154,7 @@ APDU长度 = ASDU 字节数 + 4(控制字节)，最大 253。</div>
           <div class="card-code">仅确认收到的 I 帧(带 N(R))，无 ASDU。
 控制字节第1字节最低两位=01。用于接收方在只收不发时回确认，防止发送方 k 值溢出。</div>
         </div>
-        <div class="card" id="card-3-7" data-keywords="U 格式(未编号控制) 无 ASDU，无序列号。用于链路控制： STARTDT(启动数据传输 act/con)、STOPDT(停止数据传输 act/con)、TESTFR(测试帧/链路测试 act/con)。 控制字节第1字节最低两位=11。">
+        <div class="card" id="card-3-7" data-keywords="U 格式(未编号控制) 无 ASDU，无序列号。用于链路控制： STARTDT(启动数据传输 act/con)、STOPDT(停止数据传输 act/con)、TESTFR(测试帧/链路测试 act/con)。 控制字节第1字节最低两位=11。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">U 格式(未编号控制)</span>
@@ -159,7 +163,7 @@ APDU长度 = ASDU 字节数 + 4(控制字节)，最大 253。</div>
 STARTDT(启动数据传输 act/con)、STOPDT(停止数据传输 act/con)、TESTFR(测试帧/链路测试 act/con)。
 控制字节第1字节最低两位=11。</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="启停控制 连接建立后用户数据不自动激活：控制站发 STARTDT act→被控站 STARTDT con，之后被控站才主动上送变化数据。 STOPDT 停止上送；TESTFR 空闲时探活。">
+        <div class="card" id="card-3-8" data-keywords="启停控制 连接建立后用户数据不自动激活：控制站发 STARTDT act→被控站 STARTDT con，之后被控站才主动上送变化数据。 STOPDT 停止上送；TESTFR 空闲时探活。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">启停控制</span>
@@ -177,7 +181,7 @@ STOPDT 停止上送；TESTFR 空闲时探活。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-9" data-keywords="ASDU 组成 ASDU = 数据单元标识 + 若干信息体。 数据单元标识 = 类型标识 TI(1字节) + 可变结构限定词 VSQ(1字节) + 传输原因 COT(1或2字节) + 公共地址 CA(1或2字节, 站址)。 信息体 = 信息体地址 IOA(1/2/3字节) + 信息元素(值+品质/时标)。">
+        <div class="card" id="card-4-9" data-keywords="ASDU 组成 ASDU = 数据单元标识 + 若干信息体。 数据单元标识 = 类型标识 TI(1字节) + 可变结构限定词 VSQ(1字节) + 传输原因 COT(1或2字节) + 公共地址 CA(1或2字节, 站址)。 信息体 = 信息体地址 IOA(1/2/3字节) + 信息元素(值+品质/时标)。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">ASDU 组成</span>
@@ -186,7 +190,7 @@ STOPDT 停止上送；TESTFR 空闲时探活。</div>
 数据单元标识 = 类型标识 TI(1字节) + 可变结构限定词 VSQ(1字节) + 传输原因 COT(1或2字节) + 公共地址 CA(1或2字节, 站址)。
 信息体 = 信息体地址 IOA(1/2/3字节) + 信息元素(值+品质/时标)。</div>
         </div>
-        <div class="card" id="card-4-10" data-keywords="可变结构限定词 VSQ VSQ 最高位 SQ + 低7位数目 N。 SQ=0：N 个离散信息体(各带自己的 IOA)； SQ=1：单起始 IOA 后连续 N 个信息元素(地址连续，节省字节)。">
+        <div class="card" id="card-4-10" data-keywords="可变结构限定词 VSQ VSQ 最高位 SQ + 低7位数目 N。 SQ=0：N 个离散信息体(各带自己的 IOA)； SQ=1：单起始 IOA 后连续 N 个信息元素(地址连续，节省字节)。 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">可变结构限定词 VSQ</span>
@@ -195,14 +199,14 @@ STOPDT 停止上送；TESTFR 空闲时探活。</div>
 SQ=0：N 个离散信息体(各带自己的 IOA)；
 SQ=1：单起始 IOA 后连续 N 个信息元素(地址连续，节省字节)。</div>
         </div>
-        <div class="card" id="card-4-11" data-keywords="传输原因 COT 常见：3 突发(spont)、5 请求(req)、6 激活(act)、7 激活确认(actcon)、8 停止激活、9 停止确认、10 激活终止(actterm)、20 响应总召、37 响应计数量召唤、44/45/46/47 未知类型/原因/公共地址/信息体地址。">
+        <div class="card" id="card-4-11" data-keywords="传输原因 COT 常见：3 突发(spont)、5 请求(req)、6 激活(act)、7 激活确认(actcon)、8 停止激活、9 停止确认、10 激活终止(actterm)、20 响应总召、37 响应计数量召唤、44/45/46/47 未知类型/原因/公共地址/信息体地址。 ">
           <div class="card-head">
             <span class="card-num">11</span>
             <span class="card-title">传输原因 COT</span>
           </div>
           <div class="card-code">常见：3 突发(spont)、5 请求(req)、6 激活(act)、7 激活确认(actcon)、8 停止激活、9 停止确认、10 激活终止(actterm)、20 响应总召、37 响应计数量召唤、44/45/46/47 未知类型/原因/公共地址/信息体地址。</div>
         </div>
-        <div class="card" id="card-4-12" data-keywords="地址约定 公共地址(站址)与信息体地址(IOA)字节数由通信双方约定。 常见实施细则：传输原因 1 字节、公共地址 1 字节(或2)、信息体地址 2 字节(或3)，十六进制表示。">
+        <div class="card" id="card-4-12" data-keywords="地址约定 公共地址(站址)与信息体地址(IOA)字节数由通信双方约定。 常见实施细则：传输原因 1 字节、公共地址 1 字节(或2)、信息体地址 2 字节(或3)，十六进制表示。 ">
           <div class="card-head">
             <span class="card-num">12</span>
             <span class="card-title">地址约定</span>
@@ -220,7 +224,7 @@ SQ=1：单起始 IOA 后连续 N 个信息元素(地址连续，节省字节)。
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-13" data-keywords="遥信(YX) 1  单点信息 M_SP_NA_1 3  双点信息 M_DP_NA_1 30 带 CP56Time2a 时标单点(SOE) 31 带时标双点 遥信变位主动突发上送，SOE 带毫秒级时标。">
+        <div class="card" id="card-5-13" data-keywords="遥信(YX) 1  单点信息 M_SP_NA_1 3  双点信息 M_DP_NA_1 30 带 CP56Time2a 时标单点(SOE) 31 带时标双点 遥信变位主动突发上送，SOE 带毫秒级时标。 ">
           <div class="card-head">
             <span class="card-num">13</span>
             <span class="card-title">遥信(YX)</span>
@@ -231,7 +235,7 @@ SQ=1：单起始 IOA 后连续 N 个信息元素(地址连续，节省字节)。
 31 带时标双点
 遥信变位主动突发上送，SOE 带毫秒级时标。</div>
         </div>
-        <div class="card" id="card-5-14" data-keywords="遥测(YC) 9  归一化值 M_ME_NA_1 11 标度化值 M_ME_NB_1 13 短浮点 M_ME_NC_1 34/35/36 带 CP56Time2a 时标的遥测 21 不带品质归一化值。变化遥测突发上送。">
+        <div class="card" id="card-5-14" data-keywords="遥测(YC) 9  归一化值 M_ME_NA_1 11 标度化值 M_ME_NB_1 13 短浮点 M_ME_NC_1 34/35/36 带 CP56Time2a 时标的遥测 21 不带品质归一化值。变化遥测突发上送。 ">
           <div class="card-head">
             <span class="card-num">14</span>
             <span class="card-title">遥测(YC)</span>
@@ -242,7 +246,7 @@ SQ=1：单起始 IOA 后连续 N 个信息元素(地址连续，节省字节)。
 34/35/36 带 CP56Time2a 时标的遥测
 21 不带品质归一化值。变化遥测突发上送。</div>
         </div>
-        <div class="card" id="card-5-15" data-keywords="遥控/遥调(YK/YT) 45 单命令 C_SC_NA_1 46 双命令 C_DC_NA_1 47 步调节命令 48/49/50 设定命令(归一化/标度化/短浮点) 58/59/60 带时标的控制命令。">
+        <div class="card" id="card-5-15" data-keywords="遥控/遥调(YK/YT) 45 单命令 C_SC_NA_1 46 双命令 C_DC_NA_1 47 步调节命令 48/49/50 设定命令(归一化/标度化/短浮点) 58/59/60 带时标的控制命令。 ">
           <div class="card-head">
             <span class="card-num">15</span>
             <span class="card-title">遥控/遥调(YK/YT)</span>
@@ -253,7 +257,7 @@ SQ=1：单起始 IOA 后连续 N 个信息元素(地址连续，节省字节)。
 48/49/50 设定命令(归一化/标度化/短浮点)
 58/59/60 带时标的控制命令。</div>
         </div>
-        <div class="card" id="card-5-16" data-keywords="电度与召唤 15 累计量 M_IT_NA_1、37 带时标累计量。 100 总召唤 C_IC_NA_1、101 计数量召唤 C_CI_NA_1、 102 读命令、103 时钟同步 C_CS_NA_1、105 复位进程 C_RP_NA_1、107 测试帧 C_TS。">
+        <div class="card" id="card-5-16" data-keywords="电度与召唤 15 累计量 M_IT_NA_1、37 带时标累计量。 100 总召唤 C_IC_NA_1、101 计数量召唤 C_CI_NA_1、 102 读命令、103 时钟同步 C_CS_NA_1、105 复位进程 C_RP_NA_1、107 测试帧 C_TS。 ">
           <div class="card-head">
             <span class="card-num">16</span>
             <span class="card-title">电度与召唤</span>
@@ -272,7 +276,7 @@ SQ=1：单起始 IOA 后连续 N 个信息元素(地址连续，节省字节)。
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-6-17" data-keywords="链路建立与总召 a. 控制站发 STARTDT act；b. 被控站 STARTDT con。 a. 控制站发总召 C_IC(100, COT=6 激活)；b. 被控站 actcon(7)； c. 上送全部遥测帧、d. 上送全部遥信帧(可分多帧)；e. 总召结束(COT=10 激活终止)。">
+        <div class="card" id="card-6-17" data-keywords="链路建立与总召 a. 控制站发 STARTDT act；b. 被控站 STARTDT con。 a. 控制站发总召 C_IC(100, COT=6 激活)；b. 被控站 actcon(7)； c. 上送全部遥测帧、d. 上送全部遥信帧(可分多帧)；e. 总召结束(COT=10 激活终止)。 ">
           <div class="card-head">
             <span class="card-num">17</span>
             <span class="card-title">链路建立与总召</span>
@@ -281,7 +285,7 @@ SQ=1：单起始 IOA 后连续 N 个信息元素(地址连续，节省字节)。
 a. 控制站发总召 C_IC(100, COT=6 激活)；b. 被控站 actcon(7)；
 c. 上送全部遥测帧、d. 上送全部遥信帧(可分多帧)；e. 总召结束(COT=10 激活终止)。</div>
         </div>
-        <div class="card" id="card-6-18" data-keywords="变化数据上送 总召后转入正常运行： 被控站以 COT=3(突发)主动上送变化遥测(带/不带品质)与变化遥信(带/不带时标 SOE)。 控制站定期回 S 帧确认。">
+        <div class="card" id="card-6-18" data-keywords="变化数据上送 总召后转入正常运行： 被控站以 COT=3(突发)主动上送变化遥测(带/不带品质)与变化遥信(带/不带时标 SOE)。 控制站定期回 S 帧确认。 ">
           <div class="card-head">
             <span class="card-num">18</span>
             <span class="card-title">变化数据上送</span>
@@ -290,7 +294,7 @@ c. 上送全部遥测帧、d. 上送全部遥信帧(可分多帧)；e. 总召结
 被控站以 COT=3(突发)主动上送变化遥测(带/不带品质)与变化遥信(带/不带时标 SOE)。
 控制站定期回 S 帧确认。</div>
         </div>
-        <div class="card" id="card-6-19" data-keywords="对时 a. 控制站发时钟同步 C_CS(103, 含 CP56Time2a)；b. 被控站回对时确认。 网络延时影响精度，高精度对时用 SNTP/对时装置。">
+        <div class="card" id="card-6-19" data-keywords="对时 a. 控制站发时钟同步 C_CS(103, 含 CP56Time2a)；b. 被控站回对时确认。 网络延时影响精度，高精度对时用 SNTP/对时装置。 ">
           <div class="card-head">
             <span class="card-num">19</span>
             <span class="card-title">对时</span>
@@ -298,7 +302,7 @@ c. 上送全部遥测帧、d. 上送全部遥信帧(可分多帧)；e. 总召结
           <div class="card-code">a. 控制站发时钟同步 C_CS(103, 含 CP56Time2a)；b. 被控站回对时确认。
 网络延时影响精度，高精度对时用 SNTP/对时装置。</div>
         </div>
-        <div class="card" id="card-6-20" data-keywords="电度召唤 a. 控制站发计数量召唤 C_CI(101)；b. 被控站确认； c. 上送电能脉冲计数帧(累计量, 可分多帧)；d. 计数量召唤结束。">
+        <div class="card" id="card-6-20" data-keywords="电度召唤 a. 控制站发计数量召唤 C_CI(101)；b. 被控站确认； c. 上送电能脉冲计数帧(累计量, 可分多帧)；d. 计数量召唤结束。 ">
           <div class="card-head">
             <span class="card-num">20</span>
             <span class="card-title">电度召唤</span>
@@ -316,7 +320,7 @@ c. 上送电能脉冲计数帧(累计量, 可分多帧)；d. 计数量召唤结�
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-7-21" data-keywords="选择-执行-撤消 遥控分预置(选择)、执行、撤消三步(SBO)。 单命令 SCO/双命令 DCO 的限定词 QU + S/E 位 + 命令状态。 控分/控合 预置限定词：81H/82H；执行限定词：01H/02H；撤消：将 06 改为 08。">
+        <div class="card" id="card-7-21" data-keywords="选择-执行-撤消 遥控分预置(选择)、执行、撤消三步(SBO)。 单命令 SCO/双命令 DCO 的限定词 QU + S/E 位 + 命令状态。 控分/控合 预置限定词：81H/82H；执行限定词：01H/02H；撤消：将 06 改为 08。 ">
           <div class="card-head">
             <span class="card-num">21</span>
             <span class="card-title">选择-执行-撤消</span>
@@ -325,7 +329,7 @@ c. 上送电能脉冲计数帧(累计量, 可分多帧)；d. 计数量召唤结�
 单命令 SCO/双命令 DCO 的限定词 QU + S/E 位 + 命令状态。
 控分/控合 预置限定词：81H/82H；执行限定词：01H/02H；撤消：将 06 改为 08。</div>
         </div>
-        <div class="card" id="card-7-22" data-keywords="确认与返校 被控站回遥控确认(COT=7)；返校错误将 07 改为 47H； 遥控撤消的确认将 07 改为 09。 选择后须在超时内执行，否则自动撤消。">
+        <div class="card" id="card-7-22" data-keywords="确认与返校 被控站回遥控确认(COT=7)；返校错误将 07 改为 47H； 遥控撤消的确认将 07 改为 09。 选择后须在超时内执行，否则自动撤消。 ">
           <div class="card-head">
             <span class="card-num">22</span>
             <span class="card-title">确认与返校</span>
@@ -344,7 +348,7 @@ c. 上送电能脉冲计数帧(累计量, 可分多帧)；d. 计数量召唤结�
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-8-23" data-keywords="流量控制参数 k：发送方未被确认的 I 帧最大数目(默认12)，达到则停发等 S 确认。 w：接收方最迟每收 w 个 I 帧回一个 S 确认(默认8, w≤2/3·k)。">
+        <div class="card" id="card-8-23" data-keywords="流量控制参数 k：发送方未被确认的 I 帧最大数目(默认12)，达到则停发等 S 确认。 w：接收方最迟每收 w 个 I 帧回一个 S 确认(默认8, w≤2/3·k)。 ">
           <div class="card-head">
             <span class="card-num">23</span>
             <span class="card-title">流量控制参数</span>
@@ -352,7 +356,7 @@ c. 上送电能脉冲计数帧(累计量, 可分多帧)；d. 计数量召唤结�
           <div class="card-code">k：发送方未被确认的 I 帧最大数目(默认12)，达到则停发等 S 确认。
 w：接收方最迟每收 w 个 I 帧回一个 S 确认(默认8, w≤2/3·k)。</div>
         </div>
-        <div class="card" id="card-8-24" data-keywords="超时参数 t0：建立连接超时(默认30s)。 t1：发送后等待确认(APDU)超时(默认15s)，超时则重连。 t2：无数据报文时回 S 确认的超时(默认10s, &lt;t1)。 t3：链路空闲发 TESTFR 的超时(默认20s)。">
+        <div class="card" id="card-8-24" data-keywords="超时参数 t0：建立连接超时(默认30s)。 t1：发送后等待确认(APDU)超时(默认15s)，超时则重连。 t2：无数据报文时回 S 确认的超时(默认10s, &lt;t1)。 t3：链路空闲发 TESTFR 的超时(默认20s)。 ">
           <div class="card-head">
             <span class="card-num">24</span>
             <span class="card-title">超时参数</span>
@@ -362,7 +366,7 @@ t1：发送后等待确认(APDU)超时(默认15s)，超时则重连。
 t2：无数据报文时回 S 确认的超时(默认10s, &lt;t1)。
 t3：链路空闲发 TESTFR 的超时(默认20s)。</div>
         </div>
-        <div class="card" id="card-8-25" data-keywords="工程注意 TCP 可靠，故无报文校验、无分组召唤。 网络速率高，被控站发送周期要兼顾控制站通道读写与处理周期，过快会使缓冲区报文杂乱。 配置：RTU/通道参数表站址要正确；主站设 TCPRTU + 对方 IP:端口，子站(转发)设 TCPSRTU。">
+        <div class="card" id="card-8-25" data-keywords="工程注意 TCP 可靠，故无报文校验、无分组召唤。 网络速率高，被控站发送周期要兼顾控制站通道读写与处理周期，过快会使缓冲区报文杂乱。 配置：RTU/通道参数表站址要正确；主站设 TCPRTU + 对方 IP:端口，子站(转发)设 TCPSRTU。 ">
           <div class="card-head">
             <span class="card-num">25</span>
             <span class="card-title">工程注意</span>

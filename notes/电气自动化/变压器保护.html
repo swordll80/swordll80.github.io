@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="内部故障 绕组相间短路、匝间短路、单相接地、绕组与铁芯间闪络等； 匝间短路电流小、外部电流不明显，是保护难点。">
+        <div class="card" id="card-1-1" data-keywords="内部故障 绕组相间短路、匝间短路、单相接地、绕组与铁芯间闪络等； 匝间短路电流小、外部电流不明显，是保护难点。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">内部故障</span>
@@ -86,7 +89,7 @@
           <div class="card-code">绕组相间短路、匝间短路、单相接地、绕组与铁芯间闪络等；
 匝间短路电流小、外部电流不明显，是保护难点。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="异常运行 外部短路引起的过电流、过负荷、油温过高、油位异常、 过电压/低频引起的过励磁、中性点绝缘等。">
+        <div class="card" id="card-1-2" data-keywords="异常运行 外部短路引起的过电流、过负荷、油温过高、油位异常、 过电压/低频引起的过励磁、中性点绝缘等。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">异常运行</span>
@@ -104,7 +107,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="瓦斯保护（气体继电器） 反映油箱内部故障（产气、油流冲动），装于本体与油枕之间管道。 轻瓦斯：气体聚集 → 发信号。 重瓦斯：油流冲动 → 跳闸。 是变压器内部故障（尤其匝间短路）的灵敏主保护，0.8MVA及以上油浸变压器应装设。">
+        <div class="card" id="card-2-3" data-keywords="瓦斯保护（气体继电器） 反映油箱内部故障（产气、油流冲动），装于本体与油枕之间管道。 轻瓦斯：气体聚集 → 发信号。 重瓦斯：油流冲动 → 跳闸。 是变压器内部故障（尤其匝间短路）的灵敏主保护，0.8MVA及以上油浸变压器应装设。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">瓦斯保护（气体继电器）</span>
@@ -114,7 +117,7 @@
 重瓦斯：油流冲动 → 跳闸。
 是变压器内部故障（尤其匝间短路）的灵敏主保护，0.8MVA及以上油浸变压器应装设。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="纵差保护 反映绕组及引出线相间、接地故障，瞬时动作。 需相位/变比补偿、二次谐波制动(躲涌流)、比率制动(躲不平衡)。 与瓦斯保护共同作为主保护，互补（差动反映引线、瓦斯反映匝间）。">
+        <div class="card" id="card-2-4" data-keywords="纵差保护 反映绕组及引出线相间、接地故障，瞬时动作。 需相位/变比补偿、二次谐波制动(躲涌流)、比率制动(躲不平衡)。 与瓦斯保护共同作为主保护，互补（差动反映引线、瓦斯反映匝间）。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">纵差保护</span>
@@ -133,7 +136,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="过电流/复压闭锁过流 作为外部短路和内部故障后备； 大容量变压器用复合电压闭锁过流(低电压+负序电压)提高灵敏度。">
+        <div class="card" id="card-3-5" data-keywords="过电流/复压闭锁过流 作为外部短路和内部故障后备； 大容量变压器用复合电压闭锁过流(低电压+负序电压)提高灵敏度。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">过电流/复压闭锁过流</span>
@@ -141,7 +144,7 @@
           <div class="card-code">作为外部短路和内部故障后备；
 大容量变压器用复合电压闭锁过流(低电压+负序电压)提高灵敏度。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="零序/接地后备 中性点接地变压器设零序过流保护，反映接地故障； 按中性点接地方式配置零序电流/方向元件。">
+        <div class="card" id="card-3-6" data-keywords="零序/接地后备 中性点接地变压器设零序过流保护，反映接地故障； 按中性点接地方式配置零序电流/方向元件。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">零序/接地后备</span>
@@ -149,7 +152,7 @@
           <div class="card-code">中性点接地变压器设零序过流保护，反映接地故障；
 按中性点接地方式配置零序电流/方向元件。</div>
         </div>
-        <div class="card" id="card-3-7" data-keywords="过负荷 反映对称过负荷，一般接一相电流，延时发信号(不跳闸)。">
+        <div class="card" id="card-3-7" data-keywords="过负荷 反映对称过负荷，一般接一相电流，延时发信号(不跳闸)。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">过负荷</span>
@@ -166,7 +169,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-8" data-keywords="过励磁保护 反映 U/f 升高导致的铁芯过励磁，按过励磁倍数(反时限)动作； 多用于大型变压器和发电机变压器组。">
+        <div class="card" id="card-4-8" data-keywords="过励磁保护 反映 U/f 升高导致的铁芯过励磁，按过励磁倍数(反时限)动作； 多用于大型变压器和发电机变压器组。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">过励磁保护</span>
@@ -174,7 +177,7 @@
           <div class="card-code">反映 U/f 升高导致的铁芯过励磁，按过励磁倍数(反时限)动作；
 多用于大型变压器和发电机变压器组。</div>
         </div>
-        <div class="card" id="card-4-9" data-keywords="温度与非电量 油温、绕组温度、压力释放、油位等非电量保护； 经非电量继电器动作于信号或跳闸，一般不经出口复归压板与电量保护分开。">
+        <div class="card" id="card-4-9" data-keywords="温度与非电量 油温、绕组温度、压力释放、油位等非电量保护； 经非电量继电器动作于信号或跳闸，一般不经出口复归压板与电量保护分开。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">温度与非电量</span>

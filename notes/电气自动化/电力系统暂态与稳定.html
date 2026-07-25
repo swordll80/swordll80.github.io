@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -66,31 +69,24 @@
     <input type="text" id="searchInput" placeholder="搜索知识点...">
     <button class="search-clear" id="searchClear" title="清除">✕</button>
   </div>
-  <span class="result-count" id="resultCount">6 条</span>
+  <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">电磁暂态、机电暂态与电力系统稳定性(功角、电压、频率)。</div>
+    <div class="intro">电磁与机电暂态、功角/电压/频率稳定,配功角特性曲线。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
         <span class="title">一、暂态过程</span>
-        <span class="count">2 条</span>
+        <span class="count">1 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="电磁暂态 故障/操作引起的快速过程;非周期分量衰减、行波过电压;仿真工具 EMTP。">
+        <div class="card" id="card-1-1" data-keywords="电磁与机电 电磁暂态(快,过电压/行波,EMTP);机电暂态(摇摆方程 M·d²δ/dt²=Pm−Pe,秒级)。 ">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">电磁暂态</span>
+            <span class="card-title">电磁与机电</span>
           </div>
-          <div class="card-code">故障/操作引起的快速过程;非周期分量衰减、行波过电压;仿真工具 EMTP。</div>
-        </div>
-        <div class="card" id="card-1-2" data-keywords="机电暂态 发电机转子运动方程(摇摆方程) M·d²δ/dt²=Pm-Pe;时间尺度秒级。">
-          <div class="card-head">
-            <span class="card-num">2</span>
-            <span class="card-title">机电暂态</span>
-          </div>
-          <div class="card-code">发电机转子运动方程(摇摆方程) M·d²δ/dt²=Pm-Pe;时间尺度秒级。</div>
+          <div class="card-code">电磁暂态(快,过电压/行波,EMTP);机电暂态(摇摆方程 M·d²δ/dt²=Pm−Pe,秒级)。</div>
         </div>
       </div>
     </div>
@@ -102,44 +98,45 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="静态稳定 小扰动下能否保持同步;功角特性 dP/dδ&gt;0 区域稳定;整步功率。">
+        <div class="card" id="card-2-2" data-keywords="静态稳定 小扰动 dP/dδ&gt;0 稳定;整步功率。 ">
           <div class="card-head">
-            <span class="card-num">3</span>
+            <span class="card-num">2</span>
             <span class="card-title">静态稳定</span>
           </div>
-          <div class="card-code">小扰动下能否保持同步;功角特性 dP/dδ&gt;0 区域稳定;整步功率。</div>
+          <div class="card-code">小扰动 dP/dδ&gt;0 稳定;整步功率。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="暂态稳定 大扰动(短路/切机)后能否保持同步;等面积定则判据(加速面积≤减速面积);极限切除角/时间。">
+        <div class="card" id="card-2-3" data-keywords="暂态稳定 大扰动后能否保持同步;等面积定则(加速面积≤减速面积)判据; 极限切除角/时间;功角特性 P=Pmax·sinδ。 功角特性与工作点">
           <div class="card-head">
-            <span class="card-num">4</span>
+            <span class="card-num">3</span>
             <span class="card-title">暂态稳定</span>
           </div>
-          <div class="card-code">大扰动(短路/切机)后能否保持同步;等面积定则判据(加速面积≤减速面积);极限切除角/时间。</div>
+          <div class="card-code">大扰动后能否保持同步;等面积定则(加速面积≤减速面积)判据;
+极限切除角/时间;功角特性 P=Pmax·sinδ。</div>
+          <div class="card-fig"><svg viewBox="0 0 280 150" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><line x1="30" y1="20" x2="30" y2="130" stroke="#1a1a2e"/><line x1="30" y1="130" x2="260" y2="130" stroke="#1a1a2e"/><text x="12" y="24">P</text><text x="252" y="145">δ</text><path d="M30,130 Q100,30 160,30 Q210,30 250,110" fill="none" stroke="#356ae6" stroke-width="2"/><line x1="30" y1="90" x2="250" y2="90" stroke="#067647" stroke-dasharray="3 2"/><text x="200" y="86" fill="#067647" font-size="9">Pm(机械功率)</text><circle cx="70" cy="90" r="3" fill="#b42318"/><text x="55" y="80" fill="#b42318" font-size="9">工作点</text><text x="40" y="24" fill="#356ae6" font-size="9">P=Pmax·sinδ</text></svg><div class="cap">功角特性与工作点</div></div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、电压与频率稳定</span>
+        <span class="title">三、电压与频率</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="电压稳定 无功不足→电压崩溃;P-V/Q-V 曲线、临界点;无功补偿与调压。">
+        <div class="card" id="card-3-4" data-keywords="电压稳定 无功不足→电压崩溃;P-V/Q-V 曲线;无功补偿调压。 ">
           <div class="card-head">
-            <span class="card-num">5</span>
+            <span class="card-num">4</span>
             <span class="card-title">电压稳定</span>
           </div>
-          <div class="card-code">无功不足→电压崩溃;P-V/Q-V 曲线、临界点;无功补偿与调压。</div>
+          <div class="card-code">无功不足→电压崩溃;P-V/Q-V 曲线;无功补偿调压。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="频率稳定与措施 有功不平衡→频率变化;调频(一次/二次/AGC)、低频减载; 提高稳定:快速保护、重合闸、切机切负荷、FACTS、励磁/PSS。">
+        <div class="card" id="card-3-5" data-keywords="频率与措施 有功不平衡→频率变化;调频(一次/二次/AGC)、低频减载;快速保护、切机切负荷、FACTS、PSS 提稳。 ">
           <div class="card-head">
-            <span class="card-num">6</span>
-            <span class="card-title">频率稳定与措施</span>
+            <span class="card-num">5</span>
+            <span class="card-title">频率与措施</span>
           </div>
-          <div class="card-code">有功不平衡→频率变化;调频(一次/二次/AGC)、低频减载;
-提高稳定:快速保护、重合闸、切机切负荷、FACTS、励磁/PSS。</div>
+          <div class="card-code">有功不平衡→频率变化;调频(一次/二次/AGC)、低频减载;快速保护、切机切负荷、FACTS、PSS 提稳。</div>
         </div>
       </div>
     </div>

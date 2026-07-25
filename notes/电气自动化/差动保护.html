@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="基尔霍夫电流原理 被保护元件正常/外部故障时，流入电流等于流出电流，差流≈0； 内部故障时两侧电流失去平衡，差流 = 故障电流，保护动作。 差动是有明确边界的保护，天然具有绝对选择性，无需与相邻元件延时配合，可瞬时动作。">
+        <div class="card" id="card-1-1" data-keywords="基尔霍夫电流原理 被保护元件正常/外部故障时，流入电流等于流出电流，差流≈0； 内部故障时两侧电流失去平衡，差流 = 故障电流，保护动作。 差动是有明确边界的保护，天然具有绝对选择性，无需与相邻元件延时配合，可瞬时动作。 差动保护原理：比较两侧电流">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">基尔霍夫电流原理</span>
@@ -86,8 +89,9 @@
           <div class="card-code">被保护元件正常/外部故障时，流入电流等于流出电流，差流≈0；
 内部故障时两侧电流失去平衡，差流 = 故障电流，保护动作。
 差动是有明确边界的保护，天然具有绝对选择性，无需与相邻元件延时配合，可瞬时动作。</div>
+          <div class="card-fig"><svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><defs><marker id="da" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="#356ae6"/></marker></defs><rect x="110" y="30" width="100" height="34" rx="4" fill="#f8f9fc" stroke="#356ae6"/><text x="120" y="51">被保护元件</text><line x1="40" y1="47" x2="108" y2="47" stroke="#356ae6" marker-end="url(#da)"/><text x="50" y="40" fill="#067647">I1→</text><line x1="212" y1="47" x2="280" y2="47" stroke="#356ae6" marker-end="url(#da)"/><text x="240" y="40" fill="#067647">I2→</text><line x1="75" y1="47" x2="75" y2="90" stroke="#7d8599"/><line x1="245" y1="47" x2="245" y2="90" stroke="#7d8599"/><line x1="75" y1="90" x2="245" y2="90" stroke="#7d8599"/><circle cx="160" cy="90" r="10" fill="#fdeaea" stroke="#b42318"/><text x="156" y="94" fill="#b42318">Δ</text><text x="40" y="108" fill="#7d8599">差流 Δ=I1−I2:正常≈0,内部故障=故障电流→动作</text></svg><div class="cap">差动保护原理：比较两侧电流</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="纵差与横差 纵联差动（纵差）：比较被保护元件两端电流（变压器、发电机、线路两侧）。 横联差动（横差）：比较并联的两条支路电流（双回线、发电机分支）。">
+        <div class="card" id="card-1-2" data-keywords="纵差与横差 纵联差动（纵差）：比较被保护元件两端电流（变压器、发电机、线路两侧）。 横联差动（横差）：比较并联的两条支路电流（双回线、发电机分支）。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">纵差与横差</span>
@@ -105,7 +109,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="来源 1) 两侧TA变比与特性不一致、误差不同。 2) 变压器两侧电流幅值/相位不同、分接头调节。 3) TA 饱和（尤其外部故障大电流时）。 4) 变压器励磁电流（空载合闸涌流）。">
+        <div class="card" id="card-2-3" data-keywords="来源 1) 两侧TA变比与特性不一致、误差不同。 2) 变压器两侧电流幅值/相位不同、分接头调节。 3) TA 饱和（尤其外部故障大电流时）。 4) 变压器励磁电流（空载合闸涌流）。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">来源</span>
@@ -115,7 +119,7 @@
 3) TA 饱和（尤其外部故障大电流时）。
 4) 变压器励磁电流（空载合闸涌流）。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="比率制动特性 动作电流随制动电流(穿越电流)增大而抬高：   I_op &gt; K_res · I_res + I_op.min 外部故障时穿越电流大 → 制动强，防误动； 内部故障时制动小 → 灵敏动作。 即“外部大穿越不误动、内部故障灵敏动作”。">
+        <div class="card" id="card-2-4" data-keywords="比率制动特性 动作电流随制动电流(穿越电流)增大而抬高：   I_op &gt; K_res · I_res + I_op.min 外部故障时穿越电流大 → 制动强，防误动； 内部故障时制动小 → 灵敏动作。 即“外部大穿越不误动、内部故障灵敏动作”。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">比率制动特性</span>
@@ -136,7 +140,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="相位与幅值补偿 Y/Δ 接线两侧电流相位差 30°，幅值也不同： 传统用 TA 接线（Y侧接Δ、Δ侧接Y）校正； 微机保护用软件移相(Y/d11 等)并按变比归算，再作差动。">
+        <div class="card" id="card-3-5" data-keywords="相位与幅值补偿 Y/Δ 接线两侧电流相位差 30°，幅值也不同： 传统用 TA 接线（Y侧接Δ、Δ侧接Y）校正； 微机保护用软件移相(Y/d11 等)并按变比归算，再作差动。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">相位与幅值补偿</span>
@@ -145,7 +149,7 @@
 传统用 TA 接线（Y侧接Δ、Δ侧接Y）校正；
 微机保护用软件移相(Y/d11 等)并按变比归算，再作差动。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="励磁涌流识别 空载合闸时励磁涌流很大且只在一侧，会造成差动误动。 特征：含大量二次谐波、有间断角、波形偏于一侧。 对策：二次谐波制动（二次谐波含量超阈值则闭锁）或间断角/波形识别。">
+        <div class="card" id="card-3-6" data-keywords="励磁涌流识别 空载合闸时励磁涌流很大且只在一侧，会造成差动误动。 特征：含大量二次谐波、有间断角、波形偏于一侧。 对策：二次谐波制动（二次谐波含量超阈值则闭锁）或间断角/波形识别。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">励磁涌流识别</span>
@@ -154,7 +158,7 @@
 特征：含大量二次谐波、有间断角、波形偏于一侧。
 对策：二次谐波制动（二次谐波含量超阈值则闭锁）或间断角/波形识别。</div>
         </div>
-        <div class="card" id="card-3-7" data-keywords="过励磁 系统过电压或低频使铁芯过励磁，励磁电流含大量五次谐波； 用五次谐波制动加以区分，避免误动。">
+        <div class="card" id="card-3-7" data-keywords="过励磁 系统过电压或低频使铁芯过励磁，励磁电流含大量五次谐波； 用五次谐波制动加以区分，避免误动。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">过励磁</span>
@@ -162,7 +166,7 @@
           <div class="card-code">系统过电压或低频使铁芯过励磁，励磁电流含大量五次谐波；
 用五次谐波制动加以区分，避免误动。</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="差动速断 内部严重故障、TA 深度饱和使谐波制动可能拒动时， 设差动速断：差流超大定值即瞬时跳闸，不经谐波闭锁。">
+        <div class="card" id="card-3-8" data-keywords="差动速断 内部严重故障、TA 深度饱和使谐波制动可能拒动时， 设差动速断：差流超大定值即瞬时跳闸，不经谐波闭锁。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">差动速断</span>
@@ -180,7 +184,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-9" data-keywords="光纤纵差 两侧装置经光纤交换电流采样值，实时计算差流； 具备绝对选择性、全线速动，是高压线路主保护。 需两侧采样同步（GPS/通道对时）与通道监视。">
+        <div class="card" id="card-4-9" data-keywords="光纤纵差 两侧装置经光纤交换电流采样值，实时计算差流； 具备绝对选择性、全线速动，是高压线路主保护。 需两侧采样同步（GPS/通道对时）与通道监视。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">光纤纵差</span>

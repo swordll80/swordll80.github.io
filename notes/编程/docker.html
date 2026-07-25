@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="镜像与容器 镜像 Image：只读模板（应用+依赖+环境） 容器 Container：镜像运行的实例（可读写层） 仓库 Registry：存放镜像（Docker Hub、私有仓库） 类比：镜像=类，容器=对象">
+        <div class="card" id="card-1-1" data-keywords="镜像与容器 镜像 Image：只读模板（应用+依赖+环境） 容器 Container：镜像运行的实例（可读写层） 仓库 Registry：存放镜像（Docker Hub、私有仓库） 类比：镜像=类，容器=对象 Docker 镜像分层与容器可写层">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">镜像与容器</span>
@@ -87,6 +90,7 @@
 容器 Container：镜像运行的实例（可读写层）
 仓库 Registry：存放镜像（Docker Hub、私有仓库）
 类比：镜像=类，容器=对象</div>
+          <div class="card-fig"><svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><rect x="20" y="20" width="110" height="110" rx="4" fill="none" stroke="#356ae6"/><text x="40" y="16" fill="#356ae6">镜像(只读层)</text><rect x="30" y="30" width="90" height="18" fill="#eef3ff" stroke="#7d8599"/><text x="38" y="43">基础镜像</text><rect x="30" y="52" width="90" height="18" fill="#e8f7ee" stroke="#7d8599"/><text x="38" y="65">依赖层</text><rect x="30" y="74" width="90" height="18" fill="#fff4e6" stroke="#7d8599"/><text x="38" y="87">应用层</text><rect x="170" y="20" width="110" height="110" rx="4" fill="none" stroke="#067647"/><text x="185" y="16" fill="#067647">容器(可写层)</text><rect x="180" y="30" width="90" height="60" fill="#f5f5f5" stroke="#7d8599" stroke-dasharray="2 2"/><text x="192" y="64" fill="#7d8599">镜像(共享)</text><rect x="180" y="95" width="90" height="24" fill="#fdeaea" stroke="#b42318"/><text x="192" y="110" fill="#b42318">可写层</text><text x="30" y="145" fill="#7d8599">镜像=类,容器=对象(加可写层)</text></svg><div class="cap">Docker 镜像分层与容器可写层</div></div>
         </div>
       </div>
     </div>
@@ -98,7 +102,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-2" data-keywords="常用命令 docker pull nginx:1.25       # 拉取镜像 docker images               # 列出镜像 docker rmi &lt;image&gt;          # 删除镜像 docker tag src:tag new:tag  # 打标签 docker build -t app:1.0 .   # 构建镜像 docker save/load            # 导出/导入 tar">
+        <div class="card" id="card-2-2" data-keywords="常用命令 docker pull nginx:1.25       # 拉取镜像 docker images               # 列出镜像 docker rmi &lt;image&gt;          # 删除镜像 docker tag src:tag new:tag  # 打标签 docker build -t app:1.0 .   # 构建镜像 docker save/load            # 导出/导入 tar ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">常用命令</span>
@@ -120,7 +124,7 @@ docker save/load            # 导出/导入 tar</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-3" data-keywords="run 与生命周期 docker run -d --name web -p 8080:80 nginx   -d 后台  -p 主机:容器 端口映射  --name 命名   -e KEY=VAL 环境变量  --rm 退出即删 docker ps -a       # 所有容器 docker stop/start/restart web docker rm web      # 删除容器">
+        <div class="card" id="card-3-3" data-keywords="run 与生命周期 docker run -d --name web -p 8080:80 nginx   -d 后台  -p 主机:容器 端口映射  --name 命名   -e KEY=VAL 环境变量  --rm 退出即删 docker ps -a       # 所有容器 docker stop/start/restart web docker rm web      # 删除容器 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">run 与生命周期</span>
@@ -132,7 +136,7 @@ docker ps -a       # 所有容器
 docker stop/start/restart web
 docker rm web      # 删除容器</div>
         </div>
-        <div class="card" id="card-3-4" data-keywords="进入与调试 docker logs -f web           # 查看日志 docker exec -it web bash     # 进入容器 docker inspect web           # 详细信息 docker stats                 # 资源占用">
+        <div class="card" id="card-3-4" data-keywords="进入与调试 docker logs -f web           # 查看日志 docker exec -it web bash     # 进入容器 docker inspect web           # 详细信息 docker stats                 # 资源占用 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">进入与调试</span>
@@ -152,7 +156,7 @@ docker stats                 # 资源占用</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-5" data-keywords="常用指令 FROM node:20-alpine        # 基础镜像 WORKDIR /app               # 工作目录 COPY package.json .        # 复制文件 RUN npm install            # 构建时执行 EXPOSE 3000                # 声明端口 ENV NODE_ENV=production    # 环境变量 CMD [&quot;node&quot;, &quot;server.js&quot;]  # 启动命令">
+        <div class="card" id="card-4-5" data-keywords="常用指令 FROM node:20-alpine        # 基础镜像 WORKDIR /app               # 工作目录 COPY package.json .        # 复制文件 RUN npm install            # 构建时执行 EXPOSE 3000                # 声明端口 ENV NODE_ENV=production    # 环境变量 CMD [&quot;node&quot;, &quot;server.js&quot;]  # 启动命令 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">常用指令</span>
@@ -165,7 +169,7 @@ EXPOSE 3000                # 声明端口
 ENV NODE_ENV=production    # 环境变量
 CMD [&quot;node&quot;, &quot;server.js&quot;]  # 启动命令</div>
         </div>
-        <div class="card" id="card-4-6" data-keywords="构建优化 -- 分层缓存：先 COPY 依赖清单再 install，最后 COPY 源码 -- 用 .dockerignore 排除 node_modules 等 -- 多阶段构建：build 阶段编译，最终镜像只留产物 FROM x AS build ...  FROM nginx COPY --from=build /app/dist /usr/share/nginx/html">
+        <div class="card" id="card-4-6" data-keywords="构建优化 -- 分层缓存：先 COPY 依赖清单再 install，最后 COPY 源码 -- 用 .dockerignore 排除 node_modules 等 -- 多阶段构建：build 阶段编译，最终镜像只留产物 FROM x AS build ...  FROM nginx COPY --from=build /app/dist /usr/share/nginx/html ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">构建优化</span>
@@ -187,7 +191,7 @@ COPY --from=build /app/dist /usr/share/nginx/html</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-7" data-keywords="数据卷 docker volume create data docker run -v data:/var/lib/mysql mysql   # 命名卷 docker run -v $(pwd):/app app             # 绑定挂载 -- 卷用于持久化，容器删了数据仍在">
+        <div class="card" id="card-5-7" data-keywords="数据卷 docker volume create data docker run -v data:/var/lib/mysql mysql   # 命名卷 docker run -v $(pwd):/app app             # 绑定挂载 -- 卷用于持久化，容器删了数据仍在 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">数据卷</span>
@@ -197,7 +201,7 @@ docker run -v data:/var/lib/mysql mysql   # 命名卷
 docker run -v $(pwd):/app app             # 绑定挂载
 -- 卷用于持久化，容器删了数据仍在</div>
         </div>
-        <div class="card" id="card-5-8" data-keywords="网络 docker network create mynet docker run --network mynet --name db ... # 同网络容器可用容器名互相访问 docker network ls / inspect">
+        <div class="card" id="card-5-8" data-keywords="网络 docker network create mynet docker run --network mynet --name db ... # 同网络容器可用容器名互相访问 docker network ls / inspect ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">网络</span>
@@ -207,7 +211,7 @@ docker run --network mynet --name db ...
 # 同网络容器可用容器名互相访问
 docker network ls / inspect</div>
         </div>
-        <div class="card" id="card-5-9" data-keywords="docker-compose # docker-compose.yml services:   web:     build: .     ports: [&quot;8080:80&quot;]     depends_on: [db]   db:     image: mysql:8     environment:       MYSQL_ROOT_PASSWORD: secret     volumes: [&quot;dbdata:/var/lib/mysql&quot;] volumes: { dbdata: {} }  # docker compose up -d / down / logs -f">
+        <div class="card" id="card-5-9" data-keywords="docker-compose # docker-compose.yml services:   web:     build: .     ports: [&quot;8080:80&quot;]     depends_on: [db]   db:     image: mysql:8     environment:       MYSQL_ROOT_PASSWORD: secret     volumes: [&quot;dbdata:/var/lib/mysql&quot;] volumes: { dbdata: {} }  # docker compose up -d / down / logs -f ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">docker-compose</span>

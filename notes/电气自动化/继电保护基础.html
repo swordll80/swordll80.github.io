@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="继电保护的任务 1) 自动、迅速、有选择地将故障元件从系统中切除，缩小故障影响、减轻设备损坏。 2) 对不正常运行状态（过负荷、过电压等）发出信号或延时跳闸。 继电保护是电力系统安全运行的第一道防线。">
+        <div class="card" id="card-1-1" data-keywords="继电保护的任务 1) 自动、迅速、有选择地将故障元件从系统中切除，缩小故障影响、减轻设备损坏。 2) 对不正常运行状态（过负荷、过电压等）发出信号或延时跳闸。 继电保护是电力系统安全运行的第一道防线。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">继电保护的任务</span>
@@ -87,7 +90,7 @@
 2) 对不正常运行状态（过负荷、过电压等）发出信号或延时跳闸。
 继电保护是电力系统安全运行的第一道防线。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="保护装置的构成 测量比较部分：采集电流、电压等，判断是否故障（如电流、阻抗、差流元件）。 逻辑部分：按时序、方向、闭锁关系综合判断（与/或/延时/闭锁）。 执行输出部分：发跳闸命令、启动信号、录波。">
+        <div class="card" id="card-1-2" data-keywords="保护装置的构成 测量比较部分：采集电流、电压等，判断是否故障（如电流、阻抗、差流元件）。 逻辑部分：按时序、方向、闭锁关系综合判断（与/或/延时/闭锁）。 执行输出部分：发跳闸命令、启动信号、录波。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">保护装置的构成</span>
@@ -96,7 +99,7 @@
 逻辑部分：按时序、方向、闭锁关系综合判断（与/或/延时/闭锁）。
 执行输出部分：发跳闸命令、启动信号、录波。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="主保护与后备保护 主保护：满足系统稳定要求，快速切除本元件全部故障（如差动、距离Ⅰ段）。 后备保护：主保护或断路器拒动时起作用。   近后备：本元件另设保护实现。   远后备：相邻元件保护实现（靠延时配合）。">
+        <div class="card" id="card-1-3" data-keywords="主保护与后备保护 主保护：满足系统稳定要求，快速切除本元件全部故障（如差动、距离Ⅰ段）。 后备保护：主保护或断路器拒动时起作用。   近后备：本元件另设保护实现。   远后备：相邻元件保护实现（靠延时配合）。 主保护与近/远后备">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">主保护与后备保护</span>
@@ -105,6 +108,7 @@
 后备保护：主保护或断路器拒动时起作用。
   近后备：本元件另设保护实现。
   远后备：相邻元件保护实现（靠延时配合）。</div>
+          <div class="card-fig"><svg viewBox="0 0 320 100" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><line x1="10" y1="35" x2="300" y2="35" stroke="#1a1a2e" stroke-width="2"/><rect x="70" y="26" width="14" height="18" fill="none" stroke="#b54708"/><rect x="160" y="26" width="14" height="18" fill="none" stroke="#b54708"/><rect x="250" y="26" width="14" height="18" fill="none" stroke="#b54708"/><rect x="30" y="55" width="70" height="22" rx="3" fill="#eef3ff" stroke="#356ae6"/><text x="38" y="70">主保护(快)</text><rect x="130" y="55" width="80" height="22" rx="3" fill="#fff4e6" stroke="#b54708"/><text x="138" y="70">近后备</text><rect x="230" y="55" width="80" height="22" rx="3" fill="#e8f7ee" stroke="#067647"/><text x="238" y="70">远后备(延时)</text><text x="30" y="94" fill="#7d8599">主保护+后备:主保护/断路器拒动时后备起作用</text></svg><div class="cap">主保护与近/远后备</div></div>
         </div>
       </div>
     </div>
@@ -116,7 +120,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="选择性 故障时只切除故障元件，非故障部分继续运行； 由整定值和动作时限逐级配合保证（越靠近电源侧延时越长）。">
+        <div class="card" id="card-2-4" data-keywords="选择性 故障时只切除故障元件，非故障部分继续运行； 由整定值和动作时限逐级配合保证（越靠近电源侧延时越长）。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">选择性</span>
@@ -124,7 +128,7 @@
           <div class="card-code">故障时只切除故障元件，非故障部分继续运行；
 由整定值和动作时限逐级配合保证（越靠近电源侧延时越长）。</div>
         </div>
-        <div class="card" id="card-2-5" data-keywords="速动性 尽快切除故障，减小设备损坏、提高系统稳定性。 全部切除时间 = 保护动作时间 + 断路器跳闸时间。">
+        <div class="card" id="card-2-5" data-keywords="速动性 尽快切除故障，减小设备损坏、提高系统稳定性。 全部切除时间 = 保护动作时间 + 断路器跳闸时间。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">速动性</span>
@@ -132,7 +136,7 @@
           <div class="card-code">尽快切除故障，减小设备损坏、提高系统稳定性。
 全部切除时间 = 保护动作时间 + 断路器跳闸时间。</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="灵敏性 保护范围内故障时可靠动作的能力，用灵敏系数 Ksen 衡量。 电流保护 Ksen = 最小短路电流 / 动作电流； 一般要求主保护 ≥1.5，后备 ≥1.2~1.3。">
+        <div class="card" id="card-2-6" data-keywords="灵敏性 保护范围内故障时可靠动作的能力，用灵敏系数 Ksen 衡量。 电流保护 Ksen = 最小短路电流 / 动作电流； 一般要求主保护 ≥1.5，后备 ≥1.2~1.3。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">灵敏性</span>
@@ -141,7 +145,7 @@
 电流保护 Ksen = 最小短路电流 / 动作电流；
 一般要求主保护 ≥1.5，后备 ≥1.2~1.3。</div>
         </div>
-        <div class="card" id="card-2-7" data-keywords="可靠性 该动作时不拒动，不该动作时不误动。 包括：可信赖性（不拒动）与安全性（不误动）。 靠简单成熟的原理、良好元件质量和正确整定维护保证。 注：四性之间相互制约，需按具体对象权衡。">
+        <div class="card" id="card-2-7" data-keywords="可靠性 该动作时不拒动，不该动作时不误动。 包括：可信赖性（不拒动）与安全性（不误动）。 靠简单成熟的原理、良好元件质量和正确整定维护保证。 注：四性之间相互制约，需按具体对象权衡。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">可靠性</span>
@@ -161,7 +165,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-8" data-keywords="短路故障类型 三相短路 (k3)：对称，最严重之一。 两相短路 (k2)：不对称。 两相接地短路 (k1,1)。 单相接地 (k1)：中性点直接接地系统中电流大。 对称分量：正序、负序、零序（分析不对称故障基础）。">
+        <div class="card" id="card-3-8" data-keywords="短路故障类型 三相短路 (k3)：对称，最严重之一。 两相短路 (k2)：不对称。 两相接地短路 (k1,1)。 单相接地 (k1)：中性点直接接地系统中电流大。 对称分量：正序、负序、零序（分析不对称故障基础）。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">短路故障类型</span>
@@ -172,7 +176,7 @@
 单相接地 (k1)：中性点直接接地系统中电流大。
 对称分量：正序、负序、零序（分析不对称故障基础）。</div>
         </div>
-        <div class="card" id="card-3-9" data-keywords="中性点接地方式 直接接地（大电流接地系统，110kV及以上）：单相接地即短路，须快速切除。 不接地/经消弧线圈接地（小电流接地系统，多为 3~66kV）：单相接地允许带故障运行 1~2h，发信号不跳闸。">
+        <div class="card" id="card-3-9" data-keywords="中性点接地方式 直接接地（大电流接地系统，110kV及以上）：单相接地即短路，须快速切除。 不接地/经消弧线圈接地（小电流接地系统，多为 3~66kV）：单相接地允许带故障运行 1~2h，发信号不跳闸。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">中性点接地方式</span>
@@ -180,7 +184,7 @@
           <div class="card-code">直接接地（大电流接地系统，110kV及以上）：单相接地即短路，须快速切除。
 不接地/经消弧线圈接地（小电流接地系统，多为 3~66kV）：单相接地允许带故障运行 1~2h，发信号不跳闸。</div>
         </div>
-        <div class="card" id="card-3-10" data-keywords="不正常运行状态 过负荷、过电压、频率异常、非全相运行、变压器油温过高、瓦斯等； 通常延时发信号，必要时切负荷或跳闸。">
+        <div class="card" id="card-3-10" data-keywords="不正常运行状态 过负荷、过电压、频率异常、非全相运行、变压器油温过高、瓦斯等； 通常延时发信号，必要时切负荷或跳闸。 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">不正常运行状态</span>
@@ -198,7 +202,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-11" data-keywords="电气量特征 利用故障前后电气量差异构成保护： 电流增大 → 过电流保护 电压降低 → 低电压/距离保护 电压电流比(阻抗)减小 → 距离保护 两侧电流差 → 差动保护 出现负序/零序分量 → 不对称/接地保护">
+        <div class="card" id="card-4-11" data-keywords="电气量特征 利用故障前后电气量差异构成保护： 电流增大 → 过电流保护 电压降低 → 低电压/距离保护 电压电流比(阻抗)减小 → 距离保护 两侧电流差 → 差动保护 出现负序/零序分量 → 不对称/接地保护 ">
           <div class="card-head">
             <span class="card-num">11</span>
             <span class="card-title">电气量特征</span>
@@ -210,7 +214,7 @@
 两侧电流差 → 差动保护
 出现负序/零序分量 → 不对称/接地保护</div>
         </div>
-        <div class="card" id="card-4-12" data-keywords="动作值术语 整定值：人为设定的动作门槛。 动作值/返回值：使保护动作/返回的临界值。 返回系数 Kre = 返回值/动作值；过量继电器 Kre&lt;1（约0.85~0.95）。 可靠系数 Krel：整定时留的裕度（&gt;1）。">
+        <div class="card" id="card-4-12" data-keywords="动作值术语 整定值：人为设定的动作门槛。 动作值/返回值：使保护动作/返回的临界值。 返回系数 Kre = 返回值/动作值；过量继电器 Kre&lt;1（约0.85~0.95）。 可靠系数 Krel：整定时留的裕度（&gt;1）。 ">
           <div class="card-head">
             <span class="card-num">12</span>
             <span class="card-title">动作值术语</span>

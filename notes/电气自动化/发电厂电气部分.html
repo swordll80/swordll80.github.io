@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">6 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">电气主接线、短路电流计算、高压电气设备选择与配电装置。</div>
+    <div class="intro">电气主接线、短路电流、高压设备与配电装置,配单母线接线图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,70 +81,69 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="主接线形式 单母线/单母分段、双母线、双母双分段、3/2 断路器接线、桥形接线; 可靠性、灵活性、经济性权衡。">
+        <div class="card" id="card-1-1" data-keywords="主接线形式 单母线/单母分段、双母线、双母双分段、3/2 断路器、桥形; 权衡可靠性、灵活性、经济性。 单母线接线">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">主接线形式</span>
           </div>
-          <div class="card-code">单母线/单母分段、双母线、双母双分段、3/2 断路器接线、桥形接线;
-可靠性、灵活性、经济性权衡。</div>
+          <div class="card-code">单母线/单母分段、双母线、双母双分段、3/2 断路器、桥形;
+权衡可靠性、灵活性、经济性。</div>
+          <div class="card-fig"><svg viewBox="0 0 300 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><line x1="30" y1="40" x2="270" y2="40" stroke="#356ae6" stroke-width="3"/><text x="30" y="30" fill="#356ae6">母线</text><line x1="70" y1="40" x2="70" y2="70" stroke="#1a1a2e"/><rect x="63" y="70" width="14" height="14" fill="none" stroke="#b54708"/><line x1="70" y1="84" x2="70" y2="110" stroke="#1a1a2e"/><text x="64" y="122" fill="#7d8599">回1</text><line x1="130" y1="40" x2="130" y2="70" stroke="#1a1a2e"/><rect x="123" y="70" width="14" height="14" fill="none" stroke="#b54708"/><line x1="130" y1="84" x2="130" y2="110" stroke="#1a1a2e"/><text x="124" y="122" fill="#7d8599">回2</text><line x1="190" y1="40" x2="190" y2="70" stroke="#1a1a2e"/><rect x="183" y="70" width="14" height="14" fill="none" stroke="#b54708"/><line x1="190" y1="84" x2="190" y2="110" stroke="#1a1a2e"/><text x="184" y="122" fill="#7d8599">回3</text><line x1="250" y1="40" x2="250" y2="70" stroke="#1a1a2e"/><rect x="243" y="70" width="14" height="14" fill="none" stroke="#b54708"/><line x1="250" y1="84" x2="250" y2="110" stroke="#1a1a2e"/><text x="244" y="122" fill="#7d8599">回4</text><text x="30" y="122" fill="#7d8599">单母线接线(断路器+出线)</text></svg><div class="cap">单母线接线</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="厂用电 厂用电率、厂用电源与备用、保安电源、直流系统(蓄电池)。">
+        <div class="card" id="card-1-2" data-keywords="厂用电 厂用电率、备用与保安电源、直流系统。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">厂用电</span>
           </div>
-          <div class="card-code">厂用电率、厂用电源与备用、保安电源、直流系统(蓄电池)。</div>
+          <div class="card-code">厂用电率、备用与保安电源、直流系统。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-2">
       <button class="section-head">
         <span class="icon">2</span>
-        <span class="title">二、短路电流与设备选择</span>
+        <span class="title">二、短路与设备选择</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="短路电流计算 用于设备选择与整定;计算冲击电流、热稳定电流、动稳定电流。">
+        <div class="card" id="card-2-3" data-keywords="短路电流 用于设备选择与整定;冲击/热稳定/动稳定电流。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">短路电流计算</span>
+            <span class="card-title">短路电流</span>
           </div>
-          <div class="card-code">用于设备选择与整定;计算冲击电流、热稳定电流、动稳定电流。</div>
+          <div class="card-code">用于设备选择与整定;冲击/热稳定/动稳定电流。</div>
         </div>
-        <div class="card" id="card-2-4" data-keywords="设备选择 按额定电压/电流选,按短路(动/热稳定)校验; 导体、绝缘子、避雷器选择。">
+        <div class="card" id="card-2-4" data-keywords="设备选择 按额定电压电流选,按短路(动/热稳定)校验。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">设备选择</span>
           </div>
-          <div class="card-code">按额定电压/电流选,按短路(动/热稳定)校验;
-导体、绝缘子、避雷器选择。</div>
+          <div class="card-code">按额定电压电流选,按短路(动/热稳定)校验。</div>
         </div>
       </div>
     </div>
     <div class="section" id="sect-3">
       <button class="section-head">
         <span class="icon">3</span>
-        <span class="title">三、高压电气设备</span>
+        <span class="title">三、高压设备</span>
         <span class="count">2 条</span>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-5" data-keywords="开关设备 断路器(SF6/真空)、隔离开关、负荷开关;灭弧原理、操动机构。 互感器 CT/PT、GIS 气体绝缘组合电器。">
+        <div class="card" id="card-3-5" data-keywords="开关设备 断路器(SF6/真空)、隔离开关、CT/PT、GIS;灭弧与操动机构。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">开关设备</span>
           </div>
-          <div class="card-code">断路器(SF6/真空)、隔离开关、负荷开关;灭弧原理、操动机构。
-互感器 CT/PT、GIS 气体绝缘组合电器。</div>
+          <div class="card-code">断路器(SF6/真空)、隔离开关、CT/PT、GIS;灭弧与操动机构。</div>
         </div>
-        <div class="card" id="card-3-6" data-keywords="配电装置 屋内/屋外配电装置、安全净距;防误闭锁(五防)、接地。">
+        <div class="card" id="card-3-6" data-keywords="配电装置 屋内/屋外、安全净距、五防闭锁、接地。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">配电装置</span>
           </div>
-          <div class="card-code">屋内/屋外配电装置、安全净距;防误闭锁(五防)、接地。</div>
+          <div class="card-code">屋内/屋外、安全净距、五防闭锁、接地。</div>
         </div>
       </div>
     </div>

@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="A-Profile 与 T-Profile 61850 把 OSI 分为应用协议集 A-Profile(上3层)与传输协议集 T-Profile(下4层)。 8-1 规定 4 类通信：客户/服务器(MMS)、GSE(GOOSE)与管理、GSSE、时间同步。 实用方案：OSI 上三层 + TCP/IP + 以太网。">
+        <div class="card" id="card-1-1" data-keywords="A-Profile 与 T-Profile 61850 把 OSI 分为应用协议集 A-Profile(上3层)与传输协议集 T-Profile(下4层)。 8-1 规定 4 类通信：客户/服务器(MMS)、GSE(GOOSE)与管理、GSSE、时间同步。 实用方案：OSI 上三层 + TCP/IP + 以太网。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">A-Profile 与 T-Profile</span>
@@ -87,15 +90,16 @@
 8-1 规定 4 类通信：客户/服务器(MMS)、GSE(GOOSE)与管理、GSSE、时间同步。
 实用方案：OSI 上三层 + TCP/IP + 以太网。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="MMS 协议栈(站控层) 自上而下：MMS → ACSE(关联控制, ISO 8650) → 表示层(ISO 8823) → 会话层(ISO 8327) → RFC1006(在 TCP 上承载 OSI 传输) → TPKT/COTP → TCP(端口 102) → IP → 以太网。 TPKT: 版本3+长度; COTP: ISO 8073 面向连接传输, 分包(&gt;1500B), 末字节含结束标志。">
+        <div class="card" id="card-1-2" data-keywords="MMS 协议栈(站控层) 自上而下：MMS → ACSE(关联控制, ISO 8650) → 表示层(ISO 8823) → 会话层(ISO 8327) → RFC1006(在 TCP 上承载 OSI 传输) → TPKT/COTP → TCP(端口 102) → IP → 以太网。 TPKT: 版本3+长度; COTP: ISO 8073 面向连接传输, 分包(&gt;1500B), 末字节含结束标志。 MMS 站控层协议栈">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">MMS 协议栈(站控层)</span>
           </div>
           <div class="card-code">自上而下：MMS → ACSE(关联控制, ISO 8650) → 表示层(ISO 8823) → 会话层(ISO 8327) → RFC1006(在 TCP 上承载 OSI 传输) → TPKT/COTP → TCP(端口 102) → IP → 以太网。
 TPKT: 版本3+长度; COTP: ISO 8073 面向连接传输, 分包(&gt;1500B), 末字节含结束标志。</div>
+          <div class="card-fig"><svg viewBox="0 0 240 200" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><rect x="30" y="10" width="180" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="40" y="24">MMS (制造报文规范)</text><rect x="30" y="32" width="180" height="20" rx="2" fill="#eef3ff" stroke="#356ae6"/><text x="40" y="46">ACSE 关联控制</text><rect x="30" y="54" width="180" height="20" rx="2" fill="#e8f7ee" stroke="#356ae6"/><text x="40" y="68">表示层 ISO 8823</text><rect x="30" y="76" width="180" height="20" rx="2" fill="#e8f7ee" stroke="#356ae6"/><text x="40" y="90">会话层 ISO 8327</text><rect x="30" y="98" width="180" height="20" rx="2" fill="#fff4e6" stroke="#356ae6"/><text x="40" y="112">RFC1006 / TPKT / COTP</text><rect x="30" y="120" width="180" height="20" rx="2" fill="#fff4e6" stroke="#356ae6"/><text x="40" y="134">TCP (端口 102)</text><rect x="30" y="142" width="180" height="20" rx="2" fill="#f3f0ff" stroke="#356ae6"/><text x="40" y="156">IP</text><rect x="30" y="164" width="180" height="20" rx="2" fill="#f3f0ff" stroke="#356ae6"/><text x="40" y="178">以太网</text><text x="40" y="195" fill="#7d8599">MMS 站控层协议栈</text></svg><div class="cap">MMS 站控层协议栈</div></div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="过程层协议栈(GOOSE/SV) GOOSE/SV 为实时性直接映射到数据链路层(以太网)，不经 TCP/IP。 用组播 MAC + VLAN + APPID 标识，采用 ASN.1/BER 编码，延时要求极低(GOOSE&lt;4ms, SV 严格同步)。">
+        <div class="card" id="card-1-3" data-keywords="过程层协议栈(GOOSE/SV) GOOSE/SV 为实时性直接映射到数据链路层(以太网)，不经 TCP/IP。 用组播 MAC + VLAN + APPID 标识，采用 ASN.1/BER 编码，延时要求极低(GOOSE&lt;4ms, SV 严格同步)。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">过程层协议栈(GOOSE/SV)</span>
@@ -113,7 +117,7 @@ TPKT: 版本3+长度; COTP: ISO 8073 面向连接传输, 分包(&gt;1500B), 末�
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-4" data-keywords="MMS 与 61850 映射 MMS(制造报文规范, ISO 9506)是通用工业通信协议，61850-8-1 只映射其一部分。 MMS 数据模型最多 3 层隶属，而 61850 层次更深：用命名分层解决——LD 与 LN 间加 &#x27;/&#x27;，其余层次间加 &#x27;$&#x27;，如 LD0/LLN0$RP$urcbMonS。">
+        <div class="card" id="card-2-4" data-keywords="MMS 与 61850 映射 MMS(制造报文规范, ISO 9506)是通用工业通信协议，61850-8-1 只映射其一部分。 MMS 数据模型最多 3 层隶属，而 61850 层次更深：用命名分层解决——LD 与 LN 间加 &#x27;/&#x27;，其余层次间加 &#x27;$&#x27;，如 LD0/LLN0$RP$urcbMonS。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">MMS 与 61850 映射</span>
@@ -121,7 +125,7 @@ TPKT: 版本3+长度; COTP: ISO 8073 面向连接传输, 分包(&gt;1500B), 末�
           <div class="card-code">MMS(制造报文规范, ISO 9506)是通用工业通信协议，61850-8-1 只映射其一部分。
 MMS 数据模型最多 3 层隶属，而 61850 层次更深：用命名分层解决——LD 与 LN 间加 &#x27;/&#x27;，其余层次间加 &#x27;$&#x27;，如 LD0/LLN0$RP$urcbMonS。</div>
         </div>
-        <div class="card" id="card-2-5" data-keywords="ASN.1 / BER 编码 MMS 用 ASN.1 抽象语法 + BER 编码，报文为 TLV(标签-长度-内容)： 标识符字节含 类别(2位)+构造/基本(1位)+标签号(5位)。 长度：≤127 短式(1字节)；&gt;127 长式(首字节 bit7=1, 低7位为后续长度字节数)；构造类型可用不定长(0x80…0x0000)。 内容可嵌套(构造型), 61850 报文常嵌套十几层。">
+        <div class="card" id="card-2-5" data-keywords="ASN.1 / BER 编码 MMS 用 ASN.1 抽象语法 + BER 编码，报文为 TLV(标签-长度-内容)： 标识符字节含 类别(2位)+构造/基本(1位)+标签号(5位)。 长度：≤127 短式(1字节)；&gt;127 长式(首字节 bit7=1, 低7位为后续长度字节数)；构造类型可用不定长(0x80…0x0000)。 内容可嵌套(构造型), 61850 报文常嵌套十几层。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">ASN.1 / BER 编码</span>
@@ -131,7 +135,7 @@ MMS 数据模型最多 3 层隶属，而 61850 层次更深：用命名分层解
 长度：≤127 短式(1字节)；&gt;127 长式(首字节 bit7=1, 低7位为后续长度字节数)；构造类型可用不定长(0x80…0x0000)。
 内容可嵌套(构造型), 61850 报文常嵌套十几层。</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="PDU 与分析方法 MMS 报文由 PDU 组成，用 TAG 区分功能(如 Confirmed-Request/Response、Unconfirmed)。 分析：取最外层 TAG+长度→判 PDU 类型→若为构造型则递归解析内层。常用 Wireshark/“MMS Ethereal”工具。">
+        <div class="card" id="card-2-6" data-keywords="PDU 与分析方法 MMS 报文由 PDU 组成，用 TAG 区分功能(如 Confirmed-Request/Response、Unconfirmed)。 分析：取最外层 TAG+长度→判 PDU 类型→若为构造型则递归解析内层。常用 Wireshark/“MMS Ethereal”工具。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">PDU 与分析方法</span>
@@ -149,7 +153,7 @@ MMS 数据模型最多 3 层隶属，而 61850 层次更深：用命名分层解
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-7" data-keywords="建立关联 Initiate-Request(关联请求)/Initiate-Response(关联响应)完成握手，建立客户端与 IED 的连接。 服务端 TCP 端口 102；连不上可 telnet &lt;ip&gt; 102 测试端口是否开启。">
+        <div class="card" id="card-3-7" data-keywords="建立关联 Initiate-Request(关联请求)/Initiate-Response(关联响应)完成握手，建立客户端与 IED 的连接。 服务端 TCP 端口 102；连不上可 telnet &lt;ip&gt; 102 测试端口是否开启。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">建立关联</span>
@@ -157,7 +161,7 @@ MMS 数据模型最多 3 层隶属，而 61850 层次更深：用命名分层解
           <div class="card-code">Initiate-Request(关联请求)/Initiate-Response(关联响应)完成握手，建立客户端与 IED 的连接。
 服务端 TCP 端口 102；连不上可 telnet &lt;ip&gt; 102 测试端口是否开启。</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="读取模型信息 初始化时子系统依次： GetNameList 读对象名列表； GetNamedVariableListAttributes 读数据集成员(须与 ICD 静态一致, 比对 FCDA 个数与名称)； GetVariableAccessAttributes 读每个 DO/DA 的数据类型，供后续报文解析。">
+        <div class="card" id="card-3-8" data-keywords="读取模型信息 初始化时子系统依次： GetNameList 读对象名列表； GetNamedVariableListAttributes 读数据集成员(须与 ICD 静态一致, 比对 FCDA 个数与名称)； GetVariableAccessAttributes 读每个 DO/DA 的数据类型，供后续报文解析。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">读取模型信息</span>
@@ -167,7 +171,7 @@ GetNameList 读对象名列表；
 GetNamedVariableListAttributes 读数据集成员(须与 ICD 静态一致, 比对 FCDA 个数与名称)；
 GetVariableAccessAttributes 读每个 DO/DA 的数据类型，供后续报文解析。</div>
         </div>
-        <div class="card" id="card-3-9" data-keywords="控制模式读取 读各控点 ctlModel：1=直接控制(如复归 LEDRs)，4=带预置(SBO)的控制(如压板、开关)。 模型中 FC=CO 的数据即控制对象。">
+        <div class="card" id="card-3-9" data-keywords="控制模式读取 读各控点 ctlModel：1=直接控制(如复归 LEDRs)，4=带预置(SBO)的控制(如压板、开关)。 模型中 FC=CO 的数据即控制对象。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">控制模式读取</span>
@@ -185,7 +189,7 @@ GetVariableAccessAttributes 读每个 DO/DA 的数据类型，供后续报文解
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-10" data-keywords="报告控制块 BRCB/URCB 报告上送数据集中的数据；由报告控制块控制。 BRCB 缓存报告：内部事件先缓存/立即发送，连接断开不丢数据，具时间顺序(SOE)。 URCB 非缓存报告：立即发送，关联不存在或过慢则丢事件。 触发方式：定时(周期)、预设(数据/品质变化)、客户端定制。">
+        <div class="card" id="card-4-10" data-keywords="报告控制块 BRCB/URCB 报告上送数据集中的数据；由报告控制块控制。 BRCB 缓存报告：内部事件先缓存/立即发送，连接断开不丢数据，具时间顺序(SOE)。 URCB 非缓存报告：立即发送，关联不存在或过慢则丢事件。 触发方式：定时(周期)、预设(数据/品质变化)、客户端定制。 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">报告控制块 BRCB/URCB</span>
@@ -195,14 +199,14 @@ BRCB 缓存报告：内部事件先缓存/立即发送，连接断开不丢数�
 URCB 非缓存报告：立即发送，关联不存在或过慢则丢事件。
 触发方式：定时(周期)、预设(数据/品质变化)、客户端定制。</div>
         </div>
-        <div class="card" id="card-4-11" data-keywords="触发条件 TrgOps TrgOps 设置何时触发：数据变化(dchg)、品质变化(qchg)、数据刷新(dupd)、周期(period)、总召(gi)。">
+        <div class="card" id="card-4-11" data-keywords="触发条件 TrgOps TrgOps 设置何时触发：数据变化(dchg)、品质变化(qchg)、数据刷新(dupd)、周期(period)、总召(gi)。 ">
           <div class="card-head">
             <span class="card-num">11</span>
             <span class="card-title">触发条件 TrgOps</span>
           </div>
           <div class="card-code">TrgOps 设置何时触发：数据变化(dchg)、品质变化(qchg)、数据刷新(dupd)、周期(period)、总召(gi)。</div>
         </div>
-        <div class="card" id="card-4-12" data-keywords="任选域 OptFlds OptFlds(2字节)规定报告含哪些字段(从高位起)： 4000 序号、2000 报告生成时标、1000 原因、0800 数据集名、0400 数据集路径、0200 缓冲溢出、0100 条目号(entryID)、0080 配置号。 常用默认如 7900/7F80。">
+        <div class="card" id="card-4-12" data-keywords="任选域 OptFlds OptFlds(2字节)规定报告含哪些字段(从高位起)： 4000 序号、2000 报告生成时标、1000 原因、0800 数据集名、0400 数据集路径、0200 缓冲溢出、0100 条目号(entryID)、0080 配置号。 常用默认如 7900/7F80。 ">
           <div class="card-head">
             <span class="card-num">12</span>
             <span class="card-title">任选域 OptFlds</span>
@@ -211,7 +215,7 @@ URCB 非缓存报告：立即发送，关联不存在或过慢则丢事件。
 4000 序号、2000 报告生成时标、1000 原因、0800 数据集名、0400 数据集路径、0200 缓冲溢出、0100 条目号(entryID)、0080 配置号。
 常用默认如 7900/7F80。</div>
         </div>
-        <div class="card" id="card-4-13" data-keywords="总召 GI 与 Inclusion 连接成功后写 GI(General Interrogation)=TRUE 做一次总召，装置上送数据集全部数据。 报告中 Inclusion 位串指示数据集哪些成员发生变化(某位=1 即该序号数据变化)； reason-for-inclusion 指示上送原因；品质 q 随数据上送。">
+        <div class="card" id="card-4-13" data-keywords="总召 GI 与 Inclusion 连接成功后写 GI(General Interrogation)=TRUE 做一次总召，装置上送数据集全部数据。 报告中 Inclusion 位串指示数据集哪些成员发生变化(某位=1 即该序号数据变化)； reason-for-inclusion 指示上送原因；品质 q 随数据上送。 ">
           <div class="card-head">
             <span class="card-num">13</span>
             <span class="card-title">总召 GI 与 Inclusion</span>
@@ -230,7 +234,7 @@ reason-for-inclusion 指示上送原因；品质 q 随数据上送。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-5-14" data-keywords="预置与执行 ctlModel=4(SBO)：client 先发 Select/预置(write)再发 Oper/执行(write)；IED 预置通过合法性检查(是否已达目标态/是否正在执行)即回响应。 ctlModel=1(直控)：无预置，直接写 Oper 执行。">
+        <div class="card" id="card-5-14" data-keywords="预置与执行 ctlModel=4(SBO)：client 先发 Select/预置(write)再发 Oper/执行(write)；IED 预置通过合法性检查(是否已达目标态/是否正在执行)即回响应。 ctlModel=1(直控)：无预置，直接写 Oper 执行。 ">
           <div class="card-head">
             <span class="card-num">14</span>
             <span class="card-title">预置与执行</span>
@@ -238,7 +242,7 @@ reason-for-inclusion 指示上送原因；品质 q 随数据上送。</div>
           <div class="card-code">ctlModel=4(SBO)：client 先发 Select/预置(write)再发 Oper/执行(write)；IED 预置通过合法性检查(是否已达目标态/是否正在执行)即回响应。
 ctlModel=1(直控)：无预置，直接写 Oper 执行。</div>
         </div>
-        <div class="card" id="card-5-15" data-keywords="控制结束报告 ctlModel=4 每次操作结束，IED 主动发 InformationReport 通知最终结果(据目标是否正确变位判断成功与否)； 子系统收到才认为控制结束；ctlModel=1 不发此报文。">
+        <div class="card" id="card-5-15" data-keywords="控制结束报告 ctlModel=4 每次操作结束，IED 主动发 InformationReport 通知最终结果(据目标是否正确变位判断成功与否)； 子系统收到才认为控制结束；ctlModel=1 不发此报文。 ">
           <div class="card-head">
             <span class="card-num">15</span>
             <span class="card-title">控制结束报告</span>
@@ -256,7 +260,7 @@ ctlModel=1(直控)：无预置，直接写 Oper 执行。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-6-16" data-keywords="定值区操作 读定值区个数、读当前运行区号、读当前区定值(FC=SG，不可写)。 改非当前区：先 write 切编辑区区号→写 FC=SE 定值→固化。 切当前运行区、切编辑区均为 write。">
+        <div class="card" id="card-6-16" data-keywords="定值区操作 读定值区个数、读当前运行区号、读当前区定值(FC=SG，不可写)。 改非当前区：先 write 切编辑区区号→写 FC=SE 定值→固化。 切当前运行区、切编辑区均为 write。 ">
           <div class="card-head">
             <span class="card-num">16</span>
             <span class="card-title">定值区操作</span>
@@ -265,7 +269,7 @@ ctlModel=1(直控)：无预置，直接写 Oper 执行。</div>
 改非当前区：先 write 切编辑区区号→写 FC=SE 定值→固化。
 切当前运行区、切编辑区均为 write。</div>
         </div>
-        <div class="card" id="card-6-17" data-keywords="录波文件传输 IED 录波完成主动上报(录波完成数据集/报告)→client 可自动召唤。 读文件列表 FileDirectory(指定目录, 如 /COMTRADE/)； 读文件内容三步：FileOpen → FileRead(大文件多次) → FileClose。 波形为 COMTRADE 格式。">
+        <div class="card" id="card-6-17" data-keywords="录波文件传输 IED 录波完成主动上报(录波完成数据集/报告)→client 可自动召唤。 读文件列表 FileDirectory(指定目录, 如 /COMTRADE/)； 读文件内容三步：FileOpen → FileRead(大文件多次) → FileClose。 波形为 COMTRADE 格式。 ">
           <div class="card-head">
             <span class="card-num">17</span>
             <span class="card-title">录波文件传输</span>
@@ -285,7 +289,7 @@ ctlModel=1(直控)：无预置，直接写 Oper 执行。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-7-18" data-keywords="GOOSE 概念 GOOSE = Generic Object Oriented Substation Events，面向通用对象的变电站事件，满足快速报文需求。 主要用于保护跳闸、测控五防联闭锁等过程层实时信号。">
+        <div class="card" id="card-7-18" data-keywords="GOOSE 概念 GOOSE = Generic Object Oriented Substation Events，面向通用对象的变电站事件，满足快速报文需求。 主要用于保护跳闸、测控五防联闭锁等过程层实时信号。 ">
           <div class="card-head">
             <span class="card-num">18</span>
             <span class="card-title">GOOSE 概念</span>
@@ -293,7 +297,7 @@ ctlModel=1(直控)：无预置，直接写 Oper 执行。</div>
           <div class="card-code">GOOSE = Generic Object Oriented Substation Events，面向通用对象的变电站事件，满足快速报文需求。
 主要用于保护跳闸、测控五防联闭锁等过程层实时信号。</div>
         </div>
-        <div class="card" id="card-7-19" data-keywords="关键字段 GoCBRef：GOOSE 控制块引用(如 JFZ600FRPIT/LLN0$GO$Pub_OPST)。 DatSetRef：引用的数据集。GOOSEID：应用标识。 Test：检修位(TRUE=投检修压板)。ConfRev：配置版本号。NdsCom：需重新配置标志。 NumDatSetEntries：数据条目数(须与模型数据集一致)。">
+        <div class="card" id="card-7-19" data-keywords="关键字段 GoCBRef：GOOSE 控制块引用(如 JFZ600FRPIT/LLN0$GO$Pub_OPST)。 DatSetRef：引用的数据集。GOOSEID：应用标识。 Test：检修位(TRUE=投检修压板)。ConfRev：配置版本号。NdsCom：需重新配置标志。 NumDatSetEntries：数据条目数(须与模型数据集一致)。 ">
           <div class="card-head">
             <span class="card-num">19</span>
             <span class="card-title">关键字段</span>
@@ -303,7 +307,7 @@ DatSetRef：引用的数据集。GOOSEID：应用标识。
 Test：检修位(TRUE=投检修压板)。ConfRev：配置版本号。NdsCom：需重新配置标志。
 NumDatSetEntries：数据条目数(须与模型数据集一致)。</div>
         </div>
-        <div class="card" id="card-7-20" data-keywords="StNum / SqNum StNum 状态号：数据集中检出值改变→报文重发并 StNum+1。 SqNum 序号：每发一帧+1，用于检测漏包；StNum 变化时 SqNum 清零重新计数。 二者是 GOOSE 两个重要标志。">
+        <div class="card" id="card-7-20" data-keywords="StNum / SqNum StNum 状态号：数据集中检出值改变→报文重发并 StNum+1。 SqNum 序号：每发一帧+1，用于检测漏包；StNum 变化时 SqNum 清零重新计数。 二者是 GOOSE 两个重要标志。 ">
           <div class="card-head">
             <span class="card-num">20</span>
             <span class="card-title">StNum / SqNum</span>
@@ -312,7 +316,7 @@ NumDatSetEntries：数据条目数(须与模型数据集一致)。</div>
 SqNum 序号：每发一帧+1，用于检测漏包；StNum 变化时 SqNum 清零重新计数。
 二者是 GOOSE 两个重要标志。</div>
         </div>
-        <div class="card" id="card-7-21" data-keywords="重传机制与 TTL 即使状态不变也周期重发(心跳)。T0=心跳间隔(MaxTime, 如5000ms)，突发事件用最短重传 T1(MinTime, 如2ms)，逐步回到 T0。 TTL(报文允许生存时间)=2×T0；超过 TTL 未收到有效报文则判通信中断。">
+        <div class="card" id="card-7-21" data-keywords="重传机制与 TTL 即使状态不变也周期重发(心跳)。T0=心跳间隔(MaxTime, 如5000ms)，突发事件用最短重传 T1(MinTime, 如2ms)，逐步回到 T0。 TTL(报文允许生存时间)=2×T0；超过 TTL 未收到有效报文则判通信中断。 ">
           <div class="card-head">
             <span class="card-num">21</span>
             <span class="card-title">重传机制与 TTL</span>
@@ -320,7 +324,7 @@ SqNum 序号：每发一帧+1，用于检测漏包；StNum 变化时 SqNum 清�
           <div class="card-code">即使状态不变也周期重发(心跳)。T0=心跳间隔(MaxTime, 如5000ms)，突发事件用最短重传 T1(MinTime, 如2ms)，逐步回到 T0。
 TTL(报文允许生存时间)=2×T0；超过 TTL 未收到有效报文则判通信中断。</div>
         </div>
-        <div class="card" id="card-7-22" data-keywords="数据类型 BOOLEAN：00=FALSE、01=TRUE(单点)。 位串(双点)：00 无效、01 分位、10 合位。">
+        <div class="card" id="card-7-22" data-keywords="数据类型 BOOLEAN：00=FALSE、01=TRUE(单点)。 位串(双点)：00 无效、01 分位、10 合位。 ">
           <div class="card-head">
             <span class="card-num">22</span>
             <span class="card-title">数据类型</span>
@@ -338,7 +342,7 @@ TTL(报文允许生存时间)=2×T0；超过 TTL 未收到有效报文则判通�
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-8-23" data-keywords="SV 与合并单元 SV = Sampled Value，智能站用电子式互感器数字采样替代电缆模拟量。 合并单元 MU 对多路采样做同步合并，按 IEC 61850-9-1/9-2 输出以太网数据到过程层。 同步对象：三相电压电流、变压器/母线差动多间隔、线路纵差两端。输入可为 FT3，输出统一 9-2。">
+        <div class="card" id="card-8-23" data-keywords="SV 与合并单元 SV = Sampled Value，智能站用电子式互感器数字采样替代电缆模拟量。 合并单元 MU 对多路采样做同步合并，按 IEC 61850-9-1/9-2 输出以太网数据到过程层。 同步对象：三相电压电流、变压器/母线差动多间隔、线路纵差两端。输入可为 FT3，输出统一 9-2。 ">
           <div class="card-head">
             <span class="card-num">23</span>
             <span class="card-title">SV 与合并单元</span>
@@ -347,7 +351,7 @@ TTL(报文允许生存时间)=2×T0；超过 TTL 未收到有效报文则判通�
 合并单元 MU 对多路采样做同步合并，按 IEC 61850-9-1/9-2 输出以太网数据到过程层。
 同步对象：三相电压电流、变压器/母线差动多间隔、线路纵差两端。输入可为 FT3，输出统一 9-2。</div>
         </div>
-        <div class="card" id="card-8-24" data-keywords="SV 关键字段 APPID：应用标识，选择采样值并区分关联，全站唯一；工程常令 APPID=目标组播MAC低16位(如 01-0C-CD-04-40-12 → 4012)。 SVID：采样值标识字符串(标识名, 报文必含)。 SmpCnt(采样计数)：每帧+1, 从0循环, 用于判丢包。 SmpSynch(同步标志)：TRUE 同步/FALSE 未同步。">
+        <div class="card" id="card-8-24" data-keywords="SV 关键字段 APPID：应用标识，选择采样值并区分关联，全站唯一；工程常令 APPID=目标组播MAC低16位(如 01-0C-CD-04-40-12 → 4012)。 SVID：采样值标识字符串(标识名, 报文必含)。 SmpCnt(采样计数)：每帧+1, 从0循环, 用于判丢包。 SmpSynch(同步标志)：TRUE 同步/FALSE 未同步。 ">
           <div class="card-head">
             <span class="card-num">24</span>
             <span class="card-title">SV 关键字段</span>
@@ -357,7 +361,7 @@ SVID：采样值标识字符串(标识名, 报文必含)。
 SmpCnt(采样计数)：每帧+1, 从0循环, 用于判丢包。
 SmpSynch(同步标志)：TRUE 同步/FALSE 未同步。</div>
         </div>
-        <div class="card" id="card-8-25" data-keywords="数据与品质 Sequence of Data：一个通道 8 字节 = 4 字节采样值 + 4 字节品质； 品质 4 字节中后 2 字节有效(16位中14位有效)。 例：品质 00 03 → 低两位=11 表示 questionable(可疑数据)。 编码同样用 ASN.1/BER。">
+        <div class="card" id="card-8-25" data-keywords="数据与品质 Sequence of Data：一个通道 8 字节 = 4 字节采样值 + 4 字节品质； 品质 4 字节中后 2 字节有效(16位中14位有效)。 例：品质 00 03 → 低两位=11 表示 questionable(可疑数据)。 编码同样用 ASN.1/BER。 ">
           <div class="card-head">
             <span class="card-num">25</span>
             <span class="card-title">数据与品质</span>
@@ -377,7 +381,7 @@ SmpSynch(同步标志)：TRUE 同步/FALSE 未同步。</div>
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-9-26" data-keywords="以太网映射 GOOSE(EtherType 0x88B8)、SV(0x88BA)直接封装于以太网, 带 VLAN(0x8100)标签(优先级+VLAN-ID)与 APPID。 目标为组播 MAC(可配置, 非硬件地址, 便于更换硬件不改配置)。不经 IP/TCP, 保证实时。">
+        <div class="card" id="card-9-26" data-keywords="以太网映射 GOOSE(EtherType 0x88B8)、SV(0x88BA)直接封装于以太网, 带 VLAN(0x8100)标签(优先级+VLAN-ID)与 APPID。 目标为组播 MAC(可配置, 非硬件地址, 便于更换硬件不改配置)。不经 IP/TCP, 保证实时。 ">
           <div class="card-head">
             <span class="card-num">26</span>
             <span class="card-title">以太网映射</span>
@@ -385,7 +389,7 @@ SmpSynch(同步标志)：TRUE 同步/FALSE 未同步。</div>
           <div class="card-code">GOOSE(EtherType 0x88B8)、SV(0x88BA)直接封装于以太网, 带 VLAN(0x8100)标签(优先级+VLAN-ID)与 APPID。
 目标为组播 MAC(可配置, 非硬件地址, 便于更换硬件不改配置)。不经 IP/TCP, 保证实时。</div>
         </div>
-        <div class="card" id="card-9-27" data-keywords="关于 CMS 与其他服务 来源资料未定义“CMS”协议。IEC 61850 站控层客户/服务器(ACSI 核心服务)映射为 MMS； 若指其他：GSSE(早期二进制状态事件)、时间同步用 SNTP(简单网络时间协议)。 如需特定 CMS(如某厂私有/新版 8-2 MMS-over-XMPP)请另行指明。">
+        <div class="card" id="card-9-27" data-keywords="关于 CMS 与其他服务 来源资料未定义“CMS”协议。IEC 61850 站控层客户/服务器(ACSI 核心服务)映射为 MMS； 若指其他：GSSE(早期二进制状态事件)、时间同步用 SNTP(简单网络时间协议)。 如需特定 CMS(如某厂私有/新版 8-2 MMS-over-XMPP)请另行指明。 ">
           <div class="card-head">
             <span class="card-num">27</span>
             <span class="card-title">关于 CMS 与其他服务</span>

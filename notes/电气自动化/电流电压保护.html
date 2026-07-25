@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -78,7 +81,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="电流速断（Ⅰ段） 瞬时动作，无延时。 按躲过本线路末端最大三相短路电流整定：   I_set1 = Krel · I_k.max（Krel≈1.2~1.3） 特点：快速但保护范围不到全线，末端有死区，受运行方式影响大。">
+        <div class="card" id="card-1-1" data-keywords="电流速断（Ⅰ段） 瞬时动作，无延时。 按躲过本线路末端最大三相短路电流整定：   I_set1 = Krel · I_k.max（Krel≈1.2~1.3） 特点：快速但保护范围不到全线，末端有死区，受运行方式影响大。 ">
           <div class="card-head">
             <span class="card-num">1</span>
             <span class="card-title">电流速断（Ⅰ段）</span>
@@ -88,7 +91,7 @@
   I_set1 = Krel · I_k.max（Krel≈1.2~1.3）
 特点：快速但保护范围不到全线，末端有死区，受运行方式影响大。</div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="限时电流速断（Ⅱ段） 带较小延时(0.3~0.5s)，作为Ⅰ段的补充，保护本线路全长。 整定原则：与下一线路Ⅰ段配合，动作电流大于下线Ⅰ段动作电流； 灵敏度按本线末端最小短路电流校验，Ksen≥1.3~1.5。">
+        <div class="card" id="card-1-2" data-keywords="限时电流速断（Ⅱ段） 带较小延时(0.3~0.5s)，作为Ⅰ段的补充，保护本线路全长。 整定原则：与下一线路Ⅰ段配合，动作电流大于下线Ⅰ段动作电流； 灵敏度按本线末端最小短路电流校验，Ksen≥1.3~1.5。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">限时电流速断（Ⅱ段）</span>
@@ -97,7 +100,7 @@
 整定原则：与下一线路Ⅰ段配合，动作电流大于下线Ⅰ段动作电流；
 灵敏度按本线末端最小短路电流校验，Ksen≥1.3~1.5。</div>
         </div>
-        <div class="card" id="card-1-3" data-keywords="定时限过电流（Ⅲ段） 按躲过最大负荷电流整定，作为本线近后备和下线远后备：   I_set3 = Krel · Kss / Kre · I_L.max   （Kss 自启动系数，Kre 返回系数） 延时按阶梯原则逐级配合，Δt≈0.3~0.5s。">
+        <div class="card" id="card-1-3" data-keywords="定时限过电流（Ⅲ段） 按躲过最大负荷电流整定，作为本线近后备和下线远后备：   I_set3 = Krel · Kss / Kre · I_L.max   （Kss 自启动系数，Kre 返回系数） 延时按阶梯原则逐级配合，Δt≈0.3~0.5s。 ">
           <div class="card-head">
             <span class="card-num">3</span>
             <span class="card-title">定时限过电流（Ⅲ段）</span>
@@ -107,13 +110,14 @@
   （Kss 自启动系数，Kre 返回系数）
 延时按阶梯原则逐级配合，Δt≈0.3~0.5s。</div>
         </div>
-        <div class="card" id="card-1-4" data-keywords="三段配合 Ⅰ段快速、范围小；Ⅱ段全线、小延时；Ⅲ段后备、大延时。 三段构成阶梯式保护，兼顾速动性与选择性。">
+        <div class="card" id="card-1-4" data-keywords="三段配合 Ⅰ段快速、范围小；Ⅱ段全线、小延时；Ⅲ段后备、大延时。 三段构成阶梯式保护，兼顾速动性与选择性。 三段式保护的阶梯延时配合">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">三段配合</span>
           </div>
           <div class="card-code">Ⅰ段快速、范围小；Ⅱ段全线、小延时；Ⅲ段后备、大延时。
 三段构成阶梯式保护，兼顾速动性与选择性。</div>
+          <div class="card-fig"><svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="9"><line x1="30" y1="20" x2="30" y2="110" stroke="#1a1a2e"/><line x1="30" y1="110" x2="300" y2="110" stroke="#1a1a2e"/><text x="8" y="24">t</text><text x="292" y="105">L(距离)</text><rect x="30" y="95" width="90" height="15" fill="#eef3ff" stroke="#356ae6"/><text x="45" y="106">Ⅰ段 瞬动</text><rect x="30" y="70" width="180" height="15" fill="#e8f7ee" stroke="#067647"/><text x="120" y="81">Ⅱ段 小延时</text><rect x="30" y="45" width="260" height="15" fill="#fff4e6" stroke="#b54708"/><text x="180" y="56">Ⅲ段 后备大延时</text><text x="40" y="128" fill="#7d8599">三段式:阶梯延时兼顾速动与选择性</text></svg><div class="cap">三段式保护的阶梯延时配合</div></div>
         </div>
       </div>
     </div>
@@ -125,7 +129,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-5" data-keywords="为何要方向元件 双侧电源或环网中，仅靠电流大小无法保证选择性； 加装功率方向元件，只在电流由母线流向线路（正方向故障）时才允许动作。">
+        <div class="card" id="card-2-5" data-keywords="为何要方向元件 双侧电源或环网中，仅靠电流大小无法保证选择性； 加装功率方向元件，只在电流由母线流向线路（正方向故障）时才允许动作。 ">
           <div class="card-head">
             <span class="card-num">5</span>
             <span class="card-title">为何要方向元件</span>
@@ -133,7 +137,7 @@
           <div class="card-code">双侧电源或环网中，仅靠电流大小无法保证选择性；
 加装功率方向元件，只在电流由母线流向线路（正方向故障）时才允许动作。</div>
         </div>
-        <div class="card" id="card-2-6" data-keywords="方向元件与死区 利用电流、电压相位比较判断故障方向。 三相短路出现在保护安装处附近时电压近于零 → 方向元件死区； 常用 90°接线并引入非故障相电压（记忆电压）克服死区。">
+        <div class="card" id="card-2-6" data-keywords="方向元件与死区 利用电流、电压相位比较判断故障方向。 三相短路出现在保护安装处附近时电压近于零 → 方向元件死区； 常用 90°接线并引入非故障相电压（记忆电压）克服死区。 ">
           <div class="card-head">
             <span class="card-num">6</span>
             <span class="card-title">方向元件与死区</span>
@@ -152,7 +156,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-7" data-keywords="接地故障与零序 大电流接地系统单相接地时出现零序电流 3I0； 零序电流经中性点回流，可用三相电流互感器和电流之和(自产3I0)或专用零序CT获取。">
+        <div class="card" id="card-3-7" data-keywords="接地故障与零序 大电流接地系统单相接地时出现零序电流 3I0； 零序电流经中性点回流，可用三相电流互感器和电流之和(自产3I0)或专用零序CT获取。 ">
           <div class="card-head">
             <span class="card-num">7</span>
             <span class="card-title">接地故障与零序</span>
@@ -160,7 +164,7 @@
           <div class="card-code">大电流接地系统单相接地时出现零序电流 3I0；
 零序电流经中性点回流，可用三相电流互感器和电流之和(自产3I0)或专用零序CT获取。</div>
         </div>
-        <div class="card" id="card-3-8" data-keywords="零序三段 零序Ⅰ/Ⅱ/Ⅲ段与相电流保护类似，专门反映接地故障； 优点：正常与相间故障时无零序分量，灵敏度高、不受负荷影响； 零序方向元件用 3U0 与 3I0 比相。">
+        <div class="card" id="card-3-8" data-keywords="零序三段 零序Ⅰ/Ⅱ/Ⅲ段与相电流保护类似，专门反映接地故障； 优点：正常与相间故障时无零序分量，灵敏度高、不受负荷影响； 零序方向元件用 3U0 与 3I0 比相。 ">
           <div class="card-head">
             <span class="card-num">8</span>
             <span class="card-title">零序三段</span>
@@ -179,7 +183,7 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-4-9" data-keywords="低电压保护 反映电压降低，常与过流构成低电压闭锁过流，提高灵敏度、防负荷误动。 动作判据：U &lt; U_set 且 I &gt; I_set。">
+        <div class="card" id="card-4-9" data-keywords="低电压保护 反映电压降低，常与过流构成低电压闭锁过流，提高灵敏度、防负荷误动。 动作判据：U &lt; U_set 且 I &gt; I_set。 ">
           <div class="card-head">
             <span class="card-num">9</span>
             <span class="card-title">低电压保护</span>
@@ -187,7 +191,7 @@
           <div class="card-code">反映电压降低，常与过流构成低电压闭锁过流，提高灵敏度、防负荷误动。
 动作判据：U &lt; U_set 且 I &gt; I_set。</div>
         </div>
-        <div class="card" id="card-4-10" data-keywords="过电压/欠电压 过电压保护：防止操作过电压、甩负荷过电压，多用于发电机、电容器。 负序电压：反映不对称故障与断线，常作闭锁或告警。">
+        <div class="card" id="card-4-10" data-keywords="过电压/欠电压 过电压保护：防止操作过电压、甩负荷过电压，多用于发电机、电容器。 负序电压：反映不对称故障与断线，常作闭锁或告警。 ">
           <div class="card-head">
             <span class="card-num">10</span>
             <span class="card-title">过电压/欠电压</span>

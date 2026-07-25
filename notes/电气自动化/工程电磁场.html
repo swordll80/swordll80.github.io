@@ -37,6 +37,9 @@
     .card-ver { font-size:10px; color:var(--accent); background:rgba(53,106,230,.08); padding:1px 7px; border-radius:5px; white-space:nowrap; }
     .card-code { margin-top:6px; background:#f8f9fc; border:1px solid var(--line); border-radius:8px; padding:10px 13px; font-family:"Cascadia Code","Fira Code","Consolas","Courier New",monospace; font-size:12.5px; line-height:1.7; white-space:pre-wrap; word-break:break-word; overflow-x:auto; color:#2d3436; }
     .card-title mark, .card-code mark { background:#fef08a; color:inherit; border-radius:2px; padding:0 1px; }
+    .card-fig { margin-top:8px; background:#fff; border:1px solid var(--line); border-radius:8px; padding:8px; overflow-x:auto; }
+    .card-fig svg { max-width:100%; height:auto; display:block; margin:0 auto; }
+    .card-fig .cap { text-align:center; font-size:11px; color:var(--muted); margin-top:4px; }
     .back-top { position:fixed; bottom:20px; right:20px; width:42px; height:42px; border-radius:50%; background:var(--accent); color:#fff; border:0; font-size:18px; cursor:pointer; box-shadow:0 4px 16px rgba(53,106,230,.35); display:none; align-items:center; justify-content:center; z-index:10; transition:transform .2s; }
     .back-top.visible { display:flex; }
     .back-top:active { transform:scale(.92); }
@@ -69,7 +72,7 @@
   <span class="result-count" id="resultCount">5 条</span>
 </div>
 <div class="container" id="cardContainer">
-    <div class="intro">静电场、恒定电/磁场与时变电磁场(麦克斯韦方程)的工程分析。</div>
+    <div class="intro">静电场、恒定场与时变电磁场(麦克斯韦方程),配电场线图。</div>
     <div class="section open" id="sect-1">
       <button class="section-head">
         <span class="icon">1</span>
@@ -78,20 +81,21 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-1-1" data-keywords="基本方程 高斯定理 ∮D·dS=q、E=-∇φ、泊松/拉普拉斯方程 ∇²φ=-ρ/ε。 电容、部分电容、静电力。">
+        <div class="card" id="card-1-1" data-keywords="静电场 高斯定理 ∮D·dS=q、E=−∇φ、泊松/拉普拉斯 ∇²φ=−ρ/ε; 电容、静电力;电场线由正电荷指向负电荷。 电场线分布">
           <div class="card-head">
             <span class="card-num">1</span>
-            <span class="card-title">基本方程</span>
+            <span class="card-title">静电场</span>
           </div>
-          <div class="card-code">高斯定理 ∮D·dS=q、E=-∇φ、泊松/拉普拉斯方程 ∇²φ=-ρ/ε。
-电容、部分电容、静电力。</div>
+          <div class="card-code">高斯定理 ∮D·dS=q、E=−∇φ、泊松/拉普拉斯 ∇²φ=−ρ/ε;
+电容、静电力;电场线由正电荷指向负电荷。</div>
+          <div class="card-fig"><svg viewBox="0 0 220 130" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif" font-size="10"><circle cx="70" cy="65" r="14" fill="#fdeaea" stroke="#b42318"/><text x="66" y="69" fill="#b42318">+</text><circle cx="160" cy="65" r="14" fill="#eef3ff" stroke="#356ae6"/><text x="156" y="69" fill="#356ae6">−</text><path d="M84,65 Q115,65 146,65" fill="none" stroke="#7d8599"/><path d="M84,50 Q115,32 146,50" fill="none" stroke="#7d8599"/><path d="M84,80 Q115,98 146,80" fill="none" stroke="#7d8599"/><path d="M84,38 Q115,4 146,38" fill="none" stroke="#7d8599"/><path d="M84,92 Q115,126 146,92" fill="none" stroke="#7d8599"/><text x="45" y="122" fill="#7d8599" font-size="9">电场线:由正电荷指向负电荷</text></svg><div class="cap">电场线分布</div></div>
         </div>
-        <div class="card" id="card-1-2" data-keywords="求解方法 镜像法、分离变量法、有限元/有限差分数值法。">
+        <div class="card" id="card-1-2" data-keywords="求解方法 镜像法、分离变量、有限元/有限差分。 ">
           <div class="card-head">
             <span class="card-num">2</span>
             <span class="card-title">求解方法</span>
           </div>
-          <div class="card-code">镜像法、分离变量法、有限元/有限差分数值法。</div>
+          <div class="card-code">镜像法、分离变量、有限元/有限差分。</div>
         </div>
       </div>
     </div>
@@ -103,13 +107,12 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-2-3" data-keywords="恒定电场与磁场 导电媒质中恒定电流场;安培环路定律 ∮H·dl=I、B=∇×A; 电感、磁路(磁阻、磁通)、涡流与集肤效应。">
+        <div class="card" id="card-2-3" data-keywords="恒定电/磁场 恒定电流场;安培环路 ∮H·dl=I、B=∇×A;电感、磁路、涡流与集肤效应。 ">
           <div class="card-head">
             <span class="card-num">3</span>
-            <span class="card-title">恒定电场与磁场</span>
+            <span class="card-title">恒定电/磁场</span>
           </div>
-          <div class="card-code">导电媒质中恒定电流场;安培环路定律 ∮H·dl=I、B=∇×A;
-电感、磁路(磁阻、磁通)、涡流与集肤效应。</div>
+          <div class="card-code">恒定电流场;安培环路 ∮H·dl=I、B=∇×A;电感、磁路、涡流与集肤效应。</div>
         </div>
       </div>
     </div>
@@ -121,20 +124,19 @@
         <span class="arrow">▼</span>
       </button>
       <div class="section-body">
-        <div class="card" id="card-3-4" data-keywords="麦克斯韦方程组 ∇×H=J+∂D/∂t、∇×E=-∂B/∂t、∇·D=ρ、∇·B=0;位移电流。">
+        <div class="card" id="card-3-4" data-keywords="麦克斯韦方程组 ∇×H=J+∂D/∂t、∇×E=−∂B/∂t、∇·D=ρ、∇·B=0;位移电流。 ">
           <div class="card-head">
             <span class="card-num">4</span>
             <span class="card-title">麦克斯韦方程组</span>
           </div>
-          <div class="card-code">∇×H=J+∂D/∂t、∇×E=-∂B/∂t、∇·D=ρ、∇·B=0;位移电流。</div>
+          <div class="card-code">∇×H=J+∂D/∂t、∇×E=−∂B/∂t、∇·D=ρ、∇·B=0;位移电流。</div>
         </div>
-        <div class="card" id="card-3-5" data-keywords="电磁波与工程应用 波动方程、坡印廷矢量(功率流)、趋肤深度; 工程:电磁兼容 EMC、屏蔽、输电线电磁环境。">
+        <div class="card" id="card-3-5" data-keywords="电磁波与应用 波动方程、坡印廷矢量、趋肤深度;EMC、屏蔽、输电电磁环境。 ">
           <div class="card-head">
             <span class="card-num">5</span>
-            <span class="card-title">电磁波与工程应用</span>
+            <span class="card-title">电磁波与应用</span>
           </div>
-          <div class="card-code">波动方程、坡印廷矢量(功率流)、趋肤深度;
-工程:电磁兼容 EMC、屏蔽、输电线电磁环境。</div>
+          <div class="card-code">波动方程、坡印廷矢量、趋肤深度;EMC、屏蔽、输电电磁环境。</div>
         </div>
       </div>
     </div>
