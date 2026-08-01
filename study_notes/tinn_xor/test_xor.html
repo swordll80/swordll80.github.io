@@ -96,9 +96,18 @@ header.top .arch{margin-left:auto;font-family:var(--mono);font-size:12px;color:v
 
 /* ---------- 画布 ---------- */
 canvas{display:block;max-width:100%}
-#cv3d{width:100%;height:430px;cursor:grab;border-radius:8px;background:var(--panel2);
+#surface-stage{width:100%;max-width:100%;overflow:auto;border:1px solid var(--line);
+  border-radius:8px;background:var(--panel2);-webkit-overflow-scrolling:touch}
+#cv3d{width:100%;height:430px;max-width:none;cursor:grab;border-radius:8px;background:var(--panel2);
   border:1px solid var(--line)}
 #cv3d.drag{cursor:grabbing}
+.surface-tools{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-top:8px}
+.surface-size{display:flex;align-items:center;gap:7px;flex-wrap:wrap;color:var(--ink2);font-size:11.5px}
+.surface-size label{display:inline-flex;align-items:center;gap:4px}
+.surface-size input[type=number]{width:72px;font:inherit;font-family:var(--mono);font-size:11.5px;
+  color:var(--ink);background:var(--panel2);border:1px solid var(--line2);border-radius:6px;padding:4px 6px}
+.surface-size button{min-height:30px;padding:3px 9px}
+.surface-readout{font-family:var(--mono);font-size:10.5px;color:var(--ink3);margin-left:auto}
 canvas.flat{width:190px;height:190px;border:1px solid var(--line2);border-radius:6px;background:var(--panel2)}
 .capt{font-family:var(--mono);font-size:10.5px;color:var(--ink3);margin-top:4px;text-align:center}
 
@@ -181,6 +190,8 @@ aside.doc{position:sticky;top:16px}
   .params .presets button{flex:1 1 calc(50% - 6px);min-height:38px}
   .card{padding:12px}
   #cv3d{height:clamp(260px,68vw,360px)}
+  .surface-tools{align-items:flex-start}
+  .surface-readout{width:100%;margin-left:0}
   .row{gap:10px}
   .row>div:not(.grow){flex:1 1 120px;min-width:0}
   canvas.flat{width:min(190px,100%);height:auto;aspect-ratio:1}
@@ -254,7 +265,17 @@ input[type=range]{flex:1 1 200px;min-width:140px;accent-color:var(--accent)}
         <h2>① 模型学到的三维曲面
           <span style="font-weight:400;color:var(--ink3)">x=右值 in[1] · y=左值 in[0] · z=输出</span>
           <span class="tagline" id="t-3d"></span></h2>
-        <canvas id="cv3d"></canvas>
+        <div id="surface-stage">
+          <canvas id="cv3d"></canvas>
+        </div>
+        <div class="surface-tools" aria-label="三维曲面画布尺寸">
+          <span class="surface-size">画布尺寸
+            <label for="surface-width">宽 <input id="surface-width" type="number" min="320" max="1800" step="10" value="900"> px</label>
+            <label for="surface-height">高 <input id="surface-height" type="number" min="260" max="1200" step="10" value="430"> px</label>
+            <button class="sm" id="btn-surface-fit" type="button">适应容器</button>
+          </span>
+          <span class="surface-readout" id="surface-readout"></span>
+        </div>
         <div class="row" style="margin-top:8px;align-items:center">
           <span class="capt" style="margin:0">拖动画布可旋转视角</span>
           <button class="sm" id="btn-view">复位视角</button>
@@ -589,7 +610,9 @@ function runTraining(P){
  *  第三部分：渲染
  * ======================================================================== */
 const $ = id => document.getElementById(id);
-let idx = 0, timer = null, az = -0.62, el = 0.60, dragging = null;
+let idx = 0, timer = null, az = -0.62, el = 0.60,
+  surfaceFit = true, surfaceWidth = null, surfaceHeight = 430,
+  dragging = null;
 
 const fmt = (v,d=4) => (v==null||isNaN(v)) ? "—"
   : (Math.abs(v)>=1e4 || (v!==0 && Math.abs(v)<1e-4) ? v.toExponential(2) : v.toFixed(d));
@@ -619,25 +642,41 @@ function surface(st){
 function draw3d(){
   const cv = $("cv3d"), dpr = window.devicePixelRatio || 1;
   const W = cv.clientWidth, H = cv.clientHeight;
-  if(cv.width !== Math.round(W*dpr)){ cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); }
+  if(!W || !H) return;
+  const pixelW = Math.round(W*dpr), pixelH = Math.round(H*dpr);
+  if(cv.width !== pixelW || cv.height !== pixelH){ cv.width = pixelW; cv.height = pixelH; }
   const g = cv.getContext("2d");
   g.setTransform(dpr,0,0,dpr,0,0);
   g.clearRect(0,0,W,H);
 
   const st = S(), sp = SP();
   const z  = surface(st), zp = sp ? surface(sp) : null;
-  const n  = GRID, sc = Math.min(W, H*1.55) * 0.40;
-  const ox = W/2, oy = H/2 + sc*0.16;
+  const n  = GRID;
   const ca = Math.cos(az), sa = Math.sin(az), ce = Math.cos(el), se = Math.sin(el);
 
-  // 世界坐标 → 屏幕。x=右值, y=左值, z=输出，全部先平移到以 (0.5,0.5,0.5) 为中心
-  function pr(x, y, zz){
+  // 先计算未缩放的投影，再用立方体和三个轴端点的包围盒反推缩放比例。
+  // 这样改变画布宽高或旋转视角时，坐标系和轴名都不会被裁掉。
+  function rawPr(x, y, zz){
     const X = (x-0.5)*ca - (y-0.5)*sa;
     const Y = (x-0.5)*sa + (y-0.5)*ca;
     const Z = (zz-0.5);
-    return [ ox + X*sc*1.35,
-             oy - (Z*ce - Y*se)*sc*1.15,
-             Y*ce + Z*se ];                    // 第三个是深度，用于画家算法排序
+    return [X*1.35, -(Z*ce - Y*se)*1.15,
+            Y*ce + Z*se];                       // 第三个是深度，用于画家算法排序
+  }
+  const frame = [];
+  for(const zz of [0,1]) for(const yy of [0,1]) for(const xx of [0,1]) frame.push(rawPr(xx,yy,zz));
+  [[1.16,0.5,0],[0.5,1.16,0],[0,0,1.16]].forEach(v => frame.push(rawPr(v[0],v[1],v[2])));
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  frame.forEach(p => { minX = Math.min(minX,p[0]); maxX = Math.max(maxX,p[0]);
+                        minY = Math.min(minY,p[1]); maxY = Math.max(maxY,p[1]); });
+  const marginX = Math.min(92, Math.max(66, W*0.16));
+  const marginY = Math.min(58, Math.max(40, H*0.14));
+  const sc = Math.max(1, Math.min((W-marginX*2)/(maxX-minX), (H-marginY*2)/(maxY-minY))) * 0.94;
+  const ox = W/2 - (minX+maxX)*sc/2, oy = H/2 - (minY+maxY)*sc/2;
+  // 世界坐标 → 屏幕。x=右值, y=左值, z=输出。
+  function pr(x, y, zz){
+    const p = rawPr(x,y,zz);
+    return [ox + p[0]*sc, oy + p[1]*sc, p[2]];
   }
 
   /* --- 底面网格与坐标轴 --- */
@@ -698,6 +737,28 @@ function draw3d(){
     g.setLineDash([]);
   }
 
+  /* --- 三条正向坐标轴：箭头表示正方向 --- */
+  function axisArrow(a,b,color){
+    const angle = Math.atan2(b[1]-a[1], b[0]-a[0]), size = 7;
+    g.save();
+    g.strokeStyle = color; g.fillStyle = color; g.lineWidth = 1.8;
+    g.beginPath(); g.moveTo(a[0],a[1]); g.lineTo(b[0],b[1]); g.stroke();
+    g.beginPath(); g.moveTo(b[0],b[1]);
+    g.lineTo(b[0]-size*Math.cos(angle-0.48), b[1]-size*Math.sin(angle-0.48));
+    g.lineTo(b[0]-size*Math.cos(angle+0.48), b[1]-size*Math.sin(angle+0.48));
+    g.closePath(); g.fill();
+    g.restore();
+  }
+  const origin = pr(0,0,0);
+  const xAxis = pr(1.16,0,0), yAxis = pr(0,1.16,0), zAxis = pr(0,0,1.16);
+  axisArrow(origin, xAxis, getCss("--accent"));
+  axisArrow(origin, yAxis, getCss("--sage"));
+  axisArrow(origin, zAxis, getCss("--warm"));
+  g.fillStyle = getCss("--ink2"); g.font = "11px " + getCss("--mono");
+  g.fillText("x 右值 in[1]", xAxis[0]+7, xAxis[1]-7);
+  g.fillText("y 左值 in[0]", yAxis[0]+7, yAxis[1]+14);
+  g.fillText("z 输出", zAxis[0]+7, zAxis[1]-7);
+
   /* --- 四个 XOR 样本点：空心圈=期望值，实心点=当前输出 --- */
   const cur = st.outs || XIN.map(v => evalNet(st.w, st.b, DATA.P.nhid, v[0], v[1]));
   XIN.forEach((v,j)=>{
@@ -714,11 +775,15 @@ function draw3d(){
     g.fillText(`(${left},${right})→${tgt}`, base[0]+7, base[1]+13);
   });
 
-  /* --- 轴名 --- */
-  g.fillStyle = getCss("--ink3"); g.font = "11px " + getCss("--mono");
-  let p = pr(1.15, 0.5, 0); g.fillText("x 右值 in[1]", p[0]-24, p[1]);
-  p = pr(0.5, 1.18, 0);     g.fillText("y 左值 in[0]", p[0]-24, p[1]);
-  p = pr(0, 0, 1.12);       g.fillText("z 输出", p[0]-14, p[1]);
+  /* --- 原点 O：金色外圈 + 深色中心，和样本点明确区分 --- */
+  g.save();
+  g.fillStyle = getCss("--gold"); g.strokeStyle = getCss("--panel"); g.lineWidth = 2;
+  g.beginPath(); g.arc(origin[0], origin[1], 7, 0, 6.2832); g.fill(); g.stroke();
+  g.fillStyle = getCss("--ink");
+  g.beginPath(); g.arc(origin[0], origin[1], 2.2, 0, 6.2832); g.fill();
+  g.font = "bold 11px " + getCss("--mono");
+  g.fillText("O 原点 (0,0,0)", origin[0]+9, origin[1]-10);
+  g.restore();
 
   $("t-3d").textContent = sp ? `曲面最大位移 ${fmt(Math.max(...quads.map(q=>q.dz)),4)}` : "";
 }
@@ -1177,6 +1242,45 @@ $("slider").oninput = e => { stopPlay(); go(+e.target.value, false); };
 $("btn-run").onclick = () => { stopPlay(); rebuild(S() ? S().epoch : null); };
 $("ck-ghost").onchange = () => render();
 $("btn-view").onclick = () => { az = -0.62; el = 0.60; render(); };
+
+/* ---------- 三维画布尺寸 ---------- */
+const surfaceWidthInput = $("surface-width"), surfaceHeightInput = $("surface-height");
+const surfaceReadout = $("surface-readout"), surfaceFitButton = $("btn-surface-fit");
+function updateSurfaceReadout(syncInputs = true){
+  const cv = $("cv3d");
+  const width = Math.round(cv.offsetWidth), height = Math.round(cv.offsetHeight);
+  if(syncInputs){
+    surfaceWidthInput.value = width;
+    surfaceHeightInput.value = height;
+  }
+  surfaceReadout.textContent = `实际显示 ${width} × ${height} px`;
+}
+function applySurfaceSize(syncInputs = true){
+  const cv = $("cv3d");
+  cv.style.width = surfaceFit ? "100%" : `${surfaceWidth}px`;
+  cv.style.height = `${surfaceHeight}px`;
+  updateSurfaceReadout(syncInputs);
+}
+function redrawSurface(syncInputs = true){ applySurfaceSize(syncInputs); if(DATA) draw3d(); }
+function readSurfaceWidth(syncInputs){
+  const value = Number(surfaceWidthInput.value);
+  if(!Number.isFinite(value) && !syncInputs) return;
+  surfaceWidth = Math.max(320, Math.min(1800, Math.round(value) || 900));
+  surfaceFit = false; redrawSurface(syncInputs);
+}
+function readSurfaceHeight(syncInputs){
+  const value = Number(surfaceHeightInput.value);
+  if(!Number.isFinite(value) && !syncInputs) return;
+  surfaceHeight = Math.max(260, Math.min(1200, Math.round(value) || 430));
+  redrawSurface(syncInputs);
+}
+// oninput 兼容部分内嵌浏览器；onchange 负责失焦后的空值/越界规范化。
+surfaceWidthInput.oninput = () => readSurfaceWidth(false);
+surfaceWidthInput.onchange = () => readSurfaceWidth(true);
+surfaceHeightInput.oninput = () => readSurfaceHeight(false);
+surfaceHeightInput.onchange = () => readSurfaceHeight(true);
+surfaceFitButton.onclick = () => { surfaceFit = true; surfaceWidth = null; redrawSurface(); };
+applySurfaceSize();
 document.querySelectorAll("[data-preset]").forEach(b=>{
   b.onclick = () => {
     const [n,r,i,s] = b.dataset.preset.split(",");
@@ -1210,7 +1314,7 @@ document.addEventListener("keydown", e=>{
   cv.addEventListener("touchstart", e => { if(e.touches[0]) down(e.touches[0]); }, {passive:true});
   window.addEventListener("touchmove", e => { if(dragging && e.touches[0]){ move(e.touches[0]); e.preventDefault(); } }, {passive:false});
 window.addEventListener("touchend", up);
-  window.addEventListener("resize", () => { if(DATA) draw3d(); });
+  window.addEventListener("resize", () => { if(surfaceFit) applySurfaceSize(); if(DATA) draw3d(); });
 })();
 
 /* ---------- 动态读取同目录的 C 源码 ---------- */
