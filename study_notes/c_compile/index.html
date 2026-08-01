@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>C 在线编辑、编译与运行 - 学习笔记</title>
+  <link rel="stylesheet" href="../compile_tools.css">
+</head>
+<body>
+  <div class="tool-shell">
+    <header class="tool-header">
+      <div>
+        <h1>C 在线编辑、编译与运行</h1>
+        <p>面向学习的本地编译桥接工具：网页负责编辑，编译器仍运行在你的电脑上。</p>
+      </div>
+      <nav class="tool-links" aria-label="页面导航">
+        <a href="../study_notes_index.html">学习笔记入口</a>
+        <a href="../asm_compile/index.html">汇编工具</a>
+        <a href="../../index.html">网站主页</a>
+      </nav>
+    </header>
+
+    <div id="tool-status" class="tool-status" role="status">正在检测本地编译助手……</div>
+
+    <main class="tool-grid">
+      <section class="tool-card">
+        <h2>源码编辑器</h2>
+        <div class="toolbar">
+          <label>示例
+            <select id="example-select" aria-label="选择 C 示例"></select>
+          </label>
+          <button id="btn-load-example" type="button">重新加载</button>
+          <button id="btn-save-source" type="button">下载源码</button>
+          <button class="primary" data-action="compile" type="button">编译</button>
+          <button class="primary" data-action="run" type="button">运行</button>
+          <button data-action="debug" type="button">调试构建</button>
+        </div>
+        <div class="editor-wrap">
+          <textarea id="source-editor" spellcheck="false" aria-label="C 源码编辑器"></textarea>
+          <div class="editor-hint">快捷键：Ctrl/⌘ + Enter 编译并运行。源码草稿只保存在当前浏览器。</div>
+        </div>
+      </section>
+
+      <aside>
+        <section class="tool-card">
+          <h2>编译选项</h2>
+          <div class="card-body">
+            <div class="field-row">
+              <label>编译器
+                <select id="compiler-select">
+                  <option value="auto">自动选择</option>
+                  <option value="msvc">MSVC / cl</option>
+                  <option value="clang">Clang</option>
+                  <option value="gcc">GCC</option>
+                </select>
+              </label>
+              <label>优化级别
+                <select id="optimization-select">
+                  <option value="0">O0：便于调试</option>
+                  <option value="1">O1</option>
+                  <option value="2">O2</option>
+                  <option value="3">O3</option>
+                </select>
+              </label>
+            </div>
+            <label class="example-note" for="stdin-editor">运行时标准输入（每行一个输入值）</label>
+            <textarea id="stdin-editor" spellcheck="false" placeholder="例如：5"></textarea>
+            <div class="callout">GitHub Pages 本身不能安全地执行 C 编译器。双击 <code>start_c_compile.bat</code> 后，页面会通过 <code>127.0.0.1</code> 调用本机编译器；源码不会上传。</div>
+          </div>
+        </section>
+
+        <section class="tool-card" style="margin-top:18px">
+          <h2>编译输出</h2>
+          <div class="output-tabs" role="tablist">
+            <button data-output-tab="output" class="active" type="button">运行/编译</button>
+            <button data-output-tab="assembly" type="button">汇编信息</button>
+            <button data-output-tab="debug" type="button">调试信息</button>
+          </div>
+          <pre id="output-output" class="output-pane active">暂无输出。</pre>
+          <pre id="output-assembly" class="output-pane">暂无输出。</pre>
+          <pre id="output-debug" class="output-pane">暂无输出。</pre>
+        </section>
+      </aside>
+    </main>
+
+    <section class="tool-card guide">
+      <div class="card-body">
+        <h2>使用说明</h2>
+        <h3>1. 先在网页中学习和修改</h3>
+        <p>示例文件位于当前目录的 <code>examples</code> 子目录。选择示例会从本地仓库重新读取文件，因此你直接修改示例文件后，刷新或点击“重新加载”即可看到最新内容。</p>
+        <h3>2. 再启动本地编译服务</h3>
+        <p>Windows 用户双击 <code>start_c_compile.bat</code>。服务只监听本机回环地址，并临时创建编译目录；编译结束后临时文件会自动清理。</p>
+        <h3>3. 认识一次编译过程</h3>
+        <ul>
+          <li>编译：检查语法、类型和链接错误，同时生成可查看的汇编信息。</li>
+          <li>运行：先编译，再启动生成的程序；输出显示在右侧黑色面板。</li>
+          <li>调试构建：保留调试信息，并尝试调用 CDB 或 GDB 输出断点附近的栈和局部变量。</li>
+        </ul>
+        <p class="callout">如果电脑没有安装 MSVC、Clang 或 GCC，页面仍可作为纯静态 C 学习编辑器使用；状态栏会明确显示缺少的本地工具。</p>
+      </div>
+    </section>
+    <footer class="tool-footer">本页面不依赖外部 CDN，适合在 GitHub Pages 上静态发布。</footer>
+  </div>
+
+  <script>
+    window.COMPILE_TOOL_CONFIG = {
+      language: 'c',
+      filename: 'main.c',
+      examples: [
+        { title: 'hello.c：最小程序', url: 'examples/hello.c' },
+        { title: 'fibonacci.c：循环与函数', url: 'examples/fibonacci.c' },
+        { title: 'pointers.c：指针与数组', url: 'examples/pointers.c' },
+        { title: 'xor.c：XOR 真值表', url: 'examples/xor.c' },
+        { title: 'tinn_xor/test_xor.c：Tinn 训练程序', url: '../tinn_xor/test_xor.c' }
+      ]
+    };
+  </script>
+  <script src="../compile_tools.js"></script>
+</body>
+</html>

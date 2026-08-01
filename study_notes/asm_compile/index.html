@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>汇编在线编辑、编译与调试 - 学习笔记</title>
+  <link rel="stylesheet" href="../compile_tools.css">
+</head>
+<body>
+  <div class="tool-shell">
+    <header class="tool-header">
+      <div>
+        <h1>汇编在线编辑、编译与调试</h1>
+        <p>从最小指令、寻址和控制流开始，逐步观察汇编源码到目标文件的过程。</p>
+      </div>
+      <nav class="tool-links" aria-label="页面导航">
+        <a href="../study_notes_index.html">学习笔记入口</a>
+        <a href="../c_compile/index.html">C 编译工具</a>
+        <a href="../../index.html">网站主页</a>
+      </nav>
+    </header>
+
+    <div id="tool-status" class="tool-status" role="status">正在检测本地汇编助手……</div>
+
+    <main class="tool-grid">
+      <section class="tool-card">
+        <h2>汇编源码编辑器</h2>
+        <div class="toolbar">
+          <label>示例
+            <select id="example-select" aria-label="选择汇编示例"></select>
+          </label>
+          <button id="btn-load-example" type="button">重新加载</button>
+          <button id="btn-save-source" type="button">下载源码</button>
+          <button class="primary" data-action="compile" type="button">汇编</button>
+          <button class="primary" data-action="run" type="button">运行</button>
+          <button data-action="debug" type="button">调试构建</button>
+        </div>
+        <div class="editor-wrap">
+          <textarea id="source-editor" spellcheck="false" aria-label="汇编源码编辑器"></textarea>
+          <div class="editor-hint">快捷键：Ctrl/⌘ + Enter 汇编并运行。不同汇编器的语法请配合下方编译器选择使用。</div>
+        </div>
+      </section>
+
+      <aside>
+        <section class="tool-card">
+          <h2>汇编器选择</h2>
+          <div class="card-body">
+            <div class="field-row">
+              <label>汇编器
+                <select id="compiler-select">
+                  <option value="auto">自动选择</option>
+                  <option value="ml64">MASM / ml64（Windows x64）</option>
+                  <option value="nasm">NASM（Windows x64）</option>
+                  <option value="as">GNU as（目标文件练习）</option>
+                </select>
+              </label>
+              <label>示例目录
+                <input type="text" value="study_notes/asm_example_code" readonly>
+              </label>
+            </div>
+            <div class="callout">页面可以在 GitHub Pages 上静态阅读和编辑。双击 <code>start_asm_compile.bat</code> 后，ml64、NASM 或 GNU as 才会由本机服务调用。</div>
+          </div>
+        </section>
+
+        <section class="tool-card" style="margin-top:18px">
+          <h2>汇编输出</h2>
+          <div class="output-tabs" role="tablist">
+            <button data-output-tab="output" class="active" type="button">编译/运行</button>
+            <button data-output-tab="assembly" type="button">目标文件</button>
+            <button data-output-tab="debug" type="button">调试信息</button>
+          </div>
+          <pre id="output-output" class="output-pane active">暂无输出。</pre>
+          <pre id="output-assembly" class="output-pane">暂无输出。</pre>
+          <pre id="output-debug" class="output-pane">暂无输出。</pre>
+        </section>
+      </aside>
+    </main>
+
+    <section class="tool-card guide">
+      <div class="card-body">
+        <h2>汇编学习路线</h2>
+        <h3>先区分语法方言</h3>
+        <p><code>ml64</code> 使用 MASM 风格，<code>nasm</code> 使用 NASM 风格，<code>as</code> 示例使用 GNU 汇编风格。选择示例后，请将编译器切换到匹配的方言。</p>
+        <h3>再观察三个核心问题</h3>
+        <ul>
+          <li>数据在哪里：寄存器、栈、静态区和堆分别承担什么作用？</li>
+          <li>地址如何计算：立即数、寄存器间接、基址加变址和相对寻址有什么区别？</li>
+          <li>控制流如何变化：比较、条件跳转、循环、调用和返回怎样组合成算法？</li>
+        </ul>
+        <p class="callout">示例代码按架构和语法分类存放在 <code>asm_example_code</code>。其中 Windows x64 的 MASM/NASM 示例可以在本机链接运行；ARM64、RISC-V、MIPS 和 68000 示例用于跨架构语法与算法阅读。</p>
+      </div>
+    </section>
+    <footer class="tool-footer">本页面不依赖外部 CDN，适合在 GitHub Pages 上静态发布。</footer>
+  </div>
+
+  <script>
+    window.COMPILE_TOOL_CONFIG = {
+      language: 'asm',
+      filename: 'main.asm',
+      examples: [
+        { title: 'x86_64_masm_hello.asm：MASM 最小程序', url: '../asm_example_code/x86_64_masm_hello.asm' },
+        { title: 'x86_64_masm_loop.asm：循环与条件跳转', url: '../asm_example_code/x86_64_masm_loop.asm' },
+        { title: 'x86_64_masm_array.asm：数组与寻址', url: '../asm_example_code/x86_64_masm_array.asm' },
+        { title: 'x86_64_nasm_hello.asm：NASM 方言', url: '../asm_example_code/x86_64_nasm_hello.asm' },
+        { title: 'arm64_add.s：AArch64 加法', url: '../asm_example_code/arm64_add.s' },
+        { title: 'riscv_loop.s：RISC-V 循环', url: '../asm_example_code/riscv_loop.s' },
+        { title: 'mips_basic.asm：MIPS 基本指令', url: '../asm_example_code/mips_basic.asm' },
+        { title: 'm68k_loop.asm：68000 算法骨架', url: '../asm_example_code/m68k_loop.asm' }
+      ]
+    };
+  </script>
+  <script src="../compile_tools.js"></script>
+</body>
+</html>
