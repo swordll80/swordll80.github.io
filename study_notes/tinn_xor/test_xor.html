@@ -69,7 +69,11 @@ header.top .arch{margin-left:auto;font-family:var(--mono);font-size:12px;color:v
 .chip.done{color:var(--ink3);background:var(--panel2)}
 
 .main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
-@media(max-width:1080px){.main{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:1080px){
+  .main{grid-template-columns:minmax(0,1fr)}
+  #c-net{overflow:hidden}
+  #c-net table.dt{display:block;max-width:100%;overflow-x:auto;white-space:nowrap}
+}
 
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
   padding:14px 16px;margin-bottom:14px;transition:border-color .25s,box-shadow .25s,opacity .25s}
@@ -132,6 +136,68 @@ aside.doc{position:sticky;top:16px}
   border-left:2px solid var(--accent);border-radius:0 6px 6px 0;padding:9px 12px;margin:10px 0;
   white-space:pre-wrap;line-height:1.7;overflow-x:auto}
 .doc .note{font-size:12px;color:var(--ink2);border-top:1px dotted var(--line);padding-top:8px;margin-top:10px}
+
+/* ---------- C 源码学习笔记 ---------- */
+.source-note{margin-top:18px}
+.source-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.source-head h2{margin:0 0 5px;font-size:16px;letter-spacing:.04em}
+.source-head p{margin:0;color:var(--ink2);font-size:12.5px}
+.source-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.source-link{display:inline-flex;align-items:center;min-height:32px;padding:4px 10px;border:1px solid var(--line2);
+  border-radius:7px;color:var(--accent);font-size:12px;text-decoration:none}
+.source-link:hover{border-color:var(--accent);background:var(--accent-soft)}
+.source-grid{display:grid;grid-template-columns:minmax(260px,.82fr) minmax(0,1.18fr);gap:16px;align-items:start;margin-top:14px}
+.source-explain{min-width:0}
+.source-explain h3{margin:0 0 7px;font-size:14px;font-weight:600;color:var(--ink)}
+.source-explain section+section{border-top:1px dotted var(--line);margin-top:13px;padding-top:12px}
+.source-explain p{margin:0 0 8px;font-size:12.5px;line-height:1.8}
+.source-explain ol{margin:0;padding-left:20px}
+.source-explain li{margin:0 0 8px;font-size:12.5px;line-height:1.8}
+.source-explain code{font-family:var(--mono);font-size:11.5px;color:var(--warm)}
+.source-table{margin-top:8px}
+.source-code-wrap{min-width:0}
+.source-status{margin:0 0 6px;color:var(--ink3);font-family:var(--mono);font-size:11px;overflow-wrap:anywhere}
+.source-code{max-height:740px;margin:0;overflow:auto;padding:12px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:7px;tab-size:4;-webkit-overflow-scrolling:touch}
+.source-code code{font-family:var(--mono);font-size:11.5px;line-height:1.65;white-space:pre;color:var(--ink)}
+
+@media(max-width:900px){
+  .source-grid{grid-template-columns:minmax(0,1fr)}
+  aside.doc{position:static}
+  .source-code{max-height:620px}
+}
+@media(max-width:640px){
+  .wrap{padding:16px 12px 190px}
+  header.top{align-items:flex-start;gap:8px;padding-bottom:11px}
+  header.top h1{font-size:18px}
+  header.top .sub{font-size:11.5px;line-height:1.5}
+  header.top .arch{margin-left:0;font-size:10.5px;padding:3px 9px}
+  .params{gap:8px;padding:10px}
+  .params label{flex:1 1 calc(50% - 8px);min-width:128px}
+  .params input[type=number]{width:64px;min-width:0}
+  .params button.pri{flex:1 1 100%;min-height:40px}
+  .params .sep{display:none}
+  .params .presets{width:100%;margin-left:0}
+  .params .presets button{flex:1 1 calc(50% - 6px);min-height:38px}
+  .card{padding:12px}
+  #cv3d{height:clamp(260px,68vw,360px)}
+  .row{gap:10px}
+  .row>div:not(.grow){flex:1 1 120px;min-width:0}
+  canvas.flat{width:min(190px,100%);height:auto;aspect-ratio:1}
+  .grow{flex-basis:100%}
+  table.dt{display:block;overflow-x:auto;white-space:nowrap}
+  .ctl{padding:8px 12px 10px}
+  .ctl .inner{gap:7px}
+  .ctl .inner button,.ctl .inner select{min-height:40px}
+  .pos-ind{min-width:auto}
+  input[type=range]{flex-basis:100%;min-width:0}
+  .ctl .hint{width:100%;line-height:1.4}
+  .source-head h2{font-size:15px}
+  .source-actions{width:100%}
+  .source-actions button,.source-actions .source-link{flex:1 1 auto;justify-content:center;min-height:40px}
+  .source-code{max-height:520px;padding:10px}
+  .source-code code{font-size:10.5px;line-height:1.6}
+}
 
 /* ---------- 控制条 ---------- */
 .ctl{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);
@@ -212,9 +278,81 @@ input[type=range]{flex:1 1 200px;min-width:140px;accent-color:var(--accent)}
           </div>
           <div class="grow">
             <table class="dt" id="tb-samples"></table>
-          </div>
-        </div>
-      </div>
+  </div>
+</div>
+
+<section class="card source-note" id="c-source">
+  <div class="source-head">
+    <div>
+      <h2>test_xor.c 源码讲解</h2>
+      <p>右侧源码在页面打开时从同目录的 <code>test_xor.c</code> 动态读取；修改 C 文件并刷新页面即可看到最新内容。</p>
+    </div>
+    <div class="source-actions">
+      <a class="source-link" href="test_xor.c" target="_blank" rel="noopener">直接打开 test_xor.c</a>
+      <button class="sm" id="btn-source-refresh" type="button">重新读取源码</button>
+    </div>
+  </div>
+
+  <div class="source-grid">
+    <article class="source-explain">
+      <section>
+        <h3>1. 先看问题：XOR 数据集</h3>
+        <p><code>xor_in</code> 有 4 条二输入样本，<code>xor_out</code> 是异或答案：两个输入不同则输出 1，相同则输出 0。</p>
+        <table class="dt source-table">
+          <thead><tr><th>输入</th><th>期望输出</th><th>含义</th></tr></thead>
+          <tbody>
+            <tr><td>[0, 0]</td><td>0</td><td>相同</td></tr>
+            <tr><td>[0, 1]</td><td>1</td><td>不同</td></tr>
+            <tr><td>[1, 0]</td><td>1</td><td>不同</td></tr>
+            <tr><td>[1, 1]</td><td>0</td><td>相同</td></tr>
+          </tbody>
+        </table>
+        <p>这 4 个点在线性平面上不可用一条直线分开，因此单层感知机无法解决，必须使用隐藏层引入非线性。</p>
+      </section>
+
+      <section>
+        <h3>2. 初始化：让每个神经元先不一样</h3>
+        <p><code>lcg_rand()</code> 是可复现的线性同余随机数发生器，<code>reseed_weights()</code> 用同一个种子把权重初始化到约 <code>[-0.5, 0.5]</code>。</p>
+        <p>不用 <code>rand()</code> 的原因是不同 C 运行库的随机序列不一致；固定 LCG 后，终端 C 程序和本页的浏览器演示才能对齐。</p>
+      </section>
+
+      <section>
+        <h3>3. 建网：2 → hidden → 1</h3>
+        <p><code>xtbuild(2, nhid, 1)</code> 创建 2 个输入、<code>nhid</code> 个隐藏神经元和 1 个输出神经元。隐藏层通过 sigmoid 产生非线性，输出层再把隐藏层激活值组合成最终预测。</p>
+        <p>Tinn 的特点是每层共用一个偏置，而且本例中偏置不更新，所以理论最小的 2 个隐藏神经元经常会陷入局部极小值；默认使用 4 个隐藏神经元更稳定。</p>
+      </section>
+
+      <section>
+        <h3>4. 训练：<code>xttrain()</code> 完成一次反向传播</h3>
+        <ol>
+          <li>前向传播：计算隐藏层和输出层的 sigmoid 激活值。</li>
+          <li>计算误差：<code>E = 1/2 × (target - output)^2</code>。</li>
+          <li>反向传播：根据链式法则计算输出层和隐藏层的责任值。</li>
+          <li>更新权重：<code>w -= rate × gradient</code>，当前样本立即生效。</li>
+        </ol>
+        <p>外层循环重复若干轮，内层循环依次训练 4 条样本；因此这是在线梯度下降，而不是等所有样本结束后再统一更新。</p>
+      </section>
+
+      <section>
+        <h3>5. 推理与验收</h3>
+        <p><code>xtpredict()</code> 只执行前向传播，得到 0 到 1 之间的概率式输出。程序用 <code>output &gt; 0.5</code> 转成 0/1，并统计 4 条样本答对数量。</p>
+        <p>最后的曲面图不是额外的训练逻辑，而是把输入从 0 到 1 逐点采样，用训练好的网络预测并打印出来，帮助观察 XOR 的“马鞍面”。</p>
+      </section>
+
+      <section>
+        <h3>6. 编译与调参</h3>
+        <p>构建后可运行 <code>./tinn_xor</code>，也可以尝试 <code>-s 5 -n 8 -r 1 -i 5000</code>。种子、隐藏层大小、学习率和训练轮数都会影响是否成功收敛。</p>
+        <p>如果误差停在较高水平，优先更换种子或增加隐藏神经元；学习率过大则可能震荡，过小则收敛很慢。</p>
+      </section>
+    </article>
+
+    <div class="source-code-wrap">
+      <p class="source-status" id="c-source-status">正在读取 test_xor.c …</p>
+      <pre class="source-code"><code id="c-source-code">正在读取 test_xor.c …</code></pre>
+    </div>
+  </div>
+</section>
+</div>
 
       <!-- 网络结构图 -->
       <div class="card" id="c-net">
@@ -1071,9 +1209,35 @@ document.addEventListener("keydown", e=>{
   window.addEventListener("mouseup", up);
   cv.addEventListener("touchstart", e => { if(e.touches[0]) down(e.touches[0]); }, {passive:true});
   window.addEventListener("touchmove", e => { if(dragging && e.touches[0]){ move(e.touches[0]); e.preventDefault(); } }, {passive:false});
-  window.addEventListener("touchend", up);
+window.addEventListener("touchend", up);
   window.addEventListener("resize", () => { if(DATA) draw3d(); });
 })();
+
+/* ---------- 动态读取同目录的 C 源码 ---------- */
+const SOURCE_FILE = "test_xor.c";
+function loadCSource(){
+  const code = $("c-source-code"), status = $("c-source-status"), button = $("btn-source-refresh");
+  button.disabled = true;
+  status.textContent = "正在读取 " + SOURCE_FILE + " …";
+  fetch(SOURCE_FILE + "?v=" + Date.now(), { cache:"no-store" })
+    .then(response => {
+      if(!response.ok) throw new Error((response.status + " " + response.statusText).trim());
+      return response.text();
+    })
+    .then(text => {
+      code.textContent = text;
+      const lines = text.split(/\r\n|\r|\n/).length;
+      status.textContent = "已读取 " + lines + " 行 · " + SOURCE_FILE + " · "
+        + new Date().toLocaleString("zh-CN");
+    })
+    .catch(error => {
+      code.textContent = "无法读取 test_xor.c。请使用 GitHub Pages 或本地 HTTP 服务器打开此页面。";
+      status.textContent = "读取失败：" + (error.message || error);
+    })
+    .finally(() => { button.disabled = false; });
+}
+$("btn-source-refresh").onclick = loadCSource;
+loadCSource();
 
 rebuild(null);
 </script>
