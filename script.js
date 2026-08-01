@@ -6,6 +6,7 @@
   var navData = [
     { title: '工具', target: 'tools-overview' },
     { title: '常用好网站导航', href: 'notes/网站导航/网站速查.html' },
+    { title: '学习笔记', href: 'study_notes/study_notes_index.html' },
     { title: '手册速查', href: 'read.html' },
     { title: '大型系统软件设计', href: 'notes/系统软件设计/大型系统软件设计方法.html' }
   ];

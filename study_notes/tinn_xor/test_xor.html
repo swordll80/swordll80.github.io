@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tinn XOR 训练演示</title>
+<!-- ===========================================================================
+  Tinn XOR 训练演示 —— 完全无依赖的单文件网页
+
+  这个文件是 test_xor.c 的完整移植：下面 JS 里的 lcg / act / pdact / fprop /
+  bprop / xtbuild / xttrain 与 Tinn.c + test_xor.c 逐行对应，连浮点舍入都用
+  Math.fround 模拟了 C 的 float 单精度。同一个种子下，网页里跑出来的数
+  和终端里 ./tinn_xor 打印的几乎完全一样。
+
+  训练是在你点开这个页面时**真的在浏览器里跑**的，不是预先录好的数据。
+  改参数、点「重新训练」，整条演化轨迹会立刻重算一遍。
+============================================================================ -->
+<style>
+:root{
+  --paper:#f7f4ef; --panel:#fffdfa; --panel2:#fbf8f3;
+  --line:#e6e0d5; --line2:#d8d0c2;
+  --ink:#3a3733; --ink2:#6f6860; --ink3:#9a9288;
+  --accent:#5f7695; --accent-soft:#eef1f6;
+  --warm:#c08552; --cool:#6b84a6; --sage:#7d9a7f; --rose:#b07a7a;
+  --gold:#c8a13c; --gold-bg:#fdf6e3;
+  --radius:10px;
+  --mono:"Cascadia Mono","Consolas","SF Mono","Menlo",monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --paper:#1c1b19; --panel:#232220; --panel2:#282725;
+    --line:#3a3835; --line2:#4a4743;
+    --ink:#e6e1d8; --ink2:#a9a298; --ink3:#7d766c;
+    --accent:#8ea6c6; --accent-soft:#2b3340;
+    --warm:#d59a63; --cool:#7f9ac0; --sage:#8fb392; --rose:#c99191;
+    --gold:#d9b45a; --gold-bg:#3a3220;
+  }
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Source Han Sans SC",sans-serif;
+  font-size:14px; line-height:1.75; letter-spacing:.01em; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1440px;margin:0 auto;padding:22px 24px 132px}
+
+header.top{display:flex;align-items:flex-end;gap:18px;flex-wrap:wrap;
+  padding-bottom:13px;border-bottom:1px solid var(--line);margin-bottom:14px}
+header.top h1{margin:0;font-size:20px;font-weight:600;letter-spacing:.04em}
+header.top .sub{color:var(--ink2);font-size:12.5px}
+header.top .arch{margin-left:auto;font-family:var(--mono);font-size:12px;color:var(--ink2);
+  background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 14px}
+
+/* ---------- 参数条 ---------- */
+.params{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:11px 14px;margin-bottom:13px;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.params label{font-size:12px;color:var(--ink2);display:flex;align-items:center;gap:6px}
+.params input[type=number]{width:76px;font:inherit;font-family:var(--mono);font-size:12.5px;
+  color:var(--ink);background:var(--panel2);border:1px solid var(--line2);border-radius:6px;padding:4px 7px}
+.params .presets{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.params .sep{width:1px;height:22px;background:var(--line)}
+
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.chip{font-size:12px;color:var(--ink2);background:var(--panel);border:1px solid var(--line);
+  border-radius:999px;padding:3px 11px;cursor:pointer;transition:.18s;white-space:nowrap}
+.chip:hover{border-color:var(--accent);color:var(--ink)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.chip.done{color:var(--ink3);background:var(--panel2)}
+
+.main{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+@media(max-width:1080px){.main{grid-template-columns:minmax(0,1fr)}}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:14px 16px;margin-bottom:14px;transition:border-color .25s,box-shadow .25s,opacity .25s}
+.card.dim{opacity:.55}
+.card.act{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.card > h2{margin:0 0 10px;font-size:12.5px;font-weight:600;letter-spacing:.1em;
+  color:var(--ink2);display:flex;align-items:center;gap:8px}
+.card > h2 .tagline{font-family:var(--mono);font-size:11px;color:var(--ink3);
+  font-weight:400;letter-spacing:0;margin-left:auto;text-align:right}
+.row{display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start}
+.grow{flex:1 1 240px;min-width:0}
+
+/* ---------- 变化高亮 ---------- */
+@keyframes flash{0%{background:var(--gold-bg)}100%{background:transparent}}
+.hl{outline:1.5px solid var(--gold);outline-offset:1px;border-radius:3px;animation:flash .9s ease-out}
+.hl-box{box-shadow:0 0 0 2px var(--gold)}
+.legend-hl{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--ink2)}
+.legend-hl i{width:12px;height:12px;border-radius:3px;outline:1.5px solid var(--gold);
+  background:var(--gold-bg);display:inline-block}
+
+/* ---------- 画布 ---------- */
+canvas{display:block;max-width:100%}
+#cv3d{width:100%;height:430px;cursor:grab;border-radius:8px;background:var(--panel2);
+  border:1px solid var(--line)}
+#cv3d.drag{cursor:grabbing}
+canvas.flat{width:190px;height:190px;border:1px solid var(--line2);border-radius:6px;background:var(--panel2)}
+.capt{font-family:var(--mono);font-size:10.5px;color:var(--ink3);margin-top:4px;text-align:center}
+
+/* ---------- 表格 ---------- */
+table.kv,table.dt{width:100%;border-collapse:collapse;font-size:12px}
+table.kv td{padding:3px 2px;border-bottom:1px dotted var(--line);vertical-align:baseline}
+table.kv td:first-child{color:var(--ink2);white-space:nowrap;padding-right:10px}
+table.kv td:last-child{font-family:var(--mono);text-align:right;font-size:11.5px}
+table.dt{font-family:var(--mono);font-size:11.5px}
+table.dt th{font-weight:600;color:var(--ink3);text-align:right;padding:3px 6px;
+  border-bottom:1px solid var(--line);font-size:10.5px;letter-spacing:.04em}
+table.dt th:first-child{text-align:left}
+table.dt td{padding:3px 6px;border-bottom:1px solid var(--line);text-align:right}
+table.dt td:first-child{text-align:left;color:var(--ink2)}
+table.dt tr.bad td{background:rgba(176,122,122,.10)}
+table.dt tr.good td{background:rgba(125,154,127,.10)}
+.pos{color:var(--sage)} .neg{color:var(--rose)}
+
+/* ---------- 网络图 / 曲线 ---------- */
+svg.net{width:100%;height:210px;display:block}
+svg.net .nd{fill:var(--panel2);stroke:var(--line2);stroke-width:1.2}
+svg.net text{font-family:var(--mono);font-size:10px;fill:var(--ink2)}
+svg.curve{width:100%;height:140px;display:block}
+svg.curve .grid{stroke:var(--line);stroke-width:1}
+svg.curve .ln{fill:none;stroke:var(--accent);stroke-width:1.6}
+svg.curve .mk{fill:var(--gold)}
+svg.curve text{font-family:var(--mono);font-size:9px;fill:var(--ink3)}
+
+/* ---------- 说明栏 ---------- */
+aside.doc{position:sticky;top:16px}
+.doc h3{margin:0 0 8px;font-size:15px;font-weight:600}
+.doc p{margin:0 0 9px;font-size:13px;line-height:1.85}
+.doc p em{font-style:normal;color:var(--warm);font-family:var(--mono);font-size:12.5px}
+.doc .formula{font-family:var(--mono);font-size:12.5px;background:var(--panel2);
+  border-left:2px solid var(--accent);border-radius:0 6px 6px 0;padding:9px 12px;margin:10px 0;
+  white-space:pre-wrap;line-height:1.7;overflow-x:auto}
+.doc .note{font-size:12px;color:var(--ink2);border-top:1px dotted var(--line);padding-top:8px;margin-top:10px}
+
+/* ---------- 控制条 ---------- */
+.ctl{position:fixed;left:0;right:0;bottom:0;background:var(--panel);border-top:1px solid var(--line);
+  padding:9px 24px 10px;z-index:20;box-shadow:0 -6px 18px rgba(0,0,0,.05)}
+.ctl .inner{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+button,select{font:inherit;font-size:13px;color:var(--ink);background:var(--panel2);
+  border:1px solid var(--line2);border-radius:7px;padding:6px 13px;cursor:pointer;transition:.15s}
+button:hover:not(:disabled),select:hover{border-color:var(--accent);color:var(--accent)}
+button:disabled{opacity:.4;cursor:default}
+button.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+button.pri:hover{opacity:.88;color:#fff}
+button.sm{padding:4px 10px;font-size:12px}
+.pos-ind{font-family:var(--mono);font-size:12px;color:var(--ink2);min-width:120px;text-align:center}
+input[type=range]{flex:1 1 200px;min-width:140px;accent-color:var(--accent)}
+.meters{display:flex;gap:13px;font-family:var(--mono);font-size:11px;color:var(--ink2);flex-wrap:wrap}
+.meters b{font-weight:600;color:var(--ink)}
+.hint{font-size:11px;color:var(--ink3)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div>
+      <h1>Tinn XOR 训练演示</h1>
+      <div class="sub" id="subtitle">—</div>
+    </div>
+    <div class="arch" id="arch">—</div>
+  </header>
+
+  <div class="params">
+    <label>随机种子 <input type="number" id="p-seed" value="3" min="1" max="999999" step="1"></label>
+    <label>隐藏神经元 <input type="number" id="p-nhid" value="4" min="1" max="12" step="1"></label>
+    <label>学习率 <input type="number" id="p-rate" value="3" min="0.05" max="20" step="0.05"></label>
+    <label>训练轮数 <input type="number" id="p-iter" value="3000" min="50" max="20000" step="50"></label>
+    <button class="pri" id="btn-run">重新训练</button>
+    <div class="sep"></div>
+    <div class="presets">
+      <button class="sm" data-preset="2,3,500,3">GENANN 原设定 2×500</button>
+      <button class="sm" data-preset="4,3,3000,3">推荐 4×3000</button>
+      <button class="sm" data-preset="8,3,5000,5">大网络 8×5000</button>
+      <button class="sm" data-preset="4,0.3,3000,3">小学习率 0.3</button>
+      <button class="sm" data-preset="4,12,3000,3">大学习率 12</button>
+    </div>
+  </div>
+
+  <div class="chips" id="chips"></div>
+
+  <div class="main">
+    <div id="viz">
+
+      <!-- 三维曲面 -->
+      <div class="card" id="c-3d">
+        <h2>① 模型学到的三维曲面
+          <span style="font-weight:400;color:var(--ink3)">x=右值 in[1] · y=左值 in[0] · z=输出</span>
+          <span class="tagline" id="t-3d"></span></h2>
+        <canvas id="cv3d"></canvas>
+        <div class="row" style="margin-top:8px;align-items:center">
+          <span class="capt" style="margin:0">拖动画布可旋转视角</span>
+          <button class="sm" id="btn-view">复位视角</button>
+          <label class="hint"><input type="checkbox" id="ck-ghost" checked> 显示上一状态的轮廓（灰色虚线）</label>
+          <span class="legend-hl" style="margin-left:auto"><i></i>金色 = 相对上一状态变化最大的区域</span>
+        </div>
+      </div>
+
+      <!-- 二维数据 -->
+      <div class="card" id="c-2d">
+        <h2>② 二维数据：决策面俯视图与四个样本
+          <span class="tagline" id="t-2d"></span></h2>
+        <div class="row">
+          <div>
+            <canvas class="flat" id="cv-map" width="72" height="72"></canvas>
+            <div class="capt">当前决策面（俯视）</div>
+          </div>
+          <div>
+            <canvas class="flat" id="cv-diff" width="72" height="72"></canvas>
+            <div class="capt">相对上一状态的变化 |Δz|</div>
+          </div>
+          <div class="grow">
+            <table class="dt" id="tb-samples"></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 网络结构图 -->
+      <div class="card" id="c-net">
+        <h2>③ 网络结构与权重
+          <span style="font-weight:400;color:var(--ink3)">线条粗细=权重大小，暖色为正、冷色为负</span>
+          <span class="tagline" id="t-net"></span></h2>
+        <svg class="net" id="svg-net" viewBox="0 0 640 210" preserveAspectRatio="xMidYMid meet"></svg>
+        <table class="dt" id="tb-w" style="margin-top:6px"></table>
+      </div>
+
+      <!-- 误差曲线 -->
+      <div class="card" id="c-curve">
+        <h2>④ 误差曲线 <span style="font-weight:400;color:var(--ink3)">每轮 4 个样本的总误差（对数纵轴）</span>
+          <span class="tagline" id="t-curve"></span></h2>
+        <svg class="curve" id="svg-curve" viewBox="0 0 800 140" preserveAspectRatio="none"></svg>
+        <div class="capt" id="curve-cap" style="text-align:left"></div>
+      </div>
+    </div>
+
+    <aside class="doc">
+      <div class="card"><div class="doc" id="doc"></div></div>
+      <div class="card">
+        <h2>本状态数值 <span class="legend-hl" style="margin-left:auto"><i></i>变化处高亮</span></h2>
+        <table class="kv" id="k-stat"></table>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="ctl">
+  <div class="inner">
+    <button id="btn-prev">← 上一状态</button>
+    <button id="btn-next" class="pri">下一状态 →</button>
+    <button id="btn-play">▶ 播放</button>
+    <select id="sel-speed" title="快进倍率">
+      <option value="1">×1 逐帧</option>
+      <option value="4">×4</option>
+      <option value="16" selected>×16 快进</option>
+      <option value="64">×64</option>
+      <option value="256">×256 极速</option>
+    </select>
+    <span class="pos-ind" id="pos">1 / 1</span>
+    <input type="range" id="slider" min="0" max="0" value="0">
+    <div class="meters" id="meters"></div>
+    <span class="hint">← → 翻页 · 空格播放 · Home/End 首尾</span>
+  </div>
+</div>
+
+<script>
+"use strict";
+/* ===========================================================================
+ *  第一部分：Tinn.c 的 JavaScript 移植
+ * ---------------------------------------------------------------------------
+ *  与 C 版本逐行对应。所有中间量都用 Math.fround 收敛到单精度，
+ *  以复现 C 里 `float` 的舍入行为——不这么做的话，训练几千轮之后
+ *  双精度和单精度的轨迹会明显分叉，和终端里的 ./tinn_xor 对不上。
+ * ======================================================================== */
+const F = Math.fround;
+
+/* --- 确定性随机数：与 test_xor.c 里的 LCG 完全一致 --------------------- */
+let g_seed = 1;
+function lcgSeed(s){ g_seed = s >>> 0; }
+function lcgRand(){
+  // C: g_seed = g_seed * 1103515245u + 12345u;  无符号 32 位回绕
+  g_seed = (Math.imul(g_seed, 1103515245) + 12345) >>> 0;
+  return ((g_seed >>> 16) & 0x7FFF) / 32768;
+}
+
+/* --- 误差与激活函数（Tinn.c 的 err / pderr / act / pdact） -------------- */
+const err   = (a,b) => F(0.5 * F(a-b) * F(a-b));
+const pderr = (a,b) => F(a - b);
+const act   = a => F(1 / (1 + Math.exp(-a)));
+const pdact = a => F(a * F(1 - a));
+
+/* --- xtbuild：注意 x 是 w 内部的一段视图，和 C 里共用内存的写法一致 ---- */
+function xtbuild(nips, nhid, nops){
+  const nw = nhid * (nips + nops);
+  const w  = new Float32Array(nw);
+  return { w, x: w.subarray(nhid * nips), b: new Float32Array(2),
+           h: new Float32Array(nhid), o: new Float32Array(nops),
+           nb: 2, nw, nips, nhid, nops };
+}
+
+/* --- fprop：多返回一个 cap 参数，用来抄下激活前的加权和 --------------- */
+function fprop(t, inp, cap){
+  for(let i = 0; i < t.nhid; i++){
+    let sum = 0;
+    for(let j = 0; j < t.nips; j++) sum = F(sum + F(inp[j] * t.w[i*t.nips + j]));
+    if(cap) cap.hsum[i] = F(sum + t.b[0]);
+    t.h[i] = act(F(sum + t.b[0]));
+  }
+  for(let i = 0; i < t.nops; i++){
+    let sum = 0;
+    for(let j = 0; j < t.nhid; j++) sum = F(sum + F(t.h[j] * t.x[i*t.nhid + j]));
+    if(cap) cap.osum[i] = F(sum + t.b[1]);
+    t.o[i] = act(F(sum + t.b[1]));
+  }
+}
+
+/* --- bprop：误差项 δ 与权重增量都抄进 cap，供演示使用 ----------------- */
+function bprop(t, inp, tg, rate, cap){
+  if(cap) cap.wPrev.set(t.w);
+  for(let i = 0; i < t.nhid; i++){
+    let sum = 0;
+    for(let j = 0; j < t.nops; j++){
+      const a = pderr(t.o[j], tg[j]);   // ∂E/∂o_j
+      const b = pdact(t.o[j]);          // ∂o_j/∂net_j
+      if(cap) cap.dout[j] = F(a * b);   // 输出层误差项 δ_j
+      sum = F(sum + F(F(a*b) * t.x[j*t.nhid + i]));
+      // C: t.x[..] -= rate * a * b * t.h[i];  乘法从左到右结合
+      t.x[j*t.nhid + i] = F(t.x[j*t.nhid + i] - F(F(F(rate*a) * b) * t.h[i]));
+    }
+    if(cap) cap.dhid[i] = F(sum * pdact(t.h[i]));   // 隐藏层误差项 δ_i
+    for(let j = 0; j < t.nips; j++)
+      t.w[i*t.nips + j] = F(t.w[i*t.nips + j] - F(F(F(rate*sum) * pdact(t.h[i])) * inp[j]));
+  }
+  if(cap) for(let k = 0; k < t.nw; k++) cap.dw[k] = F(t.w[k] - cap.wPrev[k]);
+}
+
+function toterr(tg, o, n){ let s = 0; for(let i = 0; i < n; i++) s = F(s + err(tg[i], o[i])); return s; }
+
+/* --- 前向一次，直接给出 (左值, 右值) → 输出，画曲面时高频调用 -------- */
+function evalNet(w, b, nhid, left, right){
+  let so = 0;
+  for(let i = 0; i < nhid; i++){
+    const s = F(F(left * w[i*2]) + F(right * w[i*2 + 1]));
+    const h = act(F(s + b[0]));
+    so = F(so + F(h * w[nhid*2 + i]));
+  }
+  return act(F(so + b[1]));
+}
+
+/* ===========================================================================
+ *  第二部分：test_xor.c 的移植 —— 跑一遍训练，把每个数据状态记下来
+ * ======================================================================== */
+const XIN  = [[0,0],[0,1],[1,0],[1,1]];   // 左值 in[0]、右值 in[1]
+const XOUT = [ [0],  [1],  [1],  [0] ];   // 期望输出
+
+let DATA = null;    // 当前这次训练的全部数据状态
+
+function runTraining(P){
+  const t  = xtbuild(2, P.nhid, 1);
+  const NW = t.nw;
+  const t0 = performance.now();
+
+  // 用 LCG 覆盖 xtbuild 的随机初值，保证同种子可复现（对齐 test_xor.c）
+  lcgSeed(P.seed);
+  for(let i = 0; i < t.nw; i++) t.w[i] = F(lcgRand() - 0.5);
+  for(let i = 0; i < t.nb; i++) t.b[i] = F(lcgRand() - 0.5);
+
+  // 所有权重快照放进一整块 Float32Array，状态里只存视图，省内存也省 GC
+  const nSnap = P.iters + 32;
+  const bank  = new Float32Array(nSnap * (NW + 2));
+  let bankPos = 0;
+  function snap(){
+    const o = bankPos;
+    bank.set(t.w, o); bank.set(t.b, o + NW);
+    bankPos += NW + 2;
+    return { w: bank.subarray(o, o + NW), b: bank.subarray(o + NW, o + NW + 2) };
+  }
+
+  const cap = { hsum:new Float32Array(P.nhid), osum:new Float32Array(1),
+                dout:new Float32Array(1), dhid:new Float32Array(P.nhid),
+                dw:new Float32Array(NW), wPrev:new Float32Array(NW) };
+
+  const states = [], curve = [];
+  const push = s => { states.push(Object.assign(s, snap())); return s; };
+
+  push({ kind:"meta",  epoch:-1, sample:-1 });
+  push({ kind:"build", epoch:-1, sample:-1 });
+
+  for(let e = 0; e < P.iters; e++){
+    let total = 0;
+    const detail = (e === 0);      // 只把第 0 轮拆成逐阶段，其余每轮一帧
+    for(let j = 0; j < 4; j++){
+      const inp = XIN[j], tg = XOUT[j];
+
+      if(detail) push({ kind:"sample", epoch:e, sample:j, inp, tg, rate:P.rate });
+
+      fprop(t, inp, detail ? cap : null);
+      if(detail){
+        push({ kind:"fprop_h", epoch:e, sample:j, inp, tg,
+               hsum:Array.from(cap.hsum), h:Array.from(t.h) });
+        push({ kind:"fprop_o", epoch:e, sample:j, inp, tg,
+               h:Array.from(t.h), osum:cap.osum[0], o:t.o[0] });
+        push({ kind:"error", epoch:e, sample:j, inp, tg,
+               o:t.o[0], E:err(tg[0], t.o[0]) });
+      }
+      const before = t.o[0], beforeE = err(tg[0], t.o[0]);
+
+      bprop(t, inp, tg, P.rate, detail ? cap : null);
+      total = F(total + toterr(tg, t.o, t.nops));
+
+      if(detail){
+        push({ kind:"bprop", epoch:e, sample:j, inp, tg, o:before,
+               dout:cap.dout[0], dhid:Array.from(cap.dhid),
+               dw:Array.from(cap.dw), rate:P.rate });
+        fprop(t, inp, null);      // 只为演示：用新权重再算一次，看误差降了多少
+        push({ kind:"after", epoch:e, sample:j, inp, tg, o:t.o[0],
+               E:err(tg[0], t.o[0]), before, beforeE });
+      }
+    }
+    // 每轮结束：记录 4 个样本此刻的输出与总误差
+    const outs = [];
+    for(let j = 0; j < 4; j++){ fprop(t, XIN[j], null); outs.push(t.o[0]); }
+    curve.push(total);
+    push({ kind:"epoch", epoch:e, sample:-1, total, outs, rate:P.rate });
+  }
+
+  // 收尾：最终测试（对应 test_xor.c 末尾那四行 printf）
+  const outs = [], ok = [];
+  for(let j = 0; j < 4; j++){
+    fprop(t, XIN[j], null);
+    outs.push(t.o[0]);
+    ok.push((t.o[0] > 0.5 ? 1 : 0) === XOUT[j][0]);
+  }
+  push({ kind:"final", epoch:-1, sample:-1, outs, ok,
+         nOk: ok.filter(Boolean).length, total: curve[curve.length-1] });
+
+  // 分节：顶部面包屑
+  const nDetail = states.findIndex(s => s.kind === "epoch");
+  const sections = [
+    { name:"参数与建网", from:0, to:1 },
+    { name:"第 0 轮逐步拆解", from:2, to:nDetail - 1 },
+    { name:"训练演化（可播放）", from:nDetail, to:states.length - 2 },
+    { name:"最终结果", from:states.length - 1, to:states.length - 1 },
+  ];
+
+  return { P, NW, states, curve, sections, ms: performance.now() - t0,
+           firstErr: curve[0], lastErr: curve[curve.length-1] };
+}
+
+/* ===========================================================================
+ *  第三部分：渲染
+ * ======================================================================== */
+const $ = id => document.getElementById(id);
+let idx = 0, timer = null, az = -0.62, el = 0.60, dragging = null;
+
+const fmt = (v,d=4) => (v==null||isNaN(v)) ? "—"
+  : (Math.abs(v)>=1e4 || (v!==0 && Math.abs(v)<1e-4) ? v.toExponential(2) : v.toFixed(d));
+const sgn = v => `<span class="${v>=0?'pos':'neg'}">${v>=0?'+':''}${v.toFixed(4)}</span>`;
+
+/* 发散色：以 0.5 为中点，高于为暖、低于为冷 */
+function zColor(z, a){
+  const t = Math.max(-1, Math.min(1, (z - 0.5) * 2));
+  return t >= 0 ? `rgba(192,133,82,${(0.18 + t*0.72)*a})`
+                : `rgba(107,132,166,${(0.18 - t*0.72)*a})`;
+}
+
+const S  = () => DATA.states[idx];
+const SP = () => idx > 0 ? DATA.states[idx-1] : null;
+
+/* ---------- 曲面网格：给定权重算出 (N+1)×(N+1) 个 z ---------- */
+const GRID = 22;
+function surface(st){
+  const n = GRID, z = new Float32Array((n+1)*(n+1));
+  for(let iy = 0; iy <= n; iy++)
+    for(let ix = 0; ix <= n; ix++)
+      z[iy*(n+1)+ix] = evalNet(st.w, st.b, DATA.P.nhid, iy/n, ix/n);  // y=左值, x=右值
+  return z;
+}
+
+/* ---------- ① 三维曲面 ---------- */
+function draw3d(){
+  const cv = $("cv3d"), dpr = window.devicePixelRatio || 1;
+  const W = cv.clientWidth, H = cv.clientHeight;
+  if(cv.width !== Math.round(W*dpr)){ cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr); }
+  const g = cv.getContext("2d");
+  g.setTransform(dpr,0,0,dpr,0,0);
+  g.clearRect(0,0,W,H);
+
+  const st = S(), sp = SP();
+  const z  = surface(st), zp = sp ? surface(sp) : null;
+  const n  = GRID, sc = Math.min(W, H*1.55) * 0.40;
+  const ox = W/2, oy = H/2 + sc*0.16;
+  const ca = Math.cos(az), sa = Math.sin(az), ce = Math.cos(el), se = Math.sin(el);
+
+  // 世界坐标 → 屏幕。x=右值, y=左值, z=输出，全部先平移到以 (0.5,0.5,0.5) 为中心
+  function pr(x, y, zz){
+    const X = (x-0.5)*ca - (y-0.5)*sa;
+    const Y = (x-0.5)*sa + (y-0.5)*ca;
+    const Z = (zz-0.5);
+    return [ ox + X*sc*1.35,
+             oy - (Z*ce - Y*se)*sc*1.15,
+             Y*ce + Z*se ];                    // 第三个是深度，用于画家算法排序
+  }
+
+  /* --- 底面网格与坐标轴 --- */
+  g.lineWidth = 1;
+  g.strokeStyle = getCss("--line2");
+  for(let k = 0; k <= 4; k++){
+    const u = k/4;
+    let p1 = pr(u,0,0), p2 = pr(u,1,0);
+    g.beginPath(); g.moveTo(p1[0],p1[1]); g.lineTo(p2[0],p2[1]); g.stroke();
+    p1 = pr(0,u,0); p2 = pr(1,u,0);
+    g.beginPath(); g.moveTo(p1[0],p1[1]); g.lineTo(p2[0],p2[1]); g.stroke();
+  }
+  g.strokeStyle = getCss("--line2"); g.setLineDash([3,3]);
+  [[0,0],[1,0],[0,1],[1,1]].forEach(([x,y])=>{
+    const a = pr(x,y,0), b = pr(x,y,1);
+    g.beginPath(); g.moveTo(a[0],a[1]); g.lineTo(b[0],b[1]); g.stroke();
+  });
+  g.setLineDash([]);
+
+  /* --- 曲面：拆成 n×n 个四边形，按深度从远到近画 --- */
+  const quads = [];
+  for(let iy = 0; iy < n; iy++) for(let ix = 0; ix < n; ix++){
+    const k00 = iy*(n+1)+ix, k10 = k00+1, k01 = k00+(n+1), k11 = k01+1;
+    const c = [pr(ix/n,     iy/n,     z[k00]),
+               pr((ix+1)/n, iy/n,     z[k10]),
+               pr((ix+1)/n, (iy+1)/n, z[k11]),
+               pr(ix/n,     (iy+1)/n, z[k01])];
+    const zm = (z[k00]+z[k10]+z[k01]+z[k11])/4;
+    const dz = zp ? Math.abs(zm - (zp[k00]+zp[k10]+zp[k01]+zp[k11])/4) : 0;
+    quads.push({ c, zm, dz, d:(c[0][2]+c[1][2]+c[2][2]+c[3][2])/4 });
+  }
+  quads.sort((p,q)=>p.d - q.d);
+  for(const q of quads){
+    g.beginPath();
+    g.moveTo(q.c[0][0], q.c[0][1]);
+    for(let i = 1; i < 4; i++) g.lineTo(q.c[i][0], q.c[i][1]);
+    g.closePath();
+    g.fillStyle = zColor(q.zm, 1); g.fill();
+    g.strokeStyle = "rgba(140,132,120,.28)"; g.lineWidth = 0.6; g.stroke();
+    // 变化高亮：这一格相对上一状态挪动得越多，金色描边越明显
+    if(q.dz > 0.002){
+      g.strokeStyle = `rgba(200,161,60,${Math.min(1, q.dz*14).toFixed(3)})`;
+      g.lineWidth = 1.6; g.stroke();
+    }
+  }
+
+  /* --- 上一状态的轮廓（灰色虚线），直观看出曲面往哪边动了 --- */
+  if(zp && $("ck-ghost").checked){
+    g.strokeStyle = "rgba(120,112,102,.45)"; g.lineWidth = 1; g.setLineDash([2,3]);
+    for(let iy = 0; iy <= n; iy += 2){
+      g.beginPath();
+      for(let ix = 0; ix <= n; ix++){
+        const p = pr(ix/n, iy/n, zp[iy*(n+1)+ix]);
+        ix ? g.lineTo(p[0],p[1]) : g.moveTo(p[0],p[1]);
+      }
+      g.stroke();
+    }
+    g.setLineDash([]);
+  }
+
+  /* --- 四个 XOR 样本点：空心圈=期望值，实心点=当前输出 --- */
+  const cur = st.outs || XIN.map(v => evalNet(st.w, st.b, DATA.P.nhid, v[0], v[1]));
+  XIN.forEach((v,j)=>{
+    const [left, right] = v, tgt = XOUT[j][0], out = cur[j];
+    const base = pr(right, left, 0), pt = pr(right, left, out), pe = pr(right, left, tgt);
+    g.strokeStyle = "rgba(120,112,102,.5)"; g.lineWidth = 1;
+    g.beginPath(); g.moveTo(base[0],base[1]); g.lineTo(pt[0],pt[1]); g.stroke();
+    g.strokeStyle = getCss("--rose"); g.lineWidth = 1.6;
+    g.beginPath(); g.arc(pe[0], pe[1], 5, 0, 6.2832); g.stroke();
+    const okp = Math.abs(out - tgt) < 0.5;
+    g.fillStyle = okp ? getCss("--sage") : getCss("--rose");
+    g.beginPath(); g.arc(pt[0], pt[1], 4.2, 0, 6.2832); g.fill();
+    g.fillStyle = getCss("--ink2"); g.font = "11px " + getCss("--mono");
+    g.fillText(`(${left},${right})→${tgt}`, base[0]+7, base[1]+13);
+  });
+
+  /* --- 轴名 --- */
+  g.fillStyle = getCss("--ink3"); g.font = "11px " + getCss("--mono");
+  let p = pr(1.15, 0.5, 0); g.fillText("x 右值 in[1]", p[0]-24, p[1]);
+  p = pr(0.5, 1.18, 0);     g.fillText("y 左值 in[0]", p[0]-24, p[1]);
+  p = pr(0, 0, 1.12);       g.fillText("z 输出", p[0]-14, p[1]);
+
+  $("t-3d").textContent = sp ? `曲面最大位移 ${fmt(Math.max(...quads.map(q=>q.dz)),4)}` : "";
+}
+const cssCache = {};
+function getCss(v){
+  if(!(v in cssCache)) cssCache[v] = getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  return cssCache[v];
+}
+
+/* ---------- ② 二维：决策面俯视图 + 变化图 ---------- */
+function draw2d(){
+  const st = S(), sp = SP(), N = 72;
+  const g1 = $("cv-map").getContext("2d"), g2 = $("cv-diff").getContext("2d");
+  const im1 = g1.createImageData(N,N), im2 = g2.createImageData(N,N);
+  let maxd = 0;
+  const cur = new Float32Array(N*N), pre = new Float32Array(N*N);
+  for(let r = 0; r < N; r++) for(let c = 0; c < N; c++){
+    const left = 1 - r/(N-1), right = c/(N-1);      // 上边是 in[0]=1
+    const k = r*N + c;
+    cur[k] = evalNet(st.w, st.b, DATA.P.nhid, left, right);
+    if(sp){ pre[k] = evalNet(sp.w, sp.b, DATA.P.nhid, left, right);
+            maxd = Math.max(maxd, Math.abs(cur[k]-pre[k])); }
+  }
+  for(let k = 0; k < N*N; k++){
+    const t = Math.max(-1, Math.min(1, (cur[k]-0.5)*2));
+    const p = k*4;
+    if(t >= 0){ im1.data[p]=192; im1.data[p+1]=133; im1.data[p+2]=82; im1.data[p+3]=Math.round(40+t*205); }
+    else      { im1.data[p]=107; im1.data[p+1]=132; im1.data[p+2]=166; im1.data[p+3]=Math.round(40-t*205); }
+    const d = sp ? Math.abs(cur[k]-pre[k]) / (maxd || 1) : 0;
+    im2.data[p]=200; im2.data[p+1]=161; im2.data[p+2]=60; im2.data[p+3]=Math.round(d*255);
+  }
+  g1.putImageData(im1,0,0); g2.putImageData(im2,0,0);
+  // 四个样本点画在决策面上
+  g1.fillStyle = "rgba(58,55,51,.85)";
+  XIN.forEach((v,j)=>{
+    const c = Math.round(v[1]*(N-1)), r = Math.round((1-v[0])*(N-1));
+    g1.fillRect(Math.min(N-3,Math.max(0,c-1)), Math.min(N-3,Math.max(0,r-1)), 3, 3);
+  });
+
+  const outs = st.outs || XIN.map(v => evalNet(st.w, st.b, DATA.P.nhid, v[0], v[1]));
+  const pouts = sp ? (sp.outs || XIN.map(v => evalNet(sp.w, sp.b, DATA.P.nhid, v[0], v[1]))) : null;
+  let html = `<tr><th>样本 (左,右)</th><th>期望</th><th>当前输出</th><th>误差 E</th><th>判定</th></tr>`;
+  let sumE = 0;
+  XIN.forEach((v,j)=>{
+    const tgt = XOUT[j][0], o = outs[j], E = 0.5*(tgt-o)*(tgt-o);
+    sumE += E;
+    const okp = (o > 0.5 ? 1 : 0) === tgt;
+    const moved = pouts && Math.abs(o - pouts[j]) > 1e-6;
+    html += `<tr class="${okp?'good':'bad'}"><td>(${v[0]}, ${v[1]})</td><td>${tgt}</td>
+      <td class="${moved?'hl':''}">${o.toFixed(6)}</td><td>${E.toFixed(6)}</td>
+      <td>${okp?'✓':'✗'}</td></tr>`;
+  });
+  html += `<tr><td>合计</td><td></td><td></td><td>${sumE.toFixed(6)}</td><td></td></tr>`;
+  $("tb-samples").innerHTML = html;
+  $("t-2d").textContent = sp && maxd > 1e-7 ? `最大 |Δz| = ${fmt(maxd,4)}` : "";
+}
+
+/* ---------- ③ 网络结构图 ---------- */
+function drawNet(){
+  const st = S(), sp = SP(), nh = DATA.P.nhid;
+  const W = 640, H = 210, xI = 90, xH = 320, xO = 550;
+  const yI = k => H/2 + (k - 0.5) * 62;
+  const yH = k => H/2 + (k - (nh-1)/2) * Math.min(46, 150/nh);
+  const yO = H/2;
+  let amp = 0; for(let k = 0; k < st.w.length; k++) amp = Math.max(amp, Math.abs(st.w[k]));
+  amp = amp || 1;
+  const stroke = v => v >= 0 ? getCss("--warm") : getCss("--cool");
+  const wid = v => (0.6 + Math.abs(v)/amp * 3.4).toFixed(2);
+
+  let s = "";
+  // 输入层 → 隐藏层：w[i*2 + j]
+  for(let i = 0; i < nh; i++) for(let j = 0; j < 2; j++){
+    const k = i*2 + j, v = st.w[k];
+    const changed = sp && Math.abs(v - sp.w[k]) > 1e-7;
+    if(changed) s += `<line x1="${xI}" y1="${yI(j)}" x2="${xH}" y2="${yH(i)}"
+        stroke="${getCss("--gold")}" stroke-width="${(+wid(v)+3.2).toFixed(2)}" opacity=".33"/>`;
+    s += `<line x1="${xI}" y1="${yI(j)}" x2="${xH}" y2="${yH(i)}"
+        stroke="${stroke(v)}" stroke-width="${wid(v)}" opacity=".85"><title>w[h${i}←in${j}] = ${v.toFixed(6)}</title></line>`;
+  }
+  // 隐藏层 → 输出层：x[i] = w[nh*2 + i]
+  for(let i = 0; i < nh; i++){
+    const k = nh*2 + i, v = st.w[k];
+    const changed = sp && Math.abs(v - sp.w[k]) > 1e-7;
+    if(changed) s += `<line x1="${xH}" y1="${yH(i)}" x2="${xO}" y2="${yO}"
+        stroke="${getCss("--gold")}" stroke-width="${(+wid(v)+3.2).toFixed(2)}" opacity=".33"/>`;
+    s += `<line x1="${xH}" y1="${yH(i)}" x2="${xO}" y2="${yO}"
+        stroke="${stroke(v)}" stroke-width="${wid(v)}" opacity=".85"><title>x[out←h${i}] = ${v.toFixed(6)}</title></line>`;
+  }
+  // 节点。有激活值时按值填充深浅
+  const hv = st.h || null, ov = (st.o != null) ? st.o : (st.outs ? st.outs[0] : null);
+  const node = (x,y,r,fill,label,sub) =>
+    `<circle class="nd" cx="${x}" cy="${y}" r="${r}" ${fill?`fill="${fill}"`:""}/>
+     <text x="${x}" y="${y+3.5}" text-anchor="middle">${label}</text>` +
+    (sub ? `<text x="${x}" y="${y+r+13}" text-anchor="middle" fill="${getCss("--ink3")}">${sub}</text>` : "");
+  const inp = st.inp || null;
+  s += node(xI, yI(0), 19, inp ? zColor(inp[0],1) : "", "in0", inp ? "左值 "+inp[0] : "左值");
+  s += node(xI, yI(1), 19, inp ? zColor(inp[1],1) : "", "in1", inp ? "右值 "+inp[1] : "右值");
+  for(let i = 0; i < nh; i++)
+    s += node(xH, yH(i), Math.min(17, 70/nh + 8), hv ? zColor(hv[i],1) : "",
+              "h"+i, hv ? hv[i].toFixed(3) : "");
+  s += node(xO, yO, 21, ov != null ? zColor(ov,1) : "", "out", ov != null ? ov.toFixed(4) : "");
+  s += `<text x="${xI}" y="20" text-anchor="middle" fill="${getCss("--ink3")}">输入层</text>
+        <text x="${xH}" y="20" text-anchor="middle" fill="${getCss("--ink3")}">隐藏层 ×${nh}（共用偏置 b0=${st.b[0].toFixed(4)}）</text>
+        <text x="${xO}" y="20" text-anchor="middle" fill="${getCss("--ink3")}">输出层（b1=${st.b[1].toFixed(4)}）</text>`;
+  $("svg-net").innerHTML = s;
+
+  // 权重表
+  let th = "<tr><th>权重</th>", td = "<tr><td>数值</td>", tdd = "<tr><td>Δ</td>";
+  for(let i = 0; i < nh; i++) for(let j = 0; j < 2; j++){
+    const k = i*2+j, d = sp ? st.w[k]-sp.w[k] : 0;
+    th += `<th>w[h${i}←${j}]</th>`;
+    td += `<td class="${Math.abs(d)>1e-7?'hl':''}">${st.w[k].toFixed(4)}</td>`;
+    tdd += `<td>${Math.abs(d)>1e-7 ? sgn(d) : "·"}</td>`;
+  }
+  for(let i = 0; i < nh; i++){
+    const k = nh*2+i, d = sp ? st.w[k]-sp.w[k] : 0;
+    th += `<th>x[o←h${i}]</th>`;
+    td += `<td class="${Math.abs(d)>1e-7?'hl':''}">${st.w[k].toFixed(4)}</td>`;
+    tdd += `<td>${Math.abs(d)>1e-7 ? sgn(d) : "·"}</td>`;
+  }
+  $("tb-w").innerHTML = th + "</tr>" + td + "</tr>" + tdd + "</tr>";
+  $("t-net").textContent = sp && st.w.some((v,k)=>Math.abs(v-sp.w[k])>1e-7) ? "本状态权重被改写" : "";
+}
+
+/* ---------- ④ 误差曲线 ---------- */
+function drawCurve(){
+  const C = DATA.curve, W = 800, H = 140, pad = 5;
+  if(!C.length){ $("svg-curve").innerHTML = ""; return; }
+  const lo = Math.log10(Math.max(1e-9, Math.min(...C)));
+  const hi = Math.log10(Math.max(...C));
+  const X = i => pad + (C.length > 1 ? i*(W-2*pad)/(C.length-1) : 0);
+  const Y = v => H-13 - (Math.log10(Math.max(1e-9,v))-lo)/((hi-lo)||1)*(H-24);
+  let d = "";
+  const step = Math.max(1, Math.floor(C.length/1200));
+  for(let i = 0; i < C.length; i += step) d += (d?"L":"M") + X(i).toFixed(1) + " " + Y(C[i]).toFixed(1);
+  const e = S().epoch;
+  const mk = (e >= 0 && e < C.length)
+    ? `<line x1="${X(e).toFixed(1)}" y1="0" x2="${X(e).toFixed(1)}" y2="${H-13}"
+         stroke="${getCss("--gold")}" stroke-width="1" stroke-dasharray="2 3"/>
+       <circle class="mk" cx="${X(e).toFixed(1)}" cy="${Y(C[e]).toFixed(1)}" r="4"/>` : "";
+  $("svg-curve").innerHTML =
+    `<line class="grid" x1="0" y1="${H-13}" x2="${W}" y2="${H-13}"/><path class="ln" d="${d}"/>${mk}`;
+  $("curve-cap").textContent =
+    `第 0 轮 ${fmt(C[0],6)} → 第 ${C.length-1} 轮 ${fmt(C[C.length-1],8)}` +
+    (e >= 0 ? `　｜　当前第 ${e} 轮：${fmt(C[e],8)}` : "");
+}
+
+/* ===========================================================================
+ *  第四部分：每个状态的原理说明
+ * ======================================================================== */
+function docFor(st){
+  const P = DATA.P, sp = SP();
+  const D = { h:"", f:"", p:[], n:"" };
+  const sName = st.sample >= 0 ? `(${XIN[st.sample][0]}, ${XIN[st.sample][1]}) → 期望 ${XOUT[st.sample][0]}` : "";
+  switch(st.kind){
+
+  case "meta":
+    D.h = "XOR：神经网络的第一道坎";
+    D.f = "  右值 in[1]\n    1 |  1        0     ← 方格里是期望输出\n"
+        + "      |\n    0 |  0        1\n      +--------------- 左值 in[0]\n         0        1";
+    D.p = [
+      "XOR（异或）是<b>线性不可分</b>的：平面上无论怎么画一条直线，" +
+      "都没法把两个 0 和两个 1 分到直线两侧。所以没有隐藏层的单层网络永远学不会它。",
+      "隐藏层的作用就是先把这个平面<b>弯一下</b>——在弯过之后的新空间里，它才变得可分。" +
+      "上方那张三维曲面画的就是这个「弯」的过程：z 轴是网络的输出，" +
+      "训练成功时它会长成一张马鞍面，四个角高低交错。",
+      `本次参数：<em>2 → ${P.nhid} → 1</em>，学习率 <em>${P.rate}</em>，`
+      + `训练 <em>${P.iters}</em> 轮，随机种子 <em>${P.seed}</em>。`,
+      "页面顶部可以改这些参数，点「重新训练」立刻重算整条轨迹。" +
+      "训练是<b>真的在你浏览器里跑</b>的，不是录好的动画。",
+    ];
+    D.n = "本页的 JS 是 Tinn.c + test_xor.c 的逐行移植，连 float 单精度舍入都用 "
+        + "Math.fround 复现了。同一个种子下，和终端里 ./tinn_xor 打印的数几乎一样。";
+    break;
+
+  case "build":
+    D.h = "建网：把权重随机撒开";
+    D.f = "w[i] = lcg() − 0.5    →  [−0.5, 0.5]\nb[0], b[1] 同理（Tinn 从不更新偏置）";
+    D.p = [
+      `一共 <em>${DATA.NW}</em> 个权重（${P.nhid}×2 个输入→隐藏，加 ${P.nhid} 个隐藏→输出）`
+      + "，外加 2 个偏置。整个模型的知识就这么点。",
+      "此刻曲面几乎是平的、颜色也匀——网络对 XOR 一无所知，" +
+      "对任何输入都给出差不多的答案。四个样本点（空心圈是期望值）离曲面都很远。",
+      "为什么不能把权重全置零？因为同层神经元若初值完全一样，收到的梯度也完全一样，" +
+      "永远保持同步，<b>整层退化成一个神经元</b>。必须靠随机初值打破对称。",
+      "注意 Tinn 每层只有<b>一个共用偏置</b>，而且从头到尾不更新——" +
+      "这是它学 XOR 比别的库吃力的根本原因。",
+    ];
+    D.n = "初值用的是本页自带的 LCG 而不是 Math.random()，"
+        + "这样同一个种子在浏览器和 C 程序里能复现出同一条轨迹。";
+    break;
+
+  case "sample":
+    D.h = "① 装载样本";
+    D.f = `in[0] = ${st.inp[0]}   （左值）\nin[1] = ${st.inp[1]}   （右值）\ntg    = ${st.tg[0]}   （期望输出）`;
+    D.p = [
+      `第 ${st.sample+1} 条样本上台：<em>${sName}</em>。XOR 一共就这 4 条，`
+      + "它们会被反复喂进网络成千上万次。",
+      "此刻还没有任何计算发生。接下来四步走完一次完整的学习：" +
+      "前向算预测 → 量误差 → 反向摊责任 → 按学习率改权重。",
+      `学习率 rate = <em>${P.rate}</em>，它决定每一步迈多大。`,
+    ];
+    D.n = "样本极少时不需要 shuffle：4 条按固定顺序轮着来就行。";
+    break;
+
+  case "fprop_h": {
+    const i = st.h.indexOf(Math.max(...st.h));
+    D.h = "② 前向传播 · 隐藏层";
+    D.f = "net_i = in[0]·w[i][0] + in[1]·w[i][1] + b[0]\nh_i   = sigmoid(net_i) = 1 / (1 + e^−net_i)";
+    D.p = [
+      `每个隐藏神经元把两个输入按自己的权重加权求和，加上共用偏置 b[0]=<em>${st.b[0].toFixed(5)}</em>，`
+      + "再用 sigmoid 挤进 (0, 1)。",
+      `本步最活跃的是 <em>h${i}</em>：加权和 net = <em>${fmt(st.hsum[i],5)}</em>，`
+      + `激活后 <em>${fmt(st.h[i],5)}</em>。整层激活范围 <em>${fmt(Math.min(...st.h),4)} ~ ${fmt(Math.max(...st.h),4)}</em>。`,
+      "sigmoid 不只是压缩范围，更重要的是<b>引入非线性</b>——" +
+      "没有它，多少层叠起来都等价于一层，XOR 就永远学不会。",
+      "中间那张网络图里，节点颜色就是激活值：越暖越接近 1，越冷越接近 0。",
+    ];
+    D.n = `理论上 2 个隐藏神经元就够（一个学 OR、一个学 AND），`
+        + `但 Tinn 的共用固定偏置让这两个阈值凑不出来，实测 2 个几乎必然失败。`;
+    break; }
+
+  case "fprop_o":
+    D.h = "② 前向传播 · 输出层";
+    D.f = "net = Σ_i h_i · x[i] + b[1]\no   = sigmoid(net)";
+    D.p = [
+      "输出层做的事和隐藏层一模一样，只是输入换成了隐藏层的激活值。"
+      + `加权和 <em>${fmt(st.osum,5)}</em>，过 sigmoid 后得到 <em>${fmt(st.o,6)}</em>。`,
+      `期望值是 <em>${st.tg[0]}</em>，现在差了 <em>${fmt(Math.abs(st.tg[0]-st.o),5)}</em>。`,
+      "这个数就是三维曲面上，样本点正上方那个实心点的高度。" +
+      "训练的全部目的，就是把这个实心点挪到空心圈上。",
+    ];
+    break;
+
+  case "error":
+    D.h = "③ 量误差";
+    D.f = `E = ½ (tg − o)²\n  = ½ (${st.tg[0]} − ${fmt(st.o,6)})²\n  = ${fmt(st.E,7)}`;
+    D.p = [
+      `把预测和答案相减、平方、乘 ½，得到 <em>E = ${fmt(st.E,7)}</em>。`,
+      "那个 ½ 不是随便加的：求导后正好把平方带下来的系数 2 约掉，" +
+      "使 <em>∂E/∂o = o − tg</em> 干净得没有多余常数。",
+      "误差是反向传播的<b>出发点</b>——接下来要顺着这个数字往回追责。",
+    ];
+    D.n = "xttrain() 返回的正是这个 E，用的是更新前的权重，"
+        + "所以它反映的是「这一步学习之前」的水平。";
+    break;
+
+  case "bprop": {
+    const mi = st.dhid.reduce((b,v,i,a)=>Math.abs(v)>Math.abs(a[b])?i:b, 0);
+    const mw = st.dw.reduce((b,v,i,a)=>Math.abs(v)>Math.abs(a[b])?i:b, 0);
+    D.h = "④ 反向传播：改权重";
+    D.f = "δ_o  = (o − tg) · o(1 − o)             输出层责任\n"
+        + "x[i] −= rate · δ_o · h_i\n"
+        + "δ_i  = (δ_o · x[i]) · h_i(1 − h_i)     隐藏层责任\n"
+        + "w[i][j] −= rate · δ_i · in[j]";
+    D.p = [
+      "链式法则的全部内容就是这四行。先算出输出神经元该负多大责任 δ_o，" +
+      "用它更新隐藏层→输出层的权重；再把责任按连接强度<b>回传</b>给每个隐藏神经元。",
+      `本步 δ_o = <em>${fmt(st.dout,7)}</em>；隐藏层里 <em>h${mi}</em> 被追责最多`
+      + `（δ = ${fmt(st.dhid[mi],7)}）。`,
+      `改动最大的是第 ${mw} 个权重，动了 <em>${fmt(st.dw[mw],7)}</em>。`
+      + "网络图里被改写的连线都套了一圈金晕，下方权重表的 Δ 行给出具体数值。",
+      "关键细节：回传时必须用<b>更新前</b>的 x。Tinn 把两件事挤在同一个循环里，" +
+      "所以那行 <em>sum += a*b*t.x[...]</em> 必须写在减法赋值之前。",
+      "还有一个细节：<em>Δw = −rate·δ_i·in[j]</em>，而 in 非 0 即 1。"
+      + (st.inp[0] === 0 || st.inp[1] === 0
+         ? "本条样本里有输入为 0，<b>它对应的那一列权重这一步纹丝不动</b>。"
+         : "本条样本两个输入都是 1，所以两列权重都会被改。"),
+    ];
+    D.n = "Tinn 的 bprop() 不更新偏置 b[0]、b[1]，它们从建网到结束一直是最初的随机值。";
+    break; }
+
+  case "after": {
+    const drop = st.beforeE - st.E, pct = st.beforeE ? drop/st.beforeE*100 : 0;
+    D.h = "⑤ 验收：误差降了吗";
+    D.f = `更新前 o = ${fmt(st.before,6)}   E = ${fmt(st.beforeE,7)}\n`
+        + `更新后 o = ${fmt(st.o,6)}   E = ${fmt(st.E,7)}\n`
+        + `下降 ${fmt(drop,7)}  (${pct.toFixed(2)}%)`;
+    D.p = [
+      `用刚改过的权重把同一条样本再算一次：误差从 <em>${fmt(st.beforeE,7)}</em> `
+      + `降到 <em>${fmt(st.E,7)}</em>，一步之间少了 <em>${pct.toFixed(2)}%</em>。`,
+      "这一帧在真实的 Tinn 里并不存在，是演示专门加的一次前向传播——" +
+      "它是「梯度下降确实在往下走」最直观的证据。",
+      "看上方曲面：金色描边最密的地方，就是这一步挪动最大的区域。" +
+      "单步的位移很小，但成千上万步累积起来，平的面就被顶成了马鞍。",
+    ];
+    D.n = "梯度下降只保证在<b>足够小的步长</b>下误差单调下降。"
+        + "学习率太大时误差会上蹿甚至发散，可以把学习率调到 12 试试。";
+    break; }
+
+  case "epoch": {
+    const first = DATA.curve[0], nOk = st.outs.filter((o,j)=>(o>0.5?1:0)===XOUT[j][0]).length;
+    D.h = `第 ${st.epoch} 轮结束`;
+    D.f = `for (轮 = 0; 轮 < ${P.iters}; 轮++)\n`
+        + "    for (4 条样本) err += xttrain(...);\n\n"
+        + `本轮总误差 ${fmt(st.total,8)}\n四个样本答对 ${nOk} / 4`;
+    D.p = [
+      `4 条样本各更新了一次权重，本轮总误差 <em>${fmt(st.total,8)}</em>。`
+      + (st.epoch > 0 ? `相对第 0 轮的 ${fmt(first,6)}，降到了 <b>1/${(first/st.total).toFixed(1)}</b>。` : ""),
+      "训练就是这么一个不断微调权重的过程：<b>每一轮把曲面往正确的形状推一点点</b>。" +
+      "按住播放（右下角可以选快进倍率），就能看见那张面慢慢被拧成马鞍。",
+      nOk === 4
+        ? "四个样本此刻已经全部判对了——但误差还在继续下降，"
+          + "网络在把输出往 0 和 1 两端推得更极端、更笃定。"
+        : `此刻还有 ${4-nOk} 个样本判错。看二维决策面：`
+          + "分界线还没把两组点分开。",
+      "误差曲线上的金色竖线是当前位置。纵轴是对数刻度，" +
+      "所以看起来平缓的下降实际上是成倍地降。",
+    ];
+    D.n = "曲面上的金色描边表示这一轮相对上一轮的位移。训练后期位移越来越小，"
+        + "金色也就越来越淡——这正是误差曲线趋于平坦的另一面。";
+    break; }
+
+  case "final": {
+    const okAll = st.nOk === 4;
+    D.h = okAll ? "学会了 XOR" : "没学会：卡在局部极小值";
+    D.f = "输入      期望   实际      判定\n" + XIN.map((v,j)=>
+      `[${v[0]}, ${v[1]}]      ${XOUT[j][0]}    ${st.outs[j].toFixed(6)}  ${(st.outs[j]>0.5?1:0)===XOUT[j][0]?"✓":"✗"}`
+      ).join("\n");
+    D.p = [
+      `训练 ${P.iters} 轮结束，总误差从 <em>${fmt(DATA.firstErr,6)}</em> `
+      + `降到 <em>${fmt(DATA.lastErr,8)}</em>，四个样本答对 <em>${st.nOk}</em> 个。`,
+      okAll
+        ? "曲面已经成了一张标准的马鞍面：(0,0) 和 (1,1) 两角压到接近 0，"
+          + "(0,1) 和 (1,0) 两角顶到接近 1。这就是「学会了 XOR」的样子。"
+        : "曲面没能拧成马鞍——梯度下降滑进了一个局部极小值，误差降到一半就不动了。"
+          + "这不是 bug，是小网络训练的常态。",
+      okAll
+        ? "把隐藏神经元数调到 2（GENANN 原设定）再训练一次，多半就失败了："
+          + "Tinn 每层只有一个共用且<b>永不更新</b>的偏置，"
+          + "而 OR 和 AND 需要不同的阈值，2 个神经元凑不出来。"
+        : "试试这几条：换个随机种子、把隐藏神经元加到 8、把轮数加到 5000。"
+          + "实测 12 个种子下：2 个隐藏神经元 ×500 轮 0/12 成功，"
+          + "4 个 ×5000 轮 11/12，8 个 ×5000 轮 12/12。",
+      "这就是超参数的意义——同样的代码、同样的数据，" +
+      "只是几个数字不同，结果可以是「完美」也可以是「完全学不会」。",
+    ];
+    D.n = `本次训练在浏览器里耗时 ${DATA.ms.toFixed(1)} ms。`
+        + "改上方参数后点「重新训练」，可以直接对比不同设定下曲面的演化差异。";
+    break; }
+  }
+  return D;
+}
+
+/* ===========================================================================
+ *  第五部分：主渲染与交互
+ * ======================================================================== */
+function render(){
+  const st = S(), sp = SP(), P = DATA.P;
+  const D = docFor(st);
+  $("doc").innerHTML = `<h3>${D.h}</h3>`
+    + (D.f ? `<div class="formula">${D.f}</div>` : "")
+    + D.p.map(t=>`<p>${t}</p>`).join("")
+    + (D.n ? `<div class="note">${D.n}</div>` : "");
+
+  draw3d(); draw2d(); drawNet(); drawCurve();
+
+  const focus = { meta:[], build:["3d","net"], sample:["2d"], fprop_h:["net"],
+                  fprop_o:["net","2d"], error:["2d"], bprop:["net","3d"],
+                  after:["3d","2d"], epoch:["3d","curve"], final:["3d","2d"] }[st.kind] || [];
+  [["c-3d","3d"],["c-2d","2d"],["c-net","net"],["c-curve","curve"]].forEach(([id,k])=>{
+    $(id).classList.toggle("act", focus.indexOf(k) >= 0);
+    $(id).classList.toggle("dim", focus.length > 0 && focus.indexOf(k) < 0);
+  });
+
+  const outs = st.outs || XIN.map(v => evalNet(st.w, st.b, P.nhid, v[0], v[1]));
+  const nOk  = outs.filter((o,j)=>(o>0.5?1:0)===XOUT[j][0]).length;
+  const E    = outs.reduce((s,o,j)=>s + 0.5*(XOUT[j][0]-o)*(XOUT[j][0]-o), 0);
+  const pE   = sp ? (sp.outs || XIN.map(v=>evalNet(sp.w,sp.b,P.nhid,v[0],v[1])))
+                      .reduce((s,o,j)=>s + 0.5*(XOUT[j][0]-o)*(XOUT[j][0]-o), 0) : null;
+  const rowsHtml = [
+    ["状态", st.kind, true],
+    ["轮次 / 样本", (st.epoch<0?"—":"第 "+st.epoch+" 轮") + " / " + (st.sample<0?"—":"第 "+st.sample+" 条"), sp && (sp.epoch!==st.epoch||sp.sample!==st.sample)],
+    ["四样本总误差", fmt(E,8), pE != null && Math.abs(pE-E) > 1e-9],
+    ["较上一状态", pE != null ? (E<pE?"↓ ":"↑ ") + fmt(Math.abs(E-pE),8) : "—", pE != null],
+    ["判对数", nOk + " / 4", sp && nOk !== (sp.outs||[]).filter((o,j)=>(o>0.5?1:0)===XOUT[j][0]).length],
+    ["权重绝对值最大", fmt(Math.max(...Array.from(st.w).map(Math.abs)),4), false],
+    ["偏置 b0 / b1", st.b[0].toFixed(4) + " / " + st.b[1].toFixed(4), false],
+    ["本次训练耗时", DATA.ms.toFixed(1) + " ms", false],
+  ];
+  $("k-stat").innerHTML = rowsHtml.map(([k,v,hl])=>
+    `<tr><td>${k}</td><td class="${hl?'hl':''}">${v}</td></tr>`).join("");
+
+  $("meters").innerHTML =
+    `<span>误差 <b>${fmt(E,7)}</b></span><span>判对 <b>${nOk}/4</b></span>` +
+    `<span>轮 <b>${st.epoch<0?"—":st.epoch}</b></span><span>状态 <b>${st.kind}</b></span>`;
+
+  const chips = $("chips").children;
+  for(let i = 0; i < chips.length; i++){
+    const f = +chips[i].dataset.from, t2 = +chips[i].dataset.to;
+    chips[i].classList.toggle("on", idx >= f && idx <= t2);
+    chips[i].classList.toggle("done", idx > t2);
+  }
+  $("pos").textContent = (idx+1) + " / " + DATA.states.length;
+  $("slider").value = idx;
+  $("btn-prev").disabled = idx === 0;
+  $("btn-next").disabled = idx === DATA.states.length - 1;
+  $("subtitle").textContent =
+    `2 → ${P.nhid} → 1　学习率 ${P.rate}　${P.iters} 轮　种子 ${P.seed}`;
+}
+
+function go(i, scroll){
+  idx = Math.max(0, Math.min(DATA.states.length-1, i));
+  render();
+  if(scroll) window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+/* ---------- 重新训练 ---------- */
+function rebuild(keepEpoch){
+  const P = {
+    seed:  Math.max(1, Math.round(+$("p-seed").value) || 1),
+    nhid:  Math.max(1, Math.min(12, Math.round(+$("p-nhid").value) || 4)),
+    rate:  Math.max(0.01, +$("p-rate").value || 3),
+    iters: Math.max(10, Math.min(20000, Math.round(+$("p-iter").value) || 3000)),
+  };
+  $("p-seed").value = P.seed; $("p-nhid").value = P.nhid;
+  $("p-rate").value = P.rate; $("p-iter").value = P.iters;
+
+  DATA = runTraining(P);
+  $("arch").textContent =
+    `2 → ${P.nhid} → 1　权重 ${DATA.NW} 个 + 偏置 2 个　训练耗时 ${DATA.ms.toFixed(1)} ms`;
+
+  const box = $("chips"); box.innerHTML = "";
+  DATA.sections.forEach(sec=>{
+    const c = document.createElement("div");
+    c.className = "chip"; c.textContent = sec.name;
+    c.dataset.from = sec.from; c.dataset.to = sec.to;
+    c.onclick = () => go(sec.from, true);
+    box.appendChild(c);
+  });
+  $("slider").max = DATA.states.length - 1;
+
+  // 改完参数尽量停在同一轮，方便直接对比不同设定下的曲面
+  let target = 0;
+  if(keepEpoch != null && keepEpoch >= 0){
+    const k = DATA.states.findIndex(s => s.kind === "epoch" && s.epoch === Math.min(keepEpoch, DATA.P.iters-1));
+    if(k >= 0) target = k;
+  }
+  go(target, false);
+}
+
+/* ---------- 播放 ---------- */
+function stopPlay(){ if(timer){ clearInterval(timer); timer = null; $("btn-play").textContent = "▶ 播放"; } }
+$("btn-play").onclick = function(){
+  if(timer){ stopPlay(); return; }
+  this.textContent = "⏸ 暂停";
+  timer = setInterval(()=>{
+    const stride = +$("sel-speed").value;
+    if(idx >= DATA.states.length - 1){ stopPlay(); return; }
+    go(idx + stride, false);
+  }, 60);
+};
+$("btn-prev").onclick = () => { stopPlay(); go(idx-1, true); };
+$("btn-next").onclick = () => { stopPlay(); go(idx+1, true); };
+$("slider").oninput = e => { stopPlay(); go(+e.target.value, false); };
+$("btn-run").onclick = () => { stopPlay(); rebuild(S() ? S().epoch : null); };
+$("ck-ghost").onchange = () => render();
+$("btn-view").onclick = () => { az = -0.62; el = 0.60; render(); };
+document.querySelectorAll("[data-preset]").forEach(b=>{
+  b.onclick = () => {
+    const [n,r,i,s] = b.dataset.preset.split(",");
+    $("p-nhid").value = n; $("p-rate").value = r; $("p-iter").value = i; $("p-seed").value = s;
+    stopPlay(); rebuild(null);
+  };
+});
+document.addEventListener("keydown", e=>{
+  if(e.target.tagName === "INPUT" || e.target.tagName === "SELECT") return;
+  if(e.key === "ArrowRight"){ stopPlay(); go(idx+1, true); e.preventDefault(); }
+  else if(e.key === "ArrowLeft"){ stopPlay(); go(idx-1, true); e.preventDefault(); }
+  else if(e.key === "Home"){ stopPlay(); go(0, true); e.preventDefault(); }
+  else if(e.key === "End"){ stopPlay(); go(DATA.states.length-1, true); e.preventDefault(); }
+  else if(e.key === " "){ $("btn-play").click(); e.preventDefault(); }
+});
+
+/* ---------- 三维视角拖拽 ---------- */
+(function(){
+  const cv = $("cv3d");
+  const down = e => { dragging = { x:e.clientX, y:e.clientY, az, el }; cv.classList.add("drag"); };
+  const move = e => {
+    if(!dragging) return;
+    az = dragging.az + (e.clientX - dragging.x) * 0.008;
+    el = Math.max(0.06, Math.min(1.45, dragging.el - (e.clientY - dragging.y) * 0.006));
+    draw3d();
+  };
+  const up = () => { dragging = null; cv.classList.remove("drag"); };
+  cv.addEventListener("mousedown", down);
+  window.addEventListener("mousemove", move);
+  window.addEventListener("mouseup", up);
+  cv.addEventListener("touchstart", e => { if(e.touches[0]) down(e.touches[0]); }, {passive:true});
+  window.addEventListener("touchmove", e => { if(dragging && e.touches[0]){ move(e.touches[0]); e.preventDefault(); } }, {passive:false});
+  window.addEventListener("touchend", up);
+  window.addEventListener("resize", () => { if(DATA) draw3d(); });
+})();
+
+rebuild(null);
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-#*.zip
+﻿#*.zip
 !outdoors/kml/*.zip
 !C:/codex/swordll80.github.io/outdoors/kml/*.zip
 .backup
@@ -7,3 +7,7 @@ confluence/git.bat
 .playwright-cli
 .workbuddy
 .agents
+.vs
+
+# 以下文件太大，暂不提交
+notes/软考/系统架构设计师教程.pdf
